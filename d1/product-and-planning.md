@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# ED-Simulation/ED-Simulation-VI
 > _Note:_ This document is meant to evolve throughout the planning phase of your project.    
  > That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section).
  > Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
@@ -8,16 +8,13 @@
  
 #### Q1: What are you planning to build?
 
- * Short (1 - 2 min' read)
- * Start with a single sentence, high-level description of the product.
- * Be clear - Describe the problem you are solving in simple terms.
- * Be concrete. For example:
-    * What are you planning to build? Is it a website, mobile app,
-   browser extension, command-line app, etc.?      
-    * When describing the problem/need, give concrete examples of common use cases.
- * Focus on *what* your product does, and avoid discussing *how* you're going to implement it.      
-   For example: This is not the time or the place to talk about which programming language and/or framework you are planning to use.
- * **Feel free (and very much encouraged) to include useful diagrams, mock-ups and/or links**.
+Our product is an application that will simulate patient trajectory through an emergency department. 
+
+The ED simulation will enable researchers to quickly see how changes to the ED (such as the # of doctors, and how patients are moved from doctor to doctor) result in different patient experiences and ultimately allow researchers to develop a better experience for hospital patients. For example, a hospital dealing with long wait times, will use the simulation to develop a new ED patient trajectory to reduce patient wait times. 
+
+![Diagram 1](http://url/to/img.png)
+
+
 
 
 #### Q2: Who are your target users?
