@@ -12,7 +12,7 @@ Our product is an application that will simulate patient trajectory through an e
 
 The ED simulation will enable researchers to quickly see how changes to the ED (such as the # of doctors, and how patients are moved from doctor to doctor) result in different patient experiences and ultimately allow researchers to develop a better experience for hospital patients. For example, a hospital dealing with long wait times, will use the simulation to develop a new ED patient trajectory to reduce patient wait times. 
 
-![Diagram 1](http://url/to/img.png)
+![Diagram 1](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/d1/Diagram1.png)
 
 
 
