@@ -63,6 +63,12 @@ List each team member and:
 
 #### Team Rules
 
+
+Wenqin: Full Stack developer 
+Mit : Full Stack developer 
+Victor: Full Stack developer 
+
+
 Our team has a relaxed and fun working culture. Everyone has their own schedule and time when they work best, so we don’t care when someone works, as long as they finish their part by the agreed upon deadline. In addition, we are supportive of each other. We will try our best to help each other if anyone has questions or needs help. 
 
 Communications:
