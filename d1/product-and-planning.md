@@ -14,26 +14,21 @@ The ED simulation will enable researchers to quickly see how changes to the ED (
 
 ![Diagram 1](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/d1/Diagram1.png)
 
-
+![Diagram 2](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/d1/Diagram2.png)
 
 
 #### Q2: Who are your target users?
 
- * Short (1 - 2 min' read max)
- * Be specific (e.g. a 'a third-year university student studying Computer Science' and not 'a student')
- * Feel free (but not obligated) to use personas.         
-   You can create your personas as part of this Markdown file, or add a link to an external site (for example, [Xtensio](https://xtensio.com/user-persona/)).
+Researchers with some computational experience.
+Hospital Management
+Doctors in hospitals
 
 #### Q3: Why would your users choose your product? What are they using today to solve their problem/need?
 
- * Short (1 - 2 min' read max)
- * We want you to "connect the dots" for us - Why does your product (as described in your answer to Q1) fits the needs of your users (as described in your answer to Q2)?
- * Explain the benefits of your product explicitly & clearly. For example:
-    * Save users time (how much?)
-    * Allow users to discover new information (which information? And, why couldn't they discover it before?)
-    * Provide users with more accurate and/or informative data (what kind of data? Why is it useful to them?)
-    * Does this application exist in another form? If so, how does your differ and provide value to the users?
-    * How does this align with your partner's organization's values/mission/mandate?
+Users would choose our product because it enables them to study the effect of different settings of the ED. Users will be able to observe things that can be difficult to identify without software, such as bottlenecks in the system. Based on the output, the hospital staff can make informed decisions on how they can make improvements to patient experience and hospital efficiency. For example, in the case of an identified bottleneck, hospital staff can choose to allocate more resources into a particular section of the hospital in order to alleviate the bottleneck and streamline patient care.
+The simulations can accept a large number of parameters and will provide helpful visualizations to improve ease of use. Users would also be able to simulate different scenarios depending on what action is taken. While other simulators already exist, they do not offer the full freedom required for exploring alternative scenarios under different conditions. This makes our product superior since our simulations will cover a broader range of possibilities, which will benefit the hospital’s goal to effectively treat as many patients as possible.
+Furthermore, our product will be a web application. This increases the accessibility and ease of use for users. Being a web application means that our product can be accessible from a widely increased range of devices. 
+
 
 #### Q4: How will you build it?
 
@@ -46,10 +41,10 @@ The ED simulation will enable researchers to quickly see how changes to the ED (
 
 #### Q5: What are the user stories that make up the MVP?
 
- * At least 5 user stories concerning the main features of the application - note that this can broken down further
- * You must follow proper user story format (as taught in lecture) ```As a <user of the app>, I want to <do something in the app> in order to <accomplish some goal>```
- * If you have a partner, these must be reviewed and accepted by them
- * The user stories should be written in Github and each one must have clear acceptance criteria
+As a hospital manager, I want to improve customer wait time and see how are they moving
+As a hospital, we want to find bottlenecks in the workflow, and to be able to find where we can improve the process either by changing the workflow, or adding/reducing resources.
+As a researcher who wants to improve the flow of resources in a hospital, I want to be able to visualize and tune parameters of a simulation,  and show the hospital the potential improvements from my technique
+As a hospital, if we have budget cuts, I want to find the most expensive resource we can get rid of, while affecting the workflow the least.
 
 ----
 
