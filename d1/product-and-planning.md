@@ -61,22 +61,26 @@ Organizer/Lead
  * Sets deadlines for tasks
  * Organizes meetings
  * Makes sure that everyone is completing their tasks on time
+ 
 Product Manager
  * Talks with the Vector Institute and other stakeholders to determine what should be developed
  * Creates specification documents detailing what should be built
  * Sets tasks based on the specification document
+ 
 Designer
  * Designs the user interface to make it look good
  * Tests the user interface on clients to ensure that it is usable
+ 
 Front end developer
  * Codes the visualization using front-end frameworks such as React
  * Works with the PM(s) and backend developer(s) to develop the product
+ 
 Backend Developer
  * Codes the algorithm behind the visualizations through a backend server
  * Works with the PM(s) and frontend developers(s) to develop the product
 
 Simran:
-    * Description: Responsible for coding the backend server and the frontend user interface. Is also responsible for organizing meetings and delegating tasks to people. 
+ * Description: Responsible for coding the backend server and the frontend user interface. Is also responsible for organizing meetings and delegating tasks to people. 
     * Strength: Typescript, Flask, continuous deployment, software architecture  
     * Weakness: Indecisive, time, spelling
 Daniel:
