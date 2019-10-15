@@ -53,9 +53,6 @@ As a hospital, if we have budget cuts, I want to find the most expensive resourc
 
 
 #### Roles & responsibilities
-
-Describe the different roles on the team and the responsibilities associated with each role. 
- * Roles should reflect the structure of your team and be appropriate for your project. Not necessarily one role to one team member.
  
 Organizer/Lead
  * Sets deadlines for tasks
@@ -80,29 +77,35 @@ Backend Developer
  * Works with the PM(s) and frontend developers(s) to develop the product
 
 Simran:
- * Description: Responsible for coding the backend server and the frontend user interface. Is also responsible for organizing meetings and delegating tasks to people. 
+    * Description: Responsible for coding the backend server and the frontend user interface. Is also responsible for organizing meetings and delegating tasks to people. 
     * Strength: Typescript, Flask, continuous deployment, software architecture  
     * Weakness: Indecisive, time, spelling
+    
 Daniel:
     * Description: Primarily responsible for backend development but can switch to frontend if more attention is required.
     * Strength: Python, Javascript (currently learning react)
     * Weakness: Indecisive, project planning, knowledge of libraries and architectures
+    
 Wenqin:
     * Description: Responsible for frontend development and backend development, but with a focus on the frontend aspect. Additionally responsible for designing the user interface and testing the products’ final usability.
     * Strength: Frontend development, design, problem solving
     * Weakness: Organization, time management, prioritization 
+    
 Mit:
     * Description: Responsible for backend development primarily with some involvement in frontend development.
     * Strength: Python, large-scale projects, Django, software design, JavaScript
     * Weakness: Time management, organization, focus too much on the details
+    
 Carlson:
     * Description: Experienced with developing various applications and is responsible for handling issues and reviews. 
     * Strength: NLP, Javascript, Fullstack Development, APIs
-    * Weakness: Availability, organization, 
+    * Weakness: Availability, organization
+    
 Victor: 
     * Description: Responsible for mocking up designs and front end development. 
     * Strength: Python, Python Libraries, ML
     * Weakness: Web libraries, linear algebra, design methodologies
+    
 Nicolae:
     * Description: System architecture, APIs
     * Strength: Python, Flask, software architecture, JavaScript.
