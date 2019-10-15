@@ -53,7 +53,7 @@ As a hospital, if we have budget cuts, I want to find the most expensive resourc
 
 
 #### Roles & responsibilities
- 
+**Roles**
 Organizer/Lead
  * Sets deadlines for tasks
  * Organizes meetings
@@ -75,7 +75,8 @@ Front end developer
 Backend Developer
  * Codes the algorithm behind the visualizations through a backend server
  * Works with the PM(s) and frontend developers(s) to develop the product
-
+ 
+**Responsiblities**
 Simran:
  * Description: Responsible for coding the backend server and the frontend user interface. Is also responsible for organizing meetings and delegating tasks to people. 
  * Strength: Typescript, Flask, continuous deployment, software architecture  
