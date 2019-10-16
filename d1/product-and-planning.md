@@ -152,6 +152,7 @@ Online task board using GitHub cards with some canonical sections:
  * In progress
  * In review/Testing
  * Completed
+ 
 Mockup of the application
 
 
