@@ -211,15 +211,5 @@ Mockup of the application
 
 ----
 ### Highlights
-**Note this section is optional**
-YOUR ANSWER GOES HERE ...
+* We thought about using electron for developing the product since we can create a desktop app but choose to use python for the backend and react for the front end becuase researchers are more comfortable using python.
 
-Specify 3 - 5 key decisions and/or insights that came up during your meetings
-and/or collaborative process.
-
- * Short (5 min' read max)
- * Decisions can be related to the product and/or the team process.
-    * Mention which alternatives you were considering.
-    * Present the arguments for each alternative.
-    * Explain why the option you decided on makes the most sense for your team/product/users.
- * Essentially, we want to understand how (and why) you ended up with your current product plan.
