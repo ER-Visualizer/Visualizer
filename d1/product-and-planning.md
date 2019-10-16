@@ -127,25 +127,76 @@ Communications:
  * Partner is also a U of T staff member so it shouldn’t be too hard to find a time to meet on campus
  
 Meetings:
- * We will use task tracking software such as Asana in order to ensure everyone knows their role
+ * We will use task tracking software such as Asana, github cards in order to ensure everyone knows their role
  * Anyone experiencing difficulties can contact the rest of the group during either of the weekly group meetings
  
 Conflict Resolution:
- * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
+ * Scenario 1: Someone is busy and fails to let the group know 
 
+* Resolution: Based on our team rules we understand that one can be busy at times but we will bring it up with them and clarify the reason for their abscence. 
+
+* Scenario 2: Someone is being belligerent. 
+
+* Resolution: Based on our rules as defined above the person experincing the belligerent behaviour of the other person would bring it up that person if they were comfortable, if not they could talk to someone else such as Carlson who is responsible for resolving issues. In the event that Carlson is the one being belligerent one can bring it to the attention of Wenqin or Simran.
+
+* Scenario 3: Someone feels excluded in the group.
+
+* Resolution: We've tried to make the team rules create an open and friendly envirnment but it can still happen that someone can feel excluded in the group. To resolve such issues we will use retrospectives where anyone can anonymously put on stickly notes things they would like to see Started, Coninued and Stopped. Further the same conflict resolution path of Carlson - > Wenqin/Simran can be used to handle this issue if one feels more comfortable doing so instead. 
+ 
+ 
 
 #### Events
 
-Describe meetings (and other events) you are planning to have:
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
+ * We have planned to meet everyweek for atleast an hour in the form of a google hangouts call or casual in person chats or a formal meeting at a specified location on Tuesday between 4-6pm to discuss issues and collaborate on problems or Thursdays for planning and backlogs
+ * We have planned to meet with the partner usually on Friday's from 4-5pm to discuss questions and demo updates and discuss with the partner via slack
  
 #### Partner Meetings
-You must have at least 2 meetings with your project partner - an initial planning meeting and a document review meeting. Describe the meetings here:
-* When and where?
-* What did you discuss during the meeting (**note you must have meeting minutes**)?
-* What were the outcomes of each meeting?
+##### Meeting 1:
+*  We met at the mining building to discuss the intial plan and requirements of the product on Friday October 5th.
+
+* Discussed: 
+   * Workflow
+   Given a list of patients
+   A patient will have a time of arrival_time, acuity, and whether or not they need an X-ray (and which type of image x-ray they need). This is given as a CSV.
+   * Reception:
+   The reception is when a patient first goes to the emergency room and talks to the receptionist with their problems. 
+   Since reception has a limited amount of people, a queue may build up at the reception. 
+   Queue type: priority queue
+   Rule about how to insert into the queue that will be defined by the ML researcher. 
+   Distribution for how long it takes for someone to be received: normal distribution, or possibly other options
+   Once received a patient will go to triaging (most of the time)
+   * Triaging: 
+   Triaging is when a nurse estimates your case and puts you into a specific patient doctor queue based on how severe the acuity is 
+   There will be a queue because there is a limited number of doctors
+   Patient doctor interaction
+   Once a patient talks to a doctor, the doctor will release or get the patient to do an x-ray
+   Once a patient is assigned to a doctor, generally they should stay with the doctor (this can be made enforced or not enforced)
+   * Scan: 
+   Xray (time and amount of technicans)
+   mri(time and amount of technicans)
+   catscan(time and amount of technicans)
+
+
+
+Our goal is to build the graph, and we want to see how the graph changes as we change parameters. 
+Assumptions:
+Start simulation as if the patient is new and has no patients
+Visualization of queues
+Queues should be buckets with granularity view of people in the buckets
+
+Input: list of patients defined by xray, arrival time, acuity, different images given as csv 
+
+Final output: docker image
+Priority queue should be modular where vector can define the insert and pop themselves
+Doctor and patient stats
+
+##### Meeting 2:
+*  We met at the bahen to discuss any questions and talk about implementation details on Friday October 12th.
+
+* Discussed: 
+   * We clarified questions around acquity and how it works, the queue functions that can be changed and how, and what we would like to save after each simulation
+   * We also discussed implementation and finalized for now on using python for the backend so that researchers could easily modify it in the future and react for the front end based on our groups strengths. 
+   * We also went over testing methods.
 
 
 #### Artifacts
