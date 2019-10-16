@@ -32,12 +32,14 @@ Furthermore, our product will be a web application. This increases the accessibi
 
 #### Q4: How will you build it?
 
- * Short (1-2 min' read max)
- * What is the technology stack? Specify any and all languages, frameworks, libraries, PaaS products or tools. 
- * How will you deploy the application?
- * Describe the architecture - what are the high level components or patterns you will use? Diagrams are useful here. 
- * Will you be using third party applications or APIs? If so, what are they?
- * What is your testing strategy?
+We will build the architecture in Python, with a class-based structure where processes and queues are all classes which communicate with each other.
+
+Our initial plan is to use Flask for the backend and React for the front end. For visualizations we are thinking of using d3.js or vis.gl. We will use numpy and pandas to manipulate the csv. 
+
+The application will be deployed with a docker image that the Vector researcher can run.
+
+We are following a strategy of continuous deployment. Before any branch is merged into master, a series of tests will be run against the branch to ensure that it is functioning. Additionally, everyone is responsible for writing unit tests for their code. Finally, to test usability we will demo the app to the Vector institute periodically to get feedback on how the app could be improved. 
+
 
 #### Q5: What are the user stories that make up the MVP?
 
