@@ -116,20 +116,17 @@ Nicolae:
 
 #### Team Rules
 
-
-Wenqin: Full Stack developer 
-Mit : Full Stack developer 
-Victor: Full Stack developer 
-
-
 Our team has a relaxed and fun working culture. Everyone has their own schedule and time when they work best, so we don’t care when someone works, as long as they finish their part by the agreed upon deadline. In addition, we are supportive of each other. We will try our best to help each other if anyone has questions or needs help. 
 
 Communications:
- * What is the expected frequency? What methods/channels are appropriate? 
- * If you have a partner project, what is your process (in detail) for communicating with your partner?
+ * In person meetings on Tuesday between 4-6pm to discuss issues and collaborate on problems
+ * Video calls on Thursdays for planning and backlogs
+ * We will contact the partner via email, but we may also schedule in person meetings
+ * Partner is also a U of T staff member so it shouldn’t be too hard to find a time to meet on campus
  
 Meetings:
- * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
+ * We will use task tracking software such as Asana in order to ensure everyone knows their role
+ * Anyone experiencing difficulties can contact the rest of the group during either of the weekly group meetings
  
 Conflict Resolution:
  * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
@@ -150,14 +147,13 @@ You must have at least 2 meetings with your project partner - an initial plannin
 
 
 #### Artifacts
+Online task board using GitHub cards with some canonical sections:
+ * To do
+ * In progress
+ * In review/Testing
+ * Completed
+ * Mockup of the application
 
-List/describe the artifacts you will produce in order to organize your team.       
-
- * Artifacts can be To-Do lists, Task boards, schedule(s), etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
 
 ----
 ### Highlights
