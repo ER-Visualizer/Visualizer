@@ -1,13 +1,20 @@
 import React from 'react';
 import Main from "./components/Main";
 import './App.css';
-
 function App() {
+
   return (
     <div className="App">
         <Main/> 
     </div>
   );
 }
+
+// {
+//   data.nodes.push({id: "newnode"})
+//   }
+//   {
+//     data.links.push({source: "newnode", target:"Sally"})
+//   }
 
 export default App;
