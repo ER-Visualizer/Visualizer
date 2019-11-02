@@ -8,4 +8,5 @@ def home():
 def function1():
   print("rer")
   print("ded")
+  print("dd")
   pass
