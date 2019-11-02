@@ -1,12 +1,17 @@
-# FROM tiangolo/uwsgi-nginx-flask:python3.7
-FROM terrillo/python3flask:latest
+# FROM terrillo/python3flask:latest
+# should solve numpy and pandas issue
+# FROM python:3.7.2-slim
 
-# FROM python:3.7.2-alpine3.9
+# to make my own image used this 
+# FROM python:3.7-alpine
 # RUN apk add --no-cache python3-dev libstdc++ && \
 #     apk add --no-cache g++ && \
 #     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
 #     pip3 install numpy && \
-    # pip3 install pandas
+#     pip3 install pandas
+
+# works
+FROM simran224/vectorinstituteteam:latest
 
 COPY ./app /app
 
@@ -20,7 +25,6 @@ RUN rm -f requirements.txt
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV FLASK_APP=./main.py
-
 
 CMD flask run --host 0.0.0.0 --port 80
 COPY . ./
