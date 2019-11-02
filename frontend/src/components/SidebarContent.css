@@ -1,0 +1,31 @@
+.SidebarContent {
+    width: 320px;
+    padding: 24px;
+}
+
+.SidebarContent .input-container {
+    width: 100%;
+}
+
+.SidebarContent label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #6E777C;
+}
+
+.SidebarContent input[type='text'] {
+    margin-bottom: 24px;
+    margin-top: 12px;
+    font-family: 'Roboto Mono';
+    padding: 8px;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.SidebarContent h3 {
+    margin-top: 0;
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 24px;
+}
