@@ -1,0 +1,6 @@
+*.pyc
+*.pyo
+node_modules
+.DS_Store
+.vscode
+.coverage
