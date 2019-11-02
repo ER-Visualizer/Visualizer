@@ -4,3 +4,4 @@ pytest-cov
 requests==2.18.4
 numpy
 pandas
+websockets
