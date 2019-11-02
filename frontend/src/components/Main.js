@@ -9,8 +9,8 @@ class Main extends React.Component {
         this.data = {
             element_type: "triage",
             distribution: "gaussian",
-            distribution_parameters: {mean: 3, variance: 1},
-            number_of_actors: 10,
+            distribution_parameters: {mean: "3", variance: "1"},
+            number_of_actors: "10",
             queue_type: "stack",
             priority_function: "",
             children: []
@@ -27,7 +27,6 @@ class Main extends React.Component {
                     docked={true}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}
-                    defaultSidebarWidth={320}
                 >
                     <p> Child content </p>
                 </Sidebar> 
