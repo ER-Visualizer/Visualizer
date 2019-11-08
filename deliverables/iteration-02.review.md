@@ -13,7 +13,7 @@
 ## Process - Reflection
 Throughout the whole process of creating the first phase of our application, there were many things we did correctly but also a couple of things that went wrong, which are good lessons for us, moving forward.
 
-### Below are some of the decisions we made that turned out well:
+#### Decisions we made that turned out well:
 
 1. To make our meetings as meaningful and efficient as possible, we created a document with a list of all of our questions going into the meeting. This ensured that we didn't forget to ask about something that we needed to and that we didn't waste any time in the meeting thinking about what to ask. We also created a meeting notes document and had delegated the task of taking meeting minutes to one of the team members before each meeting. This was a good decision because if one of the team members couldn't make it to a meeting, they can easily refer to this document to get a brief summary. Furthermore, if nothing was written down from the meeting, there is a high probability that we would forget about an important detail afterwards.
 
@@ -29,13 +29,11 @@ Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](G
 
 Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4Lcpl9Y7UGgjy0oEzgq8Wzo/edit?usp=sharing
 
-### Below are some of the decisions we made that did not turn out as well as we hoped:
+#### Decisions we made that did not turn out as well as we hoped
 
-1. One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own      schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate      eachother's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets      done.
+1. One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate each other's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets done.
 
-2. Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed        planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a      software architecture and finish the project
-   earlier. However what happened was that without a clear plan of the software architecture our plan did not have a clear
-   idea of what to work on.
+2. Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a software architecture and finish the project earlier. However what happened was that without a clear plan of the software architecture, our team did not have a clear idea of what to work on.
 
 #### Planned changes
 
@@ -43,6 +41,12 @@ List any process-related changes you are planning to make (if there are any)
 
  * Ordered from most to least important.
  * Explain why you are making a change.
+
+It is crucial to learn from your past mistakes and make any necessary changes to fix them.
+
+1. One change that we will be making to our process is to schedule more work sessions where we all meet together, or at some people doing the frontend and some doing the backend. This is required to allow seamless integration of the backend with the frontend without having to worry about it at the very end. Leaving it all to the end could mean wasting excess time trying to integrate the two sides instead of doing meaningful work that extends the application's features.
+
+2. Another process-related change that we are planning to make is .
 
 
 ## Product - Review
