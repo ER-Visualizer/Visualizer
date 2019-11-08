@@ -23,12 +23,10 @@ Throughout the whole process of creating the first phase of our application, the
 
 #### Decisions that did not turn out as well as we hoped
 
-List process-related (i.e. team organization) decisions that, in retrospect, were not as successful as you thought they would be.
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Feel free to refer/link to process artifact(s).
-
+ * One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own      schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate      eachother's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets      done.
+ * Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed        planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a      software architecture and finish the project
+   earlier. However what happened was that without a clear plan of the software architecture our plan did not have a clear
+   idea of what to work on.
 
 #### Planned changes
 
