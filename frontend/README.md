@@ -1,3 +1,11 @@
+## Docker setup for backend
+
+1. run ```docker-compose down```
+2. run ```docker-compose up --build```
+3. go to browser  ```http://localhost:3001/```
+4. There is hotloading ie whenever you make a change it will show up
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
