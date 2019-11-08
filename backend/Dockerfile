@@ -11,7 +11,7 @@
 #     pip3 install pandas
 
 # works
-FROM simran224/vectorinstituteteam:latest AS dev
+FROM simran224/vectorinstituteteam:latest
 
 COPY ./app /app
 
@@ -21,16 +21,11 @@ RUN pip3 install --upgrade pip
 RUN pip install --upgrade -r requirements.txt
 RUN rm -f requirements.txt
 
-
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV FLASK_APP=./main.py
 
-FROM dev AS deploy
-
 CMD flask run --host 0.0.0.0 --port 80
-
-FROM deploy AS deployed
 
 COPY . ./
 
