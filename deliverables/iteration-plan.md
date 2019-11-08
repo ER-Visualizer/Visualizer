@@ -1,98 +1,9 @@
-# YOUR PRODUCT/TEAM NAME
+# ED-Simulation/ED-Simulation-VI
 
+## Iteration 2
 
-## Iteration XX
-
- * Start date: FILL IN THE DATE WHEN YOU HAD YOUR FIRST TEAM PLANNING MEETING
- * End date: FILL IN THE DATE WHEN YOU ARE PLANNING TO HAVE YOUR REVIEW MEETING
-
-## Process
-
-(Optional:) Quick introduction
-
-#### Roles & responsibilities
-
-Describe the different roles on the team and the responsibilities associated with each role. 
- * Roles should reflect the structure of your team and be appropriate for your project. Not necessarily one role to one team member.
-
-List each team member and:
- * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
- * 3 technical strengths and weaknesses each (e.g. languages, frameworks, libraries, development methodologies, etc.)
-
-#### Team Rules
-
-Describe your team's working culture.
-
-Communications:
- * What is the expected frequency? What methods/channels are appropriate? 
- * If you have a partner project, what is your process (in detail) for communicating with your partner?
- 
-Meetings:
- * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
- 
-Conflict Resolution:
- * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
-
-
-#### Events
-
-Describe meetings (and other events) you are planning to have:
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
-
-
-#### Partner Meetings
-You must have at least 2 meetings with your project partner - an initial planning meeting discussing the features you will build this iteration and a sprint demo meeting to review what you've done. Describe the meetings here:
-* When and where will you meet?
-* What do you intend to discuss(**note you will have meeting minutes in the review document**)?
-
-#### Artifacts
-
-List/describe the artifacts you will produce in order to organize your team.       
-
- * Artifacts can be To-Do lists, Task boards, schedule(s), etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
-
-
-#### Deployment and Github Workflow
-
-Describe your Git / GitHub workflow. Essentially, we want to understand how your team members shares a codebase, avoid conflicts and deploys the application.
-
- * Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
- * If applicable, specify any naming conventions or standards you decide to adopt.
- * Describe your overall deployment process from writing code to viewing a live applicatioon
- * What deployment tool(s) are you using and why
- * Don't forget to **explain why** you chose this workflow or particular aspects of it!
-
-
-
-## Product
-
-#### Goals and tasks
-
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
-
-#### Artifacts
-
-List/describe the artifacts you will produce in order to present your project idea.
-
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
-
-
-   # ED-Simulation/ED-Simulation-VI
-> _Note:_ This document is meant to evolve throughout the planning phase of your project.    
- > That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section).
- > Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
- > **This document will serve as an agreement between your team and your partner.**
+ * Start date: Friday Novemeber 1st 2019
+ * End date: Tuesday November 12 2019
 
 ## Product Details
  
@@ -125,6 +36,8 @@ Users would choose our product because it enables them to study the effect of di
 The simulations can accept a large number of parameters and will provide helpful visualizations to improve ease of use. Users would also be able to simulate different scenarios depending on what action is taken. While other simulators already exist, they do not offer the full freedom required for exploring alternative scenarios under different conditions. This makes our product superior since our simulations will cover a broader range of possibilities, which will benefit the hospital’s goal to effectively treat as many patients as possible.
 Furthermore, our product will be a web application. This increases the accessibility and ease of use for users. Being a web application means that our product can be accessible from a widely increased range of devices. 
 
+Existing competitors are Patient Flow Simulator (https://khp-informatics.github.io/patient-flow-simulator/index.html) and Simul8 (https://www.simul8.com/). However, Patient Flow Simulator is not very customizable and although simul8 is very customizable and provides good statistics, it is very expensive and not directed at the medical domain.
+
 
 #### Q4: How will you build it?
 
@@ -136,6 +49,7 @@ The application will be deployed with a docker image that the Vector Institute r
 
 We are following a strategy of continuous deployment. Before any branch is merged into master, a series of tests will be run against the branch to ensure that it is functioning. Additionally, everyone is responsible for writing unit tests for their code. Finally, to test usability we will demo the app to the Vector institute periodically to get feedback on how the app could be improved. 
 
+The data required for the simulation to run will be uploaded as a csv file on the frontend of the app. Where the csv will be then parsed and sent to the backend. Predictions on whether patients need xrays are also specified in that csv. 
 
 #### Q5: What are the user stories that make up the MVP?
 
@@ -299,14 +213,39 @@ Final output: docker image
 Priority queue should be modular where the user can define the insert and pop themselves
 Doctor and patient stats
 
+* Summary: 
+  * We learned about the project and were walked through the inital plan of the meeitng and the scope of the project 
+  * We also learned about other simulations and the goal of the project ie to be able to display to researchers simulations and allow them see the impact of changing certain perameters 
+
 ##### Meeting 2:
 *  We met at the bahen to discuss any questions and talk about implementation details on Friday, October 12th.
 
 * Topics that were discussed: 
-   * We clarified issues pertaining to acquity, the queue functions, and how results should be saved after the simulation terminates.
-   * We also discussed implementation and decided on using python for the backend so that researchers could easily modify it in the future. We also decided to use react for the frontend based on the overlapping strengths of the group members. 
-   * We also went over testing methods, and requested our partner to provide a sample set of data in order to ensure proper functionality of our project.
+  * We clarified issues pertaining to acquity, the queue functions, and how results should be saved after the simulation terminates.
+  * We also discussed implementation and decided on using python for the backend so that researchers could easily modify it in the future. We also decided to use react for the frontend based on the overlapping strengths of the group members. 
+  * We also went over testing methods, and requested our partner to provide a sample set of data in order to ensure proper functionality of our project.
 
+* Summary: 
+  * After first learning about the project we worked on developing questions and possible implementations and at this meeting asked those questions to Vector
+
+
+##### Metting 3:
+*  We met at the bahen to discuss any questions and talk about implementation details on Friday, October 25th.
+
+* Topics that were discussed: 
+  * Frontend and backend integration: Backend sends delta data for each queue to the frontend via webhooks or web sockets. The frontend receives the data and updates the visualization of the queues.
+  * We clarified column names in the csv file, how to treat additional columns on the csv, and what specific events are to be logged.
+  * A tricky part of the logging is calculating mean time (actual wait time) for the queue,because you can be in multiple queues at same time.  Make sure if patient is at hospital for 2 hours, will be at most for 2 hours.
+
+  * Test Cases:
+    * Front end - max limit of objects on the graph
+    * Incorrectly connected graphs
+    * Distribution correctness
+    * Correct statistics at end of simulation from test cases provided by client
+    * Try using different queue types
+
+* Summary: 
+  * We dicussed questions regarding possible test cases, the format of the input csv file and other edge cases. We also reviewed our plan to build the backend using flask, with websocket to connect to the frontend and a react front end with d3.js animations
 
 #### Artifacts
 - Online task board using GitHub cards with some canonical sections:
@@ -319,6 +258,38 @@ Doctor and patient stats
 
 
 ----
+
+#### Deployment and Github Workflow
+
+Describe your Git / GitHub workflow. Essentially, we want to understand how your team members shares a codebase, avoid conflicts and deploys the application.
+
+ * Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
+ * If applicable, specify any naming conventions or standards you decide to adopt.
+ * Describe your overall deployment process from writing code to viewing a live applicatioon
+ * What deployment tool(s) are you using and why
+ * Don't forget to **explain why** you chose this workflow or particular aspects of it!
+
+
+
+## Product
+
+#### Goals and tasks
+
+ * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
+ * Order the items from most to least important.
+ * Feel free (but not obligated) to specify some/all tasks as user stories.
+
+#### Artifacts
+
+List/describe the artifacts you will produce in order to present your project idea.
+
+ * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
+ * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
+ * Be concise, yet precise.         
+   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+
+
+
 ### Highlights
 * We initially thought about using electron for developing the product since we can create a desktop app. In the end, we chose to use python for the backend and react for the front end becuase researchers are more comfortable using python. Our partner pointed out that they would prefer a product that can be modifed and passed on to other developers in the future, and python ended up being the better option. 
 
