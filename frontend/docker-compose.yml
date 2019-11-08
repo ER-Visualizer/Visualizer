@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+
+  sample:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '3001:3000'
+    environment:
+      - NODE_ENV=development
+# version: '3.4'
+
+# services:
+#   web:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     environment:
+#       - NODE_ENV=production
+#     command: npm start
+#     ports:
+#       - 3000:3000
+#     volumes:
+#       - .:/app
