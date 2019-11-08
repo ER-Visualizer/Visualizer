@@ -5,7 +5,9 @@
  - It can be used by medical professionals/researchers to determine bottlenecks and areas in the emergency room which would benefit most from added resources.
 
  * What is the problem you're trying to solve?
- - We are trying to solve the problem of resource allocation in emergency rooms. To do this, our emergency room simulator provides users with high-level views, as well as detailed statistics on their specified emergency room, such that their decisions pertaining to resource allocation may be well informed.
+ - We want to provide medical professionals and researchers with a way to visualize the impact of workflow changes in the emergency room.
+ - In doing this, we also assist in solving the problem of resource allocation in emergency rooms. To do this, our emergency room simulator provides users with high-level views, as well as detailed statistics on their specified emergency room, such that their decisions pertaining to resource allocation may be well informed.
+ 
 
  * Is there any context required to understand **why** the application solves this problem?
  - In the waiting room of a hospital, each patient has an arrival time and a specific acuity (severity of condition). The user can specify the order of patients that leave the waiting queue based on each patient's acuity and arrival time. Our application uses multiple queue structures (e.g. stack, priority queue) in order to meet the user expectations.
