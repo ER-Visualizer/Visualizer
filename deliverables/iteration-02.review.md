@@ -13,7 +13,7 @@
 ## Process - Reflection
 Throughout the whole process of creating the first phase of our application, there were many things we did correctly but also a couple of things that went wrong, which are good lessons for us, moving forward.
 
-Below are some of the decisions we made that turned out well:
+### Below are some of the decisions we made that turned out well:
 
 1. To make our meetings as meaningful and efficient as possible, we created a document with a list of all of our questions going into the meeting. This ensured that we didn't forget to ask about something that we needed to and that we didn't waste any time in the meeting thinking about what to ask. We also created a meeting notes document and had delegated the task of taking meeting minutes to one of the team members before each meeting. This was a good decision because if one of the team members couldn't make it to a meeting, they can easily refer to this document to get a brief summary. Furthermore, if nothing was written down from the meeting, there is a high probability that we would forget about an important detail afterwards.
 
@@ -29,7 +29,7 @@ Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](G
 
 Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4Lcpl9Y7UGgjy0oEzgq8Wzo/edit?usp=sharing
 
-Below are some of the decisions we made that did not turn out as well as we hoped:
+### Below are some of the decisions we made that did not turn out as well as we hoped:
 
 1. One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own      schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate      eachother's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets      done.
 
