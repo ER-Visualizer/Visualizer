@@ -11,18 +11,15 @@
  * Where: PHYSICAL LOCATION AND/OR ONLINE
 
 ## Process - Reflection
+Throughout the whole process of creating the first phase of our application, there were many things we did correctly but also a couple of 
 
-(Optional) Short introduction
+ 1) One of our decisions that turned out well for us was organizing meetings with our partners very early on in the process. This allowed us to get all the information we needed and get all of our questions answered early to maximize the time spent working on the actual application. If we had not done so, we would be making assumptions when developing and if those assumptions turned out to be wrong, it would have been a time consuming process to redo parts of the application.
 
-#### Decisions that turned out well
+ 2) To make our meetings as meaningful and efficient as possible, we created a document with a list of all of our questions going into the meeting. This ensured that we didn't waste any time in the meeting 
 
-List process-related (i.e. team organization) decisions that, in retrospect, turned out to be successful.
+ 3) Nick and Daniel's document
 
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Explain why (i.e. give a supporting argument) you consider a decision to be successful.
- * Feel free to refer/link to process artifact(s).
+ 4) We used Github Notes
 
 #### Decisions that did not turn out as well as we hoped
 
