@@ -11,27 +11,22 @@
  * Where: PHYSICAL LOCATION AND/OR ONLINE
 
 ## Process - Reflection
+Throughout the whole process of creating the first phase of our application, there were many things we did correctly but also a couple of 
 
-(Optional) Short introduction
+ 1) One of our decisions that turned out well for us was organizing meetings with our partners very early on in the process. This allowed us to get all the information we needed and get all of our questions answered early to maximize the time spent working on the actual application. If we had not done so, we would be making assumptions when developing and if those assumptions turned out to be wrong, it would have been a time consuming process to redo parts of the application.
 
-#### Decisions that turned out well
+ 2) To make our meetings as meaningful and efficient as possible, we created a document with a list of all of our questions going into the meeting. This ensured that we didn't waste any time in the meeting 
 
-List process-related (i.e. team organization) decisions that, in retrospect, turned out to be successful.
+ 3) Nick and Daniel's document
 
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Explain why (i.e. give a supporting argument) you consider a decision to be successful.
- * Feel free to refer/link to process artifact(s).
+ 4) We used Github Notes
 
 #### Decisions that did not turn out as well as we hoped
 
-List process-related (i.e. team organization) decisions that, in retrospect, were not as successful as you thought they would be.
-
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Feel free to refer/link to process artifact(s).
-
+ * One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own      schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate      eachother's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets      done.
+ * Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed        planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a      software architecture and finish the project
+   earlier. However what happened was that without a clear plan of the software architecture our plan did not have a clear
+   idea of what to work on.
 
 #### Planned changes
 
