@@ -81,3 +81,4 @@ Going into the next iteration, our main insights are:
  * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likeley to procrastinate due to peer pressure. 
  * We will need to work on displaying the simulation on the frontend. At the moment the frontend only recieves the events of  the simulation that
    the backend processes and does nothing useful with it. The next step should be to take the events and actually visualize the simulation on the frontend. 
+   
