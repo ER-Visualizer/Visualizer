@@ -24,7 +24,6 @@ RUN rm -f requirements.txt
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV FLASK_APP=./main.py
-
 CMD flask run --host 0.0.0.0 --port 80
 
 COPY . ./
