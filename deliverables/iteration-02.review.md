@@ -75,9 +75,9 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 ## Meeting Highlights
 
 Going into the next iteration, our main insights are:
-
- * 2 - 4 items
- * Short (no more than one short paragraph per item)
- * High-level concepts that should guide your work for the next iteration.
- * These concepts should help you decide on where to focus your efforts.
- * Can be related to product and/or process.
+ * Create a solid plan of tasks before coding so that everyone knows what to do. We found that by having a good plan of
+   what everyone needed to do, it reduces the need for time intensive work sessions and increases productivity as people
+   can work on their part without the need for other people. 
+ * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likeley to procrastinate due to peer pressure. 
+ * We will need to work on displaying the simulation on the frontend. At the moment the frontend only recieves the events of .  the simulation that
+   the backend processes. The next step should be to take the events and actually visualize the simulation on the frontend. 
