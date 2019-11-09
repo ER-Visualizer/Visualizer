@@ -27,7 +27,11 @@
  * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
  * Provide clear steps for using each feature described above
  * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
-- (Insert docker steps here since I never used it)
+
+- To setup the docker image, simply run ```docker-compose up``` 
+  - The client and server services will be instantiated with the ports indicated in the .env file.
+  - The client can be accessed at http://localhost:5000 at default.
+
 - Once the application begins, the user will be presented a blank canvas where they can create their workflow using different click operations.
   - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
   - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the canvas.
@@ -35,7 +39,25 @@
   - To specify the processes to which the patient will travel, press and hold the shift key and click the outbound process followed by the inbound process.
 - Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.
 - After the patient csv file is loaded, the simulation can start.
-- As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each aquity will also be displayed.
+- As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each acuity will also be displayed.
 
+## Customizing ports
 
+The defaults for ports are indicated as such:
 
+The backend APIs are at port 8000 indicated by APP_SERVER_PORT in the .env file.
+The client host port is 5000 indicated by REACT_APP_PORT in the .env file.
+
+The values of the ports can be customized simply by changing the value in the .env file.
+
+To switch from development to production change:
+
+```
+DEV_ENV=development
+```
+
+to 
+
+```
+DEV_ENV=production
+```
