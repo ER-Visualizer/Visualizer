@@ -278,7 +278,13 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
  * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
  * Order the items from most to least important.
  * Feel free (but not obligated) to specify some/all tasks as user stories.
-
+ 
+ * Allow users to click on nodes and update the parameters of the node
+   * Create an event handler that triggers whenever a node is clicked
+   * Identify what the node is, and display an editable form for the node's settings in a sidebar
+   * Process the user's inputs, and update the node's settings
+  
+ 
 #### Artifacts
 
 List/describe the artifacts you will produce in order to present your project idea.
