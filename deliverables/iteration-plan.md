@@ -303,6 +303,11 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
    * Create an event handler that triggers whenever a node is clicked
    * Identify what the node is, and display an editable form for the node's settings in a sidebar
    * Process the user's inputs, and update the node's settings
+   
+ * Create a log viewer on the screen to see simulation events
+   * Create a button to open a log viewer
+   * Use webhooks to recieve events from the backend
+   * Display events given by the webhook on the log viewer
  
  * Docker setup
    * 

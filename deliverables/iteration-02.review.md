@@ -31,9 +31,11 @@ Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4L
 
 #### Decisions we made that did not turn out as well as we hoped
 
-1. One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate each other's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets done.
+1. We decided to have fewer "work sessions" to allow people to have more time to code on their own schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate each other's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets done. A good solution to having more work sessions is determining everyone's availability and having regular work sessions when everyone is free. 
 
-2. Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a software architecture and finish the project earlier. However what happened was that without a clear plan of the software architecture, our team did not have a clear idea of what to work on.
+2. We decided to start coding as quickly as possible without doing very detailed planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a software architecture and finish the project earlier. However what happened was that without a clear plan of the software architecture, our team aimlessly wrote code that did not work well with each other. What would have worked better is if we resisted the urge in the beginning to get started, and instead invest time in creating a good plan of how our software should have been built.
+
+3. We decided to split up coding tasks in ways that that did not allow someone to work on their part individually. This results in a lot of dependencies in our code that requires people constantly working together to make progress. Again if we had developed a good software plan in the beginning we would have been able to better divide up coding tasks that would allow someone to work on their part individually without much need for other team members.
 
 #### Planned changes
 
@@ -73,9 +75,9 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 ## Meeting Highlights
 
 Going into the next iteration, our main insights are:
-
- * 2 - 4 items
- * Short (no more than one short paragraph per item)
- * High-level concepts that should guide your work for the next iteration.
- * These concepts should help you decide on where to focus your efforts.
- * Can be related to product and/or process.
+ * Create a solid plan of tasks before coding so that everyone knows what to do. We found that by having a good plan of
+   what everyone needed to do, it reduces the need for time intensive work sessions and increases productivity as people
+   can work on their part without the need for other people. 
+ * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likeley to procrastinate due to peer pressure. 
+ * We will need to work on displaying the simulation on the frontend. At the moment the frontend only recieves the events of  the simulation that
+   the backend processes and does nothing useful with it. The next step should be to take the events and actually visualize the simulation on the frontend. 
