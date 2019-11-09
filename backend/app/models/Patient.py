@@ -1,5 +1,6 @@
 class Patient():
     def __init__(self):
+        self.is_available = True
         self.acuity = None
         self.needed_processes = None
         self.start_time = None
@@ -27,4 +28,13 @@ class Patient():
 
     def set_needed_processes(self, needed_processes):
         self.needed_processes = needed_processes
+
+    def is_available(self):
+        return self.is_available
+
+    def set_unavailable(self):
+        self.is_available = False
+
+    def set_available(self):
+        self.is_available = True
 
