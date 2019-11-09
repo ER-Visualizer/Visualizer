@@ -274,21 +274,39 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
 ## Product
 
 #### Goals and tasks
-
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
  
  * Display interactive, draggable nodes on the screen with connections between nodes (the node configuration can be hardcoded)
    * Create a new react application
    * Find a library to display a graph structure and add it to the react app
    * Use the library to display a simple graph structure
  
+ * Concurrent management of the simulation
+   * Explore whether to use Multithreading, Multiprocessing, both, or something else in order to allow different elements of the system to run concurrently
+   * Figure out the mechanism to use in order to communicate data between threads/processes
+   * Threads within processes
+
+ * Parse CSV data
+   * Use a library (probably Pandas) to parse the uploaded CSV file from the frontend
+   * Generate the necessary data structure from each row read (which represents one patient's data)
+   * Figure out a way to read the file while running the simulation
+
+ * Set up the websocket server on the backend
+   * Figure out what Python library to use and read documentation for usage
+   * Make a wrapper around the library functions to create an interface that other files can use
+   * Do error checking for handling client disconnects
+   
+ * Set up the websocket server on the frontend
+   * Set up a connection with the web socket server
+   * Add event handler for handling messages that the web socket server sends
+
  * Allow users to click on nodes and update the parameters of the node
    * Create an event handler that triggers whenever a node is clicked
    * Identify what the node is, and display an editable form for the node's settings in a sidebar
    * Process the user's inputs, and update the node's settings
  
+ * Docker setup
+   * 
+
 #### Artifacts
 
 List/describe the artifacts you will produce in order to present your project idea.
