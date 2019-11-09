@@ -1,6 +1,6 @@
 STACK = "stack"
 QUEUE = "queue"
-PRIORITY_QUEUE = "priority_queue"
+PRIORITY_QUEUE = "priority queue"
 
 
 

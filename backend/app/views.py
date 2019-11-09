@@ -1,6 +1,7 @@
 # where routes will be
 from app import app
 from flask import request, jsonify
+from app.models.Node import Node
 
 import logging
 
@@ -34,8 +35,8 @@ def start_simulation():
         new_node.set_process_name(element['elementType'])
         new_node.set_distribution(element['distribution'],element['distributionParameters'])
         new_node.set_num_actors(element['numberOfActors'])
-        new_node.set_queue_type(element['queueType'], element['priorityFunction'])
-        new_node.set_output_processes_ids(element['children'])
+        new_node.set_queue(element['queueType'], element['priorityFunction'])
+        new_node.set_output_process_ids(element['children'])
         list_of_nodes.append(new_node)
     app.logger.info(f"req data {req_data}")
    

@@ -1,6 +1,6 @@
 import queue
 import numpy as np
-from backend.app.models import global_strings
+from app.models import global_strings
 
 
 
@@ -55,7 +55,8 @@ class Node():
         self.queue_type = queue_type
         self.priority_function = priority_function
         self.output_process_ids = output_process_ids
-        self.queue = self.set_queue()
+        if(queue_type != None):
+            self.set_queue(queue_type, priority_function)
         self.resource_dict = self._create_resource_dict()
 
     def set_id(self, id):
@@ -71,9 +72,6 @@ class Node():
     def set_num_actors(self, num_actors):
         self.num_actors = num_actors
 
-    def set_queue_type(self, queue_type, priority_function=None):
-        self.queue_type = queue_type
-        self.priority_function = priority_function
 
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
@@ -102,15 +100,20 @@ class Node():
     def get_output_process_ids(self):
         return self.output_processes_ids
 
-    def set_queue(self):
+    def set_queue(self, queue_type, priority_function=None):
         # TODO: These are all synchronous, thread-safe. Which slows everything down.
         #  Can and should we make them non-safe?
-        if self.get_queue_type() == global_strings.STACK:
-            return queue.LifoQueue()
-        elif self.get_queue_type() == global_strings.QUEUE:
-            return queue.Queue()
-        elif self.get_queue_type() == global_strings.PRIORITY_QUEUE:
-            return queue.PriorityQueue()
+        # TODO Deal with Priority Queues
+
+        self.queue_type = queue_type
+        self.priority_function = priority_function
+
+        if self.queue_type == global_strings.STACK:
+            self.queue =  queue.LifoQueue()
+        elif self.queue_type == global_strings.QUEUE:
+            self.queue =  queue.Queue()
+        elif self.queue_type == global_strings.PRIORITY_QUEUE:
+            self.queue = queue.PriorityQueue()
         else:
             raise Exception("This type of queue is not implemented yet")
 
@@ -125,7 +128,7 @@ class Node():
     '''
 
     def _create_resource_dict(self):
-
+        return {}
         raise Exception("Not implemented yet")
 
     '''
