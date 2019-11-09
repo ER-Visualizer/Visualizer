@@ -1,4 +1,4 @@
-# team-project-ml-simulation-vector-institute
+# Instructions
 
 ## Docker setup
 Simply run 
