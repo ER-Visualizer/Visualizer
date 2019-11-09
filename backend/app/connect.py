@@ -1,7 +1,42 @@
 import asyncio
 import websockets
-import time
+from random import randint, random
+import json
 
+class WebsocketServer:
+    def __init__(self, host, port, producerFunc):
+        self.host = host
+        self.port = port
+        self.producerFunc = producerFunc
+        self.clients = []
+        self.server = None
+
+    def start(self):
+        self.server = websockets.serve(ws_handler=self.__producer_handler, 
+            host=self.host, port=self.port)
+        asyncio.get_event_loop().run_until_complete(self.server)
+        asyncio.get_event_loop().run_forever()
+
+    def register(self, websocket):
+        self.clients.append(websocket)
+
+    def unregister(self, websocket):
+        self.clients.remove(websocket)
+
+    def stop(self):
+        asyncio.get_event_loop().stop()
+
+    async def __producer_handler(self, websocket, path):
+        self.register(websocket)
+        while True:
+            message = await self.producerFunc()
+            try:
+                await asyncio.wait([client.send(message) for client in self.clients])
+            except:
+                print("Got here")
+                self.unregister(websocket)
+                self.stop()
+                break
 # class Websocket:
 #     def __init__(self, host, port):
 #         self.host = host
@@ -29,22 +64,15 @@ import time
 
 # Sample test handler 
 
-async def hello(websocket, path):
-    name = await websocket.recv()
+# async def hello(websocket, path):
+#     name = await websocket.recv()
 
-    greeting = f"Hello {name}!"
-    await websocket.send(greeting)
 
-    while True:
-        await websocket.send(time.ctime())
-        time.sleep(5)
-    
-    print(f"> {greeting}")
 
-start_server = websockets.serve(ws_handler=hello, host="localhost", port=8765)
+# start_server = websockets.serve(ws_handler=hello, host="localhost", port=8765)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+# asyncio.get_event_loop().run_until_complete(start_server)
+# asyncio.get_event_loop().run_forever()
 
 # import asyncio
 # import json
@@ -109,5 +137,13 @@ asyncio.get_event_loop().run_forever()
 
 # start_server = websockets.serve(counter, "localhost", 6789)
 
-# asyncio.get_event_loop().run_until_complete(start_server)
-# asyncio.get_event_loop().run_forever()
+async def producePatientData():
+    await asyncio.sleep(4)
+    jsonToSend = [{"patientId": 1, "from": randint(1, 10), "to": randint(1, 10)},
+        {"patientId": 2, "from": randint(1, 10), "to": randint(1, 10)},
+        {"patientId": 3, "from": randint(1, 10), "to": randint(1, 10)}]
+    return json.dumps(jsonToSend)
+
+if __name__ == "__main__":
+    server = WebsocketServer("localhost", 8765, producePatientData)
+    server.start()
