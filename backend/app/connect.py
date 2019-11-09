@@ -2,6 +2,20 @@ import asyncio
 import websockets
 import time
 
+class Websocket:
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.server = None
+
+    def connect(self):
+        self.server = websockets.serve(ws_handler=handler, 
+            host=self.host, port=self.port)
+
+    def close(self):
+        pass
+
+# Sample test handler 
 async def hello(websocket, path):
     name = await websocket.recv()
 
@@ -14,7 +28,7 @@ async def hello(websocket, path):
     
     print(f"> {greeting}")
 
-start_server = websockets.serve(hello, "localhost", 8765)
+# start_server = websockets.serve(ws_handler=hello, host="localhost", port=8765)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+# asyncio.get_event_loop().run_until_complete(start_server)
+# asyncio.get_event_loop().run_forever()
