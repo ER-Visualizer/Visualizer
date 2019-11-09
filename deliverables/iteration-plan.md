@@ -279,11 +279,15 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
  * Order the items from most to least important.
  * Feel free (but not obligated) to specify some/all tasks as user stories.
  
+ * Display interactive, draggable nodes on the screen with connections between nodes (the node configuration can be hardcoded)
+   * Create a new react application
+   * Find a library to display a graph structure and add it to the react app
+   * Use the library to display a simple graph structure
+ 
  * Allow users to click on nodes and update the parameters of the node
    * Create an event handler that triggers whenever a node is clicked
    * Identify what the node is, and display an editable form for the node's settings in a sidebar
    * Process the user's inputs, and update the node's settings
-  
  
 #### Artifacts
 
