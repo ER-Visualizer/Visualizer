@@ -3,6 +3,7 @@ import Sidebar from "react-sidebar";
 import SidebarContent from './SidebarContent'
 import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
+import { connect } from 'react-redux';
 import './Main.css';
 
 class Main extends React.Component {
@@ -107,7 +108,7 @@ class Main extends React.Component {
                     sidebar={
                         <SidebarContent data={this.data}/>
                     }
-                    docked={true}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}
                 >
@@ -124,4 +125,17 @@ class Main extends React.Component {
     }
 }
 
-export default Main
+const mapStateToProps = state => {
+  return {showLogsSidebar: state.showLogsSidebar, showNodeSidebar: state.showNodeSidebar}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main)
