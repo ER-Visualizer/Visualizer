@@ -3,6 +3,7 @@ import numpy as np
 from backend.app.models import global_strings
 
 
+
 class Node():
     # This is a static variable which all Node classes share, as it doesn't need to be changed
     # All of the distributions here are distributions available in the numpy.random package
@@ -54,7 +55,7 @@ class Node():
         self.queue_type = queue_type
         self.priority_function = priority_function
         self.output_process_ids = output_process_ids
-        self.queue = self._set_queue()
+        self.queue = self.set_queue()
         self.resource_dict = self._create_resource_dict()
 
     def set_id(self, id):
