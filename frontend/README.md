@@ -1,4 +1,4 @@
-## Docker setup for backend
+## Docker setup for frontend
 
 1. run ```docker-compose down```
 2. run ```docker-compose up --build```
