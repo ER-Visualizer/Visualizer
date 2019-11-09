@@ -1,5 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
+import { connect } from 'react-redux';
+import  {showLogs, showNodeConfig } from '../redux/actions'
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -9,10 +11,27 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">                
-                <button> Show Logs</button>
+                <button onClick={this.props.showLogs}> Show Logs</button>
             </div>
         )
     }
 }
-
-export default Navbar
+const mapStateToProps = state => {
+    return {}
+  }
+  
+const mapDispatchToProps = dispatch => {
+    return {
+        showLogs: () => {
+            dispatch(showLogs())
+        },
+        showNodeConfig: () => {
+            dispatch(showNodeConfig())
+        },
+    }
+}
+  
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Navbar)
