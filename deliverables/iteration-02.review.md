@@ -50,7 +50,8 @@ It is crucial to learn from your past mistakes and make any necessary changes to
     * [Backend Dockerfile](../backend/Dockerfile)
     * [Frontend Dockerfile](../frontend/Dockerfile)
     * [Docker Compose](../docker-compose.yml)
- * Backend websocket server
+ * Backend websocket server - node to view have to be in socketSetup branch for now as we continue to integrate
+    * can locate by going to this location from root (backend/app/connect.py)
     * [connect.py](../backend/app/connect.py)
  * Concurrent management of the simulation
  * Parsing CSV data
