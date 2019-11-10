@@ -23,7 +23,7 @@ class Main extends React.Component {
             children: []
         }
 
-        let websocket_address = "wss://dummy_url.com"
+        let websocket_address = "ws://localhost:8765"
         this.socket = new WebSocket(websocket_address);
         this.socket.onopen = function(event) {
             
