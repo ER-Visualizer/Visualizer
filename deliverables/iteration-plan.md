@@ -314,14 +314,79 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
 
 #### Artifacts
 
-List/describe the artifacts you will produce in order to present your project idea.
+1. **Github Cards**: Online task board using GitHub cards with some canonical sections:
+    * To do
+    * In progress
+    * In review/Testing
+    * Completed
 
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+
+* We decide together on what tasks need to be done and what is most important. For D2, we decided on what we want to show, and what
+needs to get done for it. After, we put the tasks on Github Cards, and assigned them to the right person.
+We discussed the priorities and categorized cards as: must-haves and nice-to-haves. If a teammate is unsure about
+priorities between must-haves he will ask the rest of the team, who then decides on what needs to be done first. 
+* We know what everyone is working on at the time, which ensure we're not doing duplicate work.
+* We assign tasks to each other, and to other team mates. This ensures every task has someone responsible
+for it. This way we all know what we have to do, and all tasks get done.
+* We use In Review/Testing to review each other's Work and give feedback on it. Only then is the task moved
+to completed, and the teammate will start a new task.
+
+![Github Cards](GitHub-Cards.png)
 
 
+
+2. **Pictures**. We drafted some mock-ups of the simulation before starting. This was to
+develop a shared understanding with Vector on what the requirements are. Additionally, we used
+this to start brainstorming on what the backend needs to do, as well as have a base-line for the minimum
+needed for the front-end.
+
+![Diagram 1](Diagram1.png)
+
+![Diagram 2](Diagram2.png)
+
+
+3. **Comments**: We use comments as a way to check the logic of our code between partners. We work in pairs of at least 2 on different areas of the project. For example: 2 members will be working at 1 time on setting up Docker, others will be working on designing the Frontend, 2 others will be working on setting up the server and developing the API. We first write the code in comments, go over it with the other teammate, and once we make sure that we both agree on it, then we start developing the code. This ensures that we have a solid structure before we start building.Here's an example of pseudocode developed during one of paired team sessions:
+
+```python
+ '''
+    Try to insert a patient into an available resource, if there exists one.
+    Return true if patient inserted successfully.
+    
+    Will be false only if:
+        - All resources are currently occupied
+        - Doesn't pass the rule for any of the available resources
+            - If a resource is available, then we know that
+                - either queue is empty
+                - none of the elements in the queue passed the rule for this resource, so then try the current patient
+                    to see if he passes
+    Will be true only ifif:
+        - Patient is available, and there is a resource in the process that is available,
+            and patient passes the rule for a specific resource
+    '''
+
+    def fill_spot(self, patient):
+
+        # 1. Check: Is patient busy? If no, proceed
+            # Iterate through all Resources in random order and check
+            # 1. Is resource available
+            # 2. If it's available, does this element pass the resource rule
+            # 3. If yes, insert the patient into the specific resource(existing method
+            # 4. Add the element on the heap
+```
+
+4. **Meetings**: We document all of our meetings, both internal and external with Vector.
+Whenever we're not sure about something that we discussed with Vector, or some details
+we decided on as a team, we can check the meeting notes. It also serves as a way to make
+sure everyone is kept up to date on the development of the project, even if they missed the meeting.
+
+[Link to Meetings](https://drive.google.com/open?id=1ftzBkQdU7P4RSA6EvPqXnF9qdQxPVwyV)
+
+5. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
+and the base clases that we needed for it.
+
+![CRC Cards](crc_1.png)
+
+![CRC Cards](crc_2.png)
 
 ### Highlights
 * We initially thought about using electron for developing the product since we can create a desktop app. In the end, we chose to use python for the backend and react for the front end becuase researchers are more comfortable using python. Our partner pointed out that they would prefer a product that can be modifed and passed on to other developers in the future, and python ended up being the better option. 
