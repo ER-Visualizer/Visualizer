@@ -41,9 +41,6 @@ Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4L
 
 List any process-related changes you are planning to make (if there are any)
 
- * Ordered from most to least important.
- * Explain why you are making a change.
-
 It is crucial to learn from your past mistakes and make any necessary changes to fix them.
 
 1. One change that we will be making to our process is to schedule more work sessions where we all meet together, or at some people doing the frontend and some doing the backend. This is required to allow seamless integration of the backend with the frontend without having to worry about it at the very end. Leaving it all to the end could mean wasting excess time trying to integrate the two sides instead of doing meaningful work that extends the application's features.
@@ -58,6 +55,13 @@ It is crucial to learn from your past mistakes and make any necessary changes to
  * From most to least important.
  * Refer/link to artifact(s) that show that a goal/task was met/completed.
  * If a goal/task was not part of the original iteration plan, please mention it.
+
+ * Docker setup
+    * [Backend Dockerfile](../backend/Dockerfile)
+    * [Frontend Dockerfile](../frontend/Dockerfile)
+    * [Docker Compose](../docker-compose.yml)
+ * Backend websockets
+
 
 #### Goals and/or tasks that were planned but not met/completed:
 
