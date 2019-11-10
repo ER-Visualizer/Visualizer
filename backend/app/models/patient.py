@@ -1,19 +1,6 @@
 class Patient():
-    def __init__(self):
-        self.is_available = True
-        self.acuity = None
-        self.start_time = None
-        self.predicted_processes = {}
-        self.needed_processes = {}
 
-    def __init__(self, acuity):
-        self.is_available = True
-        self.acuity = acuity
-        self.start_time = None
-        self.predicted_processes = {}
-        self.needed_processes = {}
-
-    def __init__(self, acuity, start_time):
+    def __init__(self, acuity=None, start_time=None):
         self.is_available = True
         self.acuity = acuity
         self.start_time = start_time
@@ -35,11 +22,8 @@ class Patient():
     def set_start_time(self, start_time):
         self.start_time = start_time
 
-    def set_predicted_processes(self, set_predicted_processes):
-        self.set_predicted_processes = set_predicted_processes
-
-    def set_needed_processes(self, needed_processes):
-        self.needed_processes = needed_processes
+    def set_predicted_processes(self, predicted_processes):
+        self.predicted_processes = predicted_processes
 
     def is_available(self):
         return self.is_available
