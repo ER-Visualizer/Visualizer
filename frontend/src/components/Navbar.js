@@ -2,6 +2,8 @@ import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
 import  {showLogs, showNodeConfig } from '../redux/actions'
+import {ReactComponent as PlayIcon} from '../play.svg';
+import {ReactComponent as TerminalIcon} from '../terminal.svg';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -10,8 +12,9 @@ class Navbar extends React.Component {
 
     render() {
         return (
-            <div className="Navbar">                
-                <button onClick={this.props.showLogs}> Show Logs</button>
+            <div className="Navbar">   
+                <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
+                <button className="RunButton"><PlayIcon /> Run</button>           
             </div>
         )
     }
