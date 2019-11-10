@@ -1,9 +1,10 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
+import {ReactComponent as JSONIcon} from '../json.svg'
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -14,7 +15,9 @@ class Navbar extends React.Component {
         return (
             <div className="Navbar">   
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
-                <button className="RunButton"><PlayIcon /> Run</button>           
+                <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
+                <button className="RunButton"><PlayIcon /> Run</button>          
+                {/* update icon  */}
             </div>
         )
     }
@@ -31,6 +34,9 @@ const mapDispatchToProps = dispatch => {
         showNodeConfig: () => {
             dispatch(showNodeConfig())
         },
+        showJSONEntry: () => {
+            dispatch(showJSONEntrySidebar())
+        }
     }
 }
   

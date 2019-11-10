@@ -6,6 +6,7 @@ import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
+import JSONEntrySidebarContent from './JSONEntrySidebarContent';
 
 class Main extends React.Component {
     constructor(props) {
@@ -43,92 +44,49 @@ class Main extends React.Component {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar) {
             this.sidebarLastContent = <NodeSidebarContent />
+        } else if (this.props.showJSONEntrySidebar) {
+            this.sidebarLastContent = <JSONEntrySidebarContent/>
         }
+
         // we return the last content so that the sidebar content
         // continues to be shown as the sidebar collapses
         // instead of abruptly disappearing.
         return this.sidebarLastContent;
     }
     
-    render() {
-        // TODO: move these properties out later
-        let graphical_data = { // graphical representation
-            nodes: [{ id: "Reception0" }, { id: "Triage0" }, { id: "PD0" }],
-            links: [{ source: "Reception0", target: "Triage0" }, { source: "Triage0", target: "PD0" }],
-            };
-        
-            let module_data = [
-                    {
-                        Id: 0,
-                        Element_type: "reception",
-                        Distribution: "gaussian", // dummy variables for now
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    {
-                        Id: 1,
-                        Element_type: "triage",
-                        Distribution: "gaussian", 
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    {
-                        Id: 2,
-                        Element_type: "pd",
-                        Distribution: "gaussian", 
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    
-            ]
-        
-            const myConfig = {
-            nodeHighlightBehavior: true,
-            width: window.innerWidth,
-            height: window.innerHeight,
-            directed: true,
-            node: {
-                color: "grey",
-                size: 200,
-                highlightStrokeColor: "blue",
-                // symbolType: "squacircle",
-            },
-            link: {
-                highlightColor: "lightblue",
+    update_graph(nodes){
+        let graphical_data = {nodes: [], links: []}
 
-            },
-            };
-        
-            const onClickNode = function(nodeId){
-                // lookup node's data
-                // 
-
-                alert(nodeId);
+        nodes.map( // map the JSON representation of the node to the representation required by the graph
+            (node) => {graphical_data.nodes.push(
+                { id: `${node.Id}`, name : `${node.Element_type}${node.Id}`});
+                
+                node.Children.map( 
+                    (child) => {graphical_data.links.push(
+                        { source: `${node.Id}`, target: `${child}` })}
+                )
             }
+        )
+        
+        return graphical_data;
+    };
+
+    render() {
         
         return (
             <div className="Main">
                 <Sidebar
                     sidebar={this.renderSidebarContent()}
-                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}
                 >
                 <Navbar />
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
-                data={graphical_data}
-                config={myConfig}
-                onClickNode={onClickNode}
+                data={this.update_graph(this.props.nodes)}
+                config={graphConfig}
+                onClickNode={(nodeId) => alert(nodeId)}
                 />
                 </Sidebar> 
             </div>
@@ -136,9 +94,31 @@ class Main extends React.Component {
     }
 }
 
+const graphConfig = {
+    nodeHighlightBehavior: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    directed: true,
+    node: {
+        color: "grey",
+        size: 200,
+        highlightStrokeColor: "blue",
+        labelProperty: (node) => node.name 
+    },
+    link: {
+        highlightColor: "lightblue",
+    },
+};
+
 const mapStateToProps = state => {
-  return {showLogsSidebar: state.showLogsSidebar, showNodeSidebar: state.showNodeSidebar}
+  return {
+      showLogsSidebar: state.showLogsSidebar, 
+      showNodeSidebar: state.showNodeSidebar, 
+      showJSONEntrySidebar: state.showJSONEntrySidebar,
+      nodes: state.nodes,
+    }
 }
+
 
 const mapDispatchToProps = dispatch => {
   return {
