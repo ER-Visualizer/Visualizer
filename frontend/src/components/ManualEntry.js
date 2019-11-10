@@ -16,8 +16,10 @@ export default class ManualEntry extends Component {
             return 
         }
 
-        // x.open('POST', "URL");
+        // x.open('POST', "$URI"); 
         // x.send(layoutJSON);
+
+        
     };
 
     isValidJSON = (json) => {
@@ -31,7 +33,7 @@ export default class ManualEntry extends Component {
 
     render() {
         return (
-            <div>
+            <div className="manualEntryBox">
                 <label>Layout JSON</label>
                 <input type="text" name="JSON_entry" onChange={(e)=> this.setState({layoutJSON : e.target.value.toString()})}></input>
                 <button onClick={this.sendLayout}>Submit</button>
