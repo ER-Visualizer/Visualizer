@@ -31,3 +31,13 @@ class Resource():
 
     def is_available(self):
         return self.curr_patient  is None
+
+    def get_id(self):
+        return self.id
+    
+    def get_curr_patient(self):
+        return self.curr_patient
+
+    def get_finish_time(self):
+        return self.finish_time
+    

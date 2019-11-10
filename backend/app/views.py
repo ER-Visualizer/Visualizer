@@ -30,12 +30,10 @@ def start_simulation():
     elements = req_data['elements']
     list_of_nodes = []
     for element in elements:
-        id = element['id']
-        new_node = Node(id=id)
+        new_node = Node(element['id'],element['queueType'],
+            element['priorityFunction'], element['numberOfActors'])
         new_node.set_process_name(element['elementType'])
         new_node.set_distribution(element['distribution'],element['distributionParameters'])
-        new_node.set_num_actors(element['numberOfActors'])
-        new_node.set_queue(element['queueType'], element['priorityFunction'])
         new_node.set_output_process_ids(element['children'])
         list_of_nodes.append(new_node)
     app.logger.info(f"req data {req_data}")

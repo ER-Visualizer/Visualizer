@@ -1,5 +1,5 @@
 import heapq
-from event import Event
+from app.models.event import Event
 
 canvas = [{"id": 1}]
 nodes = {}
@@ -47,6 +47,14 @@ def create_heap(heap):
 
   heapq.heapreplace(heap, Event(105, 1, 1))
 
+def get_curr_time():
+
+  raise Exception("need to implement")
+  
+
+def get_heap():
+  raise Exception("need to implement")
+  
 if __name__ == "__main__":
   create_heap(event_heap)
   for e in event_heap:

@@ -2,17 +2,30 @@ class Patient():
     def __init__(self):
         self.is_available = True
         self.acuity = None
-        self.needed_processes = None
         self.start_time = None
         self.predicted_processes = {}
         self.needed_processes = {}
 
     def __init__(self, acuity):
+        self.is_available = True
         self.acuity = acuity
+        self.start_time = None
+        self.predicted_processes = {}
+        self.needed_processes = {}
+
 
     def __init__(self, acuity, start_time):
+        self.is_available = True
         self.acuity = acuity
         self.start_time = start_time
+        self.predicted_processes = {}
+        self.needed_processes = {}
+
+    ''' For use in comparison inside heaps. We will need to overwrite this
+    with a priority function given to us from canvas'''
+
+    def __lt__(self, other):
+        return self.acuity > other.acuity
 
     def set_acuity(self, acuity):
         self.acuity = acuity
