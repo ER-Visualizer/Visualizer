@@ -319,7 +319,7 @@ Doctor and patient stats
   * After first learning about the project we worked on developing questions and possible implementations and at this meeting asked those questions to Vector
 
 
-##### Metting 3:
+##### Meeting 3:
 *  We met at the bahen to discuss any questions and talk about implementation details on Friday, October 25th.
 
 * Topics that were discussed: 
