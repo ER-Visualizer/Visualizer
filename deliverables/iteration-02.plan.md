@@ -2,8 +2,8 @@
 
 ## Iteration 2
 
- * Start date: Friday Novemeber 1st 2019
- * End date: Wednesday November 13 2019
+ * Start date: Friday Novemeber 1, 2019
+ * End date: Wednesday November 13, 2019
 
 ## Product Details
  
