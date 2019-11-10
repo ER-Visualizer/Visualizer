@@ -295,8 +295,8 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
    * Make a wrapper around the library functions to create an interface that other files can use
    * Do error checking for handling client disconnects
    
- * Set up the websocket server on the frontend
-   * Set up a connection with the web socket server
+ * Set up websocket connection on the frontend
+   * Set up a connection with the web socket server using the correct protocols and port
    * Add event handler for handling messages that the web socket server sends
 
  * Allow users to click on nodes and update the parameters of the node
