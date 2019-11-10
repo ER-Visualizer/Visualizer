@@ -2,9 +2,10 @@ from app.models.queues import Queue, Stack, Heap
 import app.models.global_strings as global_strings
 from app.models.resource import Resource
 from app.models.event import Event
+from app import run
+import copy
 import heapq
 import numpy as np
-from app import run
 
 
 class Node():
@@ -130,10 +131,8 @@ class Node():
         self.queue = self._set_queue()
 
     def _set_queue(self):
-        # TODO: These are all synchronous, thread-safe.
-        # Which slows everything down.
-        #  Can and should we make them non-safe?
         # TODO Deal with Priority Queues
+        # Note. All of these are not thread-safe, so can't use threads on them
         if self.queue_type == global_strings.STACK:
             return Stack()
         elif self.queue_type == global_strings.QUEUE:
@@ -162,8 +161,6 @@ class Node():
 
         resource_dict = {}
 
-        # TODO: Double Check: What's the minimum: 1 actor?
-
         for i in range(self.num_actors):
             new_resource = Resource(id=i)
             resource_dict[i] = new_resource
@@ -182,7 +179,6 @@ class Node():
         # automatically sets him to available
         patient = resource.clear_patient()
 
-        # TODO make sure patient instance is set to available after this
         # TODO see if we need to do this in random order to avoid bias.
         # Might have to, b/c if  spot is available,
         #  patient will take that first available spot, so might
@@ -191,7 +187,6 @@ class Node():
         # first send the patient to all of the queues that they need
         # to be put in (outgoing processes from
         # parent_process)
-        # TODO: consider random order
         for process_id in self.output_process_ids:
             Node.processDict[process_id].put_patient_in_queue(patient)
 
@@ -225,13 +220,42 @@ class Node():
 
         # TODO: test if for different types of queues,
         # this iterates in the right orders
-        # TODO: test with heap
         # This will iterate through stacks and queues in the right order
-        for patient in self.queue.q:
+
+        # If it's a heap, we need to iterate through a copy of the heap,
+        # as the iterator will mutate the heap list. Therefore, we need to create a deep
+        # copy of the list for the new Heap() to mutate. When we remove
+        # from the heap, we need to remove from the actual heap,
+        # and we'll use the index because we can't remove by Patient as it's a
+        # deep copy so we don't have a hold of actual memory address.
+        # TODO test case: make sure heap isn't changed
+        # TODO make sure iterates correctly through heap
+        if(isinstance(self.queue, Heap)):
+
+            # need to make sure we iterate through the copy of the heap
+            heap_list = copy.deepcopy(self.queue.q)
+            # create a mapping of the indeces to the values. original queue
+            # will have an identical mapping.
+            # TODO check if it maps correctly
+            indices_to_patients = {k: v for v, k in enumerate(heap_list)}
+            iterator = Heap(heap_list)
+
+        else:
+            iterator = self.queue
+
+        for patient in iterator:
             if patient.is_available():
                 if subprocess.pass_rule(patient):
-                    # extract from the queue
-                    self.queue.remove(patient)
+
+                    if(isinstance(self.queue, Heap)):
+                        # get the index of the patient to remove
+                        index_to_remove = indices_to_patients[patient]
+                        # return the original patient, not the one from the copy of the queue
+                        patient = self.queue.remove_by_index(index_to_remove)
+                    else:
+                        # extract from the queue. no need to store him, as we
+                        # already have a hold of him
+                        self.queue.remove(patient)
 
                     # insert into resource
                     time = self.generate_finish_time()
