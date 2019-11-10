@@ -16,9 +16,9 @@
 ## Key Features
  <!-- * Describe the key features in the application that the user can access
  * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application -->
- *Visual Representation of the emergency room*: Users can create circles representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those circles to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.
- *Data Input*: Users input data regarding patients' medical state and required medical operations(e.g. a visit to the x-ray, or a talk with a doctor). Users also input the estimated wait times and number of "actors" (e.g. doctors) at each station, such that patients can queue for stations realistically. The behavior of the given patients, as well as their interactions with the hospital stations will be simulated. Another point of input is the rules by which patients are selected from the queue for a given station, e.g. one station may choose to select patients based on acuity, and another station may choose to select patients based on arrival time.
- *Data Output*: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
+ * Visual Representation of the emergency room: Users can create circles representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those circles to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.
+ * Data Input: Users input data regarding patients' medical state and required medical operations(e.g. a visit to the x-ray, or a talk with a doctor). Users also input the estimated wait times and number of "actors" (e.g. doctors) at each station, such that patients can queue for stations realistically. The behavior of the given patients, as well as their interactions with the hospital stations will be simulated. Another point of input is the rules by which patients are selected from the queue for a given station, e.g. one station may choose to select patients based on acuity, and another station may choose to select patients based on arrival time.
+ * Data Output: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
  
 
 
@@ -27,7 +27,11 @@
  * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
  * Provide clear steps for using each feature described above
  * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
-- (Insert docker steps here since I never used it)
+
+- To setup the docker image, simply run ```docker-compose up``` 
+  - The client and server services will be instantiated with the ports indicated in the .env file.
+  - The client can be accessed at http://localhost:5000 at default.
+
 - Once the application begins, the user will be presented a blank canvas where they can create their workflow using different click operations.
   - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
   - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the canvas.
@@ -35,7 +39,25 @@
   - To specify the processes to which the patient will travel, press and hold the shift key and click the outbound process followed by the inbound process.
 - Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.
 - After the patient csv file is loaded, the simulation can start.
-- As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each aquity will also be displayed.
+- As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each acuity will also be displayed.
 
+## Customizing ports
 
+The defaults for ports are indicated as such:
 
+The backend APIs are at port 8000 indicated by APP_SERVER_PORT in the .env file.
+The client host port is 5000 indicated by REACT_APP_PORT in the .env file.
+
+The values of the ports can be customized simply by changing the value in the .env file.
+
+To switch from development to production change:
+
+```
+DEV_ENV=development
+```
+
+to 
+
+```
+DEV_ENV=production
+```

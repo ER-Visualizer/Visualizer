@@ -1,14 +1,9 @@
-# YOUR PRODUCT/TEAM NAME
-
- > _Note:_ This document is meant to be written during (or shortly after) your review meeting, which should happen fairly close to the due date.      
- >      
- > _Suggestion:_ Have your review meeting a day or two before the due date. This way you will have some time to go over (and edit) this document, and all team members should have a chance to make their contribution.
-
+# ED-Simulation/ED-Simulation-VI
 
 ## Iteration XX - Review & Retrospect
 
- * When: FILL IN THE DATE WHEN YOU ACTUALLY HAD YOUR REVIEW MEETING
- * Where: PHYSICAL LOCATION AND/OR ONLINE
+ * When: November 13, 2019
+ * Where: Bahen Centre for Information Technology
 
 ## Process - Reflection
 Throughout the whole process of creating the first phase of our application, there were many things we did correctly but also a couple of things that went wrong, which are good lessons for us, moving forward.
@@ -31,34 +26,41 @@ Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4L
 
 #### Decisions we made that did not turn out as well as we hoped
 
-1. One decision that did not go well was having fewer "work sessions" to allow people to have more time to code on their own schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate each other's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets done.
+1. We decided to have fewer "work sessions" to allow people to have more time to code on their own schedule. The problem with this is that work sessions are important to allow the frontend and backend teams to integrate each other's code. Without more work sessions, the work that the team does goes to a stall, and as a result less work gets done. A good solution to having more work sessions is determining everyone's availability and having regular work sessions when everyone is free. 
 
-2. Another decision that did not go well was we decided to start coding as quickly as possible without doing very detailed planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a software architecture and finish the project earlier. However what happened was that without a clear plan of the software architecture, our team did not have a clear idea of what to work on.
+2. We decided to start coding as quickly as possible without doing very detailed planing of the software architecture. We hoped that by starting to code earlier we would more easily be able to create a software architecture and finish the project earlier. However what happened was that without a clear plan of the software architecture, our team aimlessly wrote code that did not work well with each other. What would have worked better is if we resisted the urge in the beginning to get started, and instead invest time in creating a good plan of how our software should have been built.
+
+3. We decided to split up coding tasks in ways that that did not allow someone to work on their part individually. This results in a lot of dependencies in our code that requires people constantly working together to make progress. Again if we had developed a good software plan in the beginning we would have been able to better divide up coding tasks that would allow someone to work on their part individually without much need for other team members.
 
 #### Planned changes
 
-List any process-related changes you are planning to make (if there are any)
+It is crucial to learn from your past mistakes and make any necessary changes to fix them to prevent them from reoccuring.
 
- * Ordered from most to least important.
- * Explain why you are making a change.
+ * One change that we will be making to our process is to schedule more work sessions where we all meet together, or at some people doing the frontend and some doing the backend. This is required to allow seamless integration of the backend with the frontend without having to worry about it at the very end. Leaving it all to the end could mean wasting excess time trying to integrate the two sides instead of doing meaningful work that extends the application's features.
 
-It is crucial to learn from your past mistakes and make any necessary changes to fix them.
-
-1. One change that we will be making to our process is to schedule more work sessions where we all meet together, or at some people doing the frontend and some doing the backend. This is required to allow seamless integration of the backend with the frontend without having to worry about it at the very end. Leaving it all to the end could mean wasting excess time trying to integrate the two sides instead of doing meaningful work that extends the application's features.
-
-2. Another process-related change that we are planning to make is .
+ * Another process-related change that we are planning to make is to write good documentation that everyone in the team can access which outlines the interface to use (i.e. what methods to call) to integrate that specific part of the application. Furthermore, since the backend will send data in a particular JSON structure to the frontend, we will also discuss that structure so that the frontend team can continue their work, knowing the correct structure that they will recieve data in.
 
 
 ## Product - Review
 
 #### Goals and/or tasks that were met/completed:
-
- * From most to least important.
- * Refer/link to artifact(s) that show that a goal/task was met/completed.
- * If a goal/task was not part of the original iteration plan, please mention it.
+ * We were able to display interactive, draggable nodes on the screen with connections between nodes. 
+ * We were able to create a log viewer on the screen to display simulation events.
+ * Docker setup
+    * [Backend Dockerfile](../backend/Dockerfile)
+    * [Frontend Dockerfile](../frontend/Dockerfile)
+    * [Docker Compose](../docker-compose.yml)
+ * Backend websocket server - node to view have to be in socketSetup branch for now as we continue to integrate
+    * can locate by going to this location from root (backend/app/connect.py)
+    * [connect.py](../backend/app/connect.py)
+ * Concurrent management of the simulation
+ * Parsing CSV data
 
 #### Goals and/or tasks that were planned but not met/completed:
-
+ * We were unable to create functionality to allow a user to edit the details of a node. This wasy mainly because there were many features that we needed to implement and this one was not a priority for this deliverable since we were focused on making sure hard coded node values worked before allowing user customizatioln.
+ * Another task that we were not able to complete was setting up Travis CI because it requires authentication, which we are currently in the process of getting.
+ * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on the making the individual parts work correcly first and have not gotten to integrating all of the parts yet.
+   
  * From most to least important.
  * For each goal/task, explain why it was not met/completed.      
    e.g. Did you change your mind, or did you just not get to it yet?
@@ -73,9 +75,10 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 ## Meeting Highlights
 
 Going into the next iteration, our main insights are:
-
- * 2 - 4 items
- * Short (no more than one short paragraph per item)
- * High-level concepts that should guide your work for the next iteration.
- * These concepts should help you decide on where to focus your efforts.
- * Can be related to product and/or process.
+ * Create a solid plan of tasks before coding so that everyone knows what to do. We found that by having a good plan of
+   what everyone needed to do, it reduces the need for time intensive work sessions and increases productivity as people
+   can work on their part without the need for other people. 
+ * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likely to procrastinate due to peer pressure. 
+ * We will need to work on displaying the simulation on the frontend. At the moment the frontend only receives the events of  the simulation that
+   the backend processes and does nothing useful with it. The next step should be to take the events and actually visualize the simulation on the frontend. 
+   

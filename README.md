@@ -1,15 +1,14 @@
 # Instructions
 
-## Docker setup
+## Docker Setup
+
 Simply run 
 
 ```
 docker-compose up
-```
+``` 
 
-and the client and server services will be instantiated with the ports indicated in the .env file.
-
-The client can be accessed at http://localhost:5000 at default.
+  and the client and server services will be instantiated with the ports indicated in the .env file. The client can be accessed at http://localhost:5000 at default.
 
 ## Customizing ports
 

@@ -1,21 +1,37 @@
 import React from 'react';
 import Sidebar from "react-sidebar";
 import SidebarContent from './SidebarContent'
-import * as d3 from 'd3';
 import Graph from "./react-d3-graph/components/graph/Graph";
+import Navbar from "./Navbar";
+import { connect } from 'react-redux';
 import './Main.css';
 
 class Main extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            events: []
+        }
         this.data = {
             element_type: "triage",
             distribution: "gaussian",
-            distribution_parameters: {mean: 3, variance: 1},
-            number_of_actors: 10,
+            distribution_parameters: {mean: "3", variance: "1"},
+            number_of_actors: "10",
             queue_type: "stack",
             priority_function: "",
             children: []
+        }
+
+        let websocket_address = "wss://dummy_url.com"
+        this.socket = new WebSocket(websocket_address);
+        this.socket.onopen = function(event) {
+
+        }
+        this.socket.onmessage = function(event) {
+            this.state.events.append(event.data)
+        }
+        this.socket.onerror = function(error) {
+            console.log(`error ${error.message}`);
         }
     }
 
@@ -85,18 +101,18 @@ class Main extends React.Component {
 
                 alert(nodeId);
             }
-
+        
         return (
             <div className="Main">
                 <Sidebar
                     sidebar={
                         <SidebarContent data={this.data}/>
                     }
-                    docked={true}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}
-                    defaultSidebarWidth={320}
                 >
+                <Navbar />
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={graphical_data}
@@ -109,4 +125,17 @@ class Main extends React.Component {
     }
 }
 
-export default Main
+const mapStateToProps = state => {
+  return {showLogsSidebar: state.showLogsSidebar, showNodeSidebar: state.showNodeSidebar}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+  }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main)

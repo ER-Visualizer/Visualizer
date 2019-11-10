@@ -2,8 +2,8 @@
 
 ## Iteration 2
 
- * Start date: Friday Novemeber 1st 2019
- * End date: Tuesday November 12 2019
+ * Start date: Friday Novemeber 1, 2019
+ * End date: Wednesday November 13, 2019
 
 ## Product Details
  
@@ -17,6 +17,10 @@ The ED simulation will enable researchers to quickly see how changes to the ED (
 
 ![Diagram 2](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/Diagram2.png)
 
+The above diagrams showcase an example of what the product might look like, where the first one showcases
+a overall view of the canvas of the simulation (including the different waiting queues which represent 
+different zones in hospital as well as the relation between these queues). The second diagram showcases
+what it would like if a user were to click on one of the queues and the type of informaiton they should see.
 
 #### Q2: Who are your target users?
 
@@ -53,13 +57,103 @@ The data required for the simulation to run will be uploaded as a csv file on th
 
 #### Q5: What are the user stories that make up the MVP?
 
-As a researcher tasked with improving the distribution of resources in a hospital, I want to be able to set my own parameters to simulate a hypothetical workflow and present potential improvements from my results.
+##### User Story
 
-As a hospital manager who wants to improve wait times, I want to be able to see a list of bottlenecks in the current system so that I can make informed decisions on how to optimize wait time (e.g. by adding/redirecting resources).
+Angela is a Chief Quality Officer. She wants to model the patient flow across
+the Emergency Room for a number of days in the simulation, in order to get a
+birds-eye view of the ER, backed by data. She wants to use that to identify the
+processes where patients wait the longest amount of time, as well as average waiting times for
+patients with different acuity levels, in order to see how well the hospital is performing for different
+groups of patients. 
 
-As a hospital staff that is being presented with the simulated results, I want to see how patients are moving in a visual model that is intuitive and easy to understand.
+##### Acceptance Criteria
 
-As a hospital staff responsible for managing finances, I want to find the most expensive resource we can get rid of (in the event of budget cuts) without significantly reducing the efficiency of the workflow.
+* Load a CSV of patient flows.
+* Ability to collects statistics about average waiting time for process, average waiting time by
+acuity, and average waiting time for process by acuity.
+
+##### User Story
+
+Mohamed is a Machine Learning researcher who wants to improve the efficiency of the X-Ray machine in a hospital.
+He developed a Machine Learning Algorithm to predict whether a patient will need
+an X-Ray before he sees a doctor. His goal is to distribute the work on the x-ray
+machine more uniformly, with an algorithm that predicts correctly whether a patient
+will need a scan or not.
+
+##### Acceptance Criteria
+
+* Ability to specify his algorithm predictions for each patient.
+* Ability to select the processes from which the user can go directly to the X-Ray Machine.
+* Ability to run simulation with X-Ray predictions, and without, in order to determine
+whether his ML model has decreased the average waiting times for the X-Ray machine.
+
+##### User Story
+
+After waiting in the hospital with her relatives for over 8 hours, Daniela Rosu, a Professor at The University of Toronto,
+realized that the order by which patients are queued for a process(X-ray, PD, triage)
+is dangerously underperfoming. This can even
+lead to deaths if patients with very high acuities wait too long to receive emergency care. She wants
+to try out different priority functions for the priority heaps which model the process. Her goal
+is to come up with a priority function that is more fair to patients that have higher acuities,
+and at the same time, takes into consideration the amount of time that they spend there.  
+
+##### Acceptance Criteria
+
+* Ability to code, or specify otherwise, different priority functions for a process.
+* Ability to run simulation with the normal hospital priority functions and her
+priority functions, collect a CSV file of data that contains average waiting times for each patient, along with the
+acuity of the patient, and then analyze whether she has successfully improved the
+fairness or the efficiency of the process. 
+
+##### User Story
+
+Jordan, a hospital manager has gotten a grant from the government, and with the money he can buy a new
+new x-ray machine, or a CT scanner. He knows right now that patients wait an exhorbitant amount of time
+in Emergency Room, so he wants to add the resource which will have the biggest impact on reducing wait times.
+
+##### Acceptance Criteria
+
+* Ability to change number of resources for each process.
+* Ability to run simulation with different amounts of resources and collect a CSV file
+for each simulation which contains average waiting times for each patient, and overall
+average waiting time. He will then use the excel files to find out which change has improved waiting
+times the most.
+
+##### User Story
+
+Jordan is a hospital manager. This year his hospital has had $1 million dollars budget cuts, so unfortunately,
+he has to fire some of the staff. He wants to fire the staff which is least critical to the workflor of the Emergency Room, i.e
+the staff who will have smallest impact on increasing the wait times.
+
+##### Acceptance Criteria
+
+* Ability to  change of resources for each process.
+* Ability to run simulation with different amounts of resources and collect a CSV file
+for each simulation which contains average waiting times for each patient, and overall
+average waiting time. He will then use the excel files to find out which change has increased waiting
+times the least.
+
+
+##### User Story
+
+Teo is a Chief Operations Officer. He wants to model the emergency room across time,
+to determine the capacity requirements for different processes on different days/months. He wants to see how many beds
+are used around holidays versus normal days, in order to make sure the right number of resources is available around peak times.
+
+##### Acceptance Criteria
+
+* Receive statistics which document how many people have used each process(hospital beds, X-ray machine) per day.
+
+##### User Story
+
+Christine is a Safety Inspector. She found that a patient at the hospital had a very contageous disease. She wants to see a log of 
+the resources the patient has visited during his stay at the hospital, in order to inspect all of the places the patient visited,
+and the doctors/staff he came in contact with.
+
+##### Acceptance Criteria
+
+* Receive a log of the flow of each patient throughout the hospital, documenting all of the processes a patient has visited, in the
+right order, with timestamps.
 
 ----
 
@@ -84,11 +178,11 @@ Designer: Wenqin: Wenqin
  * Designs the user interface to make it look good
  * Tests the user interface on clients to ensure that it is usable
  
-Frontend developer: Victor, Wenqin
+Frontend developer: Victor, Wenqin, Carlson, Simran
  * Codes the visualization using front-end frameworks such as React
  * Works with the PM(s) and backend developer(s) to develop the product
  
-Backend Developer : Mit, Nicolae, Daniel, Carlson
+Backend Developer : Mit, Nicolae, Daniel, Carlson, Simran
  * Codes the algorithm behind the visualizations through a backend server
  * Works with the PM(s) and frontend developers(s) to develop the product
  
@@ -165,7 +259,7 @@ Conflict Resolution:
  * We have planned to host brief online meetings on Thursdays for planning and backlogs, further during these meetings we will divide tasks based on the current progress and updates
  * We have planned to meet with our partner on most Fridays from 4-5pm to discuss questions and demo updates and discuss with the partner via slack.
  * For coding we will have work sessions on occaions, specifically we had work sessions during reading week and during weekends. 
- * We will also be coding individually for the most part 
+ * We will also be coding individually on own time, if not during work sessions
  
  
 #### Partner Meetings
@@ -229,7 +323,7 @@ Doctor and patient stats
   * After first learning about the project we worked on developing questions and possible implementations and at this meeting asked those questions to Vector
 
 
-##### Metting 3:
+##### Meeting 3:
 *  We met at the bahen to discuss any questions and talk about implementation details on Friday, October 25th.
 
 * Topics that were discussed: 
@@ -247,48 +341,154 @@ Doctor and patient stats
 * Summary: 
   * We dicussed questions regarding possible test cases, the format of the input csv file and other edge cases. We also reviewed our plan to build the backend using flask, with websocket to connect to the frontend and a react front end with d3.js animations
 
-#### Artifacts
-- Online task board using GitHub cards with some canonical sections:
-   * To do
-   * In progress
-   * In review/Testing
-   * Completed
- 
-- Mockup of the application
-
-
 ----
 
 #### Deployment and Github Workflow
 
-Describe your Git / GitHub workflow. Essentially, we want to understand how your team members shares a codebase, avoid conflicts and deploys the application.
+Our github workflow works as such: 
+* When starting to work on something we ensure we update the github card (ie move it to in progress),
+then checkout a branch named according to what the feature we will be building in the branch  
+* While coding we ensure we develop not by running flask or react locally but 
+through docker ie by running ```docker-compose up --build``` which starts a flask and node server (to run our web app), this ensures the changes we make will be easily integerated and execute as intended in our final docker image that we will be giving to our partner (Vector institute). 
+* After finishing a feature we move it to in review, in the event that we are stuck we have a location for 
+that in github cards where we can move our card to 
+* After a task is completed we move it to in review and someone else on the team verifies it works
+* For communicating to each other about changes we use messenger as well as our 2 meetings during 
+the week (Thursday - discuss backlog and plan/assign tasks, Tuesday - work on issues as well as integration)
+* After a branch is ready to be merged we request a pull request and Carlson will test it and review it before
+it gets merged
+* Additionally everytime someone pushs to master, they're code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
+* For naming conventions we will follow snake_case for all python code and will use PascalCase for React components and camelCase for their instances
 
- * Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
- * If applicable, specify any naming conventions or standards you decide to adopt.
- * Describe your overall deployment process from writing code to viewing a live applicatioon
- * What deployment tool(s) are you using and why
- * Don't forget to **explain why** you chose this workflow or particular aspects of it!
-
-
+* We choose this workflow based on early brainstorming sessions at meetings and because of the 
+experiences of some of the members on our team, further this workflow of having continous integration and 
+running our server through docker helps ensure that our final product is what we expect it to be 
+* Further we would like to highlight, based on our partner's (Vector Institute)requirements  
+we do not have to deploy since our partner Vector does not want a deployed app and wants a docker image that can run locally because of user privacy concerns
 
 ## Product
 
 #### Goals and tasks
+ 
+ * Display interactive, draggable nodes on the screen with connections between nodes (the node configuration can be hardcoded)
+   * Create a new react application
+   * Find a library to display a graph structure and add it to the react app
+   * Use the library to display a simple graph structure
+ 
+ * Concurrent management of the simulation
+   * Explore whether to use Multithreading, Multiprocessing, both, or something else in order to allow different elements of the system to run concurrently
+   * Figure out the mechanism to use in order to communicate data between threads/processes
+   * Threads within processes
 
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
+ * Parse CSV data
+   * Use a library (probably Pandas) to parse the uploaded CSV file from the frontend
+   * Generate the necessary data structure from each row read (which represents one patient's data)
+   * Figure out a way to read the file while running the simulation
 
+ * Set up the websocket server on the backend
+   * Figure out what Python library to use and read documentation for usage
+   * Make a wrapper around the library functions to create an interface that other files can use
+   * Do error checking for handling client disconnects
+   
+ * Set up websocket connection on the frontend
+   * Set up a connection with the web socket server using the correct protocols and port
+   * Add event handler for handling messages that the web socket server sends
+
+ * Allow users to click on nodes and update the parameters of the node
+   * Create an event handler that triggers whenever a node is clicked
+   * Identify what the node is, and display an editable form for the node's settings in a sidebar
+   * Process the user's inputs, and update the node's settings
+   
+ * Create a log viewer on the screen to see simulation events
+   * Create a button to open a log viewer
+   * Use webhooks to recieve events from the backend
+   * Display events given by the webhook on the log viewer
+ 
+ * Docker and Travis setup
+   * Create a docker file to run the flask server 
+   * Create a docker file to run the frontend react web app
+   * Create a docker compose file to run both the backend and frontend
+   * Look into how to create our custom image, note we do not have to deploy 
+   since our partner Vector does not want a deployed app and wants a docker image 
+   that can run locally because of user privacy concerns
+   * Email course coordinators to get access to Travis to be able to setup CI
+
+   
 #### Artifacts
 
-List/describe the artifacts you will produce in order to present your project idea.
+1. **Github Cards**: Online task board using GitHub cards with some canonical sections:
+    * To do
+    * In progress
+    * In review/Testing
+    * Completed
 
- * Artifacts can be text, code, images, videos, interactive mock-ups and/or any other useful artifact you can think of.
- * Make sure to explain the purpose of each artifact (i.e. Why is it on your to-do list? Why is it useful for your team?)
- * Be concise, yet precise.         
-   For example: "Build the website" is not precise at all, but "Build a static home page and upload it somewhere, so that it is publicly accessible" is much clearer.
+
+* We decide together on what tasks need to be done and what is most important. For D2, we decided on what we want to show, and what
+needs to get done for it. After, we put the tasks on Github Cards, and assigned them to the right person.
+We discussed the priorities and categorized cards as: must-haves and nice-to-haves. If a teammate is unsure about
+priorities between must-haves he will ask the rest of the team, who then decides on what needs to be done first. 
+* We know what everyone is working on at the time, which ensure we're not doing duplicate work.
+* We assign tasks to each other, and to other team mates. This ensures every task has someone responsible
+for it. This way we all know what we have to do, and all tasks get done.
+* We use In Review/Testing to review each other's Work and give feedback on it. Only then is the task moved
+to completed, and the teammate will start a new task.
+
+![Github Cards](GitHub-Cards.png)
 
 
+
+2. **Pictures**. We drafted some mock-ups of the simulation before starting. This was to
+develop a shared understanding with Vector on what the requirements are. Additionally, we used
+this to start brainstorming on what the backend needs to do, as well as have a base-line for the minimum
+needed for the front-end.
+
+![Diagram 1](Diagram1.png)
+
+![Diagram 2](Diagram2.png)
+
+
+3. **Comments**: We use comments as a way to check the logic of our code between partners. We work in pairs of at least 2 on different areas of the project. For example: 2 members will be working at 1 time on setting up Docker, others will be working on designing the Frontend, 2 others will be working on setting up the server and developing the API. We first write the code in comments, go over it with the other teammate, and once we make sure that we both agree on it, then we start developing the code. This ensures that we have a solid structure before we start building.Here's an example of pseudocode developed during one of paired team sessions:
+
+```python
+ '''
+    Try to insert a patient into an available resource, if there exists one.
+    Return true if patient inserted successfully.
+    
+    Will be false only if:
+        - All resources are currently occupied
+        - Doesn't pass the rule for any of the available resources
+            - If a resource is available, then we know that
+                - either queue is empty
+                - none of the elements in the queue passed the rule for this resource, so then try the current patient
+                    to see if he passes
+    Will be true only ifif:
+        - Patient is available, and there is a resource in the process that is available,
+            and patient passes the rule for a specific resource
+    '''
+
+    def fill_spot(self, patient):
+
+        # 1. Check: Is patient busy? If no, proceed
+            # Iterate through all Resources in random order and check
+            # 1. Is resource available
+            # 2. If it's available, does this element pass the resource rule
+            # 3. If yes, insert the patient into the specific resource(existing method
+            # 4. Add the element on the heap
+```
+
+4. **Meetings**: We document all of our meetings, both internal and external with Vector.
+Whenever we're not sure about something that we discussed with Vector, or some details
+we decided on as a team, we can check the meeting notes. It also serves as a way to make
+sure everyone is kept up to date on the development of the project, even if they missed the meeting.
+
+[Link to Meetings](https://drive.google.com/open?id=1ftzBkQdU7P4RSA6EvPqXnF9qdQxPVwyV)
+
+5. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
+and the base clases that we needed for it.
+
+![CRC Cards](crc_1.png)
+
+![CRC Cards](crc_2.png)
 
 ### Highlights
 * We initially thought about using electron for developing the product since we can create a desktop app. In the end, we chose to use python for the backend and react for the front end becuase researchers are more comfortable using python. Our partner pointed out that they would prefer a product that can be modifed and passed on to other developers in the future, and python ended up being the better option. 
