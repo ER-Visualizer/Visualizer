@@ -1,7 +1,7 @@
 # where routes will be
 from app import app
 from flask import request, jsonify
-from app.models.Node import Node
+from app.models.node import Node
 
 import logging
 

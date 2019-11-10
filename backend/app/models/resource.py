@@ -1,4 +1,3 @@
-
 class Resource():
 
     def __init__(self, id):

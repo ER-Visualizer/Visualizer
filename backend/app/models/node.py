@@ -1,6 +1,6 @@
 from app.models.queues import Queue, Stack, Heap
 import app.models.global_strings as global_strings
-from app.models.Resource import Resource
+from app.models.resource import Resource
 from app.models.event import Event
 import heapq
 import numpy as np
