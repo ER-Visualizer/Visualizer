@@ -3,7 +3,7 @@
 ## Iteration 2
 
  * Start date: Friday Novemeber 1st 2019
- * End date: Tuesday November 12 2019
+ * End date: Tuesday November 13 2019
 
 ## Product Details
  
@@ -17,6 +17,10 @@ The ED simulation will enable researchers to quickly see how changes to the ED (
 
 ![Diagram 2](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/Diagram2.png)
 
+The above diagrams showcase an example of what the product might look like, where the first one showcases
+a overall view of the canvas of the simulation (including the different waiting queues which represent 
+different zones in hospital as well as the relation between these queues). The second diagram showcases
+what it would like if a user were to click on one of the queues and the type of informaiton they should see.
 
 #### Q2: Who are your target users?
 
@@ -174,11 +178,11 @@ Designer: Wenqin: Wenqin
  * Designs the user interface to make it look good
  * Tests the user interface on clients to ensure that it is usable
  
-Frontend developer: Victor, Wenqin
+Frontend developer: Victor, Wenqin, Carlson, Simran
  * Codes the visualization using front-end frameworks such as React
  * Works with the PM(s) and backend developer(s) to develop the product
  
-Backend Developer : Mit, Nicolae, Daniel, Carlson
+Backend Developer : Mit, Nicolae, Daniel, Carlson, Simran
  * Codes the algorithm behind the visualizations through a backend server
  * Works with the PM(s) and frontend developers(s) to develop the product
  
@@ -341,15 +345,26 @@ Doctor and patient stats
 
 #### Deployment and Github Workflow
 
-Describe your Git / GitHub workflow. Essentially, we want to understand how your team members shares a codebase, avoid conflicts and deploys the application.
+Our github workflow works as such: 
+* When starting to work on something we ensure we update the github card (ie move it to in progress),
+then checkout a branch named according to what the feature we will be building in the branch  
+* While coding we ensure we develop not by running flask or react locally but 
+through docker ie by running ```docker-compose up --build``` which starts a flask and node server (to run our web app), this ensures the changes we make will be easily integerated and execute as intended in our final docker image that we will be giving to our partner (Vector institute). 
+* After finishing a feature we move it to in review, in the event that we are stuck we have a location for 
+that in github cards where we can move our card to 
+* After a task is completed we move it to in review and someone else on the team verifies it works
+* For communicating to each other about changes we use messenger as well as our 2 meetings during 
+the week (Thursday - discuss backlog and plan/assign tasks, Tuesday - work on issues as well as integration)
+* After a branch is ready to be merged we request a pull request and Carlson will test it and review it before
+it gets merged
+* Additionally everytime someone pushs to master, they're code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
+* For naming conventions we will follow snake_case for all python code and will use PascalCase for React components and camelCase for their instances
 
- * Be concise, yet precise. For example, "we use pull-requests" is not a precise statement since it leaves too many open questions - Pull-requests from where to where? Who reviews the pull-requests? Who is responsible for merging them? etc.
- * If applicable, specify any naming conventions or standards you decide to adopt.
- * Describe your overall deployment process from writing code to viewing a live applicatioon
- * What deployment tool(s) are you using and why
- * Don't forget to **explain why** you chose this workflow or particular aspects of it!
-
-
+* We choose this workflow based on early brainstorming sessions at meetings and because of the 
+experiences of some of the members on our team, further this workflow of having continous integration and 
+running our server through docker helps ensure that our final product is what we expect it to be 
+* Further we would like to highlight, based on our partner's (Vector Institute)requirements  
+we do not have to deploy since our partner Vector does not want a deployed app and wants a docker image that can run locally because of user privacy concerns
 
 ## Product
 
@@ -390,8 +405,15 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
    * Display events given by the webhook on the log viewer
  
  * Docker and Travis setup
-   * 
+   * Create a docker file to run the flask server 
+   * Create a docker file to run the frontend react web app
+   * Create a docker compose file to run both the backend and frontend
+   * Look into how to create our custom image, note we do not have to deploy 
+   since our partner Vector does not want a deployed app and wants a docker image 
+   that can run locally because of user privacy concerns
+   * Email course coordinators to get access to Travis to be able to setup CI
 
+   
 #### Artifacts
 
 1. **Github Cards**: Online task board using GitHub cards with some canonical sections:
