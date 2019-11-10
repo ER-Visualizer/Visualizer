@@ -77,7 +77,7 @@ Going into the next iteration, our main insights are:
  * Create a solid plan of tasks before coding so that everyone knows what to do. We found that by having a good plan of
    what everyone needed to do, it reduces the need for time intensive work sessions and increases productivity as people
    can work on their part without the need for other people. 
- * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likeley to procrastinate due to peer pressure. 
- * We will need to work on displaying the simulation on the frontend. At the moment the frontend only recieves the events of  the simulation that
+ * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likely to procrastinate due to peer pressure. 
+ * We will need to work on displaying the simulation on the frontend. At the moment the frontend only receives the events of  the simulation that
    the backend processes and does nothing useful with it. The next step should be to take the events and actually visualize the simulation on the frontend. 
    
