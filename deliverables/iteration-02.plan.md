@@ -259,7 +259,7 @@ Conflict Resolution:
  * We have planned to host brief online meetings on Thursdays for planning and backlogs, further during these meetings we will divide tasks based on the current progress and updates
  * We have planned to meet with our partner on most Fridays from 4-5pm to discuss questions and demo updates and discuss with the partner via slack.
  * For coding we will have work sessions on occaions, specifically we had work sessions during reading week and during weekends. 
- * We will also be coding individually for the most part 
+ * We will also be coding individually on own time, if not during work sessions
  
  
 #### Partner Meetings
