@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from "react-sidebar";
-import SidebarContent from './SidebarContent'
+import NodeSidebarContent from './NodeSidebarContent'
+import LogsSidebarContent from './LogsSidebarContent'
 import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
 import { connect } from 'react-redux';
@@ -33,9 +34,22 @@ class Main extends React.Component {
         this.socket.onerror = function(error) {
             console.log(`error ${error.message}`);
         }
+        this.renderSidebarContent = this.renderSidebarContent.bind(this)
+        this.sidebarLastContent = null;
     }
 
-
+    renderSidebarContent() {
+        console.log("in render")
+        if(this.props.showLogsSidebar) {
+            this.sidebarLastContent = <LogsSidebarContent />
+        } else if (this.props.showNodeSidebar) {
+            this.sidebarLastContent = <NodeSidebarContent />
+        }
+        // we return the last content so that the sidebar content
+        // continues to be shown as the sidebar collapses
+        // instead of abruptly disappearing.
+        return this.sidebarLastContent;
+    }
     
     render() {
         // TODO: move these properties out later
@@ -105,9 +119,7 @@ class Main extends React.Component {
         return (
             <div className="Main">
                 <Sidebar
-                    sidebar={
-                        <SidebarContent data={this.data}/>
-                    }
+                    sidebar={this.renderSidebarContent()}
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}

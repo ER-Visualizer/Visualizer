@@ -1,19 +1,19 @@
-.SidebarContent {
+.NodeSidebarContent {
     width: 320px;
     padding: 24px;
 }
 
-.SidebarContent .input-container {
+.NodeSidebarContent .input-container {
     width: 100%;
 }
 
-.SidebarContent label {
+.NodeSidebarContent label {
     font-weight: 500;
     font-size: 16px;
     color: #6E777C;
 }
 
-.SidebarContent input[type='text'] {
+.NodeSidebarContent input[type='text'] {
     margin-bottom: 24px;
     margin-top: 12px;
     font-family: 'Roboto Mono';
@@ -23,7 +23,7 @@
     box-sizing: border-box;
 }
 
-.SidebarContent h3 {
+.NodeSidebarContent h3 {
     margin-top: 0;
     font-weight: 500;
     font-size: 16px;
