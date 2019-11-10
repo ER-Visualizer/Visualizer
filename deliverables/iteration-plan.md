@@ -53,13 +53,103 @@ The data required for the simulation to run will be uploaded as a csv file on th
 
 #### Q5: What are the user stories that make up the MVP?
 
-As a researcher tasked with improving the distribution of resources in a hospital, I want to be able to set my own parameters to simulate a hypothetical workflow and present potential improvements from my results.
+##### User Story
 
-As a hospital manager who wants to improve wait times, I want to be able to see a list of bottlenecks in the current system so that I can make informed decisions on how to optimize wait time (e.g. by adding/redirecting resources).
+Angela is a Chief Quality Officer. She wants to model the patient flow across
+the Emergency Room for a number of days in the simulation, in order to get a
+birds-eye view of the ER, backed by data. She wants to use that to identify the
+processes where patients wait the longest amount of time, as well as average waiting times for
+patients with different acuity levels, in order to see how well the hospital is performing for different
+groups of patients. 
 
-As a hospital staff that is being presented with the simulated results, I want to see how patients are moving in a visual model that is intuitive and easy to understand.
+##### Acceptance Criteria
 
-As a hospital staff responsible for managing finances, I want to find the most expensive resource we can get rid of (in the event of budget cuts) without significantly reducing the efficiency of the workflow.
+* Load a CSV of patient flows.
+* Ability to collects statistics about average waiting time for process, average waiting time by
+acuity, and average waiting time for process by acuity.
+
+##### User Story
+
+Mohamed is a Machine Learning researcher who wants to improve the efficiency of the X-Ray machine in a hospital.
+He developed a Machine Learning Algorithm to predict whether a patient will need
+an X-Ray before he sees a doctor. His goal is to distribute the work on the x-ray
+machine more uniformly, with an algorithm that predicts correctly whether a patient
+will need a scan or not.
+
+##### Acceptance Criteria
+
+* Ability to specify his algorithm predictions for each patient.
+* Ability to select the processes from which the user can go directly to the X-Ray Machine.
+* Ability to run simulation with X-Ray predictions, and without, in order to determine
+whether his ML model has decreased the average waiting times for the X-Ray machine.
+
+##### User Story
+
+After waiting in the hospital with her relatives for over 8 hours, Daniela Rosu, a Professor at The University of Toronto,
+realized that the order by which patients are queued for a process(X-ray, PD, triage)
+is dangerously underperfoming. This can even
+lead to deaths if patients with very high acuities wait too long to receive emergency care. She wants
+to try out different priority functions for the priority heaps which model the process. Her goal
+is to come up with a priority function that is more fair to patients that have higher acuities,
+and at the same time, takes into consideration the amount of time that they spend there.  
+
+##### Acceptance Criteria
+
+* Ability to code, or specify otherwise, different priority functions for a process.
+* Ability to run simulation with the normal hospital priority functions and her
+priority functions, collect a CSV file of data that contains average waiting times for each patient, along with the
+acuity of the patient, and then analyze whether she has successfully improved the
+fairness or the efficiency of the process. 
+
+##### User Story
+
+Jordan, a hospital manager has gotten a grant from the government, and with the money he can buy a new
+new x-ray machine, or a CT scanner. He knows right now that patients wait an exhorbitant amount of time
+in Emergency Room, so he wants to add the resource which will have the biggest impact on reducing wait times.
+
+##### Acceptance Criteria
+
+* Ability to change number of resources for each process.
+* Ability to run simulation with different amounts of resources and collect a CSV file
+for each simulation which contains average waiting times for each patient, and overall
+average waiting time. He will then use the excel files to find out which change has improved waiting
+times the most.
+
+##### User Story
+
+Jordan is a hospital manager. This year his hospital has had $1 million dollars budget cuts, so unfortunately,
+he has to fire some of the staff. He wants to fire the staff which is least critical to the workflor of the Emergency Room, i.e
+the staff who will have smallest impact on increasing the wait times.
+
+##### Acceptance Criteria
+
+* Ability to  change of resources for each process.
+* Ability to run simulation with different amounts of resources and collect a CSV file
+for each simulation which contains average waiting times for each patient, and overall
+average waiting time. He will then use the excel files to find out which change has increased waiting
+times the least.
+
+
+##### User Story
+
+Teo is a Chief Operations Officer. He wants to model the emergency room across time,
+to determine the capacity requirements for different processes on different days/months. He wants to see how many beds
+are used around holidays versus normal days, in order to make sure the right number of resources is available around peak times.
+
+##### Acceptance Criteria
+
+* Receive statistics which document how many people have used each process(hospital beds, X-ray machine) per day.
+
+##### User Story
+
+Christine is a Safety Inspector. She found that a patient at the hospital had a very contageous disease. She wants to see a log of 
+the resources the patient has visited during his stay at the hospital, in order to inspect all of the places the patient visited,
+and the doctors/staff he came in contact with.
+
+##### Acceptance Criteria
+
+* Receive a log of the flow of each patient throughout the hospital, documenting all of the processes a patient has visited, in the
+right order, with timestamps.
 
 ----
 
