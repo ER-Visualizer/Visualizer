@@ -1,7 +1,7 @@
 import React from 'react';
-import './SidebarContent.css';
+import './NodeSidebarContent.css';
 
-class SidebarContent extends React.Component {
+class NodeSidebarContent extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.props.data
@@ -22,7 +22,7 @@ class SidebarContent extends React.Component {
 
     render() {
         return (
-            <div className="SidebarContent">                
+            <div className="NodeSidebarContent">                
                 <h3>{this.props.data.element_type}</h3>
                 
                 <div className="input-container">
@@ -61,4 +61,4 @@ class SidebarContent extends React.Component {
     }
 }
 
-export default SidebarContent
+export default NodeSidebarContent
