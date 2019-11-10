@@ -6,4 +6,10 @@
     border: 1px solid black;
     font-family: 'Roboto Mono';
     color: white;
+    font-size: 12px;
+}
+
+.LogsSidebarContent .LogLine {
+    margin-bottom: 8px;
+    font-weight: 600;
 }

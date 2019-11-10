@@ -11,7 +11,7 @@ class Main extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            events: []
+            events: ["Hello world", "i like pizza"]
         }
         this.data = {
             element_type: "triage",
@@ -26,10 +26,10 @@ class Main extends React.Component {
         let websocket_address = "wss://dummy_url.com"
         this.socket = new WebSocket(websocket_address);
         this.socket.onopen = function(event) {
-
+            
         }
         this.socket.onmessage = function(event) {
-            this.state.events.append(event.data)
+            this.state.events.concat(event.data)
         }
         this.socket.onerror = function(error) {
             console.log(`error ${error.message}`);
@@ -39,9 +39,8 @@ class Main extends React.Component {
     }
 
     renderSidebarContent() {
-        console.log("in render")
         if(this.props.showLogsSidebar) {
-            this.sidebarLastContent = <LogsSidebarContent />
+            this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar) {
             this.sidebarLastContent = <NodeSidebarContent />
         }
