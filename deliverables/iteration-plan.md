@@ -247,16 +247,6 @@ Doctor and patient stats
 * Summary: 
   * We dicussed questions regarding possible test cases, the format of the input csv file and other edge cases. We also reviewed our plan to build the backend using flask, with websocket to connect to the frontend and a react front end with d3.js animations
 
-#### Artifacts
-- Online task board using GitHub cards with some canonical sections:
-   * To do
-   * In progress
-   * In review/Testing
-   * Completed
- 
-- Mockup of the application
-
-
 ----
 
 #### Deployment and Github Workflow
