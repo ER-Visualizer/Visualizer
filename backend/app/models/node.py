@@ -7,7 +7,6 @@ import numpy as np
 from app import run
 
 
-
 class Node():
 
     # TODO: generate dictionary of Nodes, and make it static
@@ -54,7 +53,9 @@ class Node():
     }
 
     def __init__(self, id, queue_type, priority_function, num_actors,
-    process_name=None, distribution_name=None, distribution_parameters=None, output_process_ids=None):
+                 process_name=None, distribution_name=None,
+                 distribution_parameters=None, output_process_ids=None):
+
         self.id = id
         # create the queue type, prior func and the queue itself
         self.queue_type = queue_type
@@ -87,10 +88,10 @@ class Node():
     # TODO see if i can remove it
     ''' Set number of actors and create the dictionary of resources,
     1 for each actor'''
+
     def set_num_actors(self, num_actors):
         self.num_actors = num_actors
         self.resource_dict = self._create_resource_dict()
-
 
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
@@ -122,13 +123,15 @@ class Node():
     # TODO See if I can remove it
     '''Set the queue type, priority function,
     and then create the actual queue'''
-    def set_queue_type(self,queue_type, priority_function = None):
+
+    def set_queue_type(self, queue_type, priority_function=None):
         self.queue_type = queue_type
         self.priority_function = priority_function
         self.queue = self._set_queue()
 
     def _set_queue(self):
-        # TODO: These are all synchronous, thread-safe. Which slows everything down.
+        # TODO: These are all synchronous, thread-safe.
+        # Which slows everything down.
         #  Can and should we make them non-safe?
         # TODO Deal with Priority Queues
         if self.queue_type == global_strings.STACK:
@@ -141,15 +144,18 @@ class Node():
             raise Exception("This type of queue is not implemented yet")
 
     def generate_finish_time(self):
-        
-        duration = Node.class_distributions[self.get_distribution_name()](self.get_distribution_parameters())
+
+        duration = Node.class_distributions[self.get_distribution_name()](
+            self.get_distribution_parameters())
         finish_time = run.get_curr_time() + duration
         return finish_time
 
     '''
-    This is the dict of all the subprocesses/resource a node has, with key as unique id.
+    This is the dict of all the subprocesses/resource a
+    node has, with key as unique id.
     If a node has 3 actors, will have 3 resources/subprocesses.
-    If a node only has 1 actor or one resources, then only create 1 resource/subprocess
+    If a node only has 1 actor or one resources, then
+    only create 1 resource/subprocess
     '''
 
     def _create_resource_dict(self):
@@ -164,21 +170,26 @@ class Node():
         return resource_dict
 
     '''
-    Occurs whenever the minimum element from the heap is extracted, which means that the patient has finished a process
+    Occurs whenever the minimum element from the heap is extracted, which
+    means that the patient has finished a process
     '''
 
     def handle_finished_patient(self, resource_id):
 
         resource = self.resource_dict[resource_id]
 
-        # get the patient out of the subprocess. this automatically sets him to available
+        # get the patient out of the subprocess. this
+        # automatically sets him to available
         patient = resource.clear_patient()
 
         # TODO make sure patient instance is set to available after this
-        # TODO see if we need to do this in random order to avoid bias. Might have to, b/c if  spot is available,
-        #  patient will take that first available spot, so might have a case where patient always fills the first spot
+        # TODO see if we need to do this in random order to avoid bias.
+        # Might have to, b/c if  spot is available,
+        #  patient will take that first available spot, so might
+        # have a case where patient always fills the first spot
 
-        # first send the patient to all of the queues that they need to be put in (outgoing processes from
+        # first send the patient to all of the queues that they need
+        # to be put in (outgoing processes from
         # parent_process)
         # TODO: consider random order
         for process_id in self.output_process_ids:
@@ -188,7 +199,8 @@ class Node():
         self.fill_spot_for_resource(resource)
 
     '''
-    Called when a patient finishes some other process, and is sent to wait in a queue for this current process
+    Called when a patient finishes some other process, and is sent to
+    wait in a queue for this current process
     '''
 
     def put_patient_in_queue(self, patient):
@@ -211,7 +223,8 @@ class Node():
         # Insert it into the resource/subprocess(existing method)
         # Add element on the heap(existing method)
 
-        # TODO: test if for different types of queues, this iterates in the right orders
+        # TODO: test if for different types of queues,
+        # this iterates in the right orders
         # TODO: test with heap
         # This will iterate through stacks and queues in the right order
         for patient in self.queue.q:
@@ -243,8 +256,8 @@ class Node():
                 resource, so then try the current patient
                     to see if he passes
     Will be true if:
-        - Patient is available, and there is a resource in the process that is available,
-            and patient passes the rule for a specific resource
+        - Patient is available, and there is a resource in the process
+        that is available,and patient passes the rule for a specific resource
     '''
 
     def fill_spot(self, patient):
@@ -254,7 +267,8 @@ class Node():
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
-            # 3. If yes, insert the patient into the specific resource(existing method
+            # 3. If yes, insert the patient into
+            # the specific resource(existing method
             # 4. Add the element on the heap
             for resource in self.resource_dict.values():
                 if resource.is_available():
@@ -262,15 +276,16 @@ class Node():
 
                         # insert patient into resource, since it's free
                         time = self.generate_finish_time()
-                        resource.insert_patient(patient,time)
+                        resource.insert_patient(patient, time)
 
                         self.add_to_heap(resource.get_id())
                         return True
 
-        return False                    
+        return False
 
     '''A resource has just been filled with a patient.
     Get its event, and add it to the heap'''
+
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
         event = Event(resource.get_finish_time(), self.id,  resource_id)

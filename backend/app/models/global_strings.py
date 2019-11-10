@@ -3,13 +3,12 @@ QUEUE = "queue"
 PRIORITY_QUEUE = "priority queue"
 
 
-
 # Distributions
 
 BETA = "beta"
 BINOMIAL = "binomial"
 CHISQUARE = "chisquare"
-DIRICHLET ="dirichlet"
+DIRICHLET = "dirichlet"
 EXPONENTIAL = "exponential"
 F = "f"
 GAMMA = "gamma"

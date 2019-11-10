@@ -13,7 +13,6 @@ class Patient():
         self.predicted_processes = {}
         self.needed_processes = {}
 
-
     def __init__(self, acuity, start_time):
         self.is_available = True
         self.acuity = acuity
@@ -50,4 +49,3 @@ class Patient():
 
     def set_available(self):
         self.is_available = True
-
