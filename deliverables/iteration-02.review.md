@@ -54,13 +54,14 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 ## Product - Review
 
 #### Goals and/or tasks that were met/completed:
-
- * From most to least important.
- * Refer/link to artifact(s) that show that a goal/task was met/completed.
- * If a goal/task was not part of the original iteration plan, please mention it.
+ * We were able to display interactive, draggable nodes on the screen with connections between nodes. 
+ * We were able to create a log viewer on the screen to display simulation events.
 
 #### Goals and/or tasks that were planned but not met/completed:
-
+ * We were unable to create functionality to allow a user to edit the details of a node. This wasy mainly because
+   there were many features that we needed to implement and this one was not a priority for this deliverable since 
+   we were focused making sure hard coded node values worked before allowing user customizatioln. 
+   
  * From most to least important.
  * For each goal/task, explain why it was not met/completed.      
    e.g. Did you change your mind, or did you just not get to it yet?
