@@ -309,7 +309,7 @@ Describe your Git / GitHub workflow. Essentially, we want to understand how your
    * Use webhooks to recieve events from the backend
    * Display events given by the webhook on the log viewer
  
- * Docker setup and Travis setup
+ * Docker and Travis setup
    * 
 
 #### Artifacts
