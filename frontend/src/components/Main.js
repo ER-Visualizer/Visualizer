@@ -11,7 +11,7 @@ class Main extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            events: ["Hello world", "i like pizza"]
+            events: []
         }
         this.data = {
             element_type: "triage",
@@ -36,7 +36,7 @@ class Main extends React.Component {
             this.socket.onopen = function(event) {
                 this.socket.send("Ping");
             }.bind(this)
-            
+
             this.socket.onmessage = function(event) {
                 this.setState({
                     events: this.state.events.concat(event.data)
