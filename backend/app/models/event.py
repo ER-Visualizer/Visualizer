@@ -6,3 +6,12 @@ class Event():
 
     def __lt__(self, other):
         return self.event_time < other.event_time
+
+    def get_event_time(self):
+        return self.event_time
+
+    def get_node_id(self):
+        return self.node_id
+
+    def get_node_resource(self):
+        return self.node_resource
