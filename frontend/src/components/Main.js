@@ -22,20 +22,31 @@ class Main extends React.Component {
             priority_function: "",
             children: []
         }
-
-        let websocket_address = "ws://localhost:8765"
-        this.socket = new WebSocket(websocket_address);
-        this.socket.onopen = function(event) {
-            
-        }
-        this.socket.onmessage = function(event) {
-            this.state.events.concat(event.data)
-        }
-        this.socket.onerror = function(error) {
-            console.log(`error ${error.message}`);
-        }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
+    }
+
+    componentDidMount() {
+        // timer is needed because if you setState exactly after
+        // the component mounts there will be some layout issues
+        // so we wait at least on second before any states are set
+        setTimeout(function() {
+            let websocket_address = "ws://localhost:8765"
+            this.socket = new WebSocket(websocket_address);
+            this.socket.onopen = function(event) {
+                this.socket.send("Ping");
+            }.bind(this)
+            
+            this.socket.onmessage = function(event) {
+                this.setState({
+                    events: this.state.events.concat(event.data)
+                })
+            }.bind(this)
+    
+            this.socket.onerror = function(error) {
+                console.log(`error ${error.message}`);
+            }
+        }.bind(this), 1000)
     }
 
     renderSidebarContent() {
@@ -109,10 +120,8 @@ class Main extends React.Component {
             };
         
             const onClickNode = function(nodeId){
-                // lookup node's data
-                // 
 
-                alert(nodeId);
+                console.log(nodeId);
             }
         
         return (
