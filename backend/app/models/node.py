@@ -2,6 +2,7 @@ from app.models.queues import Queue, Stack, Heap
 import app.models.global_strings as global_strings
 from app.models.resource import Resource
 from app.models.event import Event
+from app.models.test_distrib import test_distribution
 from app import run
 import copy
 import heapq
@@ -48,7 +49,8 @@ class Node():
         global_strings.VONMISSES: np.random.vonmises,
         global_strings.WALD: np.random.wald,
         global_strings.WEIBULL: np.random.weibull,
-        global_strings.ZIPF: np.random.zipf
+        global_strings.ZIPF: np.random.zipf,
+        global_strings.TEST: test_distribution
     }
     node_dict = {}
 
@@ -258,7 +260,8 @@ class Node():
                         # already have a hold of him
                         self.queue.remove(patient)
 
-                    self.insert_patient_to_resource_and_heap(patient, subprocess)
+                    self.insert_patient_to_resource_and_heap(
+                        patient, subprocess)
                     return True
 
         return False
@@ -293,7 +296,8 @@ class Node():
             for resource in self.resource_dict.values():
                 if resource.is_available():
                     if resource.pass_rule(patient):
-                        self.insert_patient_to_resource_and_heap(patient, resource)
+                        self.insert_patient_to_resource_and_heap(
+                            patient, resource)
                         return True
         return False
 
@@ -303,7 +307,6 @@ class Node():
         resource.insert_patient(patient, time)
 
         self.add_to_heap(resource.get_id())
-
 
     '''A resource has just been filled with a patient.
     Get its event, and add it to the heap'''
