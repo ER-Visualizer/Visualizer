@@ -4,8 +4,10 @@ from threading import Timer
 from app.models.event import Event
 from app.models.node import Node
 from app.models.patient import Patient
+from app.models.statistic import Statistic
 from app.models.resource import Resource
 from app.models.queues import Queue
+from app.connect import WebsocketServer
 
 # indexed by strings
 canvas = {"elements": []}
@@ -23,6 +25,8 @@ packet_duration = 300
 # default: send every 5 seconds
 packet_rate = 5
 
+# instantiate statistics
+statistics = Statistic()
 
 """
 Setup Canvas:
@@ -145,11 +149,19 @@ def process_heap():
 
     head_node = head.get_node_id()
     head_resource = head.get_resource()
+
+    # check type of event
+    # need to check if its a triage
+    if nodes_list[head_node] == "triage":
+        finish_time = head_resource.get_finish_time()
+
     # send patient to next queues
     nodes_list[head_node].handle_finished_patient(head_resource)
 
     # add to list of event changes
     event_changes.append(head)
+
+
 
     # continue __main__ loop
     return True
@@ -165,8 +177,7 @@ def get_heap():
 def get_curr_time():
     return time
 
-if __name__ == "__main__":
-
+def main():
     # this will read canvas json
     canvas_parser()
 
@@ -174,6 +185,10 @@ if __name__ == "__main__":
 
     # this will read patients csv
     create_queues()
+
+    # setup websocket server
+    server = WebsocketServer("localhost", 8765, send_events)
+    server.start()
 
     # start sending every X seconds
     send_events()
@@ -185,3 +200,6 @@ if __name__ == "__main__":
     report_statistics()
 
 
+
+if __name__ == "__main__":
+    main()
