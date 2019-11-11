@@ -10,8 +10,6 @@ import numpy as np
 
 class Node():
 
-    # TODO: generate dictionary of Nodes, and make it static
-
     # This is a static variable which all Node classes share, as it doesn't need
     # to be changed. All of the distributions here are distributions available
     # in the numpy.random package
@@ -52,6 +50,7 @@ class Node():
         global_strings.WEIBULL: np.random.weibull,
         global_strings.ZIPF: np.random.zipf
     }
+    node_dict = {}
 
     def __init__(self, id, queue_type, priority_function, num_actors,
                  process_name=None, distribution_name=None,
@@ -75,6 +74,8 @@ class Node():
         self.distribution_name = distribution_name
         self.distribution_parameters = distribution_parameters
         self.output_process_ids = output_process_ids
+
+        Node.node_dict[self.id] = self
 
     def set_id(self, id):
         self.id = id
@@ -188,7 +189,7 @@ class Node():
         # to be put in (outgoing processes from
         # parent_process)
         for process_id in self.output_process_ids:
-            Node.processDict[process_id].put_patient_in_queue(patient)
+            Node.node_dict[process_id].put_patient_in_queue(patient)
 
         # call fill_spot on this subprocess because now we have an empty spot there
         self.fill_spot_for_resource(resource)
