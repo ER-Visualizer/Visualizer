@@ -1,16 +1,20 @@
 import React from 'react';
 import Sidebar from "react-sidebar";
-import SidebarContent from './SidebarContent'
+import NodeSidebarContent from './NodeSidebarContent'
+import LogsSidebarContent from './LogsSidebarContent'
 import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
+import JSONEntrySidebarContent from './JSONEntrySidebarContent';
+import { showNodeConfig, hideSidebar } from '../redux/actions';
 
 class Main extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            events: []
+            events: [],
+            selectedNode: null
         }
         this.data = {
             element_type: "triage",
@@ -21,103 +25,92 @@ class Main extends React.Component {
             priority_function: "",
             children: []
         }
-
-        let websocket_address = "wss://dummy_url.com"
-        this.socket = new WebSocket(websocket_address);
-        this.socket.onopen = function(event) {
-
-        }
-        this.socket.onmessage = function(event) {
-            this.state.events.append(event.data)
-        }
-        this.socket.onerror = function(error) {
-            console.log(`error ${error.message}`);
-        }
+        this.renderSidebarContent = this.renderSidebarContent.bind(this)
+        this.sidebarLastContent = null;
     }
 
+    componentDidMount() {
+        // timer is needed because if you setState exactly after
+        // the component mounts there will be some layout issues
+        // so we wait at least on second before any states are set
+        setTimeout(function() {
+            let websocket_address = "ws://localhost:8765"
+            this.socket = new WebSocket(websocket_address);
+            this.socket.onopen = function(event) {
+                this.socket.send("Ping");
+            }.bind(this)
 
+            this.socket.onmessage = function(event) {
+                this.setState({
+                    events: this.state.events.concat(event.data)
+                })
+            }.bind(this)
     
-    render() {
-        // TODO: move these properties out later
-        let graphical_data = { // graphical representation
-            nodes: [{ id: "Reception0" }, { id: "Triage0" }, { id: "PD0" }],
-            links: [{ source: "Reception0", target: "Triage0" }, { source: "Triage0", target: "PD0" }],
-            };
-        
-            let module_data = [
-                    {
-                        Id: 0,
-                        Element_type: "reception",
-                        Distribution: "gaussian", // dummy variables for now
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    {
-                        Id: 1,
-                        Element_type: "triage",
-                        Distribution: "gaussian", 
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    {
-                        Id: 2,
-                        Element_type: "pd",
-                        Distribution: "gaussian", 
-                        Distribution_parameters: [3,1],
-                        Number_of_actors: 10,
-                        Queue_type: "stack",
-                        Priority_function: "",
-                        Children: [2, 3]
-                    },
-                    
-            ]
-        
-            const myConfig = {
-            nodeHighlightBehavior: true,
-            width: window.innerWidth,
-            height: window.innerHeight,
-            directed: true,
-            node: {
-                color: "grey",
-                size: 200,
-                highlightStrokeColor: "blue",
-                // symbolType: "squacircle",
-            },
-            link: {
-                highlightColor: "lightblue",
-
-            },
-            };
-        
-            const onClickNode = function(nodeId){
-                // lookup node's data
-                // 
-
-                alert(nodeId);
+            this.socket.onerror = function(error) {
+                console.log(`error ${error.message}`);
             }
+        }.bind(this), 1000)
+    }
+
+    renderSidebarContent() {
+        if(this.props.showLogsSidebar) {
+            this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
+        } else if (this.props.showNodeSidebar && this.state.selectedNode) {
+            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode] }/>
+        } else if (this.props.showJSONEntrySidebar) {
+            this.sidebarLastContent = <JSONEntrySidebarContent/>
+        }
+
+        // we return the last content so that the sidebar content
+        // continues to be shown as the sidebar collapses
+        // instead of abruptly disappearing.
+        return this.sidebarLastContent;
+    }
+    
+    update_graph(nodes){
+        let graphical_data = {nodes: [], links: []}
+
+        nodes.map( // map the JSON representation of the node to the representation required by the graph
+            (node) => {graphical_data.nodes.push(
+                { id: `${node.Id}`, name : `${node.Element_type}${node.Id}`});
+                
+                node.Children.map( 
+                    (child) => {graphical_data.links.push(
+                        { source: `${node.Id}`, target: `${child}` })}
+                )
+            }
+        )
         
+        return graphical_data;
+    };
+
+    nodeClick(nodeId) {
+        const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+        console.log(shouldHide);
+        this.setState({
+            selectedNode: nodeId
+        })
+        this.props.hideSidebar();
+        setTimeout(function() {
+            this.props.showNodeConfig(shouldHide);
+        }.bind(this), 350);
+    }
+
+    render() {
         return (
             <div className="Main">
                 <Sidebar
-                    sidebar={
-                        <SidebarContent data={this.data}/>
-                    }
-                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar}
+                    sidebar={this.renderSidebarContent()}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
                     styles={{ sidebar: { background: "white", color: "black" } }}
                     pullRight={true}
                 >
                 <Navbar />
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
-                data={graphical_data}
-                config={myConfig}
-                onClickNode={onClickNode}
+                data={this.update_graph(this.props.nodes)}
+                config={graphConfig}
+                onClickNode={this.nodeClick.bind(this)}
                 />
                 </Sidebar> 
             </div>
@@ -125,14 +118,41 @@ class Main extends React.Component {
     }
 }
 
+const graphConfig = {
+    nodeHighlightBehavior: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    directed: true,
+    node: {
+        color: "grey",
+        size: 200,
+        highlightStrokeColor: "blue",
+        labelProperty: (node) => node.name 
+    },
+    link: {
+        highlightColor: "lightblue",
+    },
+};
+
 const mapStateToProps = state => {
-  return {showLogsSidebar: state.showLogsSidebar, showNodeSidebar: state.showNodeSidebar}
+  return {
+      showLogsSidebar: state.showLogsSidebar, 
+      showNodeSidebar: state.showNodeSidebar, 
+      showJSONEntrySidebar: state.showJSONEntrySidebar,
+      nodes: state.nodes,
+    }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
 
-  }
+const mapDispatchToProps = dispatch => {
+    return {
+        showNodeConfig: (shouldHide) => {
+            dispatch(showNodeConfig(shouldHide))
+        },
+        hideSidebar: () => {
+            dispatch(hideSidebar())
+        }
+    }
 }
 
 export default connect(
