@@ -7,6 +7,7 @@ from app.models.patient import Patient
 from app.models.statistic import Statistic
 from app.models.resource import Resource
 from app.models.queues import Queue
+from app.connect import WebsocketServer
 
 # indexed by strings
 canvas = {"elements": []}
@@ -176,8 +177,7 @@ def get_heap():
 def get_curr_time():
     return time
 
-if __name__ == "__main__":
-
+def main():
     # this will read canvas json
     canvas_parser()
 
@@ -185,6 +185,10 @@ if __name__ == "__main__":
 
     # this will read patients csv
     create_queues()
+
+    # setup websocket server
+    server = WebsocketServer("localhost", 8765, send_events)
+    server.start()
 
     # start sending every X seconds
     send_events()
@@ -196,3 +200,6 @@ if __name__ == "__main__":
     report_statistics()
 
 
+
+if __name__ == "__main__":
+    main()
