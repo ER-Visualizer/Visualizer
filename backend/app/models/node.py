@@ -247,7 +247,7 @@ class Node():
         for patient in iterator:
             if patient.is_available():
                 if subprocess.pass_rule(patient):
-
+                    # remove from queue
                     if(isinstance(self.queue, Heap)):
                         # get the index of the patient to remove
                         index_to_remove = indices_to_patients[patient]
@@ -258,12 +258,7 @@ class Node():
                         # already have a hold of him
                         self.queue.remove(patient)
 
-                    # insert into resource
-                    time = self.generate_finish_time()
-                    subprocess.insert(patient, time)
-
-                    # add element on the heap
-                    self.add_to_heap(subprocess.get_id())
+                    self.insert_patient_to_resource_and_heap(patient, subprocess)
                     return True
 
         return False
@@ -298,15 +293,17 @@ class Node():
             for resource in self.resource_dict.values():
                 if resource.is_available():
                     if resource.pass_rule(patient):
-
-                        # insert patient into resource, since it's free
-                        time = self.generate_finish_time()
-                        resource.insert_patient(patient, time)
-
-                        self.add_to_heap(resource.get_id())
+                        self.insert_patient_to_resource_and_heap(patient, resource)
                         return True
-
         return False
+
+    def insert_patient_to_resource_and_heap(self, patient, resource):
+        # insert patient into resource, since it's free
+        time = self.generate_finish_time()
+        resource.insert_patient(patient, time)
+
+        self.add_to_heap(resource.get_id())
+
 
     '''A resource has just been filled with a patient.
     Get its event, and add it to the heap'''
