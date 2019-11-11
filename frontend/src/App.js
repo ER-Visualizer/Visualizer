@@ -15,11 +15,4 @@ function App() {
   );
 }
 
-// {
-//   data.nodes.push({id: "newnode"})
-//   }
-//   {
-//     data.links.push({source: "newnode", target:"Sally"})
-//   }
-
 export default App;
