@@ -30,3 +30,21 @@ to
 ```
 DEV_ENV=production
 ```
+
+## Testing
+
+To ease testing, you can choose to only run one service at a time, i.e server or client.
+
+This can be done simply by specifying:
+
+```
+docker-compose up -d client
+```
+
+or 
+
+```
+docker-compose up -d server
+```
+
+Note that there will be no connection to between services if run in this way.
