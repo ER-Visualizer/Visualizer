@@ -26,12 +26,13 @@ class Queue():
         return self.q.popleft()
 
     def remove(self, val):
-        return self.remove(val)
+        return self.q.remove(val)
 
     # TODO test them out, by creating a Queue, see if you can iterate thru
     # all of it
     def __iter__(self):
         self.iter = iter(self.q)
+        return self.iter
 
     def __next__(self):
         return next(self.iter)
@@ -63,6 +64,7 @@ class Heap():
 
     def __iter__(self):
         self.length = len(self.q)
+        return self.length
 
     def __next__(self):
         if(self.length != 0):

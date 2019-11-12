@@ -1,6 +1,6 @@
-class Resource():
+class Resource:
 
-    def __init__(self, id):
+    def __init__(self, id, *args, **kwds):
         self.id = id
         self.finish_time = None
         self.curr_patient = None

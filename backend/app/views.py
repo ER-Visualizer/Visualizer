@@ -10,11 +10,15 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 import logging
 
+
+# FOR TESTING
+from .run import main
 logger = logging.getLogger(__name__)
 
 @app.route('/')
 def home():
-   return "hello world!"
+    main()
+    return "hello world!"
 
 @app.route('/start', methods=['POST'])
 @cross_origin()

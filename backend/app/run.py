@@ -1,22 +1,23 @@
 import heapq
 import csv
+from datetime import datetime
 from threading import Timer
-from models.event import Event
-from models.node import Node
-from models.patient import Patient
-from models.statistic import Statistic
-from models.resource import Resource
-from models.queues import Queue
-from connect import WebsocketServer
-from models.global_time import GlobalTime
-from models.global_heap import GlobalHeap
+from app.models.event import Event
+from app.models.node import Node
+from app.models.patient import Patient
+from app.models.statistic import Statistic
+from app.models.resource import Resource
+from app.models.queues import Queue
+from app.connect import WebsocketServer
+from app.models.global_time import GlobalTime
+from app.models.global_heap import GlobalHeap
 
 # indexed by strings
 canvas = {"elements": []}
 
 # indexed by integers
 nodes_list = {}
-
+initial_time = None
 event_heap = GlobalHeap.heap
 event_changes = []
 time = GlobalTime.time
@@ -40,32 +41,43 @@ input = list of nodes [{id: ..., next: [...]}, ... ] as json
 
 
 def canvas_parser(canvas_json):
+    global canvas
     canvas = {
         "elements": [
             {
                 "id": 1,
-                "elementType": "triage",
-                "distribution": "gaussian",
-                "distributionParameters": [3, 1],
-                "numberOfActors": 10,
+                "elementType": "reception",
+                "distribution": "test",
+                "distributionParameters": [5],
+                "numberOfActors": 1,
                 "queueType": "stack",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [2]
             },
             {
                 "id": 2,
-                "elementType": "patient",
-                "distribution": "gaussian",
-                "distributionParameters": [3, 1],
+                "elementType": "triage",
+                "distribution": "test",
+                "distributionParameters":[3],
+                "numberOfActors": 2,
+                "queueType": "stack",
+                "priorityFunction": "",
+                "children": [3, 4]
+            },
+            {
+                "id": 3,
+                "elementType": "doctor",
+                "distribution": "test",
+                "distributionParameters": [10],
                 "numberOfActors": 3,
                 "queueType": "queue",
                 "priorityFunction": "",
                 "children": []
             },
             {
-                "id": 3,
+                "id": 4,
                 "elementType": "x-ray",
-                "distribution": "gaussian",
+                "distribution": "binomial",
                 "distributionParameters": [1, 1],
                 "numberOfActors": 2,
                 "queueType": "priority queue",
@@ -77,33 +89,44 @@ def canvas_parser(canvas_json):
 
 
 def create_queues():
+    print("IN CQ")
+    global initial_time
     for node in canvas["elements"]:
-
+        print("IN NODE")
         # treat reception node differently (for now, will always be a Queue() with 1 actor)
-        if node["element_type"] == "reception":
-            nodes_list[node[id]] = Node(node["id"], node["element_type"], node["distribution"], node["distributionParameters"],
-                                        1, "queue", node["priorityFunction"], node["children"])
+        if node["elementType"] == "reception":
+            nodes_list[node["id"]] = Node(node["id"], "queue", node["priorityFunction"], 1, process_name=node["elementType"],
+                                          distribution_name=node["distribution"], distribution_parameters=node["distributionParameters"],
+                                          output_process_ids=node["children"])
 
             # TODO: find a way to get patients.csv from frontend
 
             # read csv (for now, all patients added to reception queue at beginning)
-            skipHeader = True
             dict_reader = csv.DictReader(
-                open("/models/patients.csv"), delimiter=',')
+                open("app/models/sample_ED_input.csv"), delimiter=',')
+            print("DICT")
+            print(dict_reader)
             for row in dict_reader:
-                if skipHeader:
-                    skipHeader = False
-                    continue
-                else:
-                    next_patient = Patient(
-                        row["patient_id"], row["patient_acuity"], row["times"])
-                    nodes_list[node[id]].put_patient_in_queue(next_patient)
+                print("adding patient to queue")
+                if initial_time is None:
+                    initial_time = row["times"]
+                # TODO: bug here: turn patient timestamp into time relative to initial time first, and then
+                # append it
+                # DOES RECORDS ONLY SUPPORT PATIENTS COMING IN ONE DAY?
+                # DOES NOT SPECIFY IF ITS ANOTHER DAY
+                FMT = '%Y-%m-%d %H:%M:%S'
+                patient_time = datetime.strptime(row["times"], FMT) - datetime.strptime(initial_time, FMT)
+                patient_time = float(patient_time.seconds)/60
+                next_patient = Patient(
+                    int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+                nodes_list[node["id"]].put_patient_in_queue(next_patient)
         else:
-            nodes_list[node[id]] = Node(node["id"], node["element_type"], node["distribution"], node["distributionParameters"],
-                                        node["numberOfActors"], node["queueType"], node["priorityFunction"], node["children"])
+            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+                                        process_name=node["elementType"], distribution_name=node["distribution"],
+                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
 
-    # TODO: pass the list of nodes to the Node class
-    Node._create_resource_dict(nodes_list)
+        # # TODO: pass the list of nodes to the Node class
+        # Node._create_resource_dict(nodes_list)
 
 
 # """
@@ -153,38 +176,46 @@ def process_heap():
     if len(event_heap) == 0:
         return False
 
-    head = heapq.heappop(event_heap)
-
-    if not isinstance(head, Event):
+    completed_event = heapq.heappop(event_heap)
+    # If an event just finished, that must be the current time, so update it.
+    GlobalTime.time = completed_event.get_event_time()
+    if not isinstance(completed_event, Event):
         raise Exception("Non Event object in event heap")
 
     # TODO: update statistics using time_diff
-    time_diff = head.get_event_time() - time
+    time_diff = completed_event.get_event_time() - time
 
-    head_node = head.get_node_id()
-    head_resource = head.get_node_resource()
+    head_node_id = completed_event.get_node_id()
+    head_resource_id = completed_event.get_node_resource_id()
 
+    resource = nodes_list[head_node_id].get_resource(head_resource_id)
+    print("resources in node")
+    for r in nodes_list[head_node_id].resource_dict:
+        print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
-    patient = head_resource.get_curr_patient()
+    patient = resource.get_curr_patient()
+
     # time where patient finishes the process
-    finish_time = head_resource.get_finish_time()
+    finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
     join_queue_time = patient.get_join_queue_time()
+    print("join queue time")
+    print(join_queue_time)
     # the patient joins a new queue at the current time
-    patient.set_join_queue_time(head.get_event_time())
+    patient.set_join_queue_time(completed_event.get_event_time())
 
     # record process time
     process_time = finish_time - join_queue_time
-    process_name = nodes_list[head.get_node_id()]
+    process_name = nodes_list[completed_event.get_node_id()].get_process_name()
     statistics.add_process_time(patient.get_id(), process_name, process_time)
 
     # record wait time
-    wait_time = process_time - head_resource.get_duration()
-    statistics.add_wait_time(patient.get_id(), process_name, process_time)
+    wait_time = process_time - resource.get_duration()
+    statistics.add_wait_time(patient.get_id(), process_name, wait_time)
 
     # record doctor
-    if process_name == "patient":
-        doctor_id = head_resource.get_id()
+    if process_name == "doctor":
+        doctor_id = resource.get_id()
         statistics.increment_doc_seen(doctor_id)
         # TODO
         # Length of doctor/patient interaction per patient per doctor
@@ -193,17 +224,11 @@ def process_heap():
         statistics.add_doc_patient_time(doctor_id, patient.get_id(), process_time)
 
 
-
-
-
-
-
-
     # send patient to next queues
-    nodes_list[head_node].handle_finished_patient(head_resource)
+    nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
-    event_changes.append(head)
+    event_changes.append(completed_event)
 
     # continue __main__ loop
     return True
@@ -212,36 +237,38 @@ def process_heap():
 
 
 def report_statistics():
-    raise Exception("Statistics are not implemented yet")
+    return statistics.calculate_stats()
 
 
 # def get_heap():
 #     return event_heap
 
-# def get_curr_time():
-#     return time
+def get_curr_time():
+    return time
 
 def main():
+    print("IN MAIN")
     # this will read canvas json
     canvas_parser({})
 
     # create_heap(get_heap())
 
     # this will read patients csv
+    print("create queues")
     create_queues()
 
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_events)
-    server.start()
+    # server = WebsocketServer("localhost", 8765, send_events)
+    # server.start()
 
     # start sending every X seconds
-    send_events()
+    # send_events()
 
     # process events until heap is emptied
     while (process_heap()):
         process_heap()
 
-    report_statistics()
+    print(report_statistics())
 
 
 if __name__ == "__main__":
