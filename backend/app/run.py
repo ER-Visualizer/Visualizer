@@ -37,7 +37,9 @@ Setup Canvas:
 
 input = list of nodes [{id: ..., next: [...]}, ... ] as json
 """
-def canvas_parser():
+
+
+def canvas_parser(canvas_json):
     canvas = {
         "elements": [
             {
@@ -73,8 +75,6 @@ def canvas_parser():
         ]
     }
 
-def patients_parser():
-    return "patients.csv"
 
 def create_queues():
     for node in canvas["elements"]:
@@ -84,20 +84,20 @@ def create_queues():
             nodes_list[node[id]] = Node(node["id"], node["element_type"], node["distribution"], node["distributionParameters"],
                                         1, "queue", node["priorityFunction"], node["children"])
 
-            
             # TODO: find a way to get patients.csv from frontend
-            patients_csv = patients_parser()
 
             # read csv (for now, all patients added to reception queue at beginning)
             skipHeader = True
-            dict_reader = csv.DictReader(patients_csv, delimiter=',')
+            dict_reader = csv.DictReader(
+                open("/models/patients.csv"), delimiter=',')
             for row in dict_reader:
                 if skipHeader:
                     skipHeader = False
                     continue
                 else:
-                    nodes_list[node[id]].put_patient_in_queue(
-                        Patient(row["patient_acuity"], row["times"]))
+                    next_patient = Patient(
+                        row["patient_id"], row["patient_acuity"], row["times"])
+                    nodes_list[node[id]].put_patient_in_queue(next_patient)
         else:
             nodes_list[node[id]] = Node(node["id"], node["element_type"], node["distribution"], node["distributionParameters"],
                                         node["numberOfActors"], node["queueType"], node["priorityFunction"], node["children"])
@@ -115,25 +115,37 @@ def create_queues():
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
+
+
 def send_events():
     if len(event_changes) == 0:
         # send nothing if no changes
         return []
 
     new_changes = []
-    packet_start = packet_start == -1 ? event_changes[0].time : packet_start + packet_duration
-    new_changes.append(event_changes.pop(0))
+
+    if packet_start == -1:
+        packet_start = event_changes[0].time
+    else:
+        packet_start = packet_start + packet_duration
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        new_changes.append(event_changes.pop(0))
+        for next_q in event_changes[0].get_next_nodes():
+            event_dict = {
+                "patientId": event_changes[0].get_patient_id(),
+                "movedTo": next_q,
+                "startedAt": event_changes[0].get_node_id(),
+                "timeStamp": event_changes[0].get_event_time()
+            }
+            new_changes.append(event_dict)
+        event_changes.pop(0)
 
     # TODO send new_changes to frontend
-
 
     # send again after some time (removed for producerFunc implementation)
     # Timer(packet_rate, send_events).start()
 
-    return new_changes
+    return {"Events:": new_changes}
 
 
 def process_heap():
@@ -164,12 +176,12 @@ def process_heap():
     # add to list of event changes
     event_changes.append(head)
 
-
-
     # continue __main__ loop
     return True
 
 # TODO: statistics reporting
+
+
 def report_statistics():
     raise Exception("Statistics are not implemented yet")
 
@@ -182,7 +194,7 @@ def report_statistics():
 
 def main():
     # this will read canvas json
-    canvas_parser()
+    canvas_parser({})
 
     # create_heap(get_heap())
 
@@ -201,7 +213,6 @@ def main():
         process_heap()
 
     report_statistics()
-
 
 
 if __name__ == "__main__":
