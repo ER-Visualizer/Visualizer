@@ -9,6 +9,7 @@ from app.models.resource import Resource
 from app.models.queues import Queue
 from app.connect import WebsocketServer
 from app.models.global_time import GlobalTime
+from app.models.global_heap import GlobalHeap
 
 # indexed by strings
 canvas = {"elements": []}
@@ -16,9 +17,11 @@ canvas = {"elements": []}
 # indexed by integers
 nodes_list = {}
 
-event_heap = []
+event_heap = GlobalHeap.heap
 event_changes = []
 time = GlobalTime.time
+
+packet_start = -1
 
 # default: send 5 mins of data
 packet_duration = 300
@@ -103,11 +106,11 @@ def create_queues():
     Node._create_resource_dict(nodes_list)
 
 
-"""
-Create event heap
-"""
-def create_heap(heap):
-    heapq.heapify(heap)
+# """
+# Create event heap
+# """
+# def create_heap(heap):
+#     heapq.heapify(heap)
 
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
@@ -115,38 +118,37 @@ Sends changes to frontend and repeats at intervals dictated by packet_rate
 def send_events():
     if len(event_changes) == 0:
         # send nothing if no changes
-        return 0
+        return []
 
     new_changes = []
-    start_time = event_changes[0].time
+    packet_start = packet_start == -1 ? event_changes[0].time : packet_start + packet_duration
     new_changes.append(event_changes.pop(0))
 
-    while (len(event_changes) > 0 and event_changes[0].get_event_time() - start_time <= packet_duration):
+    while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         new_changes.append(event_changes.pop(0))
 
     # TODO send new_changes to frontend
 
 
-    # send again after some time
-    Timer(packet_rate, send_events).start()
+    # send again after some time (removed for producerFunc implementation)
+    # Timer(packet_rate, send_events).start()
 
-    # Returns number of items sent (for debuggging purposes)
-    return len(new_changes)
+    return new_changes
 
 
 def process_heap():
 
     # exit condition for __main__ loop
-    if len(get_heap()) == 0:
+    if len(event_heap) == 0:
         return False
 
-    head = heapq.heappop(get_heap())
+    head = heapq.heappop(event_heap)
 
     if not isinstance(head, Event):
         raise Exception("Non Event object in event heap")
 
     # TODO: update statistics using time_diff
-    time_diff = head.get_event_time() - get_curr_time()
+    time_diff = head.get_event_time() - time
 
     head_node = head.get_node_id()
     head_resource = head.get_resource()
@@ -172,8 +174,8 @@ def report_statistics():
     raise Exception("Statistics are not implemented yet")
 
 
-def get_heap():
-    return event_heap
+# def get_heap():
+#     return event_heap
 
 # def get_curr_time():
 #     return time
@@ -182,7 +184,7 @@ def main():
     # this will read canvas json
     canvas_parser()
 
-    create_heap(get_heap())
+    # create_heap(get_heap())
 
     # this will read patients csv
     create_queues()
