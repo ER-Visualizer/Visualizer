@@ -29,9 +29,9 @@ class Navbar extends React.Component {
                 body: JSON.stringify(this.props.nodes),
             });
             console.log(response);
-            let responseJson = await response.body.json();
-            console.log({responseJson});
-            return responseJson;
+            // let responseJson = await response.body.json();
+            // console.log({responseJson});
+            return response;
         } catch (error) {
             console.error(error);
         }

@@ -87,7 +87,8 @@ class Statistic:
 
             journey_lengths.append(total_time)
             wait_times.append(wait_time)
-            ratio.append(wait_time/total_time)
+            r = wait_time/total_time if total_time != 0 else 0
+            ratio.append(r)
 
         # TODO Summary stats for utilization ratio of hospital resources (e.g. CT scan)
         return {"journey": np.mean(journey_lengths), "wait": np.mean(wait_times), "ratio": np.mean(ratio)}

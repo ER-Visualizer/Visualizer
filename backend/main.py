@@ -24,6 +24,7 @@ def home():
 
 @app.route('/start', methods=['POST'])
 def start_simulation():
+    app.logger.info("starting simulation")
     req_data = request.get_json()
     app.logger.info(f"req data {req_data}")
     run.main()
@@ -43,4 +44,4 @@ def send_json_response(message: dict):
     return resp
 
 
-app.run(debug=True)
+app.run()
