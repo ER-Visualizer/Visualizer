@@ -110,10 +110,6 @@ def create_queues():
                 print("adding patient to queue")
                 if initial_time is None:
                     initial_time = row["times"]
-                # TODO: bug here: turn patient timestamp into time relative to initial time first, and then
-                # append it
-                # DOES RECORDS ONLY SUPPORT PATIENTS COMING IN ONE DAY?
-                # DOES NOT SPECIFY IF ITS ANOTHER DAY
                 FMT = '%Y-%m-%d %H:%M:%S'
                 patient_time = datetime.strptime(row["times"], FMT) - datetime.strptime(initial_time, FMT)
                 patient_time = float(patient_time.seconds)/60
@@ -162,8 +158,8 @@ def send_events():
             new_changes.append(event_dict)
         event_changes.pop(0)
 
-    # TODO send new_changes to frontend
-
+    # TODO send new_changes to frontend !
+    print("changes!!!", new_changes)
     # send again after some time (removed for producerFunc implementation)
     # Timer(packet_rate, send_events).start()
 
@@ -258,11 +254,11 @@ def main():
     create_queues()
 
     # setup websocket server
-    # server = WebsocketServer("localhost", 8765, send_events)
-    # server.start()
+    server = WebsocketServer("localhost", 8765, send_events)
+    server.start()
 
     # start sending every X seconds
-    # send_events()
+    send_events()
 
     # process events until heap is emptied
     while (process_heap()):

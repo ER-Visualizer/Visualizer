@@ -14,6 +14,7 @@ services:
             - "./backend:/app"
         expose:
             - ${APP_SERVER_PORT}
+            - ${WEB_SOCKET_PORT}
 
     client:
         build:
