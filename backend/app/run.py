@@ -1,15 +1,15 @@
 import heapq
 import csv
 from threading import Timer
-from models.event import Event
-from models.node import Node
-from models.patient import Patient
-from models.statistic import Statistic
-from models.resource import Resource
-from models.queues import Queue
-from connect import WebsocketServer
-from models.global_time import GlobalTime
-from models.global_heap import GlobalHeap
+from app.models.event import Event
+from app.models.node import Node
+from app.models.patient import Patient
+from app.models.statistic import Statistic
+from app.models.resource import Resource
+from app.models.queues import Queue
+from app.connect import WebsocketServer
+from app.models.global_time import GlobalTime
+from app.models.global_heap import GlobalHeap
 
 # indexed by strings
 canvas = {"elements": []}
@@ -100,17 +100,11 @@ def create_queues():
             # TODO: find a way to get patients.csv from frontend
 
             # read csv (for now, all patients added to reception queue at beginning)
-            skipHeader = True
             dict_reader = csv.DictReader(
-                open("models/sample_ED_input.csv"), delimiter=',')
+                open("app/models/sample_ED_input.csv"), delimiter=',')
             print("DICT")
             print(dict_reader)
-            #TODO for some reason it skips patient why, figure out why
             for row in dict_reader:
-                # if skipHeader:
-                #     skipHeader = False
-                #     continue
-                # else:
                 print("adding patient to queue")
                 next_patient = Patient(
                     row["patient_id"], row["patient_acuity"], row["times"])
@@ -188,7 +182,6 @@ def process_heap():
         print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
     patient = resource.get_curr_patient()
-    print("This is patient", patient)
     if not patient:
         print(resource)
         print("NO PATIENT", head.get_node_id, head.get_node_resource_id(), head.patient_id)
