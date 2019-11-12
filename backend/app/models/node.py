@@ -1,10 +1,10 @@
-from models.queues import Queue, Stack, Heap
-import models.global_strings as global_strings
-from models.resource import Resource
-from models.event import Event
-from models.test_distrib import test_distribution
-from models.global_time import GlobalTime
-from models.global_heap import GlobalHeap
+from app.models.queues import Queue, Stack, Heap
+import app.models.global_strings as global_strings
+from app.models.resource import Resource
+from app.models.event import Event
+from app.models.test_distrib import test_distribution
+from app.models.global_time import GlobalTime
+from app.models.global_heap import GlobalHeap
 import copy
 import heapq
 import numpy as np
