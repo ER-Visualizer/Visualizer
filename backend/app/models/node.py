@@ -4,7 +4,7 @@ from app.models.resource import Resource
 from app.models.event import Event
 from app.models.test_distrib import test_distribution
 from app.models.global_time import GlobalTime
-from app import run
+from app.models.global_heap import GlobalHeap
 import copy
 import heapq
 import numpy as np
@@ -315,5 +315,5 @@ class Node():
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
         event = Event(resource.get_finish_time(), self.id,  resource_id)
-        heap = run.get_heap()
-        heapq.heappush(heap, event)
+        # heap = run.get_heap()
+        heapq.heappush(GlobalHeap.heap, event)
