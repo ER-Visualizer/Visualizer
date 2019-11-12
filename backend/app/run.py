@@ -106,8 +106,10 @@ def create_queues():
             print(dict_reader)
             for row in dict_reader:
                 print("adding patient to queue")
+                # TODO: bug here: turn patient timestamp into time relative to initial time first, and then
+                # append it
                 next_patient = Patient(
-                    row["patient_id"], row["patient_acuity"], row["times"])
+                    int(row["patient_id"]), int(row["patient_acuity"]), int(row["times"]))
                 nodes_list[node["id"]].put_patient_in_queue(next_patient)
         else:
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],

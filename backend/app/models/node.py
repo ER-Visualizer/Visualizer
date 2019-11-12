@@ -251,7 +251,7 @@ class Node:
             iterator = self.queue
 
         for patient in iterator:
-            if patient.is_available():
+            if patient.get_available():
                 if subprocess.pass_rule(patient):
                     # remove from queue
                     if(isinstance(self.queue, Heap)):
