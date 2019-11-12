@@ -1,1 +1,5 @@
-language: python
+dist: xenial
+language: minimal
+
+services:
+  - docker
