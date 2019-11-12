@@ -167,17 +167,17 @@ def process_heap():
     if len(event_heap) == 0:
         return False
 
-    head = heapq.heappop(event_heap)
+    completed_event = heapq.heappop(event_heap)
     # If an event just finished, that must be the current time, so update it.
-    GlobalTime.time = head.get_event_time()
-    if not isinstance(head, Event):
+    GlobalTime.time = completed_event.get_event_time()
+    if not isinstance(completed_event, Event):
         raise Exception("Non Event object in event heap")
 
     # TODO: update statistics using time_diff
-    time_diff = head.get_event_time() - time
+    time_diff = completed_event.get_event_time() - time
 
-    head_node_id = head.get_node_id()
-    head_resource_id = head.get_node_resource_id()
+    head_node_id = completed_event.get_node_id()
+    head_resource_id = completed_event.get_node_resource_id()
 
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
     print("resources in node")
@@ -187,7 +187,7 @@ def process_heap():
     patient = resource.get_curr_patient()
     if not patient:
         print(resource)
-        print("NO PATIENT", head.get_node_id, head.get_node_resource_id(), head.patient_id)
+        print("NO PATIENT", completed_event.get_node_id, completed_event.get_node_resource_id(), completed_event.patient_id)
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
@@ -195,11 +195,11 @@ def process_heap():
     print("join queue time")
     print(join_queue_time)
     # the patient joins a new queue at the current time
-    patient.set_join_queue_time(head.get_event_time())
+    patient.set_join_queue_time(completed_event.get_event_time())
 
     # record process time
     process_time = finish_time - join_queue_time
-    process_name = nodes_list[head.get_node_id()]
+    process_name = nodes_list[completed_event.get_node_id()]
     statistics.add_process_time(patient.get_id(), process_name, process_time)
 
     # record wait time
@@ -221,7 +221,7 @@ def process_heap():
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
-    event_changes.append(head)
+    event_changes.append(completed_event)
 
     # continue __main__ loop
     return True
