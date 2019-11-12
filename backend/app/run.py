@@ -2,15 +2,15 @@ import heapq
 import csv
 from datetime import datetime
 from threading import Timer
-from app.models.event import Event
-from app.models.node import Node
-from app.models.patient import Patient
-from app.models.statistic import Statistic
-from app.models.resource import Resource
-from app.models.queues import Queue
-from app.connect import WebsocketServer
-from app.models.global_time import GlobalTime
-from app.models.global_heap import GlobalHeap
+from .models.event import Event
+from .models.node import Node
+from .models.patient import Patient
+from .models.statistic import Statistic
+from .models.resource import Resource
+from .models.queues import Queue
+from .connect import WebsocketServer
+from .models.global_time import GlobalTime
+from .models.global_heap import GlobalHeap
 
 # indexed by strings
 canvas = {"elements": []}
