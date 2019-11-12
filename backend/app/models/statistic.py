@@ -34,16 +34,26 @@ class Statistic:
             self.p_process_times[p_id] = {}
         self.p_process_times[p_id][process] = time
 
+    """
+    Adds the wait time for a patient in a specific process
+    """
     def add_wait_time(self, p_id, process, time):
         if p_id not in self.p_process_times:
             self.p_wait_times[p_id] = {}
         self.p_wait_times[p_id][process] = time
 
+    """
+    Increments the number of patients seen for a specific doctor
+    """
     def increment_doc_seen(self, d_id):
         if d_id not in self.d_seen:
             self.d_seen[d_id] = 0
         self.d_seen[d_id] += 1
 
+    """
+    Adds the patient doctor interaction time for a specific patient and 
+    specific doctor
+    """
     def add_doc_patient_time(self, d_id, p_id, time):
         if d_id not in self.d_length:
             self.d_length[d_id] = {}
@@ -51,6 +61,11 @@ class Statistic:
             self.d_length[d_id][p_id] = []
         self.d_length[d_id][p_id].append(time)
 
+    """
+    Private helper to calculate hospital statistics
+    
+    Calculates average journey length, wait time, and ratio of wait time to journey length
+    """
     def _calculate_hospital_avgs(self):
         # total journey times
         journey_lengths = []
