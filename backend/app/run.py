@@ -1,5 +1,6 @@
 import heapq
 import csv
+from datetime import datetime
 from threading import Timer
 from app.models.event import Event
 from app.models.node import Node
@@ -16,7 +17,7 @@ canvas = {"elements": []}
 
 # indexed by integers
 nodes_list = {}
-
+initial_time = None
 event_heap = GlobalHeap.heap
 event_changes = []
 time = GlobalTime.time
@@ -89,6 +90,7 @@ def canvas_parser(canvas_json):
 
 def create_queues():
     print("IN CQ")
+    global initial_time
     for node in canvas["elements"]:
         print("IN NODE")
         # treat reception node differently (for now, will always be a Queue() with 1 actor)
@@ -106,10 +108,17 @@ def create_queues():
             print(dict_reader)
             for row in dict_reader:
                 print("adding patient to queue")
+                if initial_time is None:
+                    initial_time = row["times"]
                 # TODO: bug here: turn patient timestamp into time relative to initial time first, and then
                 # append it
+                # DOES RECORDS ONLY SUPPORT PATIENTS COMING IN ONE DAY?
+                # DOES NOT SPECIFY IF ITS ANOTHER DAY
+                FMT = '%Y-%m-%d %H:%M:%S'
+                patient_time = datetime.strptime(row["times"], FMT) - datetime.strptime(initial_time, FMT)
+                patient_time = float(patient_time.seconds)/60
                 next_patient = Patient(
-                    int(row["patient_id"]), int(row["patient_acuity"]), int(row["times"]))
+                    int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
                 nodes_list[node["id"]].put_patient_in_queue(next_patient)
         else:
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
@@ -185,9 +194,7 @@ def process_heap():
         print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
     patient = resource.get_curr_patient()
-    if not patient:
-        print(resource)
-        print("NO PATIENT", completed_event.get_node_id, completed_event.get_node_resource_id(), completed_event.patient_id)
+
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
@@ -199,15 +206,15 @@ def process_heap():
 
     # record process time
     process_time = finish_time - join_queue_time
-    process_name = nodes_list[completed_event.get_node_id()]
+    process_name = nodes_list[completed_event.get_node_id()].get_process_name()
     statistics.add_process_time(patient.get_id(), process_name, process_time)
 
     # record wait time
     wait_time = process_time - resource.get_duration()
-    statistics.add_wait_time(patient.get_id(), process_name, process_time)
+    statistics.add_wait_time(patient.get_id(), process_name, wait_time)
 
     # record doctor
-    if process_name == "patient":
+    if process_name == "doctor":
         doctor_id = resource.get_id()
         statistics.increment_doc_seen(doctor_id)
         # TODO

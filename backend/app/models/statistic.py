@@ -38,7 +38,7 @@ class Statistic:
     Adds the wait time for a patient in a specific process
     """
     def add_wait_time(self, p_id, process, time):
-        if p_id not in self.p_process_times:
+        if p_id not in self.p_wait_times:
             self.p_wait_times[p_id] = {}
         self.p_wait_times[p_id][process] = time
 
