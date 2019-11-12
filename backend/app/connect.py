@@ -229,6 +229,6 @@ def producePatientData():
         {"patientId": 3, "from": randint(1, 10), "to": randint(1, 10)}]
     return json.dumps(jsonToSend)
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+# asyncio.get_event_loop().run_until_complete(start_server)
+# asyncio.get_event_loop().run_forever()
 # test travis
