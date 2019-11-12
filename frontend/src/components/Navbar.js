@@ -17,15 +17,19 @@ class Navbar extends React.Component {
 
     async sendCanvas(){
         try {
+            console.log(this.props.nodes);
+            
             let response = await fetch('http://localhost:8000/start', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
                   'Content-Type': 'application/json',
                 },
+                crossDomain: true,
                 body: JSON.stringify(this.props.nodes),
             });
             let responseJson = await response.json();
+            console.log({responseJson});
             return responseJson;
         } catch (error) {
             console.error(error);

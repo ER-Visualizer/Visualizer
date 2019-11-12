@@ -37,31 +37,31 @@ class Main extends React.Component {
         }
     }
 
-    componentDidMount() {
-        // timer is needed because if you setState exactly after
-        // the component mounts there will be some layout issues
-        // so we wait at least on second before any states are set
-        setTimeout(function() {
-            let websocket_address = "ws://localhost:8765"
-            this.socket = new WebSocket(websocket_address);
-            this.socket.onopen = function(event) {
-                this.socket.send("Ping");
-            }.bind(this)
+    // componentDidMount() {
+    //     // timer is needed because if you setState exactly after
+    //     // the component mounts there will be some layout issues
+    //     // so we wait at least on second before any states are set
+    //     setTimeout(function() {
+    //         let websocket_address = "ws://localhost:8765"
+    //         this.socket = new WebSocket(websocket_address);
+    //         this.socket.onopen = function(event) {
+    //             this.socket.send("Ping");
+    //         }.bind(this)
 
-            this.socket.onmessage = function(event) {
-                console.log(event.data);
-                console.log(this.parseEventData);
-                console.log(this.parseEventData(event.data))
-                this.setState({
-                    events: this.state.events.concat(this.parseEventData(event.data))
-                })
-            }.bind(this)
+    //         this.socket.onmessage = function(event) {
+    //             console.log(event.data);
+    //             console.log(this.parseEventData);
+    //             console.log(this.parseEventData(event.data))
+    //             this.setState({
+    //                 events: this.state.events.concat(this.parseEventData(event.data))
+    //             })
+    //         }.bind(this)
     
-            this.socket.onerror = function(error) {
-                console.log(`error ${error.message}`);
-            }
-        }.bind(this), 1000)
-    }
+    //         this.socket.onerror = function(error) {
+    //             console.log(`error ${error.message}`);
+    //         }
+    //     }.bind(this), 1000)
+    // }
 
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {

@@ -4,7 +4,7 @@ from flask import request, jsonify
 from app.models.node import Node
 
 from flask_cors import CORS, cross_origin
-cors = CORS(app)
+cors = CORS(app, resources={r"/start/*": {"origins": "*"}})
 
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -20,17 +20,19 @@ def home():
 @cross_origin()
 def start_simulation():
     req_data = request.get_json()
-    elements = req_data['elements']
-    list_of_nodes = []
-    for element in elements:
-        new_node = Node(element['id'],element['queueType'],
-            element['priorityFunction'], element['numberOfActors'])
-        new_node.set_process_name(element['elementType'])
-        new_node.set_distribution(element['distribution'],element['distributionParameters'])
-        new_node.set_output_process_ids(element['children'])
-        list_of_nodes.append(new_node)
-    app.logger.info(f"req data {req_data}")
-   
+    if "elements" in req_data:
+        elements = req_data['elements']
+        list_of_nodes = []
+        for element in elements:
+            new_node = Node(element['id'],element['queueType'],
+                element['priorityFunction'], element['numberOfActors'])
+            new_node.set_process_name(element['elementType'])
+            new_node.set_distribution(element['distribution'],element['distributionParameters'])
+            new_node.set_output_process_ids(element['children'])
+            list_of_nodes.append(new_node)
+        app.logger.info(f"req data {req_data}")
+    else:
+        req_data = []
     # TODO: call a function from run.py to start simulation
     return send_json_response(req_data)
 
