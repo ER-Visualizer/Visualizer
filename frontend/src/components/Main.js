@@ -29,6 +29,14 @@ class Main extends React.Component {
         this.sidebarLastContent = null;
     }
 
+    parseEventData(rawEventDataString) {
+        const eventData = JSON.parse(rawEventDataString)
+        return {
+            eventData: eventData,
+            message: `[${eventData.timeStamp}] user ${eventData['userId']} moved to queue ${eventData['movedTo']} from queue ${eventData['startedAt']}`
+        }
+    }
+
     componentDidMount() {
         // timer is needed because if you setState exactly after
         // the component mounts there will be some layout issues
@@ -41,8 +49,11 @@ class Main extends React.Component {
             }.bind(this)
 
             this.socket.onmessage = function(event) {
+                console.log(event.data);
+                console.log(this.parseEventData);
+                console.log(this.parseEventData(event.data))
                 this.setState({
-                    events: this.state.events.concat(event.data)
+                    events: this.state.events.concat(this.parseEventData(event.data))
                 })
             }.bind(this)
     
@@ -93,7 +104,7 @@ class Main extends React.Component {
         this.props.hideSidebar();
         setTimeout(function() {
             this.props.showNodeConfig(shouldHide);
-        }.bind(this), 350);
+        }.bind(this), 300);
     }
 
     render() {
