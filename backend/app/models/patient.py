@@ -7,6 +7,7 @@ class Patient():
         self.start_time = start_time
         self.predicted_processes = {}
         self.needed_processes = {}
+        self.join_queue_time = start_time
 
     ''' For use in comparison inside heaps. We will need to overwrite this
     with a priority function given to us from canvas'''
@@ -16,6 +17,9 @@ class Patient():
 
     def get_id(self):
         return self.id
+
+    def get_join_queue_time(self):
+        return self.join_queue_time
 
     def set_acuity(self, acuity):
         self.acuity = acuity
@@ -37,3 +41,6 @@ class Patient():
 
     def set_available(self):
         self.is_available = True
+
+    def set_join_queue_time(self, time):
+        self.join_queue_time = time

@@ -4,6 +4,7 @@ class Resource():
         self.id = id
         self.finish_time = None
         self.curr_patient = None
+        self.duration = None
 
     '''
     This is a rule that the resource/subproces might have.
@@ -18,10 +19,11 @@ class Resource():
     # and not a copy of it
     ''' return patient that finished '''
 
-    def insert_patient(self, patient, finish_time):
+    def insert_patient(self, patient, finish_time, duration):
         self.curr_patient = patient
         self.curr_patient.set_unavailable()
         self.finish_time = finish_time
+        self.duration = duration
 
     def clear_patient(self):
 
@@ -43,3 +45,6 @@ class Resource():
 
     def get_finish_time(self):
         return self.finish_time
+
+    def get_duration(self):
+        return self.duration

@@ -116,14 +116,13 @@ def create_queues():
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
 
-
 def send_events():
     if len(event_changes) == 0:
         # send nothing if no changes
         return []
 
     new_changes = []
-
+    global packet_start
     if packet_start == -1:
         packet_start = event_changes[0].time
     else:
@@ -163,12 +162,42 @@ def process_heap():
     time_diff = head.get_event_time() - time
 
     head_node = head.get_node_id()
-    head_resource = head.get_resource()
+    head_resource = head.get_node_resource()
 
-    # check type of event
-    # need to check if its a triage
-    if nodes_list[head_node] == "triage":
-        finish_time = head_resource.get_finish_time()
+    # patient for the event
+    patient = head_resource.get_curr_patient()
+    # time where patient finishes the process
+    finish_time = head_resource.get_finish_time()
+    # time where patient joins queue for the process
+    join_queue_time = patient.get_join_queue_time()
+    # the patient joins a new queue at the current time
+    patient.set_join_queue_time(head.get_event_time())
+
+    # record process time
+    process_time = finish_time - join_queue_time
+    process_name = nodes_list[head.get_node_id()]
+    statistics.add_process_time(patient.get_id(), process_name, process_time)
+
+    # record wait time
+    wait_time = process_time - head_resource.get_duration()
+    statistics.add_wait_time(patient.get_id(), process_name, process_time)
+
+    # record doctor
+    if process_name == "patient":
+        doctor_id = head_resource.get_id()
+        statistics.increment_doc_seen(doctor_id)
+        # TODO
+        # Length of doctor/patient interaction per patient per doctor
+        # average or record all?
+        # can remove in the future and just use process_times
+        statistics.add_doc_patient_time(doctor_id, patient.get_id(), process_time)
+
+
+
+
+
+
+
 
     # send patient to next queues
     nodes_list[head_node].handle_finished_patient(head_resource)

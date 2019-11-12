@@ -151,7 +151,7 @@ class Node():
         duration = Node.class_distributions[self.get_distribution_name()](
             self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
-        return finish_time
+        return finish_time, duration
 
     '''
     This is the dict of all the subprocesses/resource a
@@ -304,8 +304,8 @@ class Node():
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's free
-        time = self.generate_finish_time()
-        resource.insert_patient(patient, time)
+        time, duration = self.generate_finish_time()
+        resource.insert_patient(patient, time, duration)
 
         self.add_to_heap(resource.get_id())
 
