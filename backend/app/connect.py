@@ -206,7 +206,7 @@ class WebsocketServer:
     def start(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        self.server = websockets.serve(self.__producer_handler, self.host, self.port, loop=loop)
+        self.server = websockets.serve(self.__producer_handler, port=self.port, loop=loop)
         loop.run_until_complete(self.server)
         loop.run_forever()
 
@@ -217,7 +217,6 @@ class WebsocketServer:
     async def __producer_handler(self, websocket, path):
         while True:
             message = self.producerFunc()
-            print("message", message)
             try:
                 await websocket.send(message)
             except websockets.exceptions.ConnectionClosed:

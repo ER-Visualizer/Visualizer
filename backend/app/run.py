@@ -257,10 +257,10 @@ def main():
     server = WebsocketServer("localhost", 8765, send_events)
     server.start()
 
-    # start sending every X seconds
+    # start sending every X secondss
     send_events()
 
-    # process events until heap is emptied
+    # process events until heap is emptieddd
     while (process_heap()):
         process_heap()
 
