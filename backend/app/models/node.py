@@ -3,6 +3,7 @@ import app.models.global_strings as global_strings
 from app.models.resource import Resource
 from app.models.event import Event
 from app.models.test_distrib import test_distribution
+from app.models.global_time import GlobalTime
 from app import run
 import copy
 import heapq
@@ -149,7 +150,7 @@ class Node():
 
         duration = Node.class_distributions[self.get_distribution_name()](
             self.get_distribution_parameters())
-        finish_time = run.get_curr_time() + duration
+        finish_time = GlobalTime.time + duration
         return finish_time
 
     '''

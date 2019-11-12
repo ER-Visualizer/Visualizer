@@ -8,6 +8,7 @@ from app.models.statistic import Statistic
 from app.models.resource import Resource
 from app.models.queues import Queue
 from app.connect import WebsocketServer
+from app.models.global_time import GlobalTime
 
 # indexed by strings
 canvas = {"elements": []}
@@ -17,7 +18,7 @@ nodes_list = {}
 
 event_heap = []
 event_changes = []
-time = 0
+time = GlobalTime.time
 
 # default: send 5 mins of data
 packet_duration = 300
@@ -174,8 +175,8 @@ def report_statistics():
 def get_heap():
     return event_heap
 
-def get_curr_time():
-    return time
+# def get_curr_time():
+#     return time
 
 def main():
     # this will read canvas json
