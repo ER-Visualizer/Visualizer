@@ -1,4 +1,4 @@
-class Patient():
+class Patient:
 
     def __init__(self, id, acuity=None, start_time=None):
         self.id = id
@@ -33,7 +33,7 @@ class Patient():
     def set_predicted_processes(self, predicted_processes):
         self.predicted_processes = predicted_processes
 
-    def is_available(self):
+    def get_available(self):
         return self.is_available
 
     def set_unavailable(self):

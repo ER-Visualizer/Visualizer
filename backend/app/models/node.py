@@ -10,7 +10,7 @@ import heapq
 import numpy as np
 
 
-class Node():
+class Node:
 
     # This is a static variable which all Node classes share, as it doesn't need
     # to be changed. All of the distributions here are distributions available
@@ -125,6 +125,8 @@ class Node():
     def get_output_process_ids(self):
         return self.output_processes_ids
 
+    def get_resource(self, resource_id):
+        return self.resource_dict[resource_id]
     # TODO See if I can remove it
     '''Set the queue type, priority function,
     and then create the actual queue'''
@@ -136,6 +138,7 @@ class Node():
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
+        print("queue type", self.queue_type)
         # Note. All of these are not thread-safe, so can't use threads on them
         if self.queue_type == global_strings.STACK:
             return Stack()
@@ -149,7 +152,7 @@ class Node():
     def generate_finish_time(self):
 
         duration = Node.class_distributions[self.get_distribution_name()](
-            self.get_distribution_parameters())
+            *self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
         return finish_time, duration
 
@@ -286,8 +289,9 @@ class Node():
 
     def fill_spot(self, patient):
         # TODO: consider random order
+        print("FILL SPOT")
         # 1. Check: Is patient busy? If no, proceed
-        if patient.is_available():
+        if patient.get_available():
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
@@ -316,4 +320,5 @@ class Node():
         resource = self.resource_dict[resource_id]
         event = Event(resource.get_curr_patient().get_id(), self.id, resource.get_finish_time(), resource_id, self.output_process_ids)
         # heap = run.get_heap()
-        heapq.heappush(GlobalHeap.heap, event)
+
+        heapq.heappush(GlobalHeap().heap, event)

@@ -5,11 +5,15 @@ from app.models.node import Node
 
 import logging
 
+
+# FOR TESTING
+from .run import main
 logger = logging.getLogger(__name__)
 
 @app.route('/')
 def home():
-   return "hello world!"
+    main()
+    return "hello world!"
 
 # (self, id=None, process_name=None, distribution=None,
 #  distribution_parameters=None, num_actors=None,

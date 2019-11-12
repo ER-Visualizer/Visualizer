@@ -4,7 +4,7 @@ PRIORITY_QUEUE = "priority queue"
 
 
 # Distributions
-
+# TODO add gaussian?
 BETA = "beta"
 BINOMIAL = "binomial"
 CHISQUARE = "chisquare"
