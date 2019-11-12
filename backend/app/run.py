@@ -193,12 +193,6 @@ def process_heap():
         statistics.add_doc_patient_time(doctor_id, patient.get_id(), process_time)
 
 
-
-
-
-
-
-
     # send patient to next queues
     nodes_list[head_node].handle_finished_patient(head_resource)
 
@@ -212,7 +206,7 @@ def process_heap():
 
 
 def report_statistics():
-    raise Exception("Statistics are not implemented yet")
+    return statistics.calculate_stats()
 
 
 # def get_heap():
@@ -241,7 +235,7 @@ def main():
     while (process_heap()):
         process_heap()
 
-    report_statistics()
+    print(report_statistics())
 
 
 if __name__ == "__main__":

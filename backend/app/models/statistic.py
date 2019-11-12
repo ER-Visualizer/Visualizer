@@ -1,3 +1,5 @@
+import numpy as np
+
 """
 Statistics class to store data throughout the simulation
 """
@@ -5,7 +7,6 @@ class Statistic:
 
     def __init__(self):
         # Patient stats
-        self.p_triage_times = []
         self.p_process_times = {}
         self.p_wait_times = {}
         # Doctor stats
@@ -20,10 +21,10 @@ class Statistic:
     Return current statistics
     """
     def calculate_stats(self):
-        avg_triage = sum(self.p_triage_times)/len(self.p_triage_times)
-        avg_wait = sum(self.p_wait_times)/len(self.p_wait_times)
-        ratio_w_j = self.sum_ratio_journey/self.sum_ratio_journey
-        return {"avg_triage": avg_triage, "avg_wait": avg_wait, "ratio_w_j": ratio_w_j}
+        hospital_stats = self._calculate_hospital_avgs()
+        res = {"hospital": hospital_stats, "patient": {"process": self.p_process_times, "wait": self.p_wait_times},
+               "doctor": {"seen": self.d_seen, "length": self.d_length}}
+        return res
 
     """
     Adds the time taken for a single patient in a specific process including wait time.
@@ -50,5 +51,25 @@ class Statistic:
             self.d_length[d_id][p_id] = []
         self.d_length[d_id][p_id].append(time)
 
-    def add_journey_time(self, time):
-        self.sum_ratio_journey += time
+    def _calculate_hospital_avgs(self):
+        # total journey times
+        journey_lengths = []
+        # total wait times
+        wait_times = []
+        ratio = []
+        for p_id in self.p_process_times:
+            total_time = 0.0
+            # total wait time
+            wait_time = 0.0
+            for resource in self.p_process_times[p_id]:
+                total_time += self.p_process_times[p_id][resource]
+                wait_time += self.p_wait_times[p_id][resource]
+
+            journey_lengths.append(total_time)
+            wait_times.append(wait_time)
+            ratio.append(wait_time/total_time)
+
+        # TODO Summary stats for utilization ratio of hospital resources (e.g. CT scan)
+        return {"journey": np.mean(journey_lengths), "wait": np.mean(wait_times), "ratio": np.mean(ratio)}
+
+
