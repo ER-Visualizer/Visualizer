@@ -48,10 +48,10 @@ def canvas_parser(canvas_json):
                 "elementType": "reception",
                 "distribution": "binomial",
                 "distributionParameters": [3, 1],
-                "numberOfActors": 10,
+                "numberOfActors": 1,
                 "queueType": "stack",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [2]
             },
             {
                 "id": 2,
@@ -61,7 +61,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 10,
                 "queueType": "stack",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [3, 4]
             },
             {
                 "id": 3,
@@ -182,8 +182,14 @@ def process_heap():
     head_resource = head.get_node_resource()
 
     resource = nodes_list[head_node].get_resource(head_resource)
+    print("resources in node")
+    for r in nodes_list[head_node].resource_dict:
+        print(r, nodes_list[head_node].resource_dict[r])
     # patient for the event
     patient = resource.get_curr_patient()
+    if not patient:
+        print(resource)
+        print("NO PATIENT", head.node_resource, resource.get_id(), head.patient_id)
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process

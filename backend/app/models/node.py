@@ -94,9 +94,9 @@ class Node:
     ''' Set number of actors and create the dictionary of resources,
     1 for each actor'''
 
-    def set_num_actors(self, num_actors):
-        self.num_actors = num_actors
-        self.resource_dict = self._create_resource_dict()
+    # def set_num_actors(self, num_actors):
+    #     self.num_actors = num_actors
+    #     self.resource_dict = self._create_resource_dict()
 
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
@@ -181,7 +181,7 @@ class Node:
     def handle_finished_patient(self, resource_id):
 
         resource = self.resource_dict[resource_id]
-
+        print("CLEAR PATIENT")
         # get the patient out of the subprocess. this
         # automatically sets him to available
         patient = resource.clear_patient()
@@ -307,10 +307,12 @@ class Node:
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
+        print("INSERT PATIENT TO RESOURCE")
         # insert patient into resource, since it's free
         time, duration = self.generate_finish_time()
         resource.insert_patient(patient, time, duration)
-
+        print(resource)
+        print(resource.get_id(), patient.id)
         self.add_to_heap(resource.get_id())
 
     '''A resource has just been filled with a patient.
