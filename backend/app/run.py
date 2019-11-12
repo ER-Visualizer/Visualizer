@@ -1,15 +1,15 @@
 import heapq
 import csv
 from threading import Timer
-from app.models.event import Event
-from app.models.node import Node
-from app.models.patient import Patient
-from app.models.statistic import Statistic
-from app.models.resource import Resource
-from app.models.queues import Queue
-from app.connect import WebsocketServer
-from app.models.global_time import GlobalTime
-from app.models.global_heap import GlobalHeap
+from models.event import Event
+from models.node import Node
+from models.patient import Patient
+from models.statistic import Statistic
+from models.resource import Resource
+from models.queues import Queue
+from connect import WebsocketServer
+from models.global_time import GlobalTime
+from models.global_heap import GlobalHeap
 
 # indexed by strings
 canvas = {"elements": []}
@@ -102,18 +102,19 @@ def create_queues():
             # read csv (for now, all patients added to reception queue at beginning)
             skipHeader = True
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input.csv"), delimiter=',')
+                open("models/sample_ED_input.csv"), delimiter=',')
             print("DICT")
             print(dict_reader)
+            #TODO for some reason it skips patient why, figure out why
             for row in dict_reader:
-                if skipHeader:
-                    skipHeader = False
-                    continue
-                else:
-                    print("adding patient to queue")
-                    next_patient = Patient(
-                        row["patient_id"], row["patient_acuity"], row["times"])
-                    nodes_list[node["id"]].put_patient_in_queue(next_patient)
+                # if skipHeader:
+                #     skipHeader = False
+                #     continue
+                # else:
+                print("adding patient to queue")
+                next_patient = Patient(
+                    row["patient_id"], row["patient_acuity"], row["times"])
+                nodes_list[node["id"]].put_patient_in_queue(next_patient)
         else:
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
@@ -178,18 +179,19 @@ def process_heap():
     # TODO: update statistics using time_diff
     time_diff = head.get_event_time() - time
 
-    head_node = head.get_node_id()
-    head_resource = head.get_node_resource()
+    head_node_id = head.get_node_id()
+    head_resource_id = head.get_node_resource_id()
 
-    resource = nodes_list[head_node].get_resource(head_resource)
+    resource = nodes_list[head_node_id].get_resource(head_resource_id)
     print("resources in node")
-    for r in nodes_list[head_node].resource_dict:
-        print(r, nodes_list[head_node].resource_dict[r])
+    for r in nodes_list[head_node_id].resource_dict:
+        print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
     patient = resource.get_curr_patient()
+    print("This is patient", patient)
     if not patient:
         print(resource)
-        print("NO PATIENT", head.node_resource, resource.get_id(), head.patient_id)
+        print("NO PATIENT", head.get_node_id, head.get_node_resource_id(), head.patient_id)
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
@@ -220,7 +222,7 @@ def process_heap():
 
 
     # send patient to next queues
-    nodes_list[head_node].handle_finished_patient(head_resource)
+    nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
     event_changes.append(head)

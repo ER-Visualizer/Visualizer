@@ -16,7 +16,7 @@ class Event():
     #     self.node_id = node_id
     #     self.node_resource = node_resource
 
-    def __init__(self, patient_id, event_time, node_id, node_resource_id, next_nodes):
+    def __init__(self, node_id, node_resource_id,  patient_id, event_time, next_nodes):
         self.patient_id = patient_id
         self.event_time = event_time
         self.node_id = node_id

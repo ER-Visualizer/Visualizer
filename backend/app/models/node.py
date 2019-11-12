@@ -1,10 +1,10 @@
-from app.models.queues import Queue, Stack, Heap
-import app.models.global_strings as global_strings
-from app.models.resource import Resource
-from app.models.event import Event
-from app.models.test_distrib import test_distribution
-from app.models.global_time import GlobalTime
-from app.models.global_heap import GlobalHeap
+from models.queues import Queue, Stack, Heap
+import models.global_strings as global_strings
+from models.resource import Resource
+from models.event import Event
+from models.test_distrib import test_distribution
+from models.global_time import GlobalTime
+from models.global_heap import GlobalHeap
 import copy
 import heapq
 import numpy as np
@@ -320,7 +320,7 @@ class Node:
 
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
-        event = Event(resource.get_curr_patient().get_id(), self.id, resource.get_finish_time(), resource_id, self.output_process_ids)
+        event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time(), self.output_process_ids)
         # heap = run.get_heap()
 
         heapq.heappush(GlobalHeap().heap, event)
