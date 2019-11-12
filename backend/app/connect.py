@@ -191,7 +191,7 @@ async def hello(websocket, path):
     name = await websocket.recv()
     print(f"< {name}")
 
-    greeting = f"Hello {name}!"
+    greeting = '{"userId": 3, "movedTo": 0, "startedAt": 1, "timeStamp": "0:03"}'
 
     await websocket.send(greeting)
     print(f"> {greeting}")

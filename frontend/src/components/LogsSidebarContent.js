@@ -13,7 +13,7 @@ class LogsSidebarContent extends React.Component {
     renderLogLines() {
         let logLines = []
         for (var i = 0; i < this.props.logs.length; i++) {
-            logLines.push(this.renderLogLine(this.props.logs[i]))
+            logLines.push(this.renderLogLine(this.props.logs[i]['message']))
         }
         return logLines
     }

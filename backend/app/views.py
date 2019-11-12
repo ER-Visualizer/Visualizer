@@ -41,12 +41,6 @@ def start_simulation():
     # TODO: call a function from run.py to start simulation
     return send_json_response(req_data)
 
-def function1():
-  print("rer")
-  print("ded")
-  print("dd")
-  pass
-
 """
 Returns a json response.
 """

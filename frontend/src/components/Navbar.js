@@ -5,26 +5,35 @@ import  {showLogs, showNodeConfig, showJSONEntrySidebar } from '../redux/actions
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
-import post from 'axios';
 
 class Navbar extends React.Component {
     constructor(props) {
-        super(props)
-        this.sendCanvas = this.sendCanvas.bind(this)
+        super(props);
+        this.sendCanvas = this.sendCanvas.bind(this);
+        this.updateRunButton = this.updateRunButton.bind(this);
+        this.state = {runButtonpressed: false};
     }
 
-    isValidJSON = (json) => {
-        try {
-            JSON.parse(this.state.layoutJSON);
-            return true;
-        } catch (e){
-            return false;
-        }
-    };
 
     async sendCanvas(){
-        const response = await post('http://localhost:8000/start', this.props.nodes)
-        console.log(response.data)
+        try {
+            let response = await fetch('http://localhost:8000/start', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.props.nodes),
+            });
+            let responseJson = await response.json();
+            return responseJson;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    updateRunButton(e){
+        e.target.classList.add("clickedButton")
     }
 
     render() {
@@ -32,7 +41,7 @@ class Navbar extends React.Component {
             <div className="Navbar">   
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
-                <button className="RunButton" onClick={this.sendCanvas}><PlayIcon /> Run</button>          
+                <button className="RunButton" onClick={(e) => {this.sendCanvas(); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
             </div>
         )
     }
