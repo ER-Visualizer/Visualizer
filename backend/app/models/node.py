@@ -1,10 +1,10 @@
-from app.models.queues import Queue, Stack, Heap
-import app.models.global_strings as global_strings
-from app.models.resource import Resource
-from app.models.event import Event
-from app.models.test_distrib import test_distribution
-from app.models.global_time import GlobalTime
-from app.models.global_heap import GlobalHeap
+from .queues import Queue, Stack, Heap
+from .global_strings import *
+from .resource import Resource
+from .event import Event
+from .test_distrib import test_distribution
+from .global_time import GlobalTime
+from .global_heap import GlobalHeap
 import copy
 import heapq
 import numpy as np
@@ -16,42 +16,42 @@ class Node:
     # to be changed. All of the distributions here are distributions available
     # in the numpy.random package
     class_distributions = {
-        global_strings.BETA: np.random.beta,
-        global_strings.BINOMIAL: np.random.binomial,
-        global_strings.CHISQUARE: np.random.chisquare,
-        global_strings.DIRICHLET: np.random.dirichlet,
-        global_strings.EXPONENTIAL: np.random.exponential,
-        global_strings.F: np.random.f,
-        global_strings.GAMMA: np.random.gamma,
-        global_strings.GEOMETRIC: np.random.geometric,
-        global_strings.GUMBEL: np.random.gumbel,
-        global_strings.HYPERGEOMETRIC: np.random.hypergeometric,
-        global_strings.LAPLACE: np.random.laplace,
-        global_strings.LOGISTIC: np.random.logistic,
-        global_strings.LOGNORMAL: np.random.lognormal,
-        global_strings.LOGSERIES: np.random.logseries,
-        global_strings.MULTINOMIAL: np.random.multinomial,
-        global_strings.MULTIVARIATE_NORMAL: np.random.multivariate_normal,
-        global_strings.NEGATIVE_BINOMIAL: np.random.negative_binomial,
-        global_strings.NONCENTRAL_CHISQUARE: np.random.noncentral_chisquare,
-        global_strings.NONCENTRAL_F: np.random.noncentral_f,
-        global_strings.NORMAL: np.random.normal,
-        global_strings.PARETO: np.random.pareto,
-        global_strings.POISSON: np.random.poisson,
-        global_strings.POWER: np.random.power,
-        global_strings.RAYLEIGH: np.random.rayleigh,
-        global_strings.STANDARD_CAUCHY: np.random.standard_cauchy,
-        global_strings.STANDARD_EXPONENTIAL: np.random.standard_exponential,
-        global_strings.STANDARD_GAMMA: np.random.standard_gamma,
-        global_strings.STANDARD_NORMAL: np.random.standard_normal,
-        global_strings.STANDARD_T: np.random.standard_t,
-        global_strings.TRIANGULAR: np.random.triangular,
-        global_strings.UNIFORM: np.random.uniform,
-        global_strings.VONMISSES: np.random.vonmises,
-        global_strings.WALD: np.random.wald,
-        global_strings.WEIBULL: np.random.weibull,
-        global_strings.ZIPF: np.random.zipf,
-        global_strings.TEST: test_distribution
+        BETA: np.random.beta,
+        BINOMIAL: np.random.binomial,
+        CHISQUARE: np.random.chisquare,
+        DIRICHLET: np.random.dirichlet,
+        EXPONENTIAL: np.random.exponential,
+        F: np.random.f,
+        GAMMA: np.random.gamma,
+        GEOMETRIC: np.random.geometric,
+        GUMBEL: np.random.gumbel,
+        HYPERGEOMETRIC: np.random.hypergeometric,
+        LAPLACE: np.random.laplace,
+        LOGISTIC: np.random.logistic,
+        LOGNORMAL: np.random.lognormal,
+        LOGSERIES: np.random.logseries,
+        MULTINOMIAL: np.random.multinomial,
+        MULTIVARIATE_NORMAL: np.random.multivariate_normal,
+        NEGATIVE_BINOMIAL: np.random.negative_binomial,
+        NONCENTRAL_CHISQUARE: np.random.noncentral_chisquare,
+        NONCENTRAL_F: np.random.noncentral_f,
+        NORMAL: np.random.normal,
+        PARETO: np.random.pareto,
+        POISSON: np.random.poisson,
+        POWER: np.random.power,
+        RAYLEIGH: np.random.rayleigh,
+        STANDARD_CAUCHY: np.random.standard_cauchy,
+        STANDARD_EXPONENTIAL: np.random.standard_exponential,
+        STANDARD_GAMMA: np.random.standard_gamma,
+        STANDARD_NORMAL: np.random.standard_normal,
+        STANDARD_T: np.random.standard_t,
+        TRIANGULAR: np.random.triangular,
+        UNIFORM: np.random.uniform,
+        VONMISSES: np.random.vonmises,
+        WALD: np.random.wald,
+        WEIBULL: np.random.weibull,
+        ZIPF: np.random.zipf,
+        TEST: test_distribution
     }
     node_dict = {}
 
@@ -140,11 +140,11 @@ class Node:
         # TODO Deal with Priority Queues
         print("queue type", self.queue_type)
         # Note. All of these are not thread-safe, so can't use threads on them
-        if self.queue_type == global_strings.STACK:
+        if self.queue_type == STACK:
             return Stack()
-        elif self.queue_type == global_strings.QUEUE:
+        elif self.queue_type == QUEUE:
             return Queue()
-        elif self.queue_type == global_strings.PRIORITY_QUEUE:
+        elif self.queue_type == PRIORITY_QUEUE:
             return Heap()
         else:
             raise Exception("This type of queue is not implemented yet")

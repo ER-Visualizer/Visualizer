@@ -25,10 +25,11 @@ class Navbar extends React.Component {
                   Accept: 'application/json',
                   'Content-Type': 'application/json',
                 },
-                crossDomain: true,
+                mode: 'no-cors',
                 body: JSON.stringify(this.props.nodes),
             });
-            let responseJson = await response.json();
+            console.log(response);
+            let responseJson = await response.body.json();
             console.log({responseJson});
             return responseJson;
         } catch (error) {
