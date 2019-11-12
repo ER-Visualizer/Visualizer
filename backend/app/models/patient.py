@@ -1,6 +1,7 @@
 class Patient():
 
-    def __init__(self, acuity=None, start_time=None):
+    def __init__(self, id, acuity=None, start_time=None):
+        self.id = id
         self.is_available = True
         self.acuity = acuity
         self.start_time = start_time
@@ -12,6 +13,9 @@ class Patient():
 
     def __lt__(self, other):
         return self.acuity > other.acuity
+
+    def get_id(self):
+        return self.id
 
     def set_acuity(self, acuity):
         self.acuity = acuity

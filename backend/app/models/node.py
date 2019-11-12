@@ -2,15 +2,15 @@ from app.models.queues import Queue, Stack, Heap
 import app.models.global_strings as global_strings
 from app.models.resource import Resource
 from app.models.event import Event
-from app import run
+from app.models.test_distrib import test_distribution
+from app.models.global_time import GlobalTime
+from app.models.global_heap import GlobalHeap
 import copy
 import heapq
 import numpy as np
 
 
 class Node():
-
-    # TODO: generate dictionary of Nodes, and make it static
 
     # This is a static variable which all Node classes share, as it doesn't need
     # to be changed. All of the distributions here are distributions available
@@ -50,8 +50,10 @@ class Node():
         global_strings.VONMISSES: np.random.vonmises,
         global_strings.WALD: np.random.wald,
         global_strings.WEIBULL: np.random.weibull,
-        global_strings.ZIPF: np.random.zipf
+        global_strings.ZIPF: np.random.zipf,
+        global_strings.TEST: test_distribution
     }
+    node_dict = {}
 
     def __init__(self, id, queue_type, priority_function, num_actors,
                  process_name=None, distribution_name=None,
@@ -75,6 +77,8 @@ class Node():
         self.distribution_name = distribution_name
         self.distribution_parameters = distribution_parameters
         self.output_process_ids = output_process_ids
+
+        Node.node_dict[self.id] = self
 
     def set_id(self, id):
         self.id = id
@@ -146,7 +150,7 @@ class Node():
 
         duration = Node.class_distributions[self.get_distribution_name()](
             self.get_distribution_parameters())
-        finish_time = run.get_curr_time() + duration
+        finish_time = GlobalTime.time + duration
         return finish_time
 
     '''
@@ -188,7 +192,7 @@ class Node():
         # to be put in (outgoing processes from
         # parent_process)
         for process_id in self.output_process_ids:
-            Node.processDict[process_id].put_patient_in_queue(patient)
+            Node.node_dict[process_id].put_patient_in_queue(patient)
 
         # call fill_spot on this subprocess because now we have an empty spot there
         self.fill_spot_for_resource(resource)
@@ -246,7 +250,7 @@ class Node():
         for patient in iterator:
             if patient.is_available():
                 if subprocess.pass_rule(patient):
-
+                    # remove from queue
                     if(isinstance(self.queue, Heap)):
                         # get the index of the patient to remove
                         index_to_remove = indices_to_patients[patient]
@@ -257,12 +261,8 @@ class Node():
                         # already have a hold of him
                         self.queue.remove(patient)
 
-                    # insert into resource
-                    time = self.generate_finish_time()
-                    subprocess.insert(patient, time)
-
-                    # add element on the heap
-                    self.add_to_heap(subprocess.get_id())
+                    self.insert_patient_to_resource_and_heap(
+                        patient, subprocess)
                     return True
 
         return False
@@ -297,21 +297,23 @@ class Node():
             for resource in self.resource_dict.values():
                 if resource.is_available():
                     if resource.pass_rule(patient):
-
-                        # insert patient into resource, since it's free
-                        time = self.generate_finish_time()
-                        resource.insert_patient(patient, time)
-
-                        self.add_to_heap(resource.get_id())
+                        self.insert_patient_to_resource_and_heap(
+                            patient, resource)
                         return True
-
         return False
+
+    def insert_patient_to_resource_and_heap(self, patient, resource):
+        # insert patient into resource, since it's free
+        time = self.generate_finish_time()
+        resource.insert_patient(patient, time)
+
+        self.add_to_heap(resource.get_id())
 
     '''A resource has just been filled with a patient.
     Get its event, and add it to the heap'''
 
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
-        event = Event(resource.get_finish_time(), self.id,  resource_id)
-        heap = run.get_heap()
-        heapq.heappush(heap, event)
+        event = Event(resource.get_curr_patient().get_id(), self.id, resource.get_finish_time(), resource_id, self.output_process_ids)
+        # heap = run.get_heap()
+        heapq.heappush(GlobalHeap.heap, event)
