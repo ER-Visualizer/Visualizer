@@ -46,8 +46,8 @@ def canvas_parser(canvas_json):
             {
                 "id": 1,
                 "elementType": "reception",
-                "distribution": "binomial",
-                "distributionParameters": [3, 1],
+                "distribution": "test",
+                "distributionParameters": [5],
                 "numberOfActors": 1,
                 "queueType": "stack",
                 "priorityFunction": "",
@@ -56,18 +56,18 @@ def canvas_parser(canvas_json):
             {
                 "id": 2,
                 "elementType": "triage",
-                "distribution": "binomial",
-                "distributionParameters": [3, 1],
-                "numberOfActors": 10,
+                "distribution": "test",
+                "distributionParameters":[3],
+                "numberOfActors": 2,
                 "queueType": "stack",
                 "priorityFunction": "",
                 "children": [3, 4]
             },
             {
                 "id": 3,
-                "elementType": "patient",
-                "distribution": "binomial",
-                "distributionParameters": [3, 1],
+                "elementType": "doctor",
+                "distribution": "test",
+                "distributionParameters": [10],
                 "numberOfActors": 3,
                 "queueType": "queue",
                 "priorityFunction": "",
@@ -168,7 +168,8 @@ def process_heap():
         return False
 
     head = heapq.heappop(event_heap)
-
+    # If an event just finished, that must be the current time, so update it.
+    GlobalTime.time = head.get_event_time()
     if not isinstance(head, Event):
         raise Exception("Non Event object in event heap")
 
