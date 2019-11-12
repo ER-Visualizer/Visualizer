@@ -5,7 +5,6 @@ import  {showLogs, showNodeConfig, showJSONEntrySidebar } from '../redux/actions
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
-import post from 'axios';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -23,8 +22,20 @@ class Navbar extends React.Component {
     };
 
     async sendCanvas(){
-        const response = await post('http://localhost:8000/start', this.props.nodes)
-        console.log(response.data)
+        try {
+            let response = await fetch('http://localhost:8000/start', {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(this.props.nodes),
+            });
+            let responseJson = await response.json();
+            return responseJson;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     render() {
