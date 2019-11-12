@@ -38,13 +38,25 @@ To ease testing, you can choose to only run one service at a time, i.e server or
 This can be done simply by specifying:
 
 ```
-docker-compose up -d client
+docker-compose up client
 ```
 
 or 
 
 ```
-docker-compose up -d server
+docker-compose up server
 ```
 
 Note that there will be no connection to between services if run in this way.
+
+Add the the option -d in order to run docker-compose on the background.
+
+```
+docker-compose up -d
+```
+
+To view logs after running ther services on the background:
+
+```
+ docker-compose logs -f
+ ```
