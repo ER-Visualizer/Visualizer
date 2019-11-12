@@ -30,6 +30,7 @@ class Statistic:
     Adds the time taken for a single patient in a specific process including wait time.
     """
     def add_process_time(self, p_id, process, time):
+        p_id = "Patient_" + str(p_id)
         if p_id not in self.p_process_times:
             self.p_process_times[p_id] = {}
         self.p_process_times[p_id][process] = time
@@ -38,6 +39,7 @@ class Statistic:
     Adds the wait time for a patient in a specific process
     """
     def add_wait_time(self, p_id, process, time):
+        p_id = "Patient_" + str(p_id)
         if p_id not in self.p_wait_times:
             self.p_wait_times[p_id] = {}
         self.p_wait_times[p_id][process] = time
@@ -46,6 +48,7 @@ class Statistic:
     Increments the number of patients seen for a specific doctor
     """
     def increment_doc_seen(self, d_id):
+        d_id = "Doctor_" + str(d_id)
         if d_id not in self.d_seen:
             self.d_seen[d_id] = 0
         self.d_seen[d_id] += 1
@@ -55,6 +58,8 @@ class Statistic:
     specific doctor
     """
     def add_doc_patient_time(self, d_id, p_id, time):
+        d_id = "Doctor_" + str(d_id)
+        p_id = "Patient_" + str(p_id)
         if d_id not in self.d_length:
             self.d_length[d_id] = {}
         if p_id not in self.d_length[d_id]:
