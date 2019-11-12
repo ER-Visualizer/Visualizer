@@ -8,18 +8,12 @@ import {ReactComponent as JSONIcon} from '../json.svg';
 
 class Navbar extends React.Component {
     constructor(props) {
-        super(props)
-        this.sendCanvas = this.sendCanvas.bind(this)
+        super(props);
+        this.sendCanvas = this.sendCanvas.bind(this);
+        this.updateRunButton = this.updateRunButton.bind(this);
+        this.state = {runButtonpressed: false};
     }
 
-    isValidJSON = (json) => {
-        try {
-            JSON.parse(this.state.layoutJSON);
-            return true;
-        } catch (e){
-            return false;
-        }
-    };
 
     async sendCanvas(){
         try {
@@ -38,12 +32,16 @@ class Navbar extends React.Component {
         }
     }
 
+    updateRunButton(e){
+        e.target.classList.add("clickedButton")
+    }
+
     render() {
         return (
             <div className="Navbar">   
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
-                <button className="RunButton" onClick={this.sendCanvas}><PlayIcon /> Run</button>          
+                <button className="RunButton" onClick={(e) => {this.sendCanvas(); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
             </div>
         )
     }

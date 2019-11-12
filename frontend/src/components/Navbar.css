@@ -33,6 +33,9 @@
     border-radius: 100px;
     padding-left: 16px;
     padding-right: 16px;
+
+    transition-duration: 0.4s;
+    outline: 0;
 }
 .Navbar .ShowLogsButton svg {
     width: 16px;
@@ -53,6 +56,8 @@
     font-weight: 700;
     font-size: 16px;
     float: right;
+
+    outline: 0;
 }
 .Navbar .RunButton svg{
     height: 16px;
@@ -60,6 +65,11 @@
     color: white;
     fill: white;
     margin-right: 4px;
+}
+
+.Navbar .clickedButton {
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .Navbar .JSONEntryButton{
@@ -77,6 +87,13 @@
     border-radius: 100px;
     padding-left: 13px;
     padding-right: 16px;
+
+    transition-duration: 0.4s;
+    outline: 0;
+}
+
+.Navbar .JSONEntryButton:hover, .Navbar .ShowLogsButton:hover{
+    background-color: rgb(184, 184, 184)
 }
 
 .Navbar .JSONEntryButton svg{
