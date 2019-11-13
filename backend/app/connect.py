@@ -218,6 +218,7 @@ class WebsocketServer:
         self.wserver = None
         self.process = process
         self.stats = statistics
+        self.sent_stats = False
 
     def start(self):
         loop = asyncio.new_event_loop()
@@ -239,17 +240,17 @@ class WebsocketServer:
         check = self.process()
         print(check)
         message = self.producerFunc()
-        if message == []:
-            message = '{"Event": {}}'
-        if not check:
+        if not check and not self.sent_stats:
             stats = self.stats()
-            print(stats)
-            await websocket.send(json.dumps(stats))
-            self.close()
-        try:
-            await websocket.send(message)
-        except websockets.exceptions.ConnectionClosed:
-            self.close()
+            message = json.dumps(stats)
+            self.sent_stats = True
+        elif not check or message == []:
+            message = '{"Event": {}}'
+        else:
+            self.sent_stats = False
+
+        await websocket.send(message)
+
 
 
 
