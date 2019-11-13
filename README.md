@@ -2,8 +2,11 @@
 
 ## Docker Setup
 
-Simply run 
-
+Simply run the below command if it's your first time running/building the project
+```
+docker-compose up --build
+``` 
+In the event that you have previously build the project, you can simply run
 ```
 docker-compose up
 ``` 
