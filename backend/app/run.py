@@ -103,7 +103,7 @@ def create_queues():
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
             nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
-                                          distribution_name=None, distribution_parameters=None,
+                                          distribution_name="test", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
@@ -139,11 +139,11 @@ Sends changes to frontend and repeats at intervals dictated by packet_rate
 def send_e():
     global event_changes
     if len(event_changes) == 0:
-        print("NO EVENTS CHANGE")
+        # print("NO EVENTS CHANGE")
         # send nothing if no changes
         return []
     else:
-        print("EVENT CHANGEs")
+        # print("EVENT CHANGEs")
 
     new_changes = []
     global packet_start
