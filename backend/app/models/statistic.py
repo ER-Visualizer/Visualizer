@@ -19,6 +19,15 @@ class Statistic:
 
     """
     Return current statistics
+    
+    Format:
+    
+    hospital: Hospital statistics: Average total journey time, average total wait time, average ratio of wait time to journey
+    patient: process: For each patient, the total time spent at each process
+    patient: wait: For each patient, the total wait time at each process
+    doctor: seen: For each doctor, the total number of patients seen
+    doctor: length: For each doctor, the length of the patient doctor interaction of each patient (is a list since there
+    can be more than one PD interaction
     """
     def calculate_stats(self):
         hospital_stats = self._calculate_hospital_avgs()

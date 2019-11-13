@@ -33,7 +33,7 @@ class Main extends React.Component {
     parseEventData(eventData) {
         return {
             eventData: eventData,
-            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to queue ${eventData['movedTo']} from queue ${eventData['startedAt']}`
+            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable
@@ -52,8 +52,8 @@ class Main extends React.Component {
 
             this.setState({ ws: ws });
 
-            // that.timeout = 100; // reset timer to 250 on open of websocket connection 
-            // clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+            that.timeout = 100; // reset timer to 250 on open of websocket connection 
+            clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
         ws.onmessage = event => {
