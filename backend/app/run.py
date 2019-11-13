@@ -109,7 +109,7 @@ def create_queues():
 
             # read csv (for now, all patients added to reception queue at beginning)
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input_3days.csv"), delimiter=',')
+                open("app/models/sample_ED_input.csv"), delimiter=',')
             for row in dict_reader:
                 if initial_time is None:
                     initial_time = row["time"]
@@ -214,14 +214,15 @@ def process_heap():
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
     event_changes.append(completed_event)
 
-    # add to list of event changess
+    # TODO off by one error, change if statement to check for counter > 0 where counter is the number of patients
+    # TODO each time reduce counter by 1
     if process_name == 'patient_loader':
         process_heap()
 
     # continue __main__ loop
     return True
 
-# TODO: statistics reporting
+
 def report_statistics():
     return statistics.calculate_stats()
 

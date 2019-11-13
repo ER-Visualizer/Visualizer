@@ -15,9 +15,9 @@ class Navbar extends React.Component {
     }
 
 
-    async sendCanvas(){
+    async sendCanvas(e){
         try {
-            console.log(this.props.nodes);
+            console.log("send canvas");
             
             let response = await fetch('http://localhost:8000/start', {
                 method: 'POST',
@@ -38,15 +38,14 @@ class Navbar extends React.Component {
     }
 
     updateRunButton(e){
-        e.target.classList.add("clickedButton")
+        e.target.classList.add("clickedButton")     
     }
-
     render() {
         return (
             <div className="Navbar">   
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
-                <button className="RunButton" onClick={(e) => {this.sendCanvas(); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
+                <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
             </div>
         )
     }
