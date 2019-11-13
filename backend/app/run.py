@@ -81,7 +81,7 @@ def canvas_parser(canvas_json):
                 "distribution": "binomial",
                 "distributionParameters": [1, 1],
                 "numberOfActors": 2,
-                "queueType": "priority queue",
+                "queueType": "queue",
                 "priorityFunction": "",
                 "children": []
             }

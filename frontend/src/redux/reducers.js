@@ -5,38 +5,79 @@ const initialState = {
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
     nodeCount: 0,
-    nodes: [ // hardcoded data
-        {
-            Id: 0,
-            Element_type: "reception",
-            Distribution: "gaussian", // dummy variables for now
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
-            Queue_type: "stack",
-            Priority_function: "",
-            Children: [1, 2]
-        },
+    nodes: [
         {
             Id: 1,
-            Element_type: "triage",
-            Distribution: "gaussian", 
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
+            Element_type: "reception",
+            Distribution: "test",
+            Distribution_Parameters: [5],
+            Number_of_actors: 1,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [0, 2]
+            Children: [2]
         },
         {
             Id: 2,
-            Element_type: "pd",
-            Distribution: "gaussian", 
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
+            Element_type: "triage",
+            Distribution: "test",
+            Distribution_Parameters:[3],
+            Number_of_actors: 2,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [1]
+            Children: [3, 4]
+        },
+        {
+            Id: 3,
+            Element_type: "doctor",
+            Distribution: "test",
+            Distribution_Parameters: [10],
+            Number_of_actors: 3,
+            Queue_type: "queue",
+            Priority_function: "",
+            Children: []
+        },
+        {
+            Id: 4,
+            Element_type: "x-ray",
+            Distribution: "binomial",
+            Distribution_Parameters: [1, 1],
+            Number_of_actors: 2,
+            Queue_type: "queue",
+            Priority_function: "",
+            Children: []
         }
-    ]
+    ]//[ // hardcoded data
+    //     {
+    //         Id: 0,
+    //         Element_type: "reception",
+    //         Distribution: "gaussian", // dummy variables for now
+    //         Distribution_parameters: [3,1],
+    //         Number_of_actors: 10,
+    //         Queue_type: "stack",
+    //         Priority_function: "",
+    //         Children: [0, 2]
+    //     },
+    //     {
+    //         Id: 1,
+    //         Element_type: "triage",
+    //         Distribution: "gaussian", 
+    //         Distribution_parameters: [3,1],
+    //         Number_of_actors: 10,
+    //         Queue_type: "stack",
+    //         Priority_function: "",
+    //         Children: [0, 2]
+    //     },
+    //     {
+    //         Id: 2,
+    //         Element_type: "pd",
+    //         Distribution: "gaussian", 
+    //         Distribution_parameters: [3,1],
+    //         Number_of_actors: 10,
+    //         Queue_type: "stack",
+    //         Priority_function: "",
+    //         Children: [1]
+    //     }
+    // ]
 
 }
 
