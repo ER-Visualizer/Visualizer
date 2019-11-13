@@ -173,13 +173,21 @@ class Main extends React.Component {
         }
     }
 
+    sidebarBorder() {
+        if(this.props.showLogsSidebar) {
+            return "1px solid black";
+        } else {
+            return "none";
+        }
+    }
+
     render() {
         return (
             <div className="Main">
                 <Sidebar
                     sidebar={this.renderSidebarContent()}
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
-                    styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: "1px solid black" } }}
+                    styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
                 >
                 <Navbar />
