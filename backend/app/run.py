@@ -21,7 +21,6 @@ nodes_list = {}
 initial_time = None
 event_heap = GlobalHeap.heap
 event_changes = []
-time = GlobalTime.time
 
 packet_start = -1
 
@@ -102,7 +101,7 @@ def create_queues():
 
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "queue",  "", 4000, process_name="patient_loader",
                                           distribution_name="test", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -129,9 +128,6 @@ def create_queues():
 # """
 # Create event heap
 # """
-# def create_heap(heap):
-#     heapq.heapify(heap)
-
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
@@ -139,11 +135,8 @@ Sends changes to frontend and repeats at intervals dictated by packet_rate
 def send_e():
     global event_changes
     if len(event_changes) == 0:
-        # print("NO EVENTS CHANGE")
         # send nothing if no changes
         return []
-    else:
-        # print("EVENT CHANGEs")
 
     new_changes = []
     global packet_start
@@ -177,7 +170,7 @@ def process_heap():
 
     # exit condition for __main__ loop
     if len(event_heap) == 0:
-        print("event heap emptyy")
+        # print("event heap emptyy")
         return False
 
     completed_event = heapq.heappop(event_heap)
@@ -186,16 +179,13 @@ def process_heap():
     if not isinstance(completed_event, Event):
         raise Exception("Non Event object in event heap")
 
-    # TODO: update statistics using time_diff
-    time_diff = completed_event.get_event_time() - time
-
     head_node_id = completed_event.get_node_id()
     head_resource_id = completed_event.get_node_resource_id()
 
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
-    print("resources in node")
-    for r in nodes_list[head_node_id].resource_dict:
-        print(r, nodes_list[head_node_id].resource_dict[r])
+    # print("resources in node")
+    # for r in nodes_list[head_node_id].resource_dict:
+    #     print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
     patient = resource.get_curr_patient()
 
@@ -203,8 +193,8 @@ def process_heap():
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
     join_queue_time = patient.get_join_queue_time()
-    print("join queue time")
-    print(join_queue_time)
+    # print("join queue time")
+    # print(join_queue_time)
     # the patient joins a new queue at the current time
     patient.set_join_queue_time(completed_event.get_event_time())
 
@@ -232,24 +222,19 @@ def process_heap():
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
-    print("event changes", event_changes)
+    # print("event changes", event_changes)
     event_changes.append(completed_event)
 
     # continue __main__ loop
     return True
 
 # TODO: statistics reporting
-
-
 def report_statistics():
     return statistics.calculate_stats()
 
 
-# def get_heap():
-#     return event_heap
-
 def get_curr_time():
-    return time
+    return GlobalTime.time
 
 
 def main():
@@ -278,10 +263,10 @@ def main():
     # start sending every X secondss
     # send_e() pls
 
-    # process events until heap is emptiedddd
+    # process events until heap is emptied
     print("before processheap")
     while (process_heap()):
-        print("processheap")
+        # print("processheap")
         process_heap()
 
     print(report_statistics())
