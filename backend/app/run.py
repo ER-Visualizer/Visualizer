@@ -154,10 +154,12 @@ def send_e():
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
+            curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
+            # next_resource = nodes_list[next_q].get_resource(nodes_list[next_q].get_node_resource_id())
             event_dict = {
                 "patientId": event_changes[0].get_patient_id(),
-                "movedTo": next_q,
-                "startedAt": event_changes[0].get_node_id(),
+                "movedTo": nodes_list[next_q].get_process_name(),
+                "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time()
             }
             new_changes.append(event_dict)
@@ -253,6 +255,13 @@ def get_curr_time():
 def main():
     print("IN MAIN")
     GlobalTime.time = 0
+    global initial_time, nodes_list, event_changes, statistics, packet_start
+    initial_time = None
+    event_changes = []
+    nodes_list = {}
+    statistics = Statistic()
+    packet_start = -1
+
     # this will read canvas json
     canvas_parser({})
 

@@ -14,7 +14,8 @@ class Main extends React.Component {
         super(props)
         this.state = {
             events: [],
-            selectedNode: null
+            selectedNode: null,
+            ws: null
         }
         this.data = {
             element_type: "triage",
@@ -32,7 +33,7 @@ class Main extends React.Component {
     parseEventData(eventData) {
         return {
             eventData: eventData,
-            message: `[${eventData.timeStamp}] user ${eventData['patientId']} moved to queue ${eventData['movedTo']} from queue ${eventData['startedAt']}`
+            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable
@@ -45,14 +46,13 @@ class Main extends React.Component {
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
         var connectInterval;
-
         // websocket onopen event listener
         ws.onopen = () => {
             console.log("connected websocket main component");
 
             this.setState({ ws: ws });
 
-            that.timeout = 250; // reset timer to 250 on open of websocket connection 
+            that.timeout = 100; // reset timer to 250 on open of websocket connection 
             clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
@@ -120,7 +120,11 @@ class Main extends React.Component {
     componentDidMount() {
         this.connect();
     }
-
+    componentWillUnmount() {
+      if (this.state.ws) {
+              this.state.ws.close();
+          }
+    }
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
