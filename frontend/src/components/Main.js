@@ -153,7 +153,7 @@ class Main extends React.Component {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar && this.state.selectedNode) {
-            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode] }/>
+            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode - 1] }/>
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
         }
@@ -182,6 +182,8 @@ class Main extends React.Component {
     };
 
     nodeClick(nodeId) {
+        console.log(nodeId);
+        
         const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
         console.log(shouldHide);
         this.setState({
