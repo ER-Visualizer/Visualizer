@@ -93,11 +93,17 @@ def create_queues():
     global initial_time
     for node in canvas["elements"]:
         print("IN NODE")
-        # treat reception node differently (for now, will always be a Queue() with 1 actor)
+
+        # create node
+        nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+                                        process_name=node["elementType"], distribution_name=node["distribution"],
+                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
+
+        # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[node["id"]] = Node(node["id"], "queue", node["priorityFunction"], 1, process_name=node["elementType"],
-                                          distribution_name=node["distribution"], distribution_parameters=node["distributionParameters"],
-                                          output_process_ids=node["children"])
+            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+                                          distribution_name=None, distribution_parameters=None,
+                                          output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
 
@@ -115,14 +121,8 @@ def create_queues():
                 patient_time = float(patient_time.seconds)/60
                 next_patient = Patient(
                     int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
-                nodes_list[node["id"]].put_patient_in_queue(next_patient)
-        else:
-            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
-                                        process_name=node["elementType"], distribution_name=node["distribution"],
-                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
+                nodes_list[-1].put_patient_in_queue(next_patient)
 
-        # # TODO: pass the list of nodes to the Node class
-        # Node._create_resource_dict(nodes_list)
 
 
 # """
