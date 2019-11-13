@@ -101,7 +101,7 @@ def create_queues():
 
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 100, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
                                           distribution_name="test", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -109,7 +109,7 @@ def create_queues():
 
             # read csv (for now, all patients added to reception queue at beginning)
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input.csv"), delimiter=',')
+                open("app/models/sample_ED_input_3days.csv"), delimiter=',')
             for row in dict_reader:
                 if initial_time is None:
                     initial_time = row["time"]
