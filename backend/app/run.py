@@ -38,7 +38,7 @@ Setup Canvas:
 
 input = list of nodes [{id: ..., next: [...]}, ... ] as json
 """
-
+ 
 
 def canvas_parser(canvas_json):
     global canvas
