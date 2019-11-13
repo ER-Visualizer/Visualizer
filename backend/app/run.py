@@ -110,11 +110,11 @@ def create_queues():
 
             # read csv (for now, all patients added to reception queue at beginning)
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input.csv"), delimiter=',')
+                open("app/models/sample_ED_input_3days.csv"), delimiter=',')
             print("DICT")
             print(dict_reader)
             for row in dict_reader:
-                print("adding patient to queue")
+                print("adding patient to queue")#
                 if initial_time is None:
                     initial_time = row["times"]
                 FMT = '%Y-%m-%d %H:%M:%S'
