@@ -252,6 +252,7 @@ def get_curr_time():
 
 def main():
     print("IN MAIN")
+    GlobalTime.time = 0
     # this will read canvas json
     canvas_parser({})
 

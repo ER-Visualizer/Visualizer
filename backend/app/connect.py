@@ -3,7 +3,7 @@ import websockets
 from random import randint, random
 import json
 import time
-
+import signal
 # class WebsocketServer:
 #     def __init__(self, host, port, producerFunc):
 #         self.host = host
@@ -196,26 +196,44 @@ async def hello(websocket, path):
     await websocket.send(greeting)
     print(f"> {greeting}")
 
+# Stop the loop concurrently
+@asyncio.coroutine
+def exit():
+    loop = asyncio.get_event_loop()
+    print("Stop")
+    loop.stop()
+
+
+def ask_exit():
+    for task in asyncio.Task.all_tasks():
+        task.cancel()
+    asyncio.ensure_future(exit())
+
 class WebsocketServer:
     def __init__(self, host, port, producerFunc, process, statistics):
         self.host = host
         self.port = port
         self.producerFunc = producerFunc
         self.server = None
+        self.wserver = None
         self.process = process
         self.stats = statistics
 
     def start(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        self.server = websockets.serve(self.__producer_handler, port=self.port, loop=loop)
-        loop.run_until_complete(self.server)
+        self.wserver = websockets.serve(self.__producer_handler, port=self.port, loop=loop)
+        self.server = loop.run_until_complete(self.wserver)
+
         loop.run_forever()
 
 
     def close(self):
+        self.server.close()
         print("closing socketssssssss")
+        asyncio.get_event_loop().run_until_complete(self.server.wait_closed())
         asyncio.get_event_loop().stop()
+        asyncio.get_event_loop().close()
 
     async def __producer_handler(self, websocket, path):
         check = self.process()
