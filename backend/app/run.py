@@ -29,7 +29,7 @@ packet_start = -1
 packet_duration = 300
 
 # default: send every 5 seconds
-packet_rate = 0
+packet_rate = 1
 
 # instantiate statistics
 statistics = Statistic()
@@ -102,7 +102,7 @@ def create_queues():
 
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "queue",  None, 100, process_name="patient_loader",
                                           distribution_name="test", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -110,11 +110,8 @@ def create_queues():
 
             # read csv (for now, all patients added to reception queue at beginning)
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input_3days.csv"), delimiter=',')
-            print("DICT")
-            print(dict_reader)
+                open("app/models/sample_ED_input.csv"), delimiter=',')
             for row in dict_reader:
-                print("adding patient to queue")#
                 if initial_time is None:
                     initial_time = row["time"]
                 FMT = '%Y-%m-%d %H:%M:%S.%f'
@@ -150,7 +147,6 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-    print("event changes", event_changes)
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
@@ -191,8 +187,7 @@ def process_heap():
     head_resource_id = completed_event.get_node_resource_id()
 
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
-    for r in nodes_list[head_node_id].resource_dict:
-        print(r, nodes_list[head_node_id].resource_dict[r])
+
     # patient for the event
     patient = resource.get_curr_patient()
 
