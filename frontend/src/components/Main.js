@@ -70,7 +70,6 @@ class Main extends React.Component {
                     for(let i = 0; i < events.length; i++){
                         let event = events[i]
                         new_events = new_events.concat(this.parseEventData(event))
-
                     }
                     this.setState({
                     events: new_events
@@ -168,13 +167,29 @@ class Main extends React.Component {
         }.bind(this), 300);
     }
 
+    sidebarColor() {
+        if(this.props.showLogsSidebar) {
+            return "#01121E";
+        } else {
+            return "white";
+        }
+    }
+
+    sidebarBorder() {
+        if(this.props.showLogsSidebar) {
+            return "1px solid black";
+        } else {
+            return "none";
+        }
+    }
+
     render() {
         return (
             <div className="Main">
                 <Sidebar
                     sidebar={this.renderSidebarContent()}
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
-                    styles={{ sidebar: { background: "white", color: "black" } }}
+                    styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
                 >
                 <Navbar />

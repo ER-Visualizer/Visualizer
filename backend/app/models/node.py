@@ -150,9 +150,11 @@ class Node:
             raise Exception("This type of queue is not implemented yet")
 
     def generate_finish_time(self):
-
-        duration = Node.class_distributions[self.get_distribution_name()](
-            *self.get_distribution_parameters())
+        if self.get_distribution_name() is None: 
+            duration = 0
+        else:
+            duration = Node.class_distributions[self.get_distribution_name()](
+                *self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
         return finish_time, duration
 
