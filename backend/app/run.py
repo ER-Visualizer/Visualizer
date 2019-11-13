@@ -253,6 +253,13 @@ def get_curr_time():
 def main():
     print("IN MAIN")
     GlobalTime.time = 0
+    global initial_time, nodes_list, event_changes, statistics, packet_start
+    initial_time = None
+    event_changes = []
+    nodes_list = {}
+    statistics = Statistic()
+    packet_start = -1
+
     # this will read canvas json
     canvas_parser({})
 
