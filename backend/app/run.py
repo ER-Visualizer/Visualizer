@@ -29,7 +29,7 @@ packet_start = -1
 packet_duration = 300
 
 # default: send every 5 seconds
-packet_rate = 5
+packet_rate = 0
 
 # instantiate statistics
 statistics = Statistic()
@@ -116,9 +116,9 @@ def create_queues():
             for row in dict_reader:
                 print("adding patient to queue")
                 if initial_time is None:
-                    initial_time = row["times"]
-                FMT = '%Y-%m-%d %H:%M:%S'
-                patient_time = datetime.strptime(row["times"], FMT) - datetime.strptime(initial_time, FMT)
+                    initial_time = row["time"]
+                FMT = '%Y-%m-%d %H:%M:%S.%f'
+                patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
                 patient_time = float(patient_time.seconds)/60
                 next_patient = Patient(
                     int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
@@ -151,7 +151,7 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-
+    print("event changes", event_changes)
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
@@ -168,7 +168,7 @@ def send_e():
     # TODO send new_changes to frontend !
     # print("changes!!!", new_changes)
     # send again after some time (removed for producerFunc implementation)
-    # Timer(packet_rate, send_events).start()
+    # Timer(packet_rate, send_e).start()
 
     return json.dumps({"Events": new_changes})
 
@@ -177,7 +177,6 @@ def process_heap():
 
     # exit condition for __main__ loop
     if len(event_heap) == 0:
-        print("event heap emptyy")
         return False
 
     completed_event = heapq.heappop(event_heap)
@@ -193,7 +192,6 @@ def process_heap():
     head_resource_id = completed_event.get_node_resource_id()
 
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
-    print("resources in node")
     for r in nodes_list[head_node_id].resource_dict:
         print(r, nodes_list[head_node_id].resource_dict[r])
     # patient for the event
@@ -203,8 +201,7 @@ def process_heap():
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
     join_queue_time = patient.get_join_queue_time()
-    print("join queue time")
-    print(join_queue_time)
+
     # the patient joins a new queue at the current time
     patient.set_join_queue_time(completed_event.get_event_time())
 
@@ -232,7 +229,6 @@ def process_heap():
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
-    print("event changes", event_changes)
     event_changes.append(completed_event)
 
     # continue __main__ loop
@@ -253,7 +249,6 @@ def get_curr_time():
 
 
 def main():
-    print("IN MAIN")
     GlobalTime.time = 0
     global initial_time, nodes_list, event_changes, statistics, packet_start
     initial_time = None
@@ -272,7 +267,7 @@ def main():
     create_queues()
 
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics)
+    server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
     server.start()
 
     # start sending every X secondss
@@ -281,7 +276,6 @@ def main():
     # process events until heap is emptiedddd
     print("before processheap")
     while (process_heap()):
-        print("processheap")
         process_heap()
 
     print(report_statistics())

@@ -138,7 +138,6 @@ class Node:
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
-        print("queue type", self.queue_type)
         # Note. All of these are not thread-safe, so can't use threads on them
         if self.queue_type == STACK:
             return Stack()
@@ -183,7 +182,6 @@ class Node:
     def handle_finished_patient(self, resource_id):
 
         resource = self.resource_dict[resource_id]
-        print("CLEAR PATIENT")
         # get the patient out of the subprocess. this
         # automatically sets him to available
         patient = resource.clear_patient()
@@ -291,7 +289,6 @@ class Node:
 
     def fill_spot(self, patient):
         # TODO: consider random order
-        print("FILL SPOT")
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
             # iterate through all resource(possibly random order) and check
@@ -309,12 +306,9 @@ class Node:
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
-        print("INSERT PATIENT TO RESOURCE")
         # insert patient into resource, since it's free
         time, duration = self.generate_finish_time()
         resource.insert_patient(patient, time, duration)
-        print(resource)
-        print(resource.get_id(), patient.id)
         self.add_to_heap(resource.get_id())
 
     '''A resource has just been filled with a patient.

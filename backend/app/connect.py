@@ -210,7 +210,7 @@ def ask_exit():
     asyncio.ensure_future(exit())
 
 class WebsocketServer:
-    def __init__(self, host, port, producerFunc, process, statistics):
+    def __init__(self, host, port, producerFunc, process, statistics, packet_rate):
         self.host = host
         self.port = port
         self.producerFunc = producerFunc
@@ -219,6 +219,7 @@ class WebsocketServer:
         self.process = process
         self.stats = statistics
         self.sent_stats = False
+        self.packet_rate = packet_rate
 
     def start(self):
         loop = asyncio.new_event_loop()
@@ -237,21 +238,26 @@ class WebsocketServer:
         asyncio.get_event_loop().close()
 
     async def __producer_handler(self, websocket, path):
-        check = self.process()
-        print(check)
-        message = self.producerFunc()
-        if not check and not self.sent_stats:
-            stats = self.stats()
-            message = json.dumps(stats)
-            self.sent_stats = True
-        elif not check or message == []:
-            message = '{"Event": {}}'
-        else:
-            self.sent_stats = False
-        await websocket.send(message)
-
-
-
+        while True:
+            check = self.process()
+            message = self.producerFunc()
+            if not check and not self.sent_stats:
+                stats = self.stats()
+                message = json.dumps(stats)
+                self.sent_stats = True
+                await websocket.send(message)
+                self.close()
+                break
+            elif not check or message == []:
+                message = '{"Event": {}}'
+            else:
+                self.sent_stats = False
+            try:
+                await websocket.send(message)
+                await asyncio.sleep(self.packet_rate)
+            except websockets.exceptions.ConnectionClosed:
+                self.close()
+                break
 
 
 def producePatientData():
