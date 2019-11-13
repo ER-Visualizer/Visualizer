@@ -5,7 +5,8 @@ class NodeSidebarContent extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.props.data
-
+        console.log("NODESIDEBAR")
+        console.log(this.props.data)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
@@ -29,7 +30,7 @@ class NodeSidebarContent extends React.Component {
                     <label>Finish time</label><br/>
                     <input type="text" 
                         name="distribution_raw"
-                        value={`${this.state.Distribution}(mean=${this.state.Distribution_parameters[0]}, variance=${this.state.Distribution_parameters[1]})`}
+                        value={`${this.state.Distribution}(mean=${this.state.Distribution_Parameters[0]}, variance=${this.state.Distribution_Parameters[1]})`}
                         onChange={this.handleInputChange}></input>
                 </div>
 

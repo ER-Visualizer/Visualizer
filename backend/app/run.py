@@ -101,11 +101,7 @@ def create_queues():
 
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-<<<<<<< HEAD
             nodes_list[-1] = Node(-1, "queue",  None, 100, process_name="patient_loader",
-=======
-            nodes_list[-1] = Node(-1, "queue",  "", 4000, process_name="patient_loader",
->>>>>>> 9cb5018dd71268bc81c702e1bed16e9a3d86bb8d
                                           distribution_name="test", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -145,6 +141,10 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
+    print(nodes_list[event_changes[0].get_node_id()].get_process_name())
+    if nodes_list[event_changes[0].get_node_id()].get_process_name() == 'patient_loader':
+        print("EVENT PATIENT LOADER")
+        print(event_changes)
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
@@ -213,12 +213,13 @@ def process_heap():
         statistics.add_doc_patient_time(doctor_id, patient.get_id(), process_time)
 
 
-    # send patient to next queues
+    # send patient to next queuess
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
-
-    # add to list of event changes
-
     event_changes.append(completed_event)
+
+    # add to list of event changess
+    if process_name == 'patient_loader':
+        process_heap()
 
     # continue __main__ loop
     return True

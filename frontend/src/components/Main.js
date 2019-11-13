@@ -17,15 +17,38 @@ class Main extends React.Component {
             selectedNode: null,
             ws: null
         }
-        this.data = {
-            element_type: "triage",
-            distribution: "gaussian",
-            distribution_parameters: {mean: "3", variance: "1"},
-            number_of_actors: "10",
-            queue_type: "stack",
-            priority_function: "",
-            children: []
-        }
+        this.data = [
+            {
+                Id: 0,
+                Element_type: "reception",
+                Distribution: "gaussian", // dummy variables for now
+                Distribution_parameters: [3,1],
+                Number_of_actors: 10,
+                Queue_type: "stack",
+                Priority_function: "",
+                Children: [2, 3]
+            },
+            {
+                Id: 1,
+                Element_type: "triage",
+                Distribution: "gaussian", 
+                Distribution_parameters: [3,1],
+                Number_of_actors: 10,
+                Queue_type: "stack",
+                Priority_function: "",
+                Children: [2, 3]
+            },
+            {
+                Id: 2,
+                Element_type: "pd",
+                Distribution: "gaussian", 
+                Distribution_parameters: [3,1],
+                Number_of_actors: 10,
+                Queue_type: "stack",
+                Priority_function: "",
+                Children: [2, 3]
+            }
+        ]
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
     }
