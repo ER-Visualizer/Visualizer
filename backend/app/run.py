@@ -1,5 +1,6 @@
 import heapq
 import csv
+import json
 from datetime import datetime
 from threading import Timer
 from .models.event import Event
@@ -11,7 +12,7 @@ from .models.queues import Queue
 from .connect import WebsocketServer
 from .models.global_time import GlobalTime
 from .models.global_heap import GlobalHeap
-
+from threading import Thread
 # indexed by strings
 canvas = {"elements": []}
 
@@ -135,15 +136,19 @@ def create_queues():
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
 
-def send_events():
+def send_e():
+    global event_changes
     if len(event_changes) == 0:
+        print("NO EVENTS CHANGE")
         # send nothing if no changes
         return []
+    else:
+        print("EVENT CHANGEs")
 
     new_changes = []
     global packet_start
     if packet_start == -1:
-        packet_start = event_changes[0].time
+        packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
 
@@ -159,17 +164,18 @@ def send_events():
         event_changes.pop(0)
 
     # TODO send new_changes to frontend !
-    print("changes!!!", new_changes)
+    # print("changes!!!", new_changes)
     # send again after some time (removed for producerFunc implementation)
     # Timer(packet_rate, send_events).start()
 
-    return {"Events:": new_changes}
+    return json.dumps({"Events": new_changes})
 
 
 def process_heap():
 
     # exit condition for __main__ loop
     if len(event_heap) == 0:
+        print("event heap emptyy")
         return False
 
     completed_event = heapq.heappop(event_heap)
@@ -224,6 +230,7 @@ def process_heap():
     nodes_list[head_node_id].handle_finished_patient(head_resource_id)
 
     # add to list of event changes
+    print("event changes", event_changes)
     event_changes.append(completed_event)
 
     # continue __main__ loop
@@ -242,6 +249,7 @@ def report_statistics():
 def get_curr_time():
     return time
 
+
 def main():
     print("IN MAIN")
     # this will read canvas json
@@ -254,14 +262,16 @@ def main():
     create_queues()
 
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_events)
+    server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics)
     server.start()
 
     # start sending every X secondss
-    send_events()
+    # send_e() pls
 
-    # process events until heap is emptieddd
+    # process events until heap is emptiedddd
+    print("before processheap")
     while (process_heap()):
+        print("processheap")
         process_heap()
 
     print(report_statistics())

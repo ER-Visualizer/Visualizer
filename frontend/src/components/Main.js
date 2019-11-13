@@ -29,11 +29,10 @@ class Main extends React.Component {
         this.sidebarLastContent = null;
     }
 
-    parseEventData(rawEventDataString) {
-        const eventData = JSON.parse(rawEventDataString)
+    parseEventData(eventData) {
         return {
             eventData: eventData,
-            message: `[${eventData.timeStamp}] user ${eventData['userId']} moved to queue ${eventData['movedTo']} from queue ${eventData['startedAt']}`
+            message: `[${eventData.timeStamp}] user ${eventData['patientId']} moved to queue ${eventData['movedTo']} from queue ${eventData['startedAt']}`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable
@@ -57,6 +56,35 @@ class Main extends React.Component {
             clearTimeout(connectInterval); // clear Interval on on open of websocket connection
         };
 
+        ws.onmessage = event => {
+            console.log("raw event")
+            console.log(event.data);
+                // console.log(this.parseEventData(event.data))
+                const eventData = JSON.parse(event.data)
+                console.log(eventData)
+                const events = eventData["Events"]
+                console.log("events")
+                console.log(events)
+                if(events != undefined && events.length != []){
+                    let new_events = this.state.events
+                    for(let i = 0; i < events.length; i++){
+                        let event = events[i]
+                        new_events = new_events.concat(this.parseEventData(event))
+
+                    }
+                    this.setState({
+                    events: new_events
+                    })
+                }
+                else if(eventData["stats"] == "true"){
+                    console.log("stats true")
+                    this.setState({
+                    events: this.state.events.concat({message: JSON.stringify(eventData)})
+                    })
+                }
+                
+        }
+
         // websocket onclose event listener
         ws.onclose = e => {
             console.log(
@@ -79,7 +107,7 @@ class Main extends React.Component {
                 "Closing socket"
             );
 
-            ws.close();
+            // ws.close();
         };
     };
 

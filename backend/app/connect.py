@@ -197,11 +197,13 @@ async def hello(websocket, path):
     print(f"> {greeting}")
 
 class WebsocketServer:
-    def __init__(self, host, port, producerFunc):
+    def __init__(self, host, port, producerFunc, process, statistics):
         self.host = host
         self.port = port
         self.producerFunc = producerFunc
         self.server = None
+        self.process = process
+        self.stats = statistics
 
     def start(self):
         loop = asyncio.new_event_loop()
@@ -212,16 +214,26 @@ class WebsocketServer:
 
 
     def close(self):
+        print("closing socketssssssss")
         asyncio.get_event_loop().stop()
 
     async def __producer_handler(self, websocket, path):
-        while True:
-            message = self.producerFunc()
-            try:
-                await websocket.send(message)
-            except websockets.exceptions.ConnectionClosed:
-                self.close()
-                break
+        check = self.process()
+        print(check)
+        message = self.producerFunc()
+        if message == []:
+            message = '{"Event": {}}'
+        if not check:
+            stats = self.stats()
+            print(stats)
+            await websocket.send(json.dumps(stats))
+            self.close()
+        try:
+            await websocket.send(message)
+        except websockets.exceptions.ConnectionClosed:
+            self.close()
+
+
 
 
 def producePatientData():
