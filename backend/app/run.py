@@ -141,10 +141,7 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-    print(nodes_list[event_changes[0].get_node_id()].get_process_name())
-    if nodes_list[event_changes[0].get_node_id()].get_process_name() == 'patient_loader':
-        print("EVENT PATIENT LOADER")
-        print(event_changes)
+
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
