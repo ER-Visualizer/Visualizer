@@ -248,7 +248,6 @@ class WebsocketServer:
             message = '{"Event": {}}'
         else:
             self.sent_stats = False
-
         await websocket.send(message)
 
 

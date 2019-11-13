@@ -121,7 +121,9 @@ class Main extends React.Component {
         this.connect();
     }
     componentWillUnmount() {
-      this.state.ws.close();
+      if (this.state.ws) {
+              this.state.ws.close();
+          }
     }
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
