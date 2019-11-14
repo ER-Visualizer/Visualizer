@@ -59,11 +59,7 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 #### Goals and/or tasks that were planned but not met/completed:
  * We were unable to create functionality to allow a user to edit the details of a node. This wasy mainly because there were many features that we needed to implement and this one was not a priority for this deliverable since we were focused on making sure hard coded node values worked before allowing user customizatioln.
  * Another task that we were not able to complete was setting up Travis CI because it requires authentication, which we are currently in the process of getting.
- * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on the making the individual parts work correcly first and have not gotten to integrating all of the parts yet.
-   
- * From most to least important.
- * For each goal/task, explain why it was not met/completed.      
-   e.g. Did you change your mind, or did you just not get to it yet?
+ * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on making the individual parts work correcly first and have not gotten to integrating all of the parts yet.
 
 #### How was your product demo?
  * How did you prepare your demo?
