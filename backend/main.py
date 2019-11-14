@@ -42,6 +42,7 @@ def send_json_response(message: dict):
     resp.status_code = 200
     print(resp)
     return resp
+ 
+if __name__ == "__main__":
+  app.run()
 
-
-app.run()

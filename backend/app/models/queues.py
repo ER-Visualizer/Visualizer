@@ -1,4 +1,7 @@
-from collections import deque
+try:
+    from collections.abc import deque  # noqa
+except ImportError:
+    from collections import deque
 import heapq
 
 '''
@@ -8,13 +11,14 @@ and then extract an element at that point,
 without changing anything else. None of default structures offer that.
 Additionally, we use dequeue, rather than Python's built-in Queue() because
 it is not thread-safe which gives it a performance increase.
-
+ 
 In order to iterate through the data types, need to implement custom
 iterators for each one
 '''
 
 
-class Queue():
+
+class Queue(): 
 
     def __init__(self):
         self.q = deque()

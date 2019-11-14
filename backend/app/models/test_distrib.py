@@ -1,2 +1,2 @@
-# def test_distribution(number):
-#     return number
+def test_distribution(number):
+    return number
