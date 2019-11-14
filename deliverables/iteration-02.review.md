@@ -63,23 +63,23 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 
 #### How was your product demo?
  * How did you prepare your demo?
- One day before the demo, we held a meeting to make sure the application was functional and that data was flowing correcly from the backend to the frontend.
+   One day before the demo, we held a meeting to make sure the application was functional and that data was flowing correcly from the backend to the frontend.
 
  * What did you manage to demo to your partner?
- We were able to demo a lot of our backend functionality to our partner. On the frontend side, the UI was partly done so we did not have any animations taking place as different events in the simulation happened but many UI elements (buttons, sidebar, text fields) were present and functioning. Since most of the backend was done, we had a log on the frontend instead which showed that we had communication between the backend and frontend working correctly as well as showing a texual representation of the different events taking place in the simulation. At the request of our partner, we also described the structure of our backend at a technical level, including the different classes, their attributes, connections between classes, and other data structures we used to represent the state of the simulation.
+   We were able to demo a lot of our backend functionality to our partner. On the frontend side, the UI was partly done so we did not have any animations taking place as different events in the simulation happened but many UI elements (buttons, sidebar, text fields) were present and functioning. Since most of the backend was done, we had a log on the frontend instead which showed that we had communication between the backend and frontend working correctly as well as showing a texual representation of the different events taking place in the simulation. At the request of our partner, we also described the structure of our backend at a technical level, including the different classes, their attributes, connections between classes, and other data structures we used to represent the state of the simulation.
 
  * Did your partner accept the features?
 
 
  * Were there change requests?
- We received a couple of change request that allow for easier maintenance and extensibility. They are summarized below:
-   * Change some class names so that the names align with their actual role (Ex. Resource -> Actor)
-   * Remove the join_queue_time attribute from the Patient class because it causes coupling
-   * Possibly have additional attributes for the Patient class (to store more statistics data)
-   * Possibly support multiple actors per patient
+   We received a couple of change request that allow for easier maintenance and extensibility. They are summarized below:
+      * Change some class names so that the names align with their actual role (Ex. Resource -> Actor)
+      * Remove the join_queue_time attribute from the Patient class because it causes coupling
+      * Possibly have additional attributes for the Patient class (to store more statistics data)
+      * Possibly support multiple actors per patient
 
  * What did you learn from the demo from either a process or product perspective?
- From a product perspective, we learned that we need to be frequently thinking about maintainiblity and extensibility as we write code. At some point, our group is going to stop working on this codebase and some other group might take over in the future. To make it easy for them to understand the codebase from scratch, it is crucial to ensure that all of our class and attribute names are actually representative of what they are meant for. Furthermore, decoupling of classes is important so new featues can be added easily and without breaking anything else. This is especially important when a new member who has not seen the codebase tries to add a feature. Without good decoupling, this could possibly break a part of the application that is not relevant to the new feature.
+   From a product perspective, we learned that we need to be frequently thinking about maintainiblity and extensibility as we write code. At some point, our group is going to stop working on this codebase and some other group might take over in the future. To make it easy for them to understand the codebase from scratch, it is crucial to ensure that all of our class and attribute names are actually representative of what they are meant for. Furthermore, decoupling of classes is important so new featues can be added easily and without breaking anything else. This is especially important when a new member who has not seen the codebase tries to add a feature. Without good decoupling, this could possibly break a part of the application that is not relevant to the new feature.
 
 ## Meeting Highlights
 
