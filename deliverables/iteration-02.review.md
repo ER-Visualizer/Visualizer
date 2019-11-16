@@ -20,7 +20,7 @@ Here is one of our meeting notes: https://docs.google.com/document/d/1DekoRbvQqS
 
 Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](GitHub-Cards.png)
 
-4. Before doing any coding, we created a document outlining possible options that we could use for implementing different parts of our system. One such example is whether to use multithreading or not and what are the alternatives. We also summarized the workflow of the whole application to give ourselves a clear idea of the order in which things would happen in the simulation. By creating this document, it gave each of us a clear direction on how to proceed forward, and therefore, it allowed us to work more productively, saving us potential time that we might have used otherwise.
+4. Before doing any coding, we wrote a document brainstorming possible options that we could use for implementing some of the main parts of our system. One such example is whether to use multithreading or not and what are the alternatives. We also summarized the workflow of the whole application to give ourselves a clear idea of the order in which things would happen in the simulation. By creating this document, it gave each of us a clear direction on how to proceed forward, and therefore, it allowed us to work more productively, saving us potential time that we might have used otherwise.
 
 Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4Lcpl9Y7UGgjy0oEzgq8Wzo/edit?usp=sharing
 
@@ -44,42 +44,64 @@ It is crucial to learn from your past mistakes and make any necessary changes to
 ## Product - Review
 
 #### Goals and/or tasks that were met/completed:
- * We were able to display interactive, draggable nodes on the screen with connections between nodes. 
- * We were able to create a log viewer on the screen to display simulation events.
+
+ * We developed and implemented the main part of the project: running the actual simulation. Currently in D2, you can already pass
+a Canvas of nodes that describes the emergency department structure, and a CSV file of the patients and the simulation will execute correctly.
+While not all requested  features for the simulation have been implemented yet, the main back-bone is built, and only small extra features need to
+be added to it now(conditional nodes, rules for processes, etc).
+ * We have implemented statistics gathering inside the simulation, so once the simulation finishes, we generate a JSON 
+that collects the main client-requested statistics(average waiting time in queue, average wait time per patient, etc.) 
+ * We were able to display interactive, draggable nodes on the screen with connections between nodes. This functionality will be used by the user
+to build the Emergency Room layout, i.e place reception in front of triage, connect triage to Doctor Process, etc. 
+ * Backend websocket server which connects backend to frontend - note: to view have to be in socketSetup branch for now as we continue to integrate
+    * can locate by going to this location from root (backend/app/connect.py)
+    * [connect.py](../backend/app/connect.py)
  * Docker setup
     * [Backend Dockerfile](../backend/Dockerfile)
     * [Frontend Dockerfile](../frontend/Dockerfile)
     * [Docker Compose](../docker-compose.yml)
- * Backend websocket server - node to view have to be in socketSetup branch for now as we continue to integrate
-    * can locate by going to this location from root (backend/app/connect.py)
-    * [connect.py](../backend/app/connect.py)
- * Concurrent management of the simulation
- * Parsing CSV data
+ * We were able to create a log viewer on the screen to display simulation events.
+ * Parsing CSV data and inserting patients into the simulation.
 
 #### Goals and/or tasks that were planned but not met/completed:
+
  * We were unable to create functionality to allow a user to edit the details of a node. This was mainly because there were many features that we needed to implement and this one was not a priority for this deliverable since we were focused on making sure hard coded node values worked before allowing user customization.
  * Another task that we were not able to complete was setting up Travis CI because it requires authentication, which we are currently in the process of getting.
- * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on making the individual parts work correctly first and have not gotten to integrating all of the parts yet.
-
+ * Although we have many independent aspects of the system working, and many of them working together, the **full** integration of the different parts is not completed yet. This is because we prioritized on making the individual parts work correctly first and have not gotten to integrating all of the parts yet.
+  
 #### How was your product demo?
- * How did you prepare your demo?
- One day before the demo, we held a meeting to make sure the application was functional and that data was flowing correcly from the backend to the frontend.
 
- * What did you manage to demo to your partner?
- We were able to demo a lot of our backend functionality to our partner. On the frontend side, the UI was partly done so we did not have any animations taking place as different events in the simulation happened but many UI elements (buttons, sidebar, text fields) were present and functioning. Since most of the backend was done, we had a log on the frontend instead which showed that we had communication between the backend and frontend working correctly as well as showing a texual representation of the different events taking place in the simulation. At the request of our partner, we also described the structure of our backend at a technical level, including the different classes, their attributes, connections between classes, and other data structures we used to represent the state of the simulation.
+ * How did you prepare your demo?
+
+    * One day before the demo, we held a final meeting where we made sure the application was
+    functional and that all the main components were integrated, i.e data was flowing correcly from the backend to the frontend. Once everything was integrated, all of us ran it on our local devices, and looked for bugs. Once we spotted a bug, we wrote it in the group chat and someone picked it up, fixed it, and then pushed it upstream. This ended up being a 4 hour work session where we identified and fixed many issues.  
+
+* What did you manage to demo to your partner?
+
+   * We demonstrated the simulation functioning correctly. We ran through 1 canvas(hospital layout), and different patient CSV's. We started with a small CSV of 10 patients to show the correctness of the simulation, and then showed the simulation running on 1000 patients. We did not manage to show simulation running on other canvases due to lack of time.
+   * On the frontend, we demoed the general design of the web interface, displaying the main UI elements (buttons, sidebar, text fields) and the overarching design theme. We did not show patients moving through the simulation, as this is a planned goal for D3. 
+   * We showed that the backend and frontend were integrated and communicating with each other. The backend was sending the events live to the frontend, which then showed a log of the events taking place as a text representation, as the animated representation(visual queues) is scheduled for D3.
+   * At the request of our partner, we described the structure of our backend at a technical level, including the different classes, their attributes, connections between classes, and other data structures we used to represent the state of the simulation.
 
  * Did your partner accept the features?
-
+  
+    * The partner was happy with the system architecture. They stressed the importance of making the architecture very extensible for different
+hospital scenario, which is a key requirement for them. They also stressed that documentation is very important to them, because whoever
+who will work on the simulation in the future, needs to be able to understand fully how everything works. 
 
  * Were there change requests?
- We received a couple of change request that allow for easier maintenance and extensibility. They are summarized below:
-   * Change some class names so that the names align with their actual role (Ex. Resource -> Actor)
-   * Remove the join_queue_time attribute from the Patient class because it causes coupling
-   * Possibly have additional attributes for the Patient class (to store more statistics data)
-   * Possibly support multiple actors per patient
+  
+   *  We received a couple of change request that allow for easier maintenance and extensibility. They are summarized below:
+      * Previously we only created restrictions per resource. Partner requested to be able to create restriction per process as well.
+      * Possibly support multiple actors per patient. This is something that the partners will get back to us on.
+      * Make sure that the class system is as extensible, and flexible as possible by using interfaces and abstract classes.
+      * Change some class names so that the names align better with their actual role (Ex. Resource -> Actor)
+      * Remove the join_queue_time attribute from the Patient class because it causes coupling with Statistics class.
 
  * What did you learn from the demo from either a process or product perspective?
- From a product perspective, we learned that we need to be frequently thinking about maintainiblity and extensibility as we write code. At some point, our group is going to stop working on this codebase and some other group might take over in the future. To make it easy for them to understand the codebase from scratch, it is crucial to ensure that all of our class and attribute names are actually representative of what they are meant for. Furthermore, decoupling of classes is important so new featues can be added easily and without breaking anything else. This is especially important when a new member who has not seen the codebase tries to add a feature. Without good decoupling, this could possibly break a part of the application that is not relevant to the new feature.
+  
+    1. We learned that we need to be frequently thinking about maintainiblity and extensibility as we write code. For this, we need to ensure that we use the most relevant design patterns which decouple our code and make it extensible. This is very important so new featues can be added easily and without breaking anything else. This is especially important when a new member who has not seen the codebase tries to add a feature.
+    2. At some point, our group is going to stop working on this codebase and some other group might take over in the future. To make it easy for them to understand the codebase from scratch, it is crucial that we use very easy to understand names in our system architecture.
 
 ## Meeting Highlights
 
@@ -87,7 +109,7 @@ Going into the next iteration, our main insights are:
  * Create a solid plan of tasks before coding so that everyone knows what to do. We found that by having a good plan of
    what everyone needed to do, it reduces the need for time intensive work sessions and increases productivity as people
    can work on their part without the need for other people. 
- * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular    meetings team members were more engaged and less likely to procrastinate due to peer pressure. 
+ * Continue with regular meetings so that everyone is accountable for getting their work done. We found that by having regular meetings team members were more engaged and less likely to procrastinate due to peer pressure. 
  * We will need to work on displaying the simulation on the frontend. At the moment the frontend only receives the events of  the simulation that
    the backend processes and does nothing useful with it. The next step should be to take the events and actually visualize the simulation on the frontend. 
    
