@@ -67,9 +67,9 @@ DEV_ENV=production
 
 Development environment has the following features:
 - Backend:
- - Activates the debugger 
- - Activates the automatic reloader
- - Enables the debug mode on the Flask application.
+  - Activates the debugger 
+  - Activates the automatic reloader
+  - Enables the debug mode on the Flask application.
 - Frontend:
- - Activates hot reloading.
- - Directly serves files.
+  - Activates hot reloading.
+  - Directly serves files.
