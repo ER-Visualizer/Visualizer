@@ -20,7 +20,7 @@ Here is one of our meeting notes: https://docs.google.com/document/d/1DekoRbvQqS
 
 Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](GitHub-Cards.png)
 
-4. Before doing any coding, we created a document outlining possible options that we could use for implementing different parts of our system. One such example is whether to use multithreading or not and what are the alternatives. We also summarized the workflow of the whole application to give ourselves a clear idea of the order in which things would happen in the simulation.
+4. Before doing any coding, we created a document outlining possible options that we could use for implementing different parts of our system. One such example is whether to use multithreading or not and what are the alternatives. We also summarized the workflow of the whole application to give ourselves a clear idea of the order in which things would happen in the simulation. By creating this document, it gave each of us a clear direction on how to proceed forward, and therefore, it allowed us to work more productively, saving us potential time that we might have used otherwise.
 
 Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4Lcpl9Y7UGgjy0oEzgq8Wzo/edit?usp=sharing
 
@@ -34,11 +34,11 @@ Here is the document: https://docs.google.com/document/d/1hfjI4DrQ9rsrOYkc0erd4L
 
 #### Planned changes
 
-It is crucial to learn from your past mistakes and make any necessary changes to fix them to prevent them from reoccuring.
+It is crucial to learn from your past mistakes and make any necessary changes to fix them to prevent them from reoccurring.
 
  * One change that we will be making to our process is to schedule more work sessions where we all meet together, or at some people doing the frontend and some doing the backend. This is required to allow seamless integration of the backend with the frontend without having to worry about it at the very end. Leaving it all to the end could mean wasting excess time trying to integrate the two sides instead of doing meaningful work that extends the application's features.
 
- * Another process-related change that we are planning to make is to write good documentation that everyone in the team can access which outlines the interface to use (i.e. what methods to call) to integrate that specific part of the application. Furthermore, since the backend will send data in a particular JSON structure to the frontend, we will also discuss that structure so that the frontend team can continue their work, knowing the correct structure that they will recieve data in.
+ * Another process-related change that we are planning to make is to write good documentation that everyone in the team can access which outlines the interface to use (i.e. what methods to call) to integrate that specific part of the application. Furthermore, since the backend will send data in a particular JSON structure to the frontend, we will also discuss that structure so that the frontend team can continue their work, knowing the correct structure that they will receive data in.
 
 
 ## Product - Review
@@ -57,9 +57,9 @@ It is crucial to learn from your past mistakes and make any necessary changes to
  * Parsing CSV data
 
 #### Goals and/or tasks that were planned but not met/completed:
- * We were unable to create functionality to allow a user to edit the details of a node. This wasy mainly because there were many features that we needed to implement and this one was not a priority for this deliverable since we were focused on making sure hard coded node values worked before allowing user customizatioln.
+ * We were unable to create functionality to allow a user to edit the details of a node. This was mainly because there were many features that we needed to implement and this one was not a priority for this deliverable since we were focused on making sure hard coded node values worked before allowing user customization.
  * Another task that we were not able to complete was setting up Travis CI because it requires authentication, which we are currently in the process of getting.
- * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on making the individual parts work correcly first and have not gotten to integrating all of the parts yet.
+ * Although we have many independent aspects of the system working, the full integration of the different parts is not completed yet. This is because we prioritized on making the individual parts work correctly first and have not gotten to integrating all of the parts yet.
 
 #### How was your product demo?
  * How did you prepare your demo?
