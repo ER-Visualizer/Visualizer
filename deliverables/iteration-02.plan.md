@@ -345,7 +345,16 @@ Doctor and patient stats
 
 #### Deployment and Github Workflow
 
-Our github workflow works as such: 
+![Github Cards](GitHub-Cards.png)
+
+* Our workflow is on **Github Cards**, where we use the following sections:
+    * To do
+    * In progress
+    * In review/Testing
+    * Completed
+* We decide during our team meetings on what tasks need to get done, as well as what the priorities should be.
+We rank the priorities by putting most important tasks on the top of a card with least important on the bottom.
+After, we put the tasks on Github Cards, we assign them to the right person.
 * When starting to work on something we ensure we update the github card (ie move it to in progress),
 then checkout a branch named according to what the feature we will be building in the branch  
 * While coding we ensure we develop not by running flask or react locally but 
@@ -357,7 +366,7 @@ that in github cards where we can move our card to
 the week (Thursday - discuss backlog and plan/assign tasks, Tuesday - work on issues as well as integration)
 * After a branch is ready to be merged we request a pull request and Carlson will test it and review it before
 it gets merged
-* Additionally everytime someone pushs to master, they're code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
+* Additionally everytime someone pushes to master, their code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
 * For naming conventions we will follow snake_case for all python code and will use PascalCase for React components and camelCase for their instances
 
 * We choose this workflow based on early brainstorming sessions at meetings and because of the 
@@ -416,28 +425,7 @@ we do not have to deploy since our partner Vector does not want a deployed app a
    
 #### Artifacts
 
-1. **Github Cards**: Online task board using GitHub cards with some canonical sections:
-    * To do
-    * In progress
-    * In review/Testing
-    * Completed
-
-
-* We decide together on what tasks need to be done and what is most important. For D2, we decided on what we want to show, and what
-needs to get done for it. After, we put the tasks on Github Cards, and assigned them to the right person.
-We discussed the priorities and categorized cards as: must-haves and nice-to-haves. If a teammate is unsure about
-priorities between must-haves he will ask the rest of the team, who then decides on what needs to be done first. 
-* We know what everyone is working on at the time, which ensure we're not doing duplicate work.
-* We assign tasks to each other, and to other team mates. This ensures every task has someone responsible
-for it. This way we all know what we have to do, and all tasks get done.
-* We use In Review/Testing to review each other's Work and give feedback on it. Only then is the task moved
-to completed, and the teammate will start a new task.
-
-![Github Cards](GitHub-Cards.png)
-
-
-
-2. **Pictures**. We drafted some mock-ups of the simulation before starting. This was to
+1. **Pictures**. We drafted some mock-ups of the simulation before starting. This was to
 develop a shared understanding with Vector on what the requirements are. Additionally, we used
 this to start brainstorming on what the backend needs to do, as well as have a base-line for the minimum
 needed for the front-end.
@@ -447,7 +435,9 @@ needed for the front-end.
 ![Diagram 2](Diagram2.png)
 
 
-3. **Comments**: We use comments as a way to check the logic of our code between partners. We work in pairs of at least 2 on different areas of the project. For example: 2 members will be working at 1 time on setting up Docker, others will be working on designing the Frontend, 2 others will be working on setting up the server and developing the API. We first write the code in comments, go over it with the other teammate, and once we make sure that we both agree on it, then we start developing the code. This ensures that we have a solid structure before we start building.Here's an example of pseudocode developed during one of paired team sessions:
+2. **Comments**: We use comments to document  various design choices, and explain the logic
+behind the code, the which is especially critical when we're implementing the simulation.
+Here's an example of pseudocode developed during one of team sessions:
 
 ```python
  '''
@@ -476,14 +466,14 @@ needed for the front-end.
             # 4. Add the element on the heap
 ```
 
-4. **Meetings**: We document all of our meetings, both internal and external with Vector.
+3. **Meeting Minutes**: We document all of our meetings, both internal and external with Vector.
 Whenever we're not sure about something that we discussed with Vector, or some details
 we decided on as a team, we can check the meeting notes. It also serves as a way to make
 sure everyone is kept up to date on the development of the project, even if they missed the meeting.
 
 [Link to Meetings](https://drive.google.com/open?id=1ftzBkQdU7P4RSA6EvPqXnF9qdQxPVwyV)
 
-5. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
+4. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
 and the base clases that we needed for it.
 
 ![CRC Cards](crc_1.png)
