@@ -21,6 +21,18 @@
  * Data Output: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
  
 
+ ![Snapshot of Terminal after running docker-compose up --build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/ServerStarting.png)
+
+ ![Home page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/homepage.png)
+
+ ![Result of clicking on a Node](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/nodeexpanded.png)
+
+![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/jsonentry.png)
+
+ ![After starting simulation logs](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/logsduringexecution.png)
+
+[Statistics being send on Websockets at end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/statistics.png)
+
 
 ## Instructions
  <!-- * Clear instructions for how to use the application from the end-user's perspective
@@ -29,6 +41,8 @@
  * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
 ### Step 1 : Install docker based on the OS you have - Note: the website directs you to the correct version you need 
 * [Docker](https://www.docker.com/products/docker-desktop)
+And then start the docker application by double clickling it on your Applications section in your 
+file explorer. You can verify it is running by finding a small icon near the icons tabs (on Mac OS there will be a icon of the docker logo that when you click it says "running") and similarly on Windows except this will be on the bottom navigation bar.
 
 ### Step 2 :
 Run ```docker-compose down``` - in case you already have docker and have something running on the same port
