@@ -20,18 +20,24 @@
  * Data Input: Users input data regarding patients' medical state and required medical operations(e.g. a visit to the x-ray, or a talk with a doctor). Users also input the estimated wait times and number of "actors" (e.g. doctors) at each station, such that patients can queue for stations realistically. The behavior of the given patients, as well as their interactions with the hospital stations will be simulated. Another point of input is the rules by which patients are selected from the queue for a given station, e.g. one station may choose to select patients based on acuity, and another station may choose to select patients based on arrival time.
  * Data Output: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
  
+### Snapshot of Terminal after running ```docker-compose up --build```
 
  ![Snapshot of Terminal after running docker-compose up --build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/ServerStarting.png)
+### Home page
 
  ![Home page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/homepage.png)
+### Result of clicking on a Node
 
  ![Result of clicking on a Node](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/nodeexpanded.png)
+### JSON of hospital layout entry page
 
 ![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/jsonentry.png)
+### After starting simulation logs
 
  ![After starting simulation logs](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/logsduringexecution.png)
+### Statistics being send on Websockets at end of simulation
 
-[Statistics being send on Websockets at end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/statistics.png)
+![Statistics being send on Websockets at end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/statistics.png)
 
 
 ## Instructions
