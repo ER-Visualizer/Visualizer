@@ -20,7 +20,7 @@
  * Data Input: Users input data regarding patients' medical state and required medical operations(e.g. a visit to the x-ray, or a talk with a doctor). Users also input the estimated wait times and number of "actors" (e.g. doctors) at each station, such that patients can queue for stations realistically. The behavior of the given patients, as well as their interactions with the hospital stations will be simulated. Another point of input is the rules by which patients are selected from the queue for a given station, e.g. one station may choose to select patients based on acuity, and another station may choose to select patients based on arrival time.
  * Data Output: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
  
-### Snapshot of Terminal after running ```docker-compose up --build```
+### Snapshot of Terminal after running ```docker-compose up --build``` and the image has finished being built and the application is running 
 
  ![Snapshot of Terminal after running docker-compose up --build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/ServerStarting.png)
 ### Home page
@@ -66,7 +66,7 @@ DEV_ENV=development
 WEB_SOCKET_PORT={WSS port number - currently 8765}
 ```
 ### Step 3:
-- Once the application begins, the user will be presented a blank canvas where they can create their workflow using different click operations.
+- Once the application begins (ie your terminal looks the same as the image above showcasing what the terminal should like once the application has finished building and has started), go to http://localhost:5000 or another port - based on REACT_APP_PORT that you have in your .env file. Then the user will be presented a blank canvas where they can create their workflow using different click operations.
   - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
   - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the canvas.
   - Clicking a process will allow the user to edit its properties and values.
