@@ -352,27 +352,28 @@ Doctor and patient stats
     * In progress
     * In review/Testing
     * Completed
-* We decide during our team meetings on what tasks need to get done, as well as what the priorities should be.
+    
+We decide during our team meetings on what tasks need to get done, as well as what the priorities should be.
 We rank the priorities by putting most important tasks on the top of a card with least important on the bottom.
 After, we put the tasks on Github Cards, we assign them to the right person.
-* When starting to work on something we ensure we update the github card (ie move it to in progress),
+When starting to work on something we ensure we update the github card (ie move it to in progress),
 then checkout a branch named according to what the feature we will be building in the branch  
-* While coding we ensure we develop not by running flask or react locally but 
+While coding we ensure we develop not by running flask or react locally but 
 through docker ie by running ```docker-compose up --build``` which starts a flask and node server (to run our web app), this ensures the changes we make will be easily integerated and execute as intended in our final docker image that we will be giving to our partner (Vector institute). 
-* After finishing a feature we move it to in review, in the event that we are stuck we have a location for 
+After finishing a feature we move it to in review, in the event that we are stuck we have a location for 
 that in github cards where we can move our card to 
-* After a task is completed we move it to in review and someone else on the team verifies it works
-* For communicating to each other about changes we use messenger as well as our 2 meetings during 
+After a task is completed we move it to in review and someone else on the team verifies it works
+For communicating to each other about changes we use messenger as well as our 2 meetings during 
 the week (Thursday - discuss backlog and plan/assign tasks, Tuesday - work on issues as well as integration)
-* After a branch is ready to be merged we request a pull request and Carlson will test it and review it before
+After a branch is ready to be merged we request a pull request and Carlson will test it and review it before
 it gets merged
-* Additionally everytime someone pushes to master, their code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
-* For naming conventions we will follow snake_case for all python code and will use PascalCase for React components and camelCase for their instances
+Additionally everytime someone pushes to master, their code will be go through our continous integration pipline through Travis CI, note however since we do not have access yet we not been able to add this feature
+For naming conventions we will follow snake_case for all python code and will use PascalCase for React components and camelCase for their instances
 
-* We choose this workflow based on early brainstorming sessions at meetings and because of the 
+We choose this workflow based on early brainstorming sessions at meetings and because of the 
 experiences of some of the members on our team, further this workflow of having continous integration and 
 running our server through docker helps ensure that our final product is what we expect it to be 
-* Further we would like to highlight, based on our partner's (Vector Institute)requirements  
+Further we would like to highlight, based on our partner's (Vector Institute)requirements  
 we do not have to deploy since our partner Vector does not want a deployed app and wants a docker image that can run locally because of user privacy concerns
 
 ## Product
@@ -410,7 +411,7 @@ we do not have to deploy since our partner Vector does not want a deployed app a
    
  * Create a log viewer on the screen to see simulation events
    * Create a button to open a log viewer
-   * Use webhooks to recieve events from the backend
+   * Use websockets to recieve events from the backend
    * Display events given by the webhook on the log viewer
  
  * Docker and Travis setup
@@ -471,7 +472,7 @@ Whenever we're not sure about something that we discussed with Vector, or some d
 we decided on as a team, we can check the meeting notes. It also serves as a way to make
 sure everyone is kept up to date on the development of the project, even if they missed the meeting.
 
-[Link to Meetings](https://drive.google.com/open?id=1ftzBkQdU7P4RSA6EvPqXnF9qdQxPVwyV)
+[Link to Meetings Minutes](https://drive.google.com/open?id=1ftzBkQdU7P4RSA6EvPqXnF9qdQxPVwyV)
 
 4. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
 and the base clases that we needed for it.
