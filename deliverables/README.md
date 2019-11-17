@@ -104,10 +104,10 @@
  * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
  * Provide clear steps for using each feature described above
  * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
-### Step 1 : Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
+### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
 Then, start the application by double clicking the docker icon in your Applications folder.
 
-### Step 2 :
+### Running the Application:
 Run ```docker-compose down``` - in case you already have docker and have something running on the same port
 Then run ```docker-compose up --build``` - to build the image/run the application
   - The client and server services will be instantiated with the ports indicated in the .env file.
@@ -122,11 +122,11 @@ REACT_APP_PORT = {Frontend port number - default 5000}
 DEV_ENV = development
 WEB_SOCKET_PORT = {WSS port number - default 8765}
 ```
-### Step 3:
+### Using the Application:
 - Once the application begins (your terminal should look the same as the image above), go to http://localhost:5000. If you are using another port - based on REACT_APP_PORT that you have in your .env file. Then, a blank canvas will be presented where the hospital workflow can be created using different click operations.
   - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
-  - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the canvas.
-  - Clicking a process will allow the user to edit its properties and values.
+  - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the plus button. The user will then be prompted to enter the necessary properties of the process.
+  - Clicking a process on the screen will allow the user to view and edit its properties.
   - To specify the processes to which the patient will travel, press and hold the shift key and click the outbound process followed by the inbound process.
 - Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.
 - After the patient csv file is loaded, the simulation can start.
