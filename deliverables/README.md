@@ -1,17 +1,15 @@
 # Emergency Room Simulation/Team 22
 
 ## Description 
- - Our application is an emergency room simulator which is highly configurable and can simulate a broad range of scenarios.
- - It can be used by medical professionals/researchers to determine bottlenecks and areas in the emergency room which would benefit most from added resources.
+ Our application is an emergency room simulator which is highly configurable and can simulate a broad range of scenarios. It can be used by medical professionals/researchers to determine bottlenecks and areas in the emergency room which would benefit most from added resources.
 
  <!-- * What is the problem you're trying to solve? -->
- - We want to provide medical professionals and researchers with a way to visualize the impact of workflow changes in the emergency room.
- - In doing this, we also assist in solving the problem of resource allocation in emergency rooms. To do this, our emergency room simulator provides users with high-level views, as well as detailed statistics on their specified emergency room, such that their decisions pertaining to resource allocation may be well informed.
- - In addition, our lightweight and easy-to-use application allows researchers to test the efficiency of hypothetical hospital workflows. This would not be feasible in a real working environment since it would require overwhelming amounts of hospital downtime in order to add and rearrange processes in the hospital.
+  We want to provide medical professionals and researchers with a way to visualize the impact of workflow changes in the emergency room. To do this, our emergency room simulator provides users with high-level views, as well as detailed statistics on their specified emergency room. For example, a user may find value from this when making informed decisions about resource allocation in their emergency room.
+  In addition, our lightweight and easy-to-use application allows researchers to test the efficiency of hypothetical hospital workflows. This would not be feasible in a real working environment since it would require overwhelming amounts of hospital downtime in order to add and rearrange processes in the hospital.
 
  <!-- * Is there any context required to understand **why** the application solves this problem? -->
- - In the waiting room of a hospital, each patient has an arrival time and a specific acuity (severity of condition). The user can specify the order of patients that leave the waiting queue based on each patient's acuity and arrival time. Our application uses multiple queue structures (e.g. stack, priority queue) in order to meet the user expectations.
- - Our application also uses statistical distributions to simulate the random variations in the amount of time a patient requires to receive treatment, as opposed to simpler models which assume patients always take the same time. This allows our model to be more accurate and more effectively represent reality.
+  In the waiting room of a hospital, each patient has an arrival time and a specific acuity (severity of condition). The user can specify the order of patients that leave the waiting queue based on each patient's acuity and arrival time. Our application uses multiple queue structures (e.g. stack, priority queue) in order to meet the user expectations.
+  Our application also uses statistical distributions to simulate the random variations in the amount of time a patient requires to receive treatment, as opposed to simpler models which assume patients always take the same time. This allows our model to be more accurate and more effectively represent reality.
 
 ## Key Features
  <!-- * Describe the key features in the application that the user can access

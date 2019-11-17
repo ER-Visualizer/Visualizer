@@ -16,43 +16,8 @@ class JSONEntrySidebarContent extends Component {
 export default JSONEntrySidebarContent
 
 
-/*
-[ // hardcoded data
-        {
-            Id: 0,
-            Element_type: "reception",
-            Distribution: "gaussian", // dummy variables for now
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
-            Queue_type: "stack",
-            Priority_function: "",
-            Children: [2, 3]
-        },
-        {
-            Id: 1,
-            Element_type: "triage",
-            Distribution: "gaussian", 
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
-            Queue_type: "stack",
-            Priority_function: "",
-            Children: [2, 3]
-        },
-        {
-            Id: 2,
-            Element_type: "pd",
-            Distribution: "gaussian", 
-            Distribution_parameters: [3,1],
-            Number_of_actors: 10,
-            Queue_type: "stack",
-            Priority_function: "",
-            Children: [2, 3]
-        },]
 
 
 
 
 
-
-
-*/

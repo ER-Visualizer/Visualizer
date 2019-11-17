@@ -17,38 +17,6 @@ class Main extends React.Component {
             selectedNode: null,
             ws: null
         }
-        this.data = [
-            {
-                Id: 0,
-                Element_type: "reception",
-                Distribution: "gaussian", // dummy variables for now
-                Distribution_parameters: [3,1],
-                Number_of_actors: 10,
-                Queue_type: "stack",
-                Priority_function: "",
-                Children: [2, 3]
-            },
-            {
-                Id: 1,
-                Element_type: "triage",
-                Distribution: "gaussian", 
-                Distribution_parameters: [3,1],
-                Number_of_actors: 10,
-                Queue_type: "stack",
-                Priority_function: "",
-                Children: [2, 3]
-            },
-            {
-                Id: 2,
-                Element_type: "pd",
-                Distribution: "gaussian", 
-                Distribution_parameters: [3,1],
-                Number_of_actors: 10,
-                Queue_type: "stack",
-                Priority_function: "",
-                Children: [2, 3]
-            }
-        ]
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
     }
@@ -153,7 +121,10 @@ class Main extends React.Component {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar && this.state.selectedNode) {
-            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode - 1] }/>
+            // console.log(this.props.nodes[this.state.selectedNode]);
+            // console.log(this.state);
+            
+            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode] }/>
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
         }
@@ -169,11 +140,11 @@ class Main extends React.Component {
 
         nodes.map( // map the JSON representation of the node to the representation required by the graph
             (node) => {graphical_data.nodes.push(
-                { id: `${node.Id}`, name : `${node.Element_type}${node.Id}`});
+                { id: `${node.id}`, name : `${node.elementType}${node.id}`});
                 
-                node.Children.map( 
+                node.children.map( 
                     (child) => {graphical_data.links.push(
-                        { source: `${node.Id}`, target: `${child}` })}
+                        { source: `${node.id}`, target: `${child}` })}
                 )
             }
         )
@@ -189,6 +160,8 @@ class Main extends React.Component {
         this.setState({
             selectedNode: nodeId
         })
+        
+        
         this.props.hideSidebar();
         setTimeout(function() {
             this.props.showNodeConfig(shouldHide);

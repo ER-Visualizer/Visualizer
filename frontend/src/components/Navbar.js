@@ -53,7 +53,7 @@ class Navbar extends React.Component {
 
 const mapStateToProps = state => {
     return { nodes: state.nodes }
-  }
+}
   
 const mapDispatchToProps = dispatch => {
     return {
