@@ -27,11 +27,25 @@
  * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
  * Provide clear steps for using each feature described above
  * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
+### Step 1 : Install docker based on the OS you have - Note: the website directs you to the correct version you need 
+* [Docker](https://www.docker.com/products/docker-desktop)
 
-- To setup the docker image, simply run ```docker-compose up``` 
+### Step 2 :
+Run ```docker-compose down``` - in case you already have docker and have something running on the same port
+Then run ```docker-compose up --build``` - to build the image/run the application
   - The client and server services will be instantiated with the ports indicated in the .env file.
-  - The client can be accessed at http://localhost:5000 at default.
+  - The client can be accessed at http://localhost:5000 by default.
 
+Note: you do not have to worry about any other setup either than ensuring you have docker on your device, 
+In the event that you have issue because of conflicting ports you can change the value of the below port
+varaibles in the env file (which is located at the root of the repository)
+```
+APP_SERVER_PORT={Backend port number - currently 8000}
+REACT_APP_PORT={Frontend port number - currently 5000}
+DEV_ENV=development
+WEB_SOCKET_PORT={WSS port number - currently 8765}
+```
+### Step 3:
 - Once the application begins, the user will be presented a blank canvas where they can create their workflow using different click operations.
   - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
   - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the canvas.
