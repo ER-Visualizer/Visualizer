@@ -1,10 +1,12 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, EDIT_NODE, HIDE_SIDEBAR } from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE, ADD_NODE, DELETE_NODE, CONNECT_NODE} from './actions';
+
+
 
 const initialState = {
     showLogsSidebar: false,
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
-    nodeCount: 0,
+    nodeCount: 3, // max ID of any node
     nodes: [
         {
             "id": 0,
@@ -75,6 +77,14 @@ function EDSimulation(state = initialState, action) {
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false
             }); 
+        case ADD_NODE:
+            let temp_node_count = state.nodes.length
+            return Object.assign({}, state, {
+                nodesCount: temp_node_count,
+                nodes: addNewNode(state.nodes, state.nodes.length)
+            })
+
+        
         // case EDIT_NODE:
         //     return Object.assign({}, state, {
         //         // nodes: updateNodes()
@@ -84,6 +94,28 @@ function EDSimulation(state = initialState, action) {
     }
 }
 
+
+function addNewNode(nodes, nodeNum){
+    // https://stackoverflow.com/questions/597588/how-do-you-clone-an-array-of-objects-in-javascript
+    let clonedNodes = JSON.parse(JSON.stringify(nodes)) // could use rd3g deepclone (see react-d3-graph doc, utils)
+
+
+    clonedNodes.push(    
+        {
+        "id": nodeNum,
+        "elementType": "newNode",
+        "distribution": "",
+        "distributionParameters": [],
+        "numberOfActors": 0,
+        "queueType": "",
+        "priorityFunction": "",
+        "children": []
+    })
+
+    // modifying clonedNodes doesn't seem to modify original nodes list...
+
+    return clonedNodes
+}
 
 
 export default EDSimulation;

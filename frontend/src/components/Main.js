@@ -219,6 +219,7 @@ const graphConfig = {
     },
     link: {
         highlightColor: "lightblue",
+        
     },
 };
 
@@ -239,7 +240,7 @@ const mapDispatchToProps = dispatch => {
         },
         hideSidebar: () => {
             dispatch(hideSidebar())
-        }
+        },
     }
 }
 

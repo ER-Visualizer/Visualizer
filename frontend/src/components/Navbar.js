@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig, showJSONEntrySidebar } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
@@ -43,9 +43,11 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
+                <button className="AddNodebutton" onClick={e => this.props.addNode()}>New Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
                 <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
+                
             </div>
         )
     }
@@ -56,6 +58,8 @@ const mapStateToProps = state => {
 }
   
 const mapDispatchToProps = dispatch => {
+    
+    
     return {
         showLogs: () => {
             dispatch(showLogs())
@@ -65,6 +69,9 @@ const mapDispatchToProps = dispatch => {
         },
         showJSONEntry: () => {
             dispatch(showJSONEntrySidebar())
+        },
+        addNode: () => {
+            dispatch(addNode())
         }
     }
 }
