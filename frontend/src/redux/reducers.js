@@ -14,7 +14,7 @@ const initialState = {
             Number_of_actors: 10,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [1, 2]
+            Children: [1]
         },
         {
             Id: 1,
@@ -24,7 +24,7 @@ const initialState = {
             Number_of_actors: 10,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [0, 2]
+            Children: [2]
         },
         {
             Id: 2,
@@ -34,7 +34,7 @@ const initialState = {
             Number_of_actors: 10,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [1]
+            Children: []
         }
     ]
 

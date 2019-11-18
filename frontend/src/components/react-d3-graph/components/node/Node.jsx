@@ -135,9 +135,12 @@ export default class Node extends React.Component {
             nodeProps.fill = this.props.fill;
             nodeProps.stroke = this.props.stroke;
             nodeProps.strokeWidth = this.props.strokeWidth;
-
+            console.log(this.props);
             label = <text {...textProps}>{this.props.label}</text>;
-            node = <path {...nodeProps} />;
+            node = (<foreignObject width="200" height="124">
+                {this.props.element}
+             </foreignObject>);
+            //node = <path {...nodeProps} />;
         }
 
         const gProps = {

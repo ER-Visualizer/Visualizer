@@ -1,0 +1,12 @@
+.object {
+    background-color: #EAF3FA;
+    height: 95%;
+    width: 95%;
+    border: 2px solid white;
+    margin: 0 auto;
+    margin-top: 3px;
+
+    box-sizing: border-box;
+    border-radius: 3px;
+    box-shadow: 0px 0px 4px #B4C1CA;
+}

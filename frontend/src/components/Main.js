@@ -135,13 +135,21 @@ class Main extends React.Component {
         // instead of abruptly disappearing.
         return this.sidebarLastContent;
     }
+
+    renderNode() {
+        return <div>Hello world</div>
+    }
     
     update_graph(nodes){
         let graphical_data = {nodes: [], links: []}
-
+        console.log("nodes", nodes);
         nodes.map( // map the JSON representation of the node to the representation required by the graph
             (node) => {graphical_data.nodes.push(
-                { id: `${node.Id}`, name : `${node.Element_type}${node.Id}`});
+                { 
+                    id: `${node.Id}`,
+                    name : `${node.Element_type}${node.Id}`,
+                    element: this.renderNode()
+                });
                 
                 node.Children.map( 
                     (child) => {graphical_data.links.push(
@@ -149,7 +157,7 @@ class Main extends React.Component {
                 )
             }
         )
-        
+        console.log("data", graphical_data)
         return graphical_data;
     };
 
@@ -210,7 +218,7 @@ const graphConfig = {
     directed: true,
     node: {
         color: "grey",
-        size: 200,
+        size: 30,
         highlightStrokeColor: "blue",
         labelProperty: (node) => node.name 
     },

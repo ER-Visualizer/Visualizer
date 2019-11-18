@@ -583,8 +583,9 @@ export default class Graph extends React.Component {
             this.focusAnimationTimeout = null;
         }
     }
-
     render() {
+        console.log("in graph.jsx", this.state.nodes);
+        console.log(this.state.nodes);
         const { nodes, links, defs } = renderGraph(
             this.state.nodes,
             {
