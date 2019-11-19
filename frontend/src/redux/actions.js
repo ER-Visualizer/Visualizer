@@ -8,7 +8,7 @@ export const HIDE_SIDEBAR = 'HIDE_SIDEBAR'
 
 export const ADD_TO_LOGS = 'ADD_TO_LOGS'
 
-export const EDIT_NODE = 'EDIT_NODE'
+export const EDIT_NODE_PROPERTIES = 'EDIT_NODE_PROPERTIES'
 export const ADD_NODE = 'ADD_NODE'
 export const DELETE_NODE = 'DELETE_NODE'
 export const CONNECT_NODE = 'CONNECT_NODE'
@@ -38,5 +38,10 @@ export function addToLogs(message) {
 
 export function addNode(){
     return {type: ADD_NODE}
+}
+
+export function editNodeProperties(newProps){ // newprops should be a copy of the node being edited, with the features updated
+    return {type: EDIT_NODE_PROPERTIES, newProps: newProps}
+    
 }
 

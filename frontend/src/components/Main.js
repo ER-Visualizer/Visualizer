@@ -124,7 +124,7 @@ class Main extends React.Component {
             // console.log(this.props.nodes[this.state.selectedNode]);
             // console.log(this.state);
             
-            this.sidebarLastContent = <NodeSidebarContent data={this.props.nodes[this.state.selectedNode] }/>
+            this.sidebarLastContent = <NodeSidebarContent data={JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) /* copies the structure */}/>
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
         }

@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE, ADD_NODE, DELETE_NODE, CONNECT_NODE} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE} from './actions';
 
 
 
@@ -83,12 +83,10 @@ function EDSimulation(state = initialState, action) {
                 nodesCount: temp_node_count,
                 nodes: addNewNode(state.nodes, state.nodes.length)
             })
-
-        
-        // case EDIT_NODE:
-        //     return Object.assign({}, state, {
-        //         // nodes: updateNodes()
-        //     })
+        case EDIT_NODE_PROPERTIES:
+            return Object.assign({}, state, {
+                nodes: updateNodeProperties(state.nodes, action.newProps)
+            })
         default:
             return state
     }
@@ -98,7 +96,6 @@ function EDSimulation(state = initialState, action) {
 function addNewNode(nodes, nodeNum){
     // https://stackoverflow.com/questions/597588/how-do-you-clone-an-array-of-objects-in-javascript
     let clonedNodes = JSON.parse(JSON.stringify(nodes)) // could use rd3g deepclone (see react-d3-graph doc, utils)
-
 
     clonedNodes.push(    
         {
@@ -113,9 +110,19 @@ function addNewNode(nodes, nodeNum){
     })
 
     // modifying clonedNodes doesn't seem to modify original nodes list...
+    
 
     return clonedNodes
 }
+
+function updateNodeProperties(nodes, newProps){
+    console.log("editing node properties");
+    
+    console.log(newProps);
+    
+}
+
+
 
 
 export default EDSimulation;

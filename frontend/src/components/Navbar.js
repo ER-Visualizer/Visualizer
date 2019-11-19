@@ -43,7 +43,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
-                <button className="AddNodebutton" onClick={e => this.props.addNode()}>New Node</button>
+                <button className="AddNodebutton" onClick={this.props.addNode}>New Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
                 <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
