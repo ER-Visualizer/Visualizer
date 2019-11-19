@@ -29,3 +29,33 @@
     font-size: 16px;
     margin-bottom: 24px;
 }
+
+.SaveNodebutton:hover{
+    background-color: rgb(184, 184, 184)
+}
+
+.SaveNodebutton svg{
+    height : 16px;
+    width: 16px;
+    
+}
+
+.SaveNodebutton{
+    float: right;
+    margin-right: 16px;
+    vertical-align: middle;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E4159;
+
+    background: white;
+    box-shadow: none;
+    border: 1px solid #DCE4E9;
+    border-radius: 100px;
+    padding-left: 13px;
+    padding-right: 16px;
+
+    transition-duration: 0.4s;
+    outline: 0;
+}

@@ -81,8 +81,10 @@ export class NodeSidebarContent extends React.Component {
                         name="priorityFunction"
                         value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
                 </div>
+                
+                
 
-                <button onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
+                <button className="SaveNodebutton" onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
 
             </div>
         )
