@@ -41,17 +41,19 @@ class Navbar extends React.Component {
     }
 
     updateRunButton(e){
-        e.target.classList.add("clickedButton")     
+        e.target.classList.add("clickedRunButton")     
     }
 
     handleLinkDeleteButton(e){
         this.props.deleteLinkModeSwitch()
     }
 
+    
+
     render() {
         return (
             <div className="Navbar">   
-                <button className="ToggleLinkDeletebutton" onClick={(e) => this.handleLinkDeleteButton(e)}>Delete Link Mode: {this.props.shouldDeleteLink.toString()}</button>
+                <button className="ToggleLinkDeletebutton" onClick={(e) => this.handleLinkDeleteButton(e)}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
