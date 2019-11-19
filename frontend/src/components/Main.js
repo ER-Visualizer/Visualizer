@@ -7,7 +7,8 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar } from '../redux/actions';
+import { showNodeConfig, hideSidebar, deleteLink } from '../redux/actions';
+
 
 class Main extends React.Component {
     constructor(props) {
@@ -170,6 +171,17 @@ class Main extends React.Component {
         }.bind(this), 300);
     }
 
+    linkClick(source, target){
+        // react-d3-graph gives strings for these...
+
+        
+
+        this.props.deleteLink(parseInt(source), parseInt(target))
+        
+        
+        
+    }
+
     sidebarColor() {
         if(this.props.showLogsSidebar) {
             return "#01121E";
@@ -194,6 +206,7 @@ class Main extends React.Component {
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
+                    
                 >
                 <Navbar />
                 <Graph
@@ -201,6 +214,7 @@ class Main extends React.Component {
                 data={this.update_graph(this.props.nodes)}
                 config={graphConfig}
                 onClickNode={this.nodeClick.bind(this)}
+                onClickLink={this.linkClick.bind(this)}
                 />
                 </Sidebar> 
             </div>
@@ -220,8 +234,9 @@ const graphConfig = {
         labelProperty: (node) => node.name 
     },
     link: {
-        highlightColor: "lightblue",
-        
+        type: "CURVE_SMOOTH" 
+        // could make straight if the two nodes are not pointing at eachother.
+        // needs to be round. otw cannot click link that is rendered
     },
 };
 
@@ -243,6 +258,9 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
+        deleteLink: (sourceId, targetId) =>{
+            dispatch(deleteLink(sourceId, targetId))
+        }
     }
 }
 

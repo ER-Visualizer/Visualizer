@@ -12,6 +12,8 @@ export const EDIT_NODE_PROPERTIES = 'EDIT_NODE_PROPERTIES'
 export const ADD_NODE = 'ADD_NODE'
 export const DELETE_NODE = 'DELETE_NODE'
 export const CONNECT_NODE = 'CONNECT_NODE'
+export const DELETE_LINK = 'DELETE_LINK'
+export const DELETE_LINK_MODE = 'DELETE_LINK_MODE'
 
 /*
 * Action Creators
@@ -51,5 +53,9 @@ export function deleteNode(nodeId){
 
 export function addLink(sourceId, targetId){
     return {type: CONNECT_NODE, sourceId: sourceId, targetId: targetId}
+}
+
+export function deleteLink(sourceId, targetId){
+    return {type: DELETE_LINK, sourceId: sourceId, targetId: targetId}
 }
 

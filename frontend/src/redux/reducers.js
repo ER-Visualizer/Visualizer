@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK} from './actions';
 import { object } from 'prop-types';
 
 
@@ -7,6 +7,7 @@ const initialState = {
     showLogsSidebar: false,
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
+    shouldDeleteLink: false,
     nodeCount: 3, // max ID of any node
     nodes: [
         {
@@ -101,6 +102,10 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state, {
                 nodes: addLinkToState(state.nodes, action.sourceId, action.targetId)
             })
+        case DELETE_LINK:
+            return Object.assign({}, state, {
+                nodes: deleteLinkFromState(state.nodes, action.sourceId, action.targetId)
+            })
         default:
             return state
     }
@@ -166,6 +171,20 @@ function addLinkToState(nodes, sourceId, targetId) {
     return clonedNodes;
 }
 
+function deleteLinkFromState(nodes, sourceId, targetId){    
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+    let node_to_update = clonedNodes.find(node => node.id === sourceId)
+    let index = node_to_update.children.indexOf(targetId)
+    
+    if (index < -1){
+        console.error(`Invalid target for link: (${sourceId}, ${targetId})`);
+    }
+
+    // cannot have duplicate links
+    node_to_update.children.splice(index, 1) 
+    
+    return clonedNodes;
+}
 
 
 
