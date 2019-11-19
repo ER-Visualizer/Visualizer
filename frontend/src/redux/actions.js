@@ -59,3 +59,6 @@ export function deleteLink(sourceId, targetId){
     return {type: DELETE_LINK, sourceId: sourceId, targetId: targetId}
 }
 
+export function deleteLinkModeSwitch(){
+    return {type: DELETE_LINK_MODE}
+}

@@ -93,8 +93,7 @@ export class NodeSidebarContent extends React.Component {
                 </div>
                 
                 <button className="SaveNodebutton" onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
-                <button className="DeleteNodebutton" 
-                            onClick={()=>{this.handleDelete()}}> Delete </button>
+                <button className="DeleteNodebutton" onClick={()=>{this.handleDelete()}}> Delete </button>
             </div> // TODO: make deleting close the sidebar 
         )
     }

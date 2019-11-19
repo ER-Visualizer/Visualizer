@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
@@ -10,8 +10,10 @@ import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
+        
         this.sendCanvas = this.sendCanvas.bind(this);
         this.updateRunButton = this.updateRunButton.bind(this);
+        this.handleLinkDeleteButton = this.handleLinkDeleteButton.bind(this)
         this.state = {runButtonpressed: false};
     }
 
@@ -41,9 +43,15 @@ class Navbar extends React.Component {
     updateRunButton(e){
         e.target.classList.add("clickedButton")     
     }
+
+    handleLinkDeleteButton(e){
+        this.props.deleteLinkModeSwitch()
+    }
+
     render() {
         return (
             <div className="Navbar">   
+                <button className="ToggleLinkDeletebutton" onClick={(e) => this.handleLinkDeleteButton(e)}>Delete Link Mode: {this.props.shouldDeleteLink.toString()}</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
@@ -55,7 +63,7 @@ class Navbar extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { nodes: state.nodes }
+    return { nodes: state.nodes, shouldDeleteLink: state.shouldDeleteLink}
 }
   
 const mapDispatchToProps = dispatch => {
@@ -73,6 +81,9 @@ const mapDispatchToProps = dispatch => {
         },
         addNode: () => {
             dispatch(addNode())
+        },
+        deleteLinkModeSwitch: () =>{
+            dispatch(deleteLinkModeSwitch())
         }
     }
 }

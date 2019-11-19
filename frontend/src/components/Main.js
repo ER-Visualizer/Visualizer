@@ -16,7 +16,7 @@ class Main extends React.Component {
         this.state = {
             events: [],
             selectedNode: null,
-            ws: null
+            ws: null,
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -79,7 +79,7 @@ class Main extends React.Component {
 
         // websocket onclose event listener
         ws.onclose = e => {
-            console.log(
+            console.error(
                 `Socket is closed. Reconnect will be attempted in ${Math.min(
                     10000 / 1000,
                     (that.timeout + that.timeout) / 1000
@@ -111,6 +111,7 @@ class Main extends React.Component {
         if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
     componentDidMount() {
+     
         this.connect();
     }
     componentWillUnmount() {
@@ -172,14 +173,10 @@ class Main extends React.Component {
     }
 
     linkClick(source, target){
-        // react-d3-graph gives strings for these...
-
-        
-
-        this.props.deleteLink(parseInt(source), parseInt(target))
-        
-        
-        
+        if (this.props.shouldDeleteLink){
+            // react-d3-graph gives strings for these...            
+            this.props.deleteLink(parseInt(source), parseInt(target))
+        }
     }
 
     sidebarColor() {
@@ -242,6 +239,7 @@ const graphConfig = {
 
 const mapStateToProps = state => {
   return {
+      shouldDeleteLink: state.shouldDeleteLink, 
       showLogsSidebar: state.showLogsSidebar, 
       showNodeSidebar: state.showNodeSidebar, 
       showJSONEntrySidebar: state.showJSONEntrySidebar,

@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE} from './actions';
 import { object } from 'prop-types';
 
 
@@ -106,6 +106,9 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state, {
                 nodes: deleteLinkFromState(state.nodes, action.sourceId, action.targetId)
             })
+        case DELETE_LINK_MODE:
+            return Object.assign({}, state,
+                {shouldDeleteLink: !state.shouldDeleteLink})
         default:
             return state
     }
