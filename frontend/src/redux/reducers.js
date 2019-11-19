@@ -8,6 +8,7 @@ const initialState = {
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
     shouldDeleteLink: false,
+    shouldBuildLink: false, 
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
     nodeCount: 4, // max ID of any node
     nodes: [
@@ -49,7 +50,7 @@ const initialState = {
             "numberOfActors": 4,
             "queueType": "xrayqueue",
             "priorityFunction": "xrayprior",
-            "children": [1]
+            "children": []
         },
         {
             "id": 4,
@@ -59,7 +60,7 @@ const initialState = {
             "numberOfActors": 1,
             "queueType": "stationqueue",
             "priorityFunction": "stationprior",
-            "children": []
+            "children": [2]
         }
 
     ]
@@ -121,6 +122,8 @@ function EDSimulation(state = initialState, action) {
             console.log(state.linkBeingBuilt);
             
             if (state.linkBeingBuilt.length == 1){
+                console.log("checking candidate nodes");
+                
                 if (state.linkBeingBuilt[0] === action.nodeId) {
                     console.log("no self loops allowed");
                     return state // no self loops allowed       
@@ -130,7 +133,6 @@ function EDSimulation(state = initialState, action) {
                 if (node_to_update.children.indexOf(action.nodeId) !== -1){
                     console.log("link already exists");
                     return state
-                    
                 }
             
                 return Object.assign({}, state,
@@ -141,10 +143,12 @@ function EDSimulation(state = initialState, action) {
                 )
             }
             else {
-                console.log("adding guy to linkbeingbuilt");
+                console.log("selected link source");
+                
                 
                 return Object.assign({}, state, 
-                    {linkBeingBuilt: [action.nodeId]}) // first node in the link.
+                    {   linkBeingBuilt: [action.nodeId],
+                    }) // first node in the link.
             }
             
 
@@ -168,7 +172,7 @@ function addNewNode(nodes, nodeNum){
         "numberOfActors": 0,
         "queueType": "newNode",
         "priorityFunction": "newNode",
-        "children": [1]
+        "children": []
     })
 
     // modifying clonedNodes doesn't seem to modify original nodes list...
@@ -177,6 +181,7 @@ function addNewNode(nodes, nodeNum){
     
     return clonedNodes
 }
+
 
 function updateNodeProperties(nodes, newProps){
     // receives the node to be changed. just replace it inside the array

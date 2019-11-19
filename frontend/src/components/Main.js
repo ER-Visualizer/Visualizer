@@ -152,6 +152,7 @@ class Main extends React.Component {
                 )
             }
         )
+
         
         return graphical_data;
     };
