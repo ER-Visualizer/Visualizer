@@ -1,8 +1,8 @@
 from .queues import Queue, Stack, Heap
 from .global_strings import *
+from .distributions import *
 from .resource import Resource
 from .event import Event
-from .test_distrib import test_distribution
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
 import copy
@@ -12,47 +12,6 @@ import numpy as np
 
 class Node:
 
-    # This is a static variable which all Node classes share, as it doesn't need
-    # to be changed. All of the distributions here are distributions available
-    # in the numpy.random package
-    class_distributions = {
-        BETA: np.random.beta,
-        BINOMIAL: np.random.binomial,
-        CHISQUARE: np.random.chisquare,
-        DIRICHLET: np.random.dirichlet,
-        EXPONENTIAL: np.random.exponential,
-        F: np.random.f,
-        GAMMA: np.random.gamma,
-        GEOMETRIC: np.random.geometric,
-        GUMBEL: np.random.gumbel,
-        HYPERGEOMETRIC: np.random.hypergeometric,
-        LAPLACE: np.random.laplace,
-        LOGISTIC: np.random.logistic,
-        LOGNORMAL: np.random.lognormal,
-        LOGSERIES: np.random.logseries,
-        MULTINOMIAL: np.random.multinomial,
-        MULTIVARIATE_NORMAL: np.random.multivariate_normal,
-        NEGATIVE_BINOMIAL: np.random.negative_binomial,
-        NONCENTRAL_CHISQUARE: np.random.noncentral_chisquare,
-        NONCENTRAL_F: np.random.noncentral_f,
-        NORMAL: np.random.normal,
-        PARETO: np.random.pareto,
-        POISSON: np.random.poisson,
-        POWER: np.random.power,
-        RAYLEIGH: np.random.rayleigh,
-        STANDARD_CAUCHY: np.random.standard_cauchy,
-        STANDARD_EXPONENTIAL: np.random.standard_exponential,
-        STANDARD_GAMMA: np.random.standard_gamma,
-        STANDARD_NORMAL: np.random.standard_normal,
-        STANDARD_T: np.random.standard_t,
-        TRIANGULAR: np.random.triangular,
-        UNIFORM: np.random.uniform,
-        VONMISSES: np.random.vonmises,
-        WALD: np.random.wald,
-        WEIBULL: np.random.weibull,
-        ZIPF: np.random.zipf,
-        TEST: test_distribution
-    }
     node_dict = {}
 
     def __init__(self, id, queue_type, priority_function, num_actors,
@@ -90,14 +49,6 @@ class Node:
         self.distribution_name = distribution_name
         self.distribution_parameters = distribution_parameters
 
-    # TODO see if i can remove it
-    ''' Set number of actors and create the dictionary of resources,
-    1 for each actor'''
-
-    # def set_num_actors(self, num_actors):
-    #     self.num_actors = num_actors
-    #     self.resource_dict = self._create_resource_dict()
-
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
 
@@ -127,14 +78,6 @@ class Node:
 
     def get_resource(self, resource_id):
         return self.resource_dict[resource_id]
-    # TODO See if I can remove it
-    '''Set the queue type, priority function,
-    and then create the actual queue'''
-
-    def set_queue_type(self, queue_type, priority_function=None):
-        self.queue_type = queue_type
-        self.priority_function = priority_function
-        self.queue = self._set_queue()
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
@@ -152,7 +95,7 @@ class Node:
         if self.get_distribution_name() is None: 
             duration = 0
         else:
-            duration = Node.class_distributions[self.get_distribution_name()](
+            duration = class_distributions[self.get_distribution_name()](
                 *self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
         return finish_time, duration
@@ -195,7 +138,7 @@ class Node:
         # to be put in (outgoing processes from
         # parent_process)
         for process_id in self.output_process_ids:
-            Node.node_dict[process_id].put_patient_in_queue(patient)
+            Node.node_dict[process_id].put_patient_in_node(patient)
 
         # call fill_spot on this subprocess because now we have an empty spot there
         self.fill_spot_for_resource(resource)
@@ -205,7 +148,7 @@ class Node:
     wait in a queue for this current process
     '''
 
-    def put_patient_in_queue(self, patient):
+    def put_patient_in_node(self, patient):
 
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue

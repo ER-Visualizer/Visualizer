@@ -47,7 +47,7 @@ def canvas_parser(canvas_json):
             {
                 "id": 1,
                 "elementType": "reception",
-                "distribution": "test",
+                "distribution": "fixed",
                 "distributionParameters": [5],
                 "numberOfActors": 1,
                 "queueType": "stack",
@@ -57,7 +57,7 @@ def canvas_parser(canvas_json):
             {
                 "id": 2,
                 "elementType": "triage",
-                "distribution": "test",
+                "distribution": "fixed",
                 "distributionParameters":[3],
                 "numberOfActors": 2,
                 "queueType": "stack",
@@ -67,7 +67,7 @@ def canvas_parser(canvas_json):
             {
                 "id": 3,
                 "elementType": "doctor",
-                "distribution": "test",
+                "distribution": "fixed",
                 "distributionParameters": [10],
                 "numberOfActors": 3,
                 "queueType": "queue",
@@ -102,7 +102,7 @@ def create_queues():
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
             nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
-                                          distribution_name="test", distribution_parameters=[0],
+                                          distribution_name="fixed", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
@@ -118,7 +118,8 @@ def create_queues():
                 patient_time = float(patient_time.seconds)/60
                 next_patient = Patient(
                     int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
-                nodes_list[-1].put_patient_in_queue(next_patient)
+                # All of the patients first get loaded up into the 
+                nodes_list[-1].put_patient_in_node(next_patient)
 
 
 
