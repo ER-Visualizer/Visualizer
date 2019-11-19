@@ -1,4 +1,5 @@
 import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE} from './actions';
+import { object } from 'prop-types';
 
 
 
@@ -96,6 +97,10 @@ function EDSimulation(state = initialState, action) {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
                 nodeCount: temp_node_count - 2
             })
+        case CONNECT_NODE:
+            return Object.assign({}, state, {
+                nodes: addLinkToState(state.nodes, action.sourceId, action.targetId)
+            })
         default:
             return state
     }
@@ -138,20 +143,10 @@ function updateNodeProperties(nodes, newProps){
 }
 
 function deleteNodeFromState(nodes, nodeId){
-    console.log(nodes[4]);
-    console.log(JSON.parse(JSON.stringify(nodes)));
-    
     
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
-    
-    
-    
+
     clonedNodes = clonedNodes.filter((node) => node.id !== nodeId) // remove the node
-
-
-    console.log(clonedNodes);
-    
-    
 
     clonedNodes = clonedNodes.map(
         (node) => {
@@ -161,6 +156,14 @@ function deleteNodeFromState(nodes, nodeId){
     )
 
     return clonedNodes
+}
+
+function addLinkToState(nodes, sourceId, targetId) {
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+    let node_to_update = clonedNodes.find((node) => node.id === sourceId)
+    node_to_update.children.push(targetId)
+
+    return clonedNodes;
 }
 
 
