@@ -121,10 +121,10 @@ class Main extends React.Component {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar && this.state.selectedNode) {
-            // console.log(this.props.nodes[this.state.selectedNode]);
-            // console.log(this.state);
+            let node_to_send = JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) // deepcopy
+
+            this.sidebarLastContent = <NodeSidebarContent node={node_to_send}/>
             
-            this.sidebarLastContent = <NodeSidebarContent data={JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) /* copies the structure */}/>
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
         }

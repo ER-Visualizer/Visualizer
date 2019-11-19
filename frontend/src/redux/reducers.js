@@ -11,41 +11,41 @@ const initialState = {
         {
             "id": 0,
             "elementType": "reception",
-            "distribution": "test",
+            "distribution": "receptiondist",
             "distributionParameters": [5],
             "numberOfActors": 1,
-            "queueType": "stack",
-            "priorityFunction": "",
+            "queueType": "receptionstack",
+            "priorityFunction": "receptionprior",
             "children": [2]
         },
         {
             "id": 1,
             "elementType": "triage",
-            "distribution": "test",
+            "distribution": "triagedist",
             "distributionParameters":[3],
             "numberOfActors": 2,
-            "queueType": "stack",
-            "priorityFunction": "",
+            "queueType": "triagestack",
+            "priorityFunction": "triageprior",
             "children": [3, 2]
         },
         {
             "id": 2,
             "elementType": "doctor",
-            "distribution": "test",
+            "distribution": "doctordist",
             "distributionParameters": [10],
             "numberOfActors": 3,
-            "queueType": "queue",
-            "priorityFunction": "",
+            "queueType": "doctorqueue",
+            "priorityFunction": "doctorprior",
             "children": []
         },
         {
             "id": 3,
             "elementType": "x-ray",
-            "distribution": "binomial",
+            "distribution": "xraydist",
             "distributionParameters": [1, 1],
             "numberOfActors": 4,
-            "queueType": "queue",
-            "priorityFunction": "",
+            "queueType": "xrayqueue",
+            "priorityFunction": "xrayprior",
             "children": [1]
         }
     ]
