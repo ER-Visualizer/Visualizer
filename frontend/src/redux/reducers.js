@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, addLink} from './actions';
 import { object } from 'prop-types';
 
 
@@ -8,6 +8,7 @@ const initialState = {
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
     shouldDeleteLink: false,
+    linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
     nodeCount: 3, // max ID of any node
     nodes: [
         {
@@ -98,10 +99,6 @@ function EDSimulation(state = initialState, action) {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
                 nodeCount: temp_node_count - 2
             })
-        case CONNECT_NODE:
-            return Object.assign({}, state, {
-                nodes: addLinkToState(state.nodes, action.sourceId, action.targetId)
-            })
         case DELETE_LINK:
             return Object.assign({}, state, {
                 nodes: deleteLinkFromState(state.nodes, action.sourceId, action.targetId)
@@ -109,6 +106,27 @@ function EDSimulation(state = initialState, action) {
         case DELETE_LINK_MODE:
             return Object.assign({}, state,
                 {shouldDeleteLink: !state.shouldDeleteLink})
+        case CONNECT_NODE:
+            console.log(state.linkBeingBuilt);
+            
+            if (state.linkBeingBuilt.length == 1){
+                console.log("building lonk");
+                
+                return Object.assign({}, state,
+                    {
+                        nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link
+                        linkBeingBuilt: []
+                    }
+                )
+            }
+            else {
+                console.log("adding guy to linkbeingbuilt");
+                
+                return Object.assign({}, state, 
+                    {linkBeingBuilt: [action.nodeId]}) // first node in the link.
+            }
+            
+
         default:
             return state
     }

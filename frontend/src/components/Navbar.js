@@ -17,7 +17,6 @@ class Navbar extends React.Component {
         this.state = {runButtonpressed: false};
     }
 
-
     async sendCanvas(e){
         try {
             console.log("send canvas");
@@ -54,11 +53,11 @@ class Navbar extends React.Component {
         return (
             <div className="Navbar">   
                 <button className="ToggleLinkDeletebutton" onClick={(e) => this.handleLinkDeleteButton(e)}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
+                <button className="AddLinkButton" onClick={()=>console.log("adding links not implemented")}>Add Link</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
-                <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
-                
+                <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          {}    
             </div>
         )
     }

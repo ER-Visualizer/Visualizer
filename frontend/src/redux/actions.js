@@ -62,3 +62,7 @@ export function deleteLink(sourceId, targetId){
 export function deleteLinkModeSwitch(){
     return {type: DELETE_LINK_MODE}
 }
+
+export function connectNode(nodeId){
+    return {type: CONNECT_NODE, nodeId: nodeId}
+}

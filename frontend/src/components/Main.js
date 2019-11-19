@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar, deleteLink } from '../redux/actions';
+import { showNodeConfig, hideSidebar, deleteLink, connectNode } from '../redux/actions';
 
 
 class Main extends React.Component {
@@ -159,17 +159,19 @@ class Main extends React.Component {
     nodeClick(nodeId) {
         console.log(nodeId);
         
-        const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-        console.log(shouldHide);
-        this.setState({
-            selectedNode: nodeId
-        })
+        // const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+        // console.log(shouldHide);
+        // this.setState({
+        //     selectedNode: nodeId
+        // })
         
         
-        this.props.hideSidebar();
-        setTimeout(function() {
-            this.props.showNodeConfig(shouldHide);
-        }.bind(this), 300);
+        // this.props.hideSidebar();
+        // setTimeout(function() {
+        //     this.props.showNodeConfig(shouldHide);
+        // }.bind(this), 300);
+
+        this.props.connectNode(parseInt(nodeId))
     }
 
     linkClick(source, target){
@@ -256,9 +258,13 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        deleteLink: (sourceId, targetId) =>{
+        deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))
+        },
+        connectNode: (nodeId) => {
+            dispatch(connectNode(nodeId))
         }
+
     }
 }
 
