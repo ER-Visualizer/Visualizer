@@ -51,13 +51,49 @@ export class NodeSidebarContent extends React.Component {
                         name="elementType"
                         value={this.state.node.elementType} onChange={this.handleInputChange}></input>
                 </div>
-
+                
                 <div className="input-container">
-                    <label>Finish time</label><br/>
-                    <input type="text" 
-                        name="distribution"
-                        value={`${this.state.node.distribution}`}
-                        onChange={this.handleInputChange}></input>
+                    <label>Distribution Type</label><br/>
+                    <select name="distribution"
+                            value={`${this.state.node.distribution}`}
+                            onChange={this.handleInputChange}>
+                        <option value="beta">Beta</option>
+                        <option value="binomial">Binomial</option>
+                        <option value="chisquare">Chisquare</option>
+                        <option value="dirichlet">Dirichlet</option>
+                        <option value="exponential">Exponential</option>
+                        <option value="f">F</option>
+                        <option value="gamma">Gamma</option>
+                        <option value="geometric">Geometric</option>
+                        <option value="gumbel">Gumbel</option>
+                        <option value="hypergeometric">Hypergeometric</option>
+                        <option value="laplace">Laplace</option>
+                        <option value="logistic">Logistic</option>
+                        <option value="lognormal">Lognormal</option>
+                        <option value="logseries">Logseries</option>
+                        <option value="multinomial">Multinomial</option>
+                        <option value="multivariate_normal">Multivariate Normal</option>
+                        <option value="negative_binomial">Negative Binomial</option>
+                        <option value="noncentral_chisquare">Noncentral Chisquare</option>
+                        <option value="noncentral_f">Noncentral F</option>
+                        <option value="normal">Normal</option>
+                        <option value="pareto">Pareto</option>
+                        <option value="poisson">Poisson</option>
+                        <option value="power">Power</option>
+                        <option value="rayleigh">Rayleigh</option>
+                        <option value="standard_cauchy">Standard Cauchy</option>
+                        <option value="standard_exponential">Standard Exponential</option>
+                        <option value="standard_gamma">Standard Gamma</option>
+                        <option value="standard_normal">Standard Normal</option>
+                        <option value="standard_t">Standard T</option>
+                        <option value="triangular">Triangular</option>
+                        <option value="uniform">Uniform</option>
+                        <option value="vonmises">Vonmises</option>
+                        <option value="wald">Wald</option>
+                        <option value="weibull">Weibull</option>
+                        <option value="zipf">Zipf</option>
+                        <option value="fixed">Fixed</option>
+                    </select>
                 </div>
 
                 <div className="input-container"> {/* could indicate what parameters required */}
@@ -78,10 +114,14 @@ export class NodeSidebarContent extends React.Component {
                 </div>
 
                 <div className="input-container">
-                    <label>Queue type</label><br/>
-                    <input type="text"
-                        name="queueType"
-                        value={this.state.node.queueType} onChange={this.handleInputChange}></input>
+                    <label>Queue Type</label><br/>
+                    <select name="queueType"
+                            value={`${this.state.node.queueType}`}
+                            onChange={this.handleInputChange}>
+                        <option value="priority queue">Priority Queue</option>
+                        <option value="queue">Queue</option>
+                        <option value="stack">Stack</option>
+                    </select>
                 </div>
 
                 <div className="input-container">

@@ -23,6 +23,16 @@
     box-sizing: border-box;
 }
 
+.NodeSidebarContent select {
+    margin-bottom: 24px;
+    margin-top: 12px;
+    font-family: 'Roboto Mono';
+    padding: 8px;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .NodeSidebarContent h3 {
     margin-top: 0;
     font-weight: 500;
