@@ -29,3 +29,36 @@
     font-size: 16px;
     margin-bottom: 24px;
 }
+
+
+.SubmitJSONButton{
+    float: left;
+    margin-left: 16px;
+    vertical-align: middle;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E4159;
+
+    background-color: white;
+    box-shadow: none;
+    border: 1px solid #DCE4E9;
+    border-radius: 100px;
+    padding-left: 13px;
+    padding-right: 16px;
+    min-height: 35px;
+    min-width: 120px;
+
+    transition-duration: 0.4s;
+    outline: 0;
+}
+
+div .JSONWarningText {
+    float:left;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.SubmitJSONButton:hover {
+       background-color: rgb(184, 184, 184)
+
+}
