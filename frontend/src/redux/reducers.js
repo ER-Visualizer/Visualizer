@@ -9,7 +9,7 @@ const initialState = {
     showJSONEntrySidebar: false,
     shouldDeleteLink: false,
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
-    nodeCount: 3, // max ID of any node
+    nodeCount: 4, // max ID of any node
     nodes: [
         {
             "id": 0,
@@ -50,7 +50,18 @@ const initialState = {
             "queueType": "xrayqueue",
             "priorityFunction": "xrayprior",
             "children": [1]
+        },
+        {
+            "id": 4,
+            "elementType": "station",
+            "distribution": "stationdist",
+            "distributionParameters": [10],
+            "numberOfActors": 1,
+            "queueType": "stationqueue",
+            "priorityFunction": "stationprior",
+            "children": []
         }
+
     ]
 }
 
@@ -110,8 +121,18 @@ function EDSimulation(state = initialState, action) {
             console.log(state.linkBeingBuilt);
             
             if (state.linkBeingBuilt.length == 1){
-                console.log("building lonk");
-                
+                if (state.linkBeingBuilt[0] === action.nodeId) {
+                    console.log("no self loops allowed");
+                    return state // no self loops allowed       
+                }
+
+                let node_to_update = state.nodes.find((node) => node.id === state.linkBeingBuilt[0])
+                if (node_to_update.children.indexOf(action.nodeId) !== -1){
+                    console.log("link already exists");
+                    return state
+                    
+                }
+            
                 return Object.assign({}, state,
                     {
                         nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link
@@ -187,6 +208,7 @@ function deleteNodeFromState(nodes, nodeId){
 function addLinkToState(nodes, sourceId, targetId) {
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
     let node_to_update = clonedNodes.find((node) => node.id === sourceId)
+    
     node_to_update.children.push(targetId)
 
     return clonedNodes;
