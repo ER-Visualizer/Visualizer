@@ -57,6 +57,7 @@ export class NodeSidebarContent extends React.Component {
                     <select name="distribution"
                             value={`${this.state.node.distribution}`}
                             onChange={this.handleInputChange}>
+                        <option value="normal">Normal/Gaussian</option>
                         <option value="beta">Beta</option>
                         <option value="binomial">Binomial</option>
                         <option value="chisquare">Chisquare</option>
@@ -77,7 +78,6 @@ export class NodeSidebarContent extends React.Component {
                         <option value="negative_binomial">Negative Binomial</option>
                         <option value="noncentral_chisquare">Noncentral Chisquare</option>
                         <option value="noncentral_f">Noncentral F</option>
-                        <option value="normal">Normal/Gaussian</option>
                         <option value="pareto">Pareto</option>
                         <option value="poisson">Poisson</option>
                         <option value="power">Power</option>
