@@ -6,8 +6,11 @@ class JSONEntrySidebarContent extends Component {
     render() {
         return (
             <div className="JSONEntrySidebarContent">
-                <label>Layout JSON</label>
-                <input type="text" name="JSON_entry" onChange={(e)=> this.setState({layoutJSON : e.target.value.toString()})}></input>    
+                <label>Layout JSON</label><br/>
+                <div>
+                <textarea rows="50" name="JSON_entry" onChange={(e)=> this.setState({layoutJSON : e.target.value.toString()})}></textarea>    
+                </div>
+                
             </div>
         )
     }
