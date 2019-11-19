@@ -109,7 +109,7 @@ def create_queues():
 
             # read csv (for now, all patients added to reception queue at beginning)
             dict_reader = csv.DictReader(
-                open("app/models/sample_ED_input.csv"), delimiter=',')
+                open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
             for row in dict_reader:
                 if initial_time is None:
                     initial_time = row["time"]
