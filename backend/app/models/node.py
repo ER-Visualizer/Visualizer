@@ -1,6 +1,6 @@
 from .queues import Queue, Stack, Heap
 from .global_strings import *
-from .distributions import *
+from .distributions import Distributions
 from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
@@ -95,7 +95,7 @@ class Node:
         if self.get_distribution_name() is None: 
             duration = 0
         else:
-            duration = class_distributions[self.get_distribution_name()](
+            duration = Distributions.class_distributions[self.get_distribution_name()](
                 *self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
         return finish_time, duration
