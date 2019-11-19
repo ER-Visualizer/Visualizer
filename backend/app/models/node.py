@@ -156,6 +156,10 @@ class Node:
             # Push Patient inside queue
             self.queue.put(patient)
 
+            # put queue in patient record
+            patient_record = patient.get_patient_record()
+            patient_record.put_process_in_queue(self.id)
+
     # when called from a subprocess, this means that the subprocess just
     # handled a patient, and needs a new one
     # so fill his spot, and return true if you can
@@ -206,6 +210,10 @@ class Node:
                         # extract from the queue. no need to store him, as we
                         # already have a hold of him
                         self.queue.remove(patient)
+                    
+                    # once removed from queue, update patient record
+                    patient_record = patient.get_patient_record()
+                    patient_record.remove_process_from_queue(self.id)
 
                     self.insert_patient_to_resource_and_heap(
                         patient, subprocess)
@@ -249,9 +257,15 @@ class Node:
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
-        # insert patient into resource, since it's free
-        time, duration = self.generate_finish_time()
-        resource.insert_patient(patient, time, duration)
+        # insert patient into resource, since it's available
+        finish_time, duration = self.generate_finish_time()
+        resource.insert_patient(patient, finish_time, duration)
+        
+        # add curr node to patient record
+        patient_record = patient.get_patient_record()
+        patient_record.set_curr_node(self.id, resource.get_id(), GlobalTime.time, finish_time)
+
+        # now add the event to the heap
         self.add_to_heap(resource.get_id())
 
     '''A resource has just been filled with a patient.

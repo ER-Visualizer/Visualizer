@@ -1,13 +1,16 @@
+from .object_record import ObjectRecord
+
 class Patient:
 
-    def __init__(self, id, acuity=None, start_time=None):
-        self.id = id
+    def __init__(self, patient_id, acuity=None, start_time=None):
+        self.id = patient_id
         self.is_available = True
         self.acuity = acuity
         self.start_time = start_time
         self.predicted_processes = {}
         self.needed_processes = {}
         self.join_queue_time = start_time
+        self.patient_record = ObjectRecord(self.id)
 
     ''' For use in comparison inside heaps. We will need to overwrite this
     with a priority function given to us from canvas'''
@@ -44,3 +47,6 @@ class Patient:
 
     def set_join_queue_time(self, time):
         self.join_queue_time = time
+
+    def get_patient_record(self):
+        return self.patient_record
