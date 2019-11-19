@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, addLink} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, addLink, REPLACE_NODE_LIST} from './actions';
 import { object } from 'prop-types';
 
 
@@ -118,6 +118,9 @@ function EDSimulation(state = initialState, action) {
         case DELETE_LINK_MODE:
             return Object.assign({}, state,
                 {shouldDeleteLink: !state.shouldDeleteLink})
+        case REPLACE_NODE_LIST:
+            return Object.assign({}, state,
+                {nodes: action.newNodeList})
         case CONNECT_NODE:
             console.log(state.linkBeingBuilt);
             
