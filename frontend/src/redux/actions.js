@@ -45,3 +45,8 @@ export function editNodeProperties(newProps){ // newprops should be a copy of th
     
 }
 
+export function deleteNode(nodeId){
+
+    return {type: DELETE_NODE, nodeId: nodeId}
+}
+

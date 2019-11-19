@@ -121,9 +121,11 @@ class Main extends React.Component {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar && this.state.selectedNode) {
-            let node_to_send = JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) // deepcopy
-
-            this.sidebarLastContent = <NodeSidebarContent node={node_to_send}/>
+            if (this.props.nodes[this.state.selectedNode]){ // node becomes undefined after we delete it 
+                let node_to_send = JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) // deepcopy
+                this.sidebarLastContent = <NodeSidebarContent node={node_to_send} numNodes={this.props.nodes.length}/>
+            }
+            
             
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
