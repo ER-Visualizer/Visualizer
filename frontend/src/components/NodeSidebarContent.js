@@ -13,48 +13,63 @@ class NodeSidebarContent extends React.Component {
 
     handleInputChange(event) {
         const name = event.target.name
-        const value = event.target.value
-
-        this.setState({
-            [name]: value
-        })
+        const value = name !== "distributionParameters" ? event.target.value : event.target.value.split(",")
+        // user enters csvs for distribution parameters box. e.g. 5,3,6
 
         
+        let new_node = Object.assign({}, this.state.node, {[name]: value})
+        this.setState({
+            node: new_node
+        })
     }
 
-    componentWillReceiveProps({node}){
-        // this.state.node=node;
-        // this.replaceState({state: node});
+    componentWillReceiveProps({node}){ 
         this.setState({node:node})
     }
 
     render() {
-        
+        // console.log(this.state.node.distributionParameters);
         
         return (
             <div className="NodeSidebarContent">                
-                <h3>{this.state.node.elementType}</h3>
                 
+                <div className="input-container"> {/* could make this a dropdown. */ }
+                    <label>Station Type</label><br/>
+                    <input 
+                        type="text"
+                        name="elementType"
+                        value={this.state.node.elementType} onChange={this.handleInputChange}></input>
+                </div>
+
                 <div className="input-container">
                     <label>Finish time</label><br/>
                     <input type="text" 
-                        name="distribution_raw"
-                        value={`${this.state.node.distribution}(mean=${this.state.node.distributionParameters[0]}, variance=${this.state.node.distributionParameters[1]})`}
+                        name="distribution"
+                        value={`${this.state.node.distribution}`}
                         onChange={this.handleInputChange}></input>
                 </div>
+
+                <div className="input-container"> {/* could indicate what parameters required */}
+                    <label>Distribution Parameters</label><br/> 
+                    <input 
+                        type="text"
+                        name="distributionParameters"
+                        value={this.state.node.distributionParameters} onChange={this.handleInputChange}></input>
+                </div>
+                
 
                 <div className="input-container">
                     <label>Number of actors</label><br/>
                     <input 
                         type="text"
-                        name="number_of_actors"
+                        name="numberOfActors"
                         value={this.state.node.numberOfActors} onChange={this.handleInputChange}></input>
                 </div>
 
                 <div className="input-container">
                     <label>Queue type</label><br/>
                     <input type="text"
-                        name="queue_type"
+                        name="queueType"
                         value={this.state.node.queueType} onChange={this.handleInputChange}></input>
                 </div>
 
@@ -62,7 +77,7 @@ class NodeSidebarContent extends React.Component {
                     <label>Priority Function</label><br/>
                     <input 
                         type="text"
-                        name="priority_function"
+                        name="priorityFunction"
                         value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
                 </div>
 
