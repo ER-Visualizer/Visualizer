@@ -53,3 +53,7 @@ class ObjectRecord():
 
     def remove_process_from_queue(self,process_id):
         self.curr_queues.remove(process_id)
+
+    def get_curr_duration(self):
+        return self.curr_node.get_curr_resource_end_time() - \
+            self.curr_node.get_curr_resource_start_time()
