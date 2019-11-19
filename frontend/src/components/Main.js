@@ -160,17 +160,17 @@ class Main extends React.Component {
     nodeClick(nodeId) {
         console.log(nodeId);
         
-        // const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-        // console.log(shouldHide);
-        // this.setState({
-        //     selectedNode: nodeId
-        // })
+        const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+        console.log(shouldHide);
+        this.setState({
+            selectedNode: nodeId
+        })
         
         
-        // this.props.hideSidebar();
-        // setTimeout(function() {
-        //     this.props.showNodeConfig(shouldHide);
-        // }.bind(this), 300);
+        this.props.hideSidebar();
+        setTimeout(function() {
+            this.props.showNodeConfig(shouldHide);
+        }.bind(this), 300);
 
         this.props.connectNode(parseInt(nodeId))
     }

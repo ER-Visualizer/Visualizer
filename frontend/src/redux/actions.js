@@ -8,6 +8,8 @@ export const HIDE_SIDEBAR = 'HIDE_SIDEBAR'
 
 export const ADD_TO_LOGS = 'ADD_TO_LOGS'
 
+export const REPLACE_NODE_LIST = 'REPLACE_NODE_LIST'
+
 export const EDIT_NODE_PROPERTIES = 'EDIT_NODE_PROPERTIES'
 export const ADD_NODE = 'ADD_NODE'
 export const DELETE_NODE = 'DELETE_NODE'
@@ -65,4 +67,8 @@ export function deleteLinkModeSwitch(){
 
 export function connectNode(nodeId){
     return {type: CONNECT_NODE, nodeId: nodeId}
+}
+
+export function replaceNodeList(newNodeList){
+    return {type: REPLACE_NODE_LIST, newNodeList: newNodeList}
 }
