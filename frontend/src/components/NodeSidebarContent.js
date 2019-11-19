@@ -63,6 +63,7 @@ export class NodeSidebarContent extends React.Component {
                         <option value="dirichlet">Dirichlet</option>
                         <option value="exponential">Exponential</option>
                         <option value="f">F</option>
+                        <option value="fixed">Fixed</option>
                         <option value="gamma">Gamma</option>
                         <option value="geometric">Geometric</option>
                         <option value="gumbel">Gumbel</option>
@@ -76,7 +77,7 @@ export class NodeSidebarContent extends React.Component {
                         <option value="negative_binomial">Negative Binomial</option>
                         <option value="noncentral_chisquare">Noncentral Chisquare</option>
                         <option value="noncentral_f">Noncentral F</option>
-                        <option value="normal">Normal</option>
+                        <option value="normal">Normal/Gaussian</option>
                         <option value="pareto">Pareto</option>
                         <option value="poisson">Poisson</option>
                         <option value="power">Power</option>
@@ -92,7 +93,6 @@ export class NodeSidebarContent extends React.Component {
                         <option value="wald">Wald</option>
                         <option value="weibull">Weibull</option>
                         <option value="zipf">Zipf</option>
-                        <option value="fixed">Fixed</option>
                     </select>
                 </div>
 
@@ -106,7 +106,7 @@ export class NodeSidebarContent extends React.Component {
                 
 
                 <div className="input-container">
-                    <label>Number of actors</label><br/>
+                    <label>Number of Actors</label><br/>
                     <input 
                         type="text"
                         name="numberOfActors"
