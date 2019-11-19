@@ -116,10 +116,14 @@ function addNewNode(nodes, nodeNum){
 }
 
 function updateNodeProperties(nodes, newProps){
-    console.log("editing node properties");
+    // receives the node to be changed. just replace it inside the array
     
-    console.log(newProps);
-    
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+
+    clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node
+    clonedNodes.splice(newProps.id, 0, newProps) // insert updated one at the same location
+
+    return clonedNodes    
 }
 
 
