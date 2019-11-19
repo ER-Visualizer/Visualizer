@@ -5,6 +5,7 @@ import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode } from '../redu
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
+import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
-                <button className="AddNodebutton" onClick={this.props.addNode}>New Node</button>
+                <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
                 <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
