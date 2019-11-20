@@ -125,12 +125,22 @@ export class NodeSidebarContent extends React.Component {
                 </div>
 
                 <div className="input-container">
+                    <label>Priority Type</label><br/>
+                    <select name="priorityFunction"
+                            value={`${this.state.node.priorityFunction}`}
+                            onChange={this.handleInputChange}>
+                        <option value="acuity">Acuity</option>
+                        <option value="arrival time">Arrival Time</option>
+                    </select>
+                </div>
+
+                {/* <div className="input-container">
                     <label>Priority Function</label><br/>
                     <input 
                         type="text"
                         name="priorityFunction"
                         value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
-                </div>
+                </div> */}
                 
                 <button className="SaveNodebutton" onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
                 <button className="DeleteNodebutton" onClick={()=>{this.handleDelete()}}> Delete </button>
