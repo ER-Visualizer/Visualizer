@@ -84,7 +84,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: updateQueues(state.nodes, action.startNode, action.newNode, action.patient)
+                nodes: movePatient(state.nodes, action.patient, action.curNode, action.newNode)
             }); 
         default:
             return state
@@ -92,26 +92,37 @@ function EDSimulation(state = initialState, action) {
 }
 
 
-function updateQueues(nodes, startNode, newNode, patient){
+const movePatient = (nodes, patient, currNode, newNode) => {
     // moves patient A from startNode to endNode
     
     console.log(nodes);
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
-    clonedNodes = clonedNodes.filter((node) => { node.id !== startNode });
+    clonedNodes = clonedNodes.filter((node) => { node.id !== currNode });
 
     let removedPatient;
     clonedNodes.forEach((node) => {
-       if (node.id == startNode){
+       if (node.id == currNode){
             removedPatient = node.patients.filter((currPatient) => { currPatient.id !== patient.id });
        }
     });
 
 
+
+
     if (removedPatient){
         console.log(removedPatient)
-        clonedNodes.map((node) => {
-            if (node.id == )
+        newNodesList = clonedNodes.map(node => {
+            const newCurNode = {...node}
+
+            if (node.id == newNode){
+                
+            }
+
+         
+
+
+            return newCurNode
 
         });
 

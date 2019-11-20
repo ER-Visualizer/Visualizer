@@ -7,32 +7,31 @@ export const SHOW_JSON_ENTRY_SIDEBAR = 'SHOW_JSON_ENTRY_SIDEBAR'
 export const EDIT_NODE = 'EDIT_NODE'
 export const HIDE_SIDEBAR = 'HIDE_SIDEBAR'
 export const ADD_TO_LOGS = 'ADD_TO_LOGS'
-export const UPDATE_QUEUE_SIZE = 'UPDATE_QUEUE_SIZE'
+export const UPDATE_PATIENT_LOCATION = 'UPDATE_PATIENT_LOCATION'
 
 /*
 * Action Creators
 */ 
-export function showLogs() {
+export const showLogs = () => {
     return {type: SHOW_LOGS_SIDEBAR}
 }
 
-export function showNodeConfig(shouldHide) {
+export const showNodeConfig = (shouldHide) => {
     return {type: SHOW_NODE_SIDEBAR, shouldHide: shouldHide}
 }
 
-export function showJSONEntrySidebar(){
+export const showJSONEntrySidebar = () => {
     return {type: SHOW_JSON_ENTRY_SIDEBAR}
 }
 
-export function hideSidebar() {
+export const  hideSidebar = () => {
     return {type: HIDE_SIDEBAR}
 }
 
-export function addToLogs(message) {
+export const addToLogs = (message) => {
     return {type: ADD_TO_LOGS, message: message}
 }
 
-export function updateQueueSize(message) {
-    return {type: UPDATE_QUEUE_SIZE, message: message}
+export const updatePatientLocation = (currNode, newNode, patient) => {
+    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient}
 }
-
