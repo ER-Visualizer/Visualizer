@@ -19,7 +19,6 @@ class Main extends React.Component {
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
-        this.counter = 0;
     }
 
     parseEventData(eventData) {
@@ -121,16 +120,13 @@ class Main extends React.Component {
     }
 
     updateNodePatients() {
-        if (this.counter == 0){
         console.log("in updatenodepatients");
         console.log(this.state.events);
 
         this.state.events.forEach((event) => {
-            let curEvent = JSON.parse(JSON.stringify(event.eventData))
+            const curEvent = JSON.parse(JSON.stringify(event.eventData))        
             this.props.updatePatientLocation(curEvent['patientId'], curEvent['curNodeId'], curEvent['nextNodeId'])
         })
-        this.counter++;
-    }
     }
 
     renderSidebarContent() {

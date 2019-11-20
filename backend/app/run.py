@@ -45,7 +45,7 @@ def canvas_parser(canvas_json):
     canvas = {
         "elements": [
             {
-                "id": 1,
+                "id": 0,
                 "elementType": "reception",
                 "distribution": "fixed",
                 "distributionParameters": [5],
@@ -55,7 +55,7 @@ def canvas_parser(canvas_json):
                 "children": [2]
             },
             {
-                "id": 2,
+                "id": 1,
                 "elementType": "triage",
                 "distribution": "fixed",
                 "distributionParameters":[3],
@@ -65,7 +65,7 @@ def canvas_parser(canvas_json):
                 "children": [3, 4]
             },
             {
-                "id": 3,
+                "id": 2,
                 "elementType": "doctor",
                 "distribution": "fixed",
                 "distributionParameters": [10],
@@ -75,7 +75,7 @@ def canvas_parser(canvas_json):
                 "children": []
             },
             {
-                "id": 4,
+                "id": 3,
                 "elementType": "x-ray",
                 "distribution": "binomial",
                 "distributionParameters": [1, 1],
@@ -142,7 +142,7 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-
+    cur_node_id = event_changes[0].get_node_id()
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
@@ -152,7 +152,7 @@ def send_e():
                 "patientId": event_changes[0].get_patient_id(),
                 "movedTo": nodes_list[next_q].get_process_name(),
                 "nextNodeId": nodes_list[next_q].get_id(), 
-                "curNodeId": 0, # used dummy for now, but need the current queue id
+                "curNodeId": cur_node_id, # used dummy for now, but need the current queue id
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time()
             }

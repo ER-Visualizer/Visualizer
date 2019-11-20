@@ -84,34 +84,42 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatient(state.nodes, action.patient, action.curNode, action.newNode)
+                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode)
             }); 
         default:
             return state
     }
 }
-
-
 const movePatient = (nodes, patient, currNode, newNode) => {
     // moves patient A from startNode to endNode
     console.log("in move patient ");
+    // console.log({patient});
+    // console.log({currNode});
+    // console.log({newNode});
+
     
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
+
+    // if the first node is the patient loadeer
+    if (currNode == -1){
+        clonedNodes[0].patients.push(patient)
+        console.log(clonedNodes[0].patients);
+        
+        return clonedNodes
+    }
 
     let removedPatient;
     clonedNodes.forEach((node) => {
        if (node.id == currNode){
-            removedPatient = node.patients.filter((currPatient) => currPatient.id !== patient.id );
+        //    console.log("thee current nodeid that has the same id as the start node");
+        //    console.log(node.id);
+           removedPatient = node.patients.filter((currPatient) => currPatient.id !== patient.id );
        }
     });
-    console.log({nodes});
-    console.log({clonedNodes});
-
-
-
+    // console.log({removedPatient});
 
     if (removedPatient){
-        console.log({removedPatient})
+        // console.log({removedPatient})
         const newNodesList = clonedNodes.map(node => {
             const newCurNode = {...node}
 
