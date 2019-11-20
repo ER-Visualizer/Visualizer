@@ -117,6 +117,11 @@ class Main extends React.Component {
               this.state.ws.close();
           }
     }
+
+    updateQueueSize() {
+        
+    }
+
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>

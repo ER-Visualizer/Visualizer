@@ -15,7 +15,7 @@ const initialState = {
             "queueType": "receptionstack",
             "priorityFunction": "receptionprior",
             "children": [2],
-            "size": 0,
+            "patients": [],
         },
         {
             "id": 1,
@@ -26,7 +26,7 @@ const initialState = {
             "queueType": "triagestack",
             "priorityFunction": "triageprior",
             "children": [3, 2],
-            "size": 0,
+            "patients": [],
         },
         {
             "id": 2,
@@ -37,7 +37,7 @@ const initialState = {
             "queueType": "doctorqueue",
             "priorityFunction": "doctorprior",
             "children": [],
-            "size": 0,
+            "patients": [],
         },
         {
             "id": 3,
@@ -48,7 +48,7 @@ const initialState = {
             "queueType": "xrayqueue",
             "priorityFunction": "xrayprior",
             "children": [1],
-            "size": 0,
+            "patients": [],
         }
     ]
 }
@@ -79,15 +79,44 @@ function EDSimulation(state = initialState, action) {
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false
             }); 
-        // case EDIT_NODE:
-        //     return Object.assign({}, state, {
-        //         // nodes: updateNodes()
-        //     })
+        case UPDATE_QUEUE_SIZE:
+            return  Object.assign({}, state, {
+                showLogsSidebar: state.showLogsSidebar, 
+                showNodeSidebar: state.showNodeSidebar, 
+                showJSONEntrySidebar: state.showJSONEntrySidebar,
+                nodes: updateQueues(state.nodes, action.startNode, action.newNode, action.patient)
+            }); 
         default:
             return state
     }
 }
 
 
+function updateQueues(nodes, startNode, newNode, patient){
+    // moves patient A from startNode to endNode
+    
+    console.log(nodes);
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+
+    clonedNodes = clonedNodes.filter((node) => { node.id !== startNode });
+
+    let removedPatient;
+    clonedNodes.forEach((node) => {
+       if (node.id == startNode){
+            removedPatient = node.patients.filter((currPatient) => { currPatient.id !== patient.id });
+       }
+    });
+
+
+    if (removedPatient){
+        console.log(removedPatient)
+        clonedNodes.map((node) => {
+            if (node.id == )
+
+        });
+
+    }
+    return clonedNodes    
+}
 
 export default EDSimulation;
