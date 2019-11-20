@@ -137,7 +137,8 @@ function EDSimulation(state = initialState, action) {
                     console.log("link already exists");
                     return state
                 }
-            
+                
+                console.log("creating new link");
                 return Object.assign({}, state,
                     {
                         nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link

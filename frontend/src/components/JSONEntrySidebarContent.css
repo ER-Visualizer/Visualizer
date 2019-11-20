@@ -31,7 +31,7 @@
 }
 
 
-.SubmitJSONButton{
+.SubmitJSONButton, .ResetJSONButton{
     float: left;
     margin-left: 16px;
     vertical-align: middle;
@@ -58,7 +58,7 @@ div .JSONWarningText {
     margin-left: 20px;
 }
 
-.SubmitJSONButton:hover {
+.SubmitJSONButton:hover, .ResetJSONButton:hover {
        background-color: rgb(184, 184, 184)
 
 }
