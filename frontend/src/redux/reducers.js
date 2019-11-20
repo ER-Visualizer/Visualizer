@@ -109,7 +109,8 @@ function EDSimulation(state = initialState, action) {
             
             return Object.assign({}, state, {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
-                nodeCount: temp_node_count - 2
+                nodeCount: temp_node_count - 2, 
+                linkBeingBuilt: state.linkBeingBuilt[0] === action.nodeId ? [] : state.linkBeingBuilt
             })
         case DELETE_LINK:
             return Object.assign({}, state, {
@@ -198,7 +199,7 @@ function updateNodeProperties(nodes, newProps){
     return clonedNodes    
 }
 
-function deleteNodeFromState(nodes, nodeId){
+function deleteNodeFromState(nodes, nodeId){ // TODO: this needs to delete the connections to 
     
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
@@ -214,6 +215,7 @@ function deleteNodeFromState(nodes, nodeId){
     return clonedNodes
 }
 
+
 function addLinkToState(nodes, sourceId, targetId) {
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
     let node_to_update = clonedNodes.find((node) => node.id === sourceId)
@@ -223,7 +225,7 @@ function addLinkToState(nodes, sourceId, targetId) {
     return clonedNodes;
 }
 
-function deleteLinkFromState(nodes, sourceId, targetId){    
+function deleteLinkFromState(nodes, sourceId, targetId){    // need to delete from the link being built as well
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
     let node_to_update = clonedNodes.find(node => node.id === sourceId)
     let index = node_to_update.children.indexOf(targetId)
