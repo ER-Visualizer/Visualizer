@@ -95,7 +95,7 @@ function EDSimulation(state = initialState, action) {
 const movePatient = (nodes, patient, currNode, newNode) => {
     // moves patient A from startNode to endNode
     
-    console.log(nodes);
+    console.log({nodes});
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     clonedNodes = clonedNodes.filter((node) => { node.id !== currNode });
@@ -111,7 +111,7 @@ const movePatient = (nodes, patient, currNode, newNode) => {
 
 
     if (removedPatient){
-        console.log(removedPatient)
+        console.log({removedPatient})
         newNodesList = clonedNodes.map(node => {
             const newCurNode = {...node}
 

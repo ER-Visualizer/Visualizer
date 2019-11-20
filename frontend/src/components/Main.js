@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar } from '../redux/actions';
+import { showNodeConfig, hideSidebar, updatePatientLocation } from '../redux/actions';
 
 class Main extends React.Component {
     constructor(props) {
@@ -65,6 +65,7 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
+                    this.updateNodePatients()
                 }
                 else if(eventData["stats"] == "true"){
                     console.log("stats true")
@@ -118,8 +119,11 @@ class Main extends React.Component {
           }
     }
 
-    updateQueueSize() {
-        
+    updateNodePatients() {
+        this.state.events.forEach((event) => {
+            console.log(event)
+            // this.props.updatePatientLocation(1,1,1)
+        })
     }
 
     renderSidebarContent() {
@@ -244,6 +248,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideSidebar: () => {
             dispatch(hideSidebar())
+        },
+        updatePatientLocation: (patient, currNode, newNode) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode))
         }
     }
 }

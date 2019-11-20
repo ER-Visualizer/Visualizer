@@ -32,6 +32,6 @@ export const addToLogs = (message) => {
     return {type: ADD_TO_LOGS, message: message}
 }
 
-export const updatePatientLocation = (currNode, newNode, patient) => {
+export const updatePatientLocation = (patient, currNode, newNode) => {
     return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient}
 }
