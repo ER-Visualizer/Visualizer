@@ -1,4 +1,6 @@
 import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, EDIT_NODE, HIDE_SIDEBAR } from './actions';
+import ProcessNode from '../models/ProcessNode';
+import Patient from '../models/Patient';
 
 const initialState = {
     showLogsSidebar: false,
@@ -6,50 +8,18 @@ const initialState = {
     showJSONEntrySidebar: false,
     nodeCount: 0,
     nodes: [
-        {
-            "id": 0,
-            "elementType": "reception",
-            "distribution": "receptiondist",
-            "distributionParameters": [5],
-            "numberOfActors": 1,
-            "queueType": "receptionstack",
-            "priorityFunction": "receptionprior",
-            "children": [2],
-            "size": 0,
-        },
-        {
-            "id": 1,
-            "elementType": "triage",
-            "distribution": "triagedist",
-            "distributionParameters":[3],
-            "numberOfActors": 2,
-            "queueType": "triagestack",
-            "priorityFunction": "triageprior",
-            "children": [3, 2],
-            "size": 0,
-        },
-        {
-            "id": 2,
-            "elementType": "doctor",
-            "distribution": "doctordist",
-            "distributionParameters": [10],
-            "numberOfActors": 3,
-            "queueType": "doctorqueue",
-            "priorityFunction": "doctorprior",
-            "children": [],
-            "size": 0,
-        },
-        {
-            "id": 3,
-            "elementType": "x-ray",
-            "distribution": "xraydist",
-            "distributionParameters": [1, 1],
-            "numberOfActors": 4,
-            "queueType": "xrayqueue",
-            "priorityFunction": "xrayprior",
-            "children": [1],
-            "size": 0,
-        }
+        new ProcessNode(0, "reception", "receptiondist", [5], 1,
+            "receptionstack", "receptionprior", [2],
+            [new Patient(0, 2), new Patient(1, 3)]),
+        new ProcessNode(1, "triage", "triagedist", [3], 2,
+            "triagestack", "triageprior", [3, 2],
+            [new Patient(2, 4), new Patient(3, 1)]),
+        new ProcessNode(2, "doctor", "doctordist", [10], 3,
+            "doctorqueue", "doctorprior", [],
+            [new Patient(1, 5), new Patient(3, 2)]),
+        new ProcessNode(3, "x-ray", "xraydist", [1, 1], 4,
+            "xrayqueue", "xrayprior", [1],
+            [])
     ]
 }
 
