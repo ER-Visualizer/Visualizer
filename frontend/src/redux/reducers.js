@@ -60,7 +60,7 @@ function EDSimulation(state = initialState, action) {
         case SHOW_NODE_SIDEBAR:
             return Object.assign({}, state, {
                 showLogsSidebar: false, 
-                showNodeSidebar: true && !action.shouldHide, 
+                showNodeSidebar: !action.shouldHide, 
                 showJSONEntrySidebar: false
             });
         case SHOW_JSON_ENTRY_SIDEBAR:
