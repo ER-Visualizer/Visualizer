@@ -6,8 +6,9 @@ import { replaceNodeList } from '../redux/actions'
 export class JSONEntrySidebarContent extends Component {
     constructor(props){
         super(props)
-        this.state = {valid: true, JSONmodified: false, layoutJSON:""}
+        this.state = {valid: true, layoutJSON:""}
         this.handleReset = this.handleReset.bind(this)
+        this.handleClear = this.handleClear.bind(this)
     }
 
     componentDidMount(){
@@ -17,7 +18,7 @@ export class JSONEntrySidebarContent extends Component {
     }
 
     handleReset(){  
-        this.setState({layoutJSON: JSON.stringify(this.props.nodes, null, 2)})
+        this.setState({layoutJSON: JSON.stringify(this.props.nodes, null, 1), valid:true})
     }
     
 
@@ -28,7 +29,10 @@ export class JSONEntrySidebarContent extends Component {
         } catch(e){
             this.setState({valid: false})
         }
+    }
 
+    handleClear(e){
+        this.setState({layoutJSON: "", valid:true})
     }
 
     render() {
@@ -36,10 +40,11 @@ export class JSONEntrySidebarContent extends Component {
             <div className="JSONEntrySidebarContent">
                 <label>Layout JSON</label><br/>
                 <div>
-                <textarea rows="30" name="JSON_entry" value={this.state.layoutJSON} onChange={(e) => this.setState({valid: true, layoutJSON : e.target.value.toString()})}></textarea>    
+                <textarea rows="40" name="JSON_entry" value={this.state.layoutJSON} onChange={(e) => this.setState({valid: true, layoutJSON : e.target.value.toString()})}></textarea>    
                 </div>
                 <button className="SubmitJSONButton" onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 <button className="ResetJSONButton" onClick={this.handleReset}>Reset</button>
+                <button className="ClearJSONButton" onClick={this.handleClear}>Clear</button>
                 <div className="JSONWarningContainer">
                     <label className="JSONWarningText">{this.state.valid ? "" : "  Invalid JSON"}</label>
                 </div>

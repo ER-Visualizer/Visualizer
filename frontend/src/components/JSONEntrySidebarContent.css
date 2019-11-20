@@ -31,9 +31,9 @@
 }
 
 
-.SubmitJSONButton, .ResetJSONButton{
-    float: left;
-    margin-left: 16px;
+.SubmitJSONButton, .ResetJSONButton, .ClearJSONButton{
+    float: right;
+    margin-left: 5px;
     vertical-align: middle;
     font-weight: 700;
     font-size: 12px;
@@ -43,22 +43,19 @@
     box-shadow: none;
     border: 1px solid #DCE4E9;
     border-radius: 100px;
-    padding-left: 13px;
-    padding-right: 16px;
     min-height: 35px;
-    min-width: 120px;
+    min-width: 60px;
 
     transition-duration: 0.4s;
     outline: 0;
 }
 
 div .JSONWarningText {
-    float:left;
+    float:right;
     margin-top: 10px;
     margin-left: 20px;
 }
 
-.SubmitJSONButton:hover, .ResetJSONButton:hover {
+.SubmitJSONButton:hover, .ResetJSONButton:hover, .ClearJSONButton:hover{
        background-color: rgb(184, 184, 184)
-
 }

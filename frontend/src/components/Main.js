@@ -222,7 +222,7 @@ class Main extends React.Component {
     }
 }
 
-const graphConfig = {
+const graphConfig = { // TODO: move this into store
     nodeHighlightBehavior: true,
     width: window.innerWidth,
     height: window.innerHeight,
