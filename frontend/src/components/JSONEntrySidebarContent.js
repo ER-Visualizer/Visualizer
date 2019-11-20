@@ -25,7 +25,7 @@ export class JSONEntrySidebarContent extends Component {
             <div className="JSONEntrySidebarContent">
                 <label>Layout JSON</label><br/>
                 <div>
-                <textarea rows="30" name="JSON_entry" onChange={(e) => this.setState({valid: true, layoutJSON : e.target.value.toString()})}></textarea>    
+                <textarea rows="30" name="JSON_entry" value={JSON.stringify(this.props.nodes, null, 2)} onChange={(e) => this.setState({valid: true, layoutJSON : e.target.value.toString()})}></textarea>    
                 </div>
                 <button className="SubmitJSONButton" onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 <div className="JSONWarningContainer">
@@ -38,7 +38,7 @@ export class JSONEntrySidebarContent extends Component {
 }
 
 const mapStateToProps = state => {
-    return { }
+    return { nodes: state.nodes }
 }
   
 const mapDispatchToProps = dispatch => {
