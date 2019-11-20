@@ -31,8 +31,20 @@ export class NodeSidebarContent extends React.Component {
 
     
     handleDelete(){
-        if (!(this.state.numNodes === 1)){
-            this.props.deleteNode((this.state.node.id))
+        if (this.state.numNodes !== 1){
+            const deleteId = this.state.node.id
+            const numNodes = this.props.numNodes
+
+            this.props.deleteNode(deleteId)
+            
+            for (let i = deleteId; i < numNodes; i++) {
+                continue
+            }
+            console.log("PROPS:")
+            console.log(this.props)
+            console.log("\nSTATE:")
+            console.log(this.state)
+
         }
         else {
             console.log("cannot delete last node");

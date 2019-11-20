@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, addLink, REPLACE_NODE_LIST} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
 import { object } from 'prop-types';
 
 
@@ -118,24 +118,26 @@ function EDSimulation(state = initialState, action) {
             })
         case DELETE_LINK_MODE:
             return Object.assign({}, state,
-                {shouldDeleteLink: !state.shouldDeleteLink})
+                {shouldDeleteLink: !state.shouldDeleteLink}) // reset anything in the link previously being built
+        case BUILD_LINK_MODE:
+                return Object.assign({}, state,
+                    {shouldBuildLink: !state.shouldBuildLink,
+                    linkBeingBuilt: []}) 
         case REPLACE_NODE_LIST:
             return Object.assign({}, state,
                 {nodes: action.newNodeList})
         case CONNECT_NODE:
             console.log(state.linkBeingBuilt);
             
-            if (state.linkBeingBuilt.length == 1){
+            if (state.linkBeingBuilt.length == 1){ // connect the target node
                 console.log("checking candidate nodes");
                 
                 if (state.linkBeingBuilt[0] === action.nodeId) {
-                    console.log("no self loops allowed");
                     return state // no self loops allowed       
                 }
 
                 let node_to_update = state.nodes.find((node) => node.id === state.linkBeingBuilt[0])
-                if (node_to_update.children.indexOf(action.nodeId) !== -1){
-                    console.log("link already exists");
+                if (node_to_update.children.indexOf(action.nodeId) !== -1){ // link already exists
                     return state
                 }
                 
@@ -151,9 +153,9 @@ function EDSimulation(state = initialState, action) {
                 console.log("selected link source");
                 
                 
-                return Object.assign({}, state, 
+                return Object.assign({}, state,  // add the source node
                     {   linkBeingBuilt: [action.nodeId],
-                    }) // first node in the link.
+                    }) 
             }
             
 

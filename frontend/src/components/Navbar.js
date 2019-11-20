@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch, buildLinkModeSwitch } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
@@ -52,8 +52,8 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
-                <button className="ToggleLinkDeletebutton" onClick={(e) => this.handleLinkDeleteButton(e)}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
-                {/* <button className="AddLinkButton" onClick={()=>console.log("adding links not implemented")}>Add Link</button> */}
+                <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
+                <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
@@ -64,7 +64,7 @@ class Navbar extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { nodes: state.nodes, shouldDeleteLink: state.shouldDeleteLink}
+    return { nodes: state.nodes, shouldDeleteLink: state.shouldDeleteLink, shouldBuildLink: state.shouldBuildLink}
 }
   
 const mapDispatchToProps = dispatch => {
@@ -83,8 +83,11 @@ const mapDispatchToProps = dispatch => {
         addNode: () => {
             dispatch(addNode())
         },
-        deleteLinkModeSwitch: () =>{
+        deleteLinkModeSwitch: () => {
             dispatch(deleteLinkModeSwitch())
+        },
+        buildLinkModeSwitch: () => {
+            dispatch(buildLinkModeSwitch())
         }
     }
 }

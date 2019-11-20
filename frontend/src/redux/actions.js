@@ -14,8 +14,10 @@ export const EDIT_NODE_PROPERTIES = 'EDIT_NODE_PROPERTIES'
 export const ADD_NODE = 'ADD_NODE'
 export const DELETE_NODE = 'DELETE_NODE'
 export const CONNECT_NODE = 'CONNECT_NODE'
+export const BUILD_LINK_MODE = 'BUILD_LINK_MODE'
 export const DELETE_LINK = 'DELETE_LINK'
 export const DELETE_LINK_MODE = 'DELETE_LINK_MODE'
+
 
 /*
 * Action Creators
@@ -71,4 +73,8 @@ export function connectNode(nodeId){
 
 export function replaceNodeList(newNodeList){
     return {type: REPLACE_NODE_LIST, newNodeList: newNodeList}
+}
+
+export function buildLinkModeSwitch(){
+    return {type: BUILD_LINK_MODE}
 }

@@ -92,10 +92,6 @@
     outline: 0;
 }
 
-.Navbar .JSONEntryButton:hover, .Navbar .ShowLogsButton:hover,
- .Navbar .AddNodebutton:hover, .Navbar .ToggleLinkDeletebutton:hover{
-    background-color: rgb(184, 184, 184)
-}
 
 .Navbar .JSONEntryButton svg{
     height : 16px;
@@ -151,7 +147,28 @@
 }
 
 
-.Navbar .ToggleLinkDeletebutton svg{
-    height : 16px;
-    width: 16px;
+.Navbar .ToggleBuildLinksbutton{
+    float: right;
+    margin-right: 16px;
+    vertical-align: middle;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E4159;
+
+    background: white;
+    box-shadow: none;
+    border: 1px solid #DCE4E9;
+    border-radius: 100px;
+    padding-left: 13px;
+    padding-right: 16px;
+
+    transition-duration: 0.4s;
+    outline: 0;
+}
+
+.Navbar .JSONEntryButton:hover, .Navbar .ShowLogsButton:hover,
+.Navbar .AddNodebutton:hover, .Navbar .ToggleLinkDeletebutton:hover,
+.Navbar .ToggleBuildLinksbutton:hover {
+    background-color: rgb(184, 184, 184)
 }

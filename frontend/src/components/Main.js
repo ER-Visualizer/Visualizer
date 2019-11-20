@@ -160,19 +160,24 @@ class Main extends React.Component {
     nodeClick(nodeId) {
         console.log(nodeId);
         
-        const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-        console.log(shouldHide);
-        this.setState({
-            selectedNode: nodeId
-        })
-        
-        
-        this.props.hideSidebar();
-        setTimeout(function() {
-            this.props.showNodeConfig(shouldHide);
-        }.bind(this), 300);
+        if (this.props.shouldBuildLink){
+            this.props.connectNode(parseInt(nodeId))
+        } 
+        else { // dont toggle sidebars when build link mode on
 
-        this.props.connectNode(parseInt(nodeId))
+            const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+            console.log(shouldHide);
+            this.setState({
+                selectedNode: nodeId
+            })
+            
+            
+            this.props.hideSidebar();
+            setTimeout(function() {
+                this.props.showNodeConfig(shouldHide);
+            }.bind(this), 300);
+        }
+        
     }
 
     linkClick(source, target){
@@ -243,6 +248,7 @@ const graphConfig = { // TODO: move this into store
 const mapStateToProps = state => {
   return {
       shouldDeleteLink: state.shouldDeleteLink, 
+      shouldBuildLink: state.shouldBuildLink,
       showLogsSidebar: state.showLogsSidebar, 
       showNodeSidebar: state.showNodeSidebar, 
       showJSONEntrySidebar: state.showJSONEntrySidebar,
