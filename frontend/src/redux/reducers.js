@@ -14,7 +14,8 @@ const initialState = {
             "numberOfActors": 1,
             "queueType": "receptionstack",
             "priorityFunction": "receptionprior",
-            "children": [2]
+            "children": [2],
+            "size": 0,
         },
         {
             "id": 1,
@@ -24,7 +25,8 @@ const initialState = {
             "numberOfActors": 2,
             "queueType": "triagestack",
             "priorityFunction": "triageprior",
-            "children": [3, 2]
+            "children": [3, 2],
+            "size": 0,
         },
         {
             "id": 2,
@@ -34,7 +36,8 @@ const initialState = {
             "numberOfActors": 3,
             "queueType": "doctorqueue",
             "priorityFunction": "doctorprior",
-            "children": []
+            "children": [],
+            "size": 0,
         },
         {
             "id": 3,
@@ -44,7 +47,8 @@ const initialState = {
             "numberOfActors": 4,
             "queueType": "xrayqueue",
             "priorityFunction": "xrayprior",
-            "children": [1]
+            "children": [1],
+            "size": 0,
         }
     ]
 }
