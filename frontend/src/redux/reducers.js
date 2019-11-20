@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, EDIT_NODE, HIDE_SIDEBAR } from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, EDIT_NODE, HIDE_SIDEBAR, UPDATE_PATIENT_LOCATION } from './actions';
 
 const initialState = {
     showLogsSidebar: false,
@@ -15,7 +15,7 @@ const initialState = {
             "queueType": "receptionstack",
             "priorityFunction": "receptionprior",
             "children": [2],
-            "patients": [],
+            "patients": [0],
         },
         {
             "id": 1,
@@ -79,7 +79,7 @@ function EDSimulation(state = initialState, action) {
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false
             }); 
-        case UPDATE_QUEUE_SIZE:
+        case UPDATE_PATIENT_LOCATION:
             return  Object.assign({}, state, {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
@@ -94,25 +94,25 @@ function EDSimulation(state = initialState, action) {
 
 const movePatient = (nodes, patient, currNode, newNode) => {
     // moves patient A from startNode to endNode
+    console.log("in move patient ");
     
-    console.log({nodes});
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
-
-    clonedNodes = clonedNodes.filter((node) => { node.id !== currNode });
 
     let removedPatient;
     clonedNodes.forEach((node) => {
        if (node.id == currNode){
-            removedPatient = node.patients.filter((currPatient) => { currPatient.id !== patient.id });
+            removedPatient = node.patients.filter((currPatient) => currPatient.id !== patient.id );
        }
     });
+    console.log({nodes});
+    console.log({clonedNodes});
 
 
 
 
     if (removedPatient){
         console.log({removedPatient})
-        newNodesList = clonedNodes.map(node => {
+        const newNodesList = clonedNodes.map(node => {
             const newCurNode = {...node}
 
             if (node.id == newNode){
@@ -125,9 +125,11 @@ const movePatient = (nodes, patient, currNode, newNode) => {
             return newCurNode
 
         });
-
+        return newNodesList; 
+    } else {
+        return nodes;
     }
-    return clonedNodes    
+    
 }
 
 export default EDSimulation;

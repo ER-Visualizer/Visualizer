@@ -89,10 +89,10 @@ def canvas_parser(canvas_json):
 
 
 def create_queues():
-    print("IN CQ")
+    # print("IN CQ")
     global initial_time
     for node in canvas["elements"]:
-        print("IN NODE")
+        # print("IN NODE")
 
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
@@ -147,9 +147,12 @@ def send_e():
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
             # next_resource = nodes_list[next_q].get_resource(nodes_list[next_q].get_node_resource_id())
+            print(f"cur_resource: {curr_resource} --------------------------------------------")
             event_dict = {
                 "patientId": event_changes[0].get_patient_id(),
                 "movedTo": nodes_list[next_q].get_process_name(),
+                "nextNodeId": nodes_list[next_q].get_id(), 
+                "curNodeId": 0, # used dummy for now, but need the current queue id
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time()
             }
@@ -247,7 +250,7 @@ def main():
     # create_heap(get_heap())
 
     # this will read patients csv
-    print("create queues")
+    # print("create queues")
     create_queues()
 
     # setup websocket server
@@ -258,7 +261,7 @@ def main():
     # send_e() pls
 
     # process events until heap is emptied
-    print("before processheap")
+    # print("before processheap")
     while (process_heap()):
         process_heap()
 
