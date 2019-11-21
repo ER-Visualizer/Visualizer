@@ -112,11 +112,11 @@ function _initializeNodes(graphNodes) {
         node.highlighted = false;
 
         if (!Object.prototype.hasOwnProperty.call(node, "x")) {
-            node.x = 0;
+            node.x = 100;
         }
 
         if (!Object.prototype.hasOwnProperty.call(node, "y")) {
-            node.y = 0;
+            node.y = 100;
         }
 
         nodes[node.id.toString()] = node;
