@@ -21,6 +21,8 @@
     font-size: 12px;
     width: 100%;
     box-sizing: border-box;
+
+    outline: 0;
 }
 
 .JSONEntrySidebarContent h3 {
@@ -31,7 +33,7 @@
 }
 
 
-.SubmitJSONButton, .ResetJSONButton, .ClearJSONButton{
+.SubmitJSONButton, .ResetJSONButton, .ClearJSONButton, .DownloadJSONButton{
     float: right;
     margin-left: 5px;
     vertical-align: middle;
@@ -54,8 +56,9 @@ div .JSONWarningText {
     float:right;
     margin-top: 10px;
     margin-left: 20px;
+    color: maroon;
 }
 
-.SubmitJSONButton:hover, .ResetJSONButton:hover, .ClearJSONButton:hover{
+.SubmitJSONButton:hover, .ResetJSONButton:hover, .ClearJSONButton:hover, .DownloadJSONButton:hover{
        background-color: rgb(184, 184, 184)
 }

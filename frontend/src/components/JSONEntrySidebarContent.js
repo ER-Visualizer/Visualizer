@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import './JSONEntrySidebarContent.css'
 import { connect } from 'react-redux';
 import { replaceNodeList } from '../redux/actions'
-import { func } from 'prop-types';
 
 export class JSONEntrySidebarContent extends Component {
     constructor(props) {
@@ -50,14 +49,10 @@ export class JSONEntrySidebarContent extends Component {
             });
             
             if (!hasAllProps) {
-                
                 this.setState({ valid: false, invalidJSONError: "Node(s) missing a required property" })
                 return
             }
         }
-
-
-
 
         if (this.state.valid) {
             this.props.replaceNodeList(validatedJSON)
@@ -92,7 +87,7 @@ export class JSONEntrySidebarContent extends Component {
                 <button className="SubmitJSONButton" onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 <button className="ResetJSONButton" onClick={this.handleReset}>Reset</button>
                 <button className="ClearJSONButton" onClick={this.handleClear}>Clear</button>
-                <button className="ClearJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
+                <button className="DownloadJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
                 {/* TODO: give this button its own class */}
                 <div className="JSONWarningContainer">
                     <label className="JSONWarningText">{this.state.valid ? "" : this.state.invalidJSONError}</label> {/* this seems to be broken now?? */}
