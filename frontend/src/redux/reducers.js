@@ -36,6 +36,16 @@ const initialState = {
             Queue_type: "stack",
             Priority_function: "",
             Children: [5]
+        },
+        {
+            Id: 7,
+            Element_type: "pd(7)",
+            Distribution: "gaussian", 
+            Distribution_parameters: [3,1],
+            Number_of_actors: 10,
+            Queue_type: "stack",
+            Priority_function: "",
+            Children: []
         }
     ]
 

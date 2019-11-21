@@ -518,8 +518,8 @@ export default class Graph extends React.Component {
 
         // perform topological sort to get node ordering
         let visited = {}
+        let x = 64
         for(var root_node in root_nodes) {
-            let x = 64
             let stack = []
             visited[root_node.Id] = true 
             nodes[root_node].y = 128;
