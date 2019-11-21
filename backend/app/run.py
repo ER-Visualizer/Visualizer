@@ -33,6 +33,9 @@ packet_rate = 1
 # instantiate statistics
 statistics = Statistic()
 
+# instaiate array of all patients
+all_patients = {}
+
 """
 Setup Canvas:
 
@@ -120,6 +123,7 @@ def create_queues():
                     int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
                 # All of the patients first get loaded up into the 
                 nodes_list[-1].put_patient_in_node(next_patient)
+                all_patients[next_patient.get_id()] = next_patient
 
 
 
