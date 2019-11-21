@@ -1,19 +1,21 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig, showJSONEntrySidebar } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch, buildLinkModeSwitch } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
+import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
+        
         this.sendCanvas = this.sendCanvas.bind(this);
         this.updateRunButton = this.updateRunButton.bind(this);
+        this.handleLinkDeleteButton = this.handleLinkDeleteButton.bind(this)
         this.state = {runButtonpressed: false};
     }
-
 
     async sendCanvas(e){
         try {
@@ -38,24 +40,34 @@ class Navbar extends React.Component {
     }
 
     updateRunButton(e){
-        e.target.classList.add("clickedButton")     
+        e.target.classList.add("clickedRunButton")     
     }
+
+    handleLinkDeleteButton(e){
+        this.props.deleteLinkModeSwitch()
+    }
+
     render() {
         return (
             <div className="Navbar">   
+                <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
+                <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
+                <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
                 <button className="JSONEntryButton" onClick={this.props.showJSONEntry}> <JSONIcon/> JSON Entry </button>  
-                <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>          
+                <button className="RunButton" onClick={(e) => {this.sendCanvas(e); this.updateRunButton(e)}}><PlayIcon /> Run</button>              
             </div>
         )
     }
 }
 
 const mapStateToProps = state => {
-    return { nodes: state.nodes }
+    return { nodes: state.nodes, shouldDeleteLink: state.shouldDeleteLink, shouldBuildLink: state.shouldBuildLink}
 }
   
 const mapDispatchToProps = dispatch => {
+    
+    
     return {
         showLogs: () => {
             dispatch(showLogs())
@@ -65,6 +77,15 @@ const mapDispatchToProps = dispatch => {
         },
         showJSONEntry: () => {
             dispatch(showJSONEntrySidebar())
+        },
+        addNode: () => {
+            dispatch(addNode())
+        },
+        deleteLinkModeSwitch: () => {
+            dispatch(deleteLinkModeSwitch())
+        },
+        buildLinkModeSwitch: () => {
+            dispatch(buildLinkModeSwitch())
         }
     }
 }
