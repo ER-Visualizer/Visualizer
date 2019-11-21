@@ -46,7 +46,7 @@ counter = 0
 def canvas_parser(canvas_json):
     global canvas
     canvas = {
-        "elements": [
+        "elements": [ 
             {
                 "id": 0,
                 "elementType": "reception",
