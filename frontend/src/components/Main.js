@@ -25,6 +25,7 @@ class Main extends React.Component {
 
     runHandler = () =>{
         console.log("run handler")
+        this.setState({run: true})
         this.connect();
     }
 
@@ -81,21 +82,23 @@ class Main extends React.Component {
                     console.log("stats true")
                     delete eventData['stats']
                     this.setState({
-                    events: this.state.events.concat({message: JSON.stringify(eventData)})
+                    events: this.state.events.concat({message: JSON.stringify(eventData)}),
+                    run: false
                     })
+
                 }
                 
         }
 
         // websocket onclose event listener
         ws.onclose = e => {
-            console.error(
-                `Socket is closed. Reconnect will be attempted in ${Math.min(
-                    10000 / 1000,
-                    (that.timeout + that.timeout) / 1000
-                )} second.`,
-                e.reason
-            );
+            // console.error(
+            //     `Socket is closed. Reconnect will be attempted in ${Math.min(
+            //         10000 / 1000,
+            //         (that.timeout + that.timeout) / 1000
+            //     )} second.`,
+            //     e.reason
+            // );
 
             that.timeout = that.timeout + that.timeout; //increment retry interval
             connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
@@ -119,8 +122,8 @@ class Main extends React.Component {
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
     check = () => {
-        const { ws } = this.state;
-        if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+        const { ws, run } = this.state;
+        if (run && (!ws || ws.readyState == WebSocket.CLOSED)) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
     componentDidMount() {
      

@@ -74,7 +74,7 @@ class Node:
         return self.priority_function
 
     def get_output_process_ids(self):
-        return self.output_processes_ids
+        return self.output_process_ids
 
     def get_resource(self, resource_id):
         return self.resource_dict[resource_id]
