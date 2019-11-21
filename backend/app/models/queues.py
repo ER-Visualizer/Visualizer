@@ -22,9 +22,11 @@ class Queue():
 
     def __init__(self):
         self.q = deque()
+        self.contents = []
 
     def put(self, el):
         self.q.append(el)
+        self.contents.append(el.id)
 
     def get(self):
         return self.q.popleft()

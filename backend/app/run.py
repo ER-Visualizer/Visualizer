@@ -41,7 +41,8 @@ Setup Canvas:
 
 input = list of nodes [{id: ..., next: [...]}, ... ] as json
 """
- 
+counter = 0
+
 
 def canvas_parser(canvas_json):
     global canvas
@@ -114,19 +115,23 @@ def create_queues():
     dict_reader = csv.DictReader(
         open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
     for row in dict_reader:
-        if initial_time is None:
-            initial_time = row["time"]
-        FMT = '%Y-%m-%d %H:%M:%S.%f'
+        print(row) 
+        if initial_time is None: 
+            initial_time = row["time"] 
+        FMT = '%Y-%m-%d %H:%M:%S.%f' 
         patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
         patient_time = float(patient_time.seconds)/60
         next_patient = Patient(
             int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
-        # All of the patients first get loaded up into the 
+        # All of the patients first get loaded up into the  
                 # All of the patients first get loaded up into the 
         # All of the patients first get loaded up into the 
                 # All of the patients first get loaded up into the 
         # All of the patients first get loaded up into the 
         nodes_list[-1].put_patient_in_node(next_patient)
+        for p in nodes_list[-1].queue: 
+            print(p.id)
+        print(nodes_list[-1].queue.contents)   
         all_patients[next_patient.get_id()] = next_patient
 
 
@@ -228,8 +233,12 @@ def process_heap():
 
     # TODO off by one error, change if statement to check for counter > 0 where counter is the number of patients
     # TODO each time reduce counter by 1
-    if process_name == 'patient_loader':
-        process_heap()
+    # if process_name == 'patient_loader':
+    #     process_heap()
+    global counter, all_patients 
+    if counter < len(all_patients):
+        counter += 1
+        return 2
 
     # continue __main__ loop
     return True
