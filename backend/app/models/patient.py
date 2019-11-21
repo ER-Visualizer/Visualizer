@@ -6,11 +6,9 @@ class Patient:
         self.id = patient_id
         self.is_available = True
         self.acuity = acuity
-        self.start_time = start_time
         self.predicted_processes = {}
         self.needed_processes = {}
-        self.join_queue_time = start_time
-        self.patient_record = ObjectRecord(self.id)
+        self.patient_record = ObjectRecord(self.id, start_time)
 
     ''' For use in comparison inside heaps. We will need to overwrite this
     with a priority function given to us from canvas'''
@@ -21,17 +19,11 @@ class Patient:
     def get_id(self):
         return self.id
 
-    def get_join_queue_time(self):
-        return self.join_queue_time
-
     def set_acuity(self, acuity):
         self.acuity = acuity
 
     def set_needed_processes(self, needed_processes):
         self.needed_processes = needed_processes
-
-    def set_start_time(self, start_time):
-        self.start_time = start_time
 
     def set_predicted_processes(self, predicted_processes):
         self.predicted_processes = predicted_processes
@@ -44,9 +36,6 @@ class Patient:
 
     def set_available(self):
         self.is_available = True
-
-    def set_join_queue_time(self, time):
-        self.join_queue_time = time
 
     def get_patient_record(self):
         return self.patient_record
