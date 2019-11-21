@@ -182,7 +182,7 @@ def process_heap():
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
 
     # patient for the event
-    patient = resource.get_curr_patient()
+    patient = resource.get_curr_patient().get_patient_record()
 
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
@@ -197,7 +197,7 @@ def process_heap():
     statistics.add_process_time(patient.get_id(), process_name, process_time)
 
     # record wait time
-    wait_time = process_time - resource.get_duration()
+    wait_time = process_time - patient.get_curr_duration()
     statistics.add_wait_time(patient.get_id(), process_name, wait_time)
 
     # record doctor
@@ -255,7 +255,6 @@ def main():
     server.start()
 
     # start sending every X secondss
-    # send_e() pls
 
     # process events until heap is emptied
     print("before processheap")

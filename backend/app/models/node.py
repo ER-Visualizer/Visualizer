@@ -273,7 +273,7 @@ class Node:
 
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
-        event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time(), self.output_process_ids)
+        event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
         # heap = run.get_heap()
 
         heapq.heappush(GlobalHeap().heap, event)
