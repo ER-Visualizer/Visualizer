@@ -160,9 +160,9 @@ def send_e():
                 "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                 "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "patientId": event_changes[0].get_patient_id(),
+                "curNodeId": cur_node_id, 
                 "movedTo": nodes_list[next_q].get_process_name(),
                 "nextNodeId": nodes_list[next_q].get_id(), 
-                "curNodeId": cur_node_id, # used dummy for now, but need the current queue id
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time()
             }

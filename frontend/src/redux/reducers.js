@@ -176,9 +176,9 @@ function EDSimulation(state = initialState, action) {
 const movePatient = (nodes, patient, currNode, newNode) => {
     // moves patient A from startNode to endNode
     console.log("in move patient ");
-    // console.log({patient});
-    // console.log({currNode});
-    // console.log({newNode});
+    console.log({patient});
+    console.log({currNode});
+    console.log({newNode});
 
     
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
@@ -186,7 +186,7 @@ const movePatient = (nodes, patient, currNode, newNode) => {
     // if the first node is the patient loadeer
     if (currNode == -1){
         clonedNodes[0].patients.push(patient)
-        // console.log(clonedNodes[0].patients);
+        console.log(clonedNodes[0].patients);
         
         return clonedNodes
     }
