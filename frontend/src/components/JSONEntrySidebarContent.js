@@ -10,6 +10,7 @@ export class JSONEntrySidebarContent extends Component {
         this.state = { valid: true, layoutJSON: "" }
         this.handleReset = this.handleReset.bind(this)
         this.handleClear = this.handleClear.bind(this)
+        this.handleDownload = this.handleDownload.bind(this)
     }
 
     componentDidMount() {
@@ -62,6 +63,20 @@ export class JSONEntrySidebarContent extends Component {
         this.setState({ layoutJSON: "", valid: true })
     }
 
+    handleDownload(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:json/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+    }
+
+
     render() {
         return (
             <div className="JSONEntrySidebarContent">
@@ -72,8 +87,10 @@ export class JSONEntrySidebarContent extends Component {
                 <button className="SubmitJSONButton" onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 <button className="ResetJSONButton" onClick={this.handleReset}>Reset</button>
                 <button className="ClearJSONButton" onClick={this.handleClear}>Clear</button>
+                <button className="ClearJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
+                {/* TODO: give this button its own class */}
                 <div className="JSONWarningContainer">
-                    <label className="JSONWarningText">{this.state.valid ? "" : "  Invalid Entry "}</label>
+                    <label className="JSONWarningText">{this.state.valid ? "" : "  Invalid Entry "}</label> {/* this seems to be broken now?? */}
                 </div>
 
             </div>

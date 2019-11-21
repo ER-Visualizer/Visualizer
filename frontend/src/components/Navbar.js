@@ -47,8 +47,6 @@ class Navbar extends React.Component {
         this.props.deleteLinkModeSwitch()
     }
 
-    
-
     render() {
         return (
             <div className="Navbar">   
