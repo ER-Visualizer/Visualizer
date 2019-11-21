@@ -21,6 +21,7 @@ class Main extends React.Component {
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
+        this.child = React.createRef();
     }
 
     runHandler = () =>{
@@ -44,7 +45,6 @@ class Main extends React.Component {
     connect = () => {
         console.log("connect")
         console.log(this.state.run)
-
 
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
@@ -85,6 +85,7 @@ class Main extends React.Component {
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
                     run: false
                     })
+                    this.child.updateRunButton()
 
                 }
                 
@@ -228,7 +229,7 @@ class Main extends React.Component {
                     pullRight={true}
                     
                 >
-                <Navbar runHandler={this.runHandler} />
+                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)}/>
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}
