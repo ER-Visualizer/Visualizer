@@ -172,7 +172,7 @@ def process_heap():
 
     # exit condition for __main__ loop
     if len(event_heap) == 0:
-        return False
+        return 0
 
     completed_event = heapq.heappop(event_heap)
     # If an event just finished, that must be the current time, so update it.
@@ -186,7 +186,7 @@ def process_heap():
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
 
     # patient for the event
-    patient = resource.get_curr_patient()
+    patient = resource.get_curr_patient().get_patient_record()
 
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
@@ -201,7 +201,7 @@ def process_heap():
     statistics.add_process_time(patient.get_id(), process_name, process_time)
 
     # record wait time
-    wait_time = process_time - resource.get_duration()
+    wait_time = process_time - patient.get_curr_duration()
     statistics.add_wait_time(patient.get_id(), process_name, wait_time)
 
     # record doctor
@@ -222,10 +222,10 @@ def process_heap():
     # TODO off by one error, change if statement to check for counter > 0 where counter is the number of patients
     # TODO each time reduce counter by 1
     if process_name == 'patient_loader':
-        process_heap()
+        return 2
 
     # continue __main__ loop
-    return True
+    return 1
 
 
 def report_statistics():
@@ -258,13 +258,11 @@ def main():
     server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
     server.start()
 
-    # start sending every X secondss
-    # send_e() pls
 
     # process events until heap is emptied
-    print("before processheap")
-    while (process_heap()):
-        process_heap()
+    # print("before processheap")
+    # while (process_heap()):
+    #     process_heap()
 
     print(report_statistics())
 

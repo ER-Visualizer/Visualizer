@@ -195,8 +195,8 @@ function buildNodeProps(node, config, nodeCallbacks = {}, highlightedNode, highl
         ...node,
         className: CONST.NODE_CLASS_NAME,
         cursor: config.node.mouseCursor,
-        cx: node?.x || "0",
-        cy: node?.y || "0",
+        cx: node?.x || "100", // modified to change starting position of new nodes. initial values were 0
+        cy: node?.y || "100",
         dx,
         fill,
         fontColor,
