@@ -7,7 +7,7 @@ import { func } from 'prop-types';
 export class JSONEntrySidebarContent extends Component {
     constructor(props) {
         super(props)
-        this.state = { valid: true, layoutJSON: "" }
+        this.state = { valid: true, layoutJSON: "" , invalidJSONError: ""}
         this.handleReset = this.handleReset.bind(this)
         this.handleClear = this.handleClear.bind(this)
         this.handleDownload = this.handleDownload.bind(this)
@@ -30,16 +30,17 @@ export class JSONEntrySidebarContent extends Component {
         try {
             validatedJSON = JSON.parse(this.state.layoutJSON)
         } catch (e) {
-            this.state.valid = false
+            this.setState({valid: false, invalidJSONError: "Invalid JSON syntax"})
             return
         }
         
         if (!validatedJSON.length) {
-            this.setState({ valid: false })
+            this.setState({ valid: false, invalidJSONError: "Enter at least 1 node" })
             return
         } 
         
         const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children"];
+        console.log(this.state.valid);
        
         for (let i = 0; i < validatedJSON.length; i++) {
             let node = validatedJSON[i]
@@ -49,10 +50,14 @@ export class JSONEntrySidebarContent extends Component {
             });
             
             if (!hasAllProps) {
-                this.setState({ valid: false })
+                
+                this.setState({ valid: false, invalidJSONError: "Node(s) missing a required property" })
                 return
             }
         }
+
+
+
 
         if (this.state.valid) {
             this.props.replaceNodeList(validatedJSON)
@@ -90,7 +95,7 @@ export class JSONEntrySidebarContent extends Component {
                 <button className="ClearJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
                 {/* TODO: give this button its own class */}
                 <div className="JSONWarningContainer">
-                    <label className="JSONWarningText">{this.state.valid ? "" : "  Invalid Entry "}</label> {/* this seems to be broken now?? */}
+                    <label className="JSONWarningText">{this.state.valid ? "" : this.state.invalidJSONError}</label> {/* this seems to be broken now?? */}
                 </div>
 
             </div>
