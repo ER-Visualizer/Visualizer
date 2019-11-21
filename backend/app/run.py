@@ -149,7 +149,7 @@ def send_e():
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-    cur_node_id = event_changes[0].get_node_id()
+
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         print("send_e", event_changes[0].get_patient_id())
         for next_q in nodes_list[event_changes[0].get_node_id()].get_output_process_ids():
@@ -160,7 +160,7 @@ def send_e():
                 "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                 "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "patientId": event_changes[0].get_patient_id(),
-                "curNodeId": cur_node_id, 
+                "curNodeId": event_changes[0].get_node_id(), 
                 "movedTo": nodes_list[next_q].get_process_name(),
                 "nextNodeId": nodes_list[next_q].get_id(), 
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),

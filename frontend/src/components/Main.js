@@ -76,7 +76,9 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
-                    this.updateNodePatients()
+                    console.log({events});
+                    
+                    this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
                     console.log("stats true")
@@ -135,13 +137,11 @@ class Main extends React.Component {
           }
     }
 
-    updateNodePatients() {
+    updateNodePatients(new_events) {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
-
-        this.state.events.forEach((event) => {
-            const curEvent = JSON.parse(JSON.stringify(event.eventData))        
-            this.props.updatePatientLocation(curEvent['patientId'], curEvent['curNodeId'], curEvent['nextNodeId'])
+        new_events.forEach((event) => {                  
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
         })
     }
 
