@@ -58,7 +58,7 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
     const x2 = nodes?.[target]?.x || 0;
     const y2 = nodes?.[target]?.y || 0;
     const type = link.type || config.link.type;
-    const d = buildLinkPathDefinition({ source: { x: x1 + 100, y: y1 + 50 }, target: { x: x2, y: y2 + 50 } }, type);
+    const d = buildLinkPathDefinition({ source: { x: x1 + 200, y: y1 + 100 }, target: { x: x2, y: y2 + 100 } }, type);
 
     let mainNodeParticipates = false;
 

@@ -137,7 +137,7 @@ class Main extends React.Component {
     }
 
     renderNode() {
-        return <div>Hello world</div>
+        return <div className="object">Hello world</div>
     }
     
     update_graph(nodes){
@@ -148,7 +148,7 @@ class Main extends React.Component {
                 { 
                     id: `${node.Id}`,
                     name : `${node.Element_type}${node.Id}`,
-                    element: this.renderNode()
+                    ...node
                 });
                 
                 node.Children.map( 
@@ -200,10 +200,12 @@ class Main extends React.Component {
                 >
                 <Navbar />
                 <Graph
+                directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}
                 config={graphConfig}
                 onClickNode={this.nodeClick.bind(this)}
+                size={500}
                 />
                 </Sidebar> 
             </div>

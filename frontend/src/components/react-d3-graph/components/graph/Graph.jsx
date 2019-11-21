@@ -153,12 +153,12 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     _graphLinkForceConfig() {
-        const forceLink = d3ForceLink(this.state.d3Links)
-            .id(l => l.id)
-            .distance(this.state.config.d3.linkLength)
-            .strength(this.state.config.d3.linkStrength);
+        // const forceLink = d3ForceLink(this.state.d3Links)
+        //     .id(l => l.id)
+        //     .distance(this.state.config.d3.linkLength)
+        //     .strength(this.state.config.d3.linkStrength);
 
-        this.state.simulation.force(CONST.LINK_CLASS_NAME, forceLink);
+        // this.state.simulation.force(CONST.LINK_CLASS_NAME, forceLink);
     }
 
     /**
@@ -183,8 +183,9 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     _graphBindD3ToReactComponent() {
-        this.state.simulation.nodes(this.state.d3Nodes).on("tick", this._tick);
-        this._graphLinkForceConfig();
+        // this.state.simulation.nodes(this.state.d3Nodes).on("tick", this._tick);
+        // this._graphLinkForceConfig();
+
         this._graphNodeDragConfig();
     }
 
@@ -476,6 +477,73 @@ export default class Graph extends React.Component {
     };
 
     /**
+     * Sets initial node positions in a linear fashion from left 
+     * to right.
+     * Example: 
+     *  A -> B -> C
+     *    |
+     *     -> D
+     * 
+     * The algorithm performs topological sort to get the correct
+     * node ordering, and then set the coordinates of the nodes
+     * based on their node ordering
+     */
+    setInitialNodePositions = () => {
+        // find the root node(s)
+        let nodes = this.state.nodes;
+        let has_parents = {} // hashtable of keys of node_id's with children
+        let id_to_node = {} // mapping of node_id's to the actual node
+        for(let key in nodes) {
+            let node = nodes[key]
+            id_to_node[node.Id] = node;
+            for(let j = 0; j < node.Children.length; j++) {
+                has_parents[node.Children[j]] = true;
+            }
+        }
+        let root_nodes = {} //hashtable of indicies of nodes that are root nodes
+        let root_node_count = 0;
+        for(let key in nodes) {
+            const node = nodes[key];
+            if(!(node.Id in has_parents)) {
+                root_nodes[key] = true
+                root_node_count += 1;
+            }
+        }
+        // TODO: if there are root nodes (i.e graph is a big cycle) set the first node to be the root
+        console.log("nodes: ", this.state.nodes, Object.keys(this.state.nodes)) 
+        if(root_node_count == 0 && Object.keys(this.state.nodes).length > 0) {
+            root_nodes[0] = true;
+        }
+        console.log(root_nodes);
+
+        // perform topological sort to get node ordering
+        let visited = {}
+        for(var root_node in root_nodes) {
+            let x = 64
+            let stack = []
+            visited[root_node.Id] = true 
+            nodes[root_node].y = 128;
+            stack.push(nodes[root_node])
+            while(stack.length > 0) {
+                let node = stack.pop()
+                node.x = x
+                x += 250
+                let y = 128;
+                for(let i = 0; i < node.Children.length; i++) {
+                    let child_id = node.Children[i];
+                    if(!(child_id in visited)) {
+                        let child = id_to_node[child_id];
+                        child.y = y;
+                        y += 200;
+                        visited[child_id] = true
+                        stack.push(child);
+                    }
+                }
+            } 
+        }
+    }
+
+    /**
      * Calls d3 simulation.restart().<br/>
      * {@link https://github.com/d3/d3-force#simulation_restart}
      * @returns {undefined}
@@ -493,6 +561,7 @@ export default class Graph extends React.Component {
         this.nodeClickTimer = null;
         this.isDraggingNode = false;
         this.state = initializeGraphState(this.props, this.state);
+        this.setInitialNodePositions();
     }
 
     /**
@@ -584,8 +653,6 @@ export default class Graph extends React.Component {
         }
     }
     render() {
-        console.log("in graph.jsx", this.state.nodes);
-        console.log(this.state.nodes);
         const { nodes, links, defs } = renderGraph(
             this.state.nodes,
             {

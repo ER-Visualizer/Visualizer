@@ -1,3 +1,4 @@
+
 import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, EDIT_NODE, HIDE_SIDEBAR } from './actions';
 
 const initialState = {
@@ -8,17 +9,17 @@ const initialState = {
     nodes: [ // hardcoded data
         {
             Id: 0,
-            Element_type: "reception",
+            Element_type: "reception(1)",
             Distribution: "gaussian", // dummy variables for now
             Distribution_parameters: [3,1],
             Number_of_actors: 10,
             Queue_type: "stack",
             Priority_function: "",
-            Children: [1]
+            Children: [5]
         },
         {
-            Id: 1,
-            Element_type: "triage",
+            Id: 5,
+            Element_type: "triage(2)",
             Distribution: "gaussian", 
             Distribution_parameters: [3,1],
             Number_of_actors: 10,
@@ -28,13 +29,13 @@ const initialState = {
         },
         {
             Id: 2,
-            Element_type: "pd",
+            Element_type: "pd(3)",
             Distribution: "gaussian", 
             Distribution_parameters: [3,1],
             Number_of_actors: 10,
             Queue_type: "stack",
             Priority_function: "",
-            Children: []
+            Children: [5]
         }
     ]
 
