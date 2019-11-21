@@ -49,13 +49,13 @@ class Main extends React.Component {
 
         ws.onmessage = event => {
             // console.log("raw event")
-            console.log(event.data);
+            // console.log(event.data);
                 // console.log(this.parseEventData(event.data))
                 const eventData = JSON.parse(event.data)
                 // console.log(eventData)
                 const events = eventData["Events"]
-                // console.log("events")
-                // console.log(events)
+                console.log("events")
+                console.log(events)
                 if(events != undefined && events.length != []){
                     let new_events = this.state.events
                     for(let i = 0; i < events.length; i++){
@@ -120,8 +120,8 @@ class Main extends React.Component {
     }
 
     updateNodePatients() {
-        console.log("in updatenodepatients");
-        console.log(this.state.events);
+        // console.log("in updatenodepatients");
+        // console.log(this.state.events);
 
         this.state.events.forEach((event) => {
             const curEvent = JSON.parse(JSON.stringify(event.eventData))        

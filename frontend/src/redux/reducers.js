@@ -103,7 +103,7 @@ const movePatient = (nodes, patient, currNode, newNode) => {
     // if the first node is the patient loadeer
     if (currNode == -1){
         clonedNodes[0].patients.push(patient)
-        console.log(clonedNodes[0].patients);
+        // console.log(clonedNodes[0].patients);
         
         return clonedNodes
     }

@@ -33,6 +33,9 @@ packet_rate = 1
 # instantiate statistics
 statistics = Statistic()
 
+# instaiate array of all patients
+all_patients = {}
+
 """
 Setup Canvas:
 
@@ -50,14 +53,14 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters": [5],
                 "numberOfActors": 1,
-                "queueType": "stack",
+                "queueType": "queue",
                 "priorityFunction": "",
                 "children": [2]
             },
             {
                 "id": 1,
                 "elementType": "triage",
-                "distribution": "fixed",
+                "distribution": "queue",
                 "distributionParameters":[3],
                 "numberOfActors": 2,
                 "queueType": "stack",
@@ -100,8 +103,8 @@ def create_queues():
                                         distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
 
         # create patient_loader node when reception is found
-        if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+        if node["elementType"] == "reception": 
+            nodes_list[-1] = Node(0, "queue",  None, 1, process_name="patient_loader",
                                           distribution_name="fixed", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -120,7 +123,7 @@ def create_queues():
                     int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
                 # All of the patients first get loaded up into the 
                 nodes_list[-1].put_patient_in_node(next_patient)
-
+                all_patients[next_patient.get_id()] = next_patient
 
 
 # """
@@ -135,9 +138,8 @@ def send_e():
     if len(event_changes) == 0:
         # send nothing if no changes
         return []
-
-    new_changes = []
-    global packet_start
+    new_changes = [] 
+    global packet_start 
     if packet_start == -1:
         packet_start = event_changes[0].get_event_time()
     else:
@@ -147,8 +149,10 @@ def send_e():
         for next_q in event_changes[0].get_next_nodes():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
             # next_resource = nodes_list[next_q].get_resource(nodes_list[next_q].get_node_resource_id())
-            print(f"cur_resource: {curr_resource} --------------------------------------------")
+            print(f"cur patient: --------------------------------------------")
             event_dict = {
+                "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
+                "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "patientId": event_changes[0].get_patient_id(),
                 "movedTo": nodes_list[next_q].get_process_name(),
                 "nextNodeId": nodes_list[next_q].get_id(), 
