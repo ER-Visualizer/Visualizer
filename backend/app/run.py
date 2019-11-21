@@ -104,26 +104,30 @@ def create_queues():
 
         # create patient_loader node when reception is found
         if node["elementType"] == "reception": 
-            nodes_list[-1] = Node(0, "queue",  None, 1, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
                                           distribution_name="fixed", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
 
-            # read csv (for now, all patients added to reception queue at beginning)
-            dict_reader = csv.DictReader(
-                open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
-            for row in dict_reader:
-                if initial_time is None:
-                    initial_time = row["time"]
-                FMT = '%Y-%m-%d %H:%M:%S.%f'
-                patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
-                patient_time = float(patient_time.seconds)/60
-                next_patient = Patient(
-                    int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+    # read csv (for now, all patients added to reception queue at beginning)
+    dict_reader = csv.DictReader(
+        open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
+    for row in dict_reader:
+        if initial_time is None:
+            initial_time = row["time"]
+        FMT = '%Y-%m-%d %H:%M:%S.%f'
+        patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
+        patient_time = float(patient_time.seconds)/60
+        next_patient = Patient(
+            int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+        # All of the patients first get loaded up into the 
                 # All of the patients first get loaded up into the 
-                nodes_list[-1].put_patient_in_node(next_patient)
-                all_patients[next_patient.get_id()] = next_patient
+        # All of the patients first get loaded up into the 
+                # All of the patients first get loaded up into the 
+        # All of the patients first get loaded up into the 
+        nodes_list[-1].put_patient_in_node(next_patient)
+        all_patients[next_patient.get_id()] = next_patient
 
 
 # """
