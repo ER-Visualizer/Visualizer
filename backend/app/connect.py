@@ -50,6 +50,8 @@ class WebsocketServer:
     async def __producer_handler(self, websocket, path):
         while True:
             check = self.process()
+            while check == 2:
+                check = self.process()
             message = self.producerFunc()
             if not check and not self.sent_stats:
                 stats = self.stats()
