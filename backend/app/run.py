@@ -148,7 +148,7 @@ def send_e():
         packet_start = packet_start + packet_duration
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        for next_q in event_changes[0].get_next_nodes():
+        for next_q in all_patients[event_changes[0].get_patient_id()].get_patient_record().get_curr_queues():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
             # next_resource = nodes_list[next_q].get_resource(nodes_list[next_q].get_node_resource_id())
             event_dict = {

@@ -17,9 +17,15 @@ class Main extends React.Component {
             events: [],
             selectedNode: null,
             ws: null,
+            run: false
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
+    }
+
+    runHandler = () =>{
+        console.log("run handler")
+        this.connect();
     }
 
     parseEventData(eventData) {
@@ -35,6 +41,10 @@ class Main extends React.Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
+        console.log("connect")
+        console.log(this.state.run)
+
+
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
         var connectInterval;
@@ -101,6 +111,8 @@ class Main extends React.Component {
 
             ws.close();
         };
+    
+
     };
 
     /**
@@ -112,7 +124,7 @@ class Main extends React.Component {
     };
     componentDidMount() {
      
-        this.connect();
+        // this.connect();
     }
     componentWillUnmount() {
       if (this.state.ws) {
@@ -213,7 +225,7 @@ class Main extends React.Component {
                     pullRight={true}
                     
                 >
-                <Navbar />
+                <Navbar runHandler={this.runHandler} />
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}

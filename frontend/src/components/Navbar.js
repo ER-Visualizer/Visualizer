@@ -19,6 +19,7 @@ class Navbar extends React.Component {
 
     async sendCanvas(e){
         try {
+            this.props.runHandler()
             console.log("send canvas");
             
             let response = await fetch('http://localhost:8000/start', {
