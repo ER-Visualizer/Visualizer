@@ -18,6 +18,9 @@ class Patient:
 
     def get_id(self):
         return self.id
+    
+    def get_acuity(self):
+        return self.acuity
 
     def set_acuity(self, acuity):
         self.acuity = acuity

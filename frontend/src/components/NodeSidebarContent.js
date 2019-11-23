@@ -8,8 +8,8 @@ export class NodeSidebarContent extends React.Component {
         super(props)
         this.state = {node:null, numNodes:null}
         this.state.node = this.props.node 
-        console.log("NODESIDEBAR")
-        console.log(this.props.node)
+        // console.log("NODESIDEBAR")
+        // console.log(this.props.node)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 

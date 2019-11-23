@@ -7,8 +7,7 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar, deleteLink, connectNode } from '../redux/actions';
-
+import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode} from '../redux/actions';
 
 class Main extends React.Component {
     constructor(props) {
@@ -60,11 +59,11 @@ class Main extends React.Component {
         };
 
         ws.onmessage = event => {
-            console.log("raw event")
-            console.log(event.data);
+            // console.log("raw event")
+            // console.log(event.data);
                 // console.log(this.parseEventData(event.data))
                 const eventData = JSON.parse(event.data)
-                console.log(eventData)
+                // console.log(eventData)
                 const events = eventData["Events"]
                 console.log("events")
                 console.log(events)
@@ -77,6 +76,9 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
+                    console.log({events});
+                    
+                    this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
                     console.log("stats true")
@@ -135,6 +137,15 @@ class Main extends React.Component {
               this.state.ws.close();
           }
     }
+
+    updateNodePatients(new_events) {
+        // console.log("in updatenodepatients");
+        // console.log(this.state.events);
+        new_events.forEach((event) => {                  
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
+        })
+    }
+
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
@@ -287,6 +298,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideSidebar: () => {
             dispatch(hideSidebar())
+        },
+        updatePatientLocation: (patient, currNode, newNode) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

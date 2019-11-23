@@ -152,7 +152,10 @@ class Node:
 
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
+        print("in put patient") 
+        print(patient.id)
         if not self.fill_spot(patient):
+            print("actually putting them in ")
             # Push Patient inside queue
             self.queue.put(patient)
 
@@ -242,6 +245,7 @@ class Node:
         # TODO: consider random order
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
+            print("is availble ")
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
