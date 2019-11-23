@@ -17,9 +17,17 @@ class Main extends React.Component {
             events: [],
             selectedNode: null,
             ws: null,
+            run: false
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
+        this.child = React.createRef();
+    }
+
+    runHandler = () =>{
+        console.log("run handler")
+        this.setState({run: true})
+        this.connect();
     }
 
     parseEventData(eventData) {
@@ -35,6 +43,9 @@ class Main extends React.Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
+        console.log("connect")
+        console.log(this.state.run)
+
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
         var connectInterval;
@@ -71,21 +82,24 @@ class Main extends React.Component {
                     console.log("stats true")
                     delete eventData['stats']
                     this.setState({
-                    events: this.state.events.concat({message: JSON.stringify(eventData)})
+                    events: this.state.events.concat({message: JSON.stringify(eventData)}),
+                    run: false
                     })
+                    this.child.updateRunButton()
+
                 }
                 
         }
 
         // websocket onclose event listener
         ws.onclose = e => {
-            console.error(
-                `Socket is closed. Reconnect will be attempted in ${Math.min(
-                    10000 / 1000,
-                    (that.timeout + that.timeout) / 1000
-                )} second.`,
-                e.reason
-            );
+            // console.error(
+            //     `Socket is closed. Reconnect will be attempted in ${Math.min(
+            //         10000 / 1000,
+            //         (that.timeout + that.timeout) / 1000
+            //     )} second.`,
+            //     e.reason
+            // );
 
             that.timeout = that.timeout + that.timeout; //increment retry interval
             connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
@@ -101,18 +115,20 @@ class Main extends React.Component {
 
             ws.close();
         };
+    
+
     };
 
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
     check = () => {
-        const { ws } = this.state;
-        if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+        const { ws, run } = this.state;
+        if (run && (!ws || ws.readyState == WebSocket.CLOSED)) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
     componentDidMount() {
      
-        this.connect();
+        // this.connect();
     }
     componentWillUnmount() {
       if (this.state.ws) {
@@ -213,7 +229,7 @@ class Main extends React.Component {
                     pullRight={true}
                     
                 >
-                <Navbar />
+                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)}/>
                 <Graph
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}
