@@ -19,9 +19,9 @@ class Resource:
     # and not a copy of it
     ''' return patient that finished '''
 
-    def insert_patient(self, patient, finish_time, duration):
+    def insert_patient(self, patient,node_id, finish_time, duration):
         self.curr_patient = patient
-        self.curr_patient.set_unavailable()
+        self.curr_patient.set_unavailable(node_id, self.id, finish_time)
         self.finish_time = finish_time
         self.duration = duration
 

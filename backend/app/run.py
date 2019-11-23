@@ -50,7 +50,7 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters": [5],
                 "numberOfActors": 1,
-                "queueType": "stack",
+                "queueType": "queue",
                 "priorityFunction": "",
                 "children": [2]
             },
@@ -60,7 +60,7 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters":[3],
                 "numberOfActors": 2,
-                "queueType": "stack",
+                "queueType": "queue",
                 "priorityFunction": "",
                 "children": [3, 4]
             },
@@ -182,23 +182,22 @@ def process_heap():
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
 
     # patient for the event
-    patient = resource.get_curr_patient().get_patient_record()
+    patient_record = resource.get_curr_patient().get_patient_record()
 
     # time where patient finishes the process
     finish_time = resource.get_finish_time()
     # time where patient joins queue for the process
-    join_queue_time = patient.get_join_queue_time()
+    join_queue_time = patient_record.get_finish_time_of_last_process()
     # the patient joins a new queue at the current time
-    patient.set_join_queue_time(completed_event.get_event_time())
 
     # record process time
     process_time = finish_time - join_queue_time
     process_name = nodes_list[completed_event.get_node_id()].get_process_name()
-    statistics.add_process_time(patient.get_id(), process_name, process_time)
+    statistics.add_process_time(patient_record.get_id(), process_name, process_time)
 
     # record wait time
-    wait_time = process_time - patient.get_curr_duration()
-    statistics.add_wait_time(patient.get_id(), process_name, wait_time)
+    wait_time = process_time - patient_record.get_curr_duration()
+    statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
 
     # record doctor
     if process_name == "doctor":
@@ -208,7 +207,7 @@ def process_heap():
         # Length of doctor/patient interaction per patient per doctor
         # average or record all?
         # can remove in the future and just use process_times
-        statistics.add_doc_patient_time(doctor_id, patient.get_id(), process_time)
+        statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
 
 
     # send patient to next queuess

@@ -1,5 +1,5 @@
 from .object_record import ObjectRecord
-
+from .global_time import  GlobalTime
 class Patient:
 
     def __init__(self, patient_id, acuity=None, start_time=None):
@@ -31,11 +31,21 @@ class Patient:
     def get_available(self):
         return self.is_available
 
-    def set_unavailable(self):
+#TODO consider whether to move setting properties for the patient_record inside the Node Class.
+    '''patient must be set unavailable right after he entered a new process'''
+    def set_unavailable(self, node_id, resource_id, finish_time):
         self.is_available = False
+        # add curr node to patient record
+        self.patient_record.set_curr_node(node_id, resource_id, GlobalTime.time, finish_time)
 
+    '''patient must be set available right after he finished a process'''
     def set_available(self):
         self.is_available = True
+        # clear current node as patient is not in any current node anymore
+        self.patient_record.clear_and_store_curr_node()
+        # since patient is now available,i.e just finished process, so he will
+        # be sent to new nodes(whether in queues or in actual resources)
+        self.patient_record.clear_queues_since_last_finished_process()
 
     def get_patient_record(self):
         return self.patient_record

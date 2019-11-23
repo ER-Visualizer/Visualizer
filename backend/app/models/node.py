@@ -153,12 +153,15 @@ class Node:
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
         if not self.fill_spot(patient):
-            # Push Patient inside queue
-            self.queue.put(patient)
+           self.put_inside_queue(patient)
 
-            # put queue in patient record
-            patient_record = patient.get_patient_record()
-            patient_record.put_process_in_queue(self.id)
+    def put_inside_queue(self,patient):
+         # Push Patient inside queue
+        self.queue.put(patient)
+        # TODO Consider whether it's good to move it inside the queue
+        # put queue in patient record
+        patient_record = patient.get_patient_record()
+        patient_record.put_process_in_queue(self.id)
 
     # when called from a subprocess, this means that the subprocess just
     # handled a patient, and needs a new one
@@ -259,11 +262,7 @@ class Node:
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's available
         finish_time, duration = self.generate_finish_time()
-        resource.insert_patient(patient, finish_time, duration)
-        
-        # add curr node to patient record
-        patient_record = patient.get_patient_record()
-        patient_record.set_curr_node(self.id, resource.get_id(), GlobalTime.time, finish_time)
+        resource.insert_patient(patient, self.id, finish_time, duration)
 
         # now add the event to the heap
         self.add_to_heap(resource.get_id())
