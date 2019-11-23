@@ -68,10 +68,18 @@ function getRadiusStrategy(type) {
  * @returns {string} the path definition for the requested link
  * @memberof Link/helper
  */
-function buildLinkPathDefinition({ source = {}, target = {} }, type = LINE_TYPES.STRAIGHT) {
+function buildLinkPathDefinition({ source = {}, target = {} }, type = LINE_TYPES.CURVE_SMOOTH) {
     const { x: sx, y: sy } = source;
     const { x: tx, y: ty } = target;
-    const validType = LINE_TYPES[type] || LINE_TYPES.STRAIGHT;
+
+    // if the line goes back in x position then make it curved
+    // so it doesn't overlap with straight lines going forward
+    let validType;
+    if(tx < sx) {
+        validType = LINE_TYPES.CURVE_FULL;
+    } else {
+        validType = LINE_TYPES.STRAIGHT;
+    }
     const radius = getRadiusStrategy(validType)(sx, sy, tx, ty);
 
     return `M${sx},${sy}A${radius},${radius} 0 0,1 ${tx},${ty}`;

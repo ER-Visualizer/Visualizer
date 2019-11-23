@@ -153,12 +153,12 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     _graphLinkForceConfig() {
-        const forceLink = d3ForceLink(this.state.d3Links)
-            .id(l => l.id)
-            .distance(this.state.config.d3.linkLength)
-            .strength(this.state.config.d3.linkStrength);
+        // const forceLink = d3ForceLink(this.state.d3Links)
+        //     .id(l => l.id)
+        //     .distance(this.state.config.d3.linkLength)
+        //     .strength(this.state.config.d3.linkStrength);
 
-        this.state.simulation.force(CONST.LINK_CLASS_NAME, forceLink);
+        // this.state.simulation.force(CONST.LINK_CLASS_NAME, forceLink);
     }
 
     /**
@@ -183,8 +183,9 @@ export default class Graph extends React.Component {
      * @returns {undefined}
      */
     _graphBindD3ToReactComponent() {
-        this.state.simulation.nodes(this.state.d3Nodes).on("tick", this._tick);
-        this._graphLinkForceConfig();
+        // this.state.simulation.nodes(this.state.d3Nodes).on("tick", this._tick);
+        // this._graphLinkForceConfig();
+
         this._graphNodeDragConfig();
     }
 
@@ -476,6 +477,96 @@ export default class Graph extends React.Component {
     };
 
     /**
+     * Returns a dictionary where key's are ids, and values are nodes
+     */
+    getIdToNode = (nodes) => {
+        let id_to_node = {} // mapping of node_id's to the actual node
+        for(let key in nodes) {
+            let node = nodes[key]
+            id_to_node[node.id] = node;
+        }
+        return id_to_node;
+    }
+
+    /**
+     * Returns the root nodes for a graph configuration as a hastable
+     * where key's are the id's of root nodes, and values are the actual
+     * node
+     */
+    getRootNodes = (nodes) => {
+        let has_parents = {} // hashtable of keys of node_id's with children
+        for(let key in nodes) {
+            let node = nodes[key]
+            for(let j = 0; j < node.children.length; j++) {
+                has_parents[node.children[j]] = true;
+            }
+        }
+        let root_nodes = {} //hashtable of ids of nodes that are root nodes
+        for(let key in nodes) {
+            const node = nodes[key];
+            if(!(node.id in has_parents)) {
+                root_nodes[node.id] = node
+            }
+        }
+        return root_nodes
+    }
+
+    /**
+     * Sets initial node positions in a linear fashion from left 
+     * to right.
+     * Example: 
+     *  A -> B -> C
+     *    |
+     *     -> D
+     * 
+     * The algorithm performs topological sort to get the correct
+     * node ordering, and then set the coordinates of the nodes
+     * based on their node ordering
+     */
+    setInitialNodePositions = () => {
+        const root_nodes = this.getRootNodes(this.state.nodes)
+        const id_to_node = this.getIdToNode(this.state.nodes)
+
+        if(Object.keys(root_nodes).length == 0 && Object.keys(this.state.nodes).length > 0) {
+            root_nodes[0] = true;
+        }
+
+        // perform topological sort to layout the nodes on the graph
+        let visited = {} // dictionary, where keys are the ids of visited nodes
+        const start_x = 64;
+        let x = start_x; // initial "margin-left" fort all nodes
+        let y = 64; // "margin-top" for all nodes
+        for(var root_node_id in root_nodes) {
+            let stack = []
+            let root_node = root_nodes[root_node_id]
+
+            root_node.y = y; 
+            visited[root_node_id] = true 
+            stack.push(root_node)
+
+            while(stack.length > 0) {
+                let node = stack.pop()
+
+                node.x = x
+                x += 250 // next node starts at 250 x positions away from current node's x position
+
+                for(let i = 0; i < node.children.length; i++) {
+                    let child_id = node.children[i];
+                    if(!(child_id in visited)) {
+                        let child = id_to_node[child_id];
+                        child.y = y;
+                        visited[child_id] = true
+                        stack.push(child);
+                    }
+                }
+            }
+            
+            x = start_x;
+            y += 220; // set next node to be 256  positions down so it doesn't overlap with other root nodes
+        }
+    }
+
+    /**
      * Calls d3 simulation.restart().<br/>
      * {@link https://github.com/d3/d3-force#simulation_restart}
      * @returns {undefined}
@@ -493,6 +584,7 @@ export default class Graph extends React.Component {
         this.nodeClickTimer = null;
         this.isDraggingNode = false;
         this.state = initializeGraphState(this.props, this.state);
+        this.setInitialNodePositions();
     }
 
     /**
@@ -583,7 +675,6 @@ export default class Graph extends React.Component {
             this.focusAnimationTimeout = null;
         }
     }
-
     render() {
         const { nodes, links, defs } = renderGraph(
             this.state.nodes,

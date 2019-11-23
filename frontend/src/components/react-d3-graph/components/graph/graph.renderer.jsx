@@ -75,7 +75,6 @@ function _renderNodes(nodes, nodeCallbacks, config, highlightedNode, highlighted
     if (config.collapsible) {
         outNodes = outNodes.filter(nodeId => isNodeVisible(nodeId, nodes, linksMatrix));
     }
-
     return outNodes.map(nodeId => {
         const props = buildNodeProps(
             { ...nodes[nodeId], id: `${nodeId}` },
@@ -86,7 +85,7 @@ function _renderNodes(nodes, nodeCallbacks, config, highlightedNode, highlighted
             transform
         );
 
-        return <Node key={nodeId} {...props} />;
+        return <Node key={nodeId} {...props}/>;
     });
 }
 
