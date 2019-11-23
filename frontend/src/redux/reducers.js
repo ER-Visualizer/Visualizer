@@ -1,8 +1,6 @@
 import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
 import { object } from 'prop-types';
 
-
-
 const initialState = {
     showLogsSidebar: false,
     showNodeSidebar: false,
@@ -20,7 +18,7 @@ const initialState = {
             "numberOfActors": 1,
             "queueType": "receptionstack",
             "priorityFunction": "receptionprior",
-            "children": [2]
+            "children": [2, 10]
         },
         {
             "id": 1,
@@ -40,8 +38,19 @@ const initialState = {
             "numberOfActors": 3,
             "queueType": "doctorqueue",
             "priorityFunction": "doctorprior",
+            "children": [10]
+        },
+        {
+            "id": 10,
+            "elementType": "doctor",
+            "distribution": "doctordist",
+            "distributionParameters": [100, 30],
+            "numberOfActors": 3,
+            "queueType": "doctorqueue",
+            "priorityFunction": "doctorprior",
             "children": []
         },
+        
         {
             "id": 3,
             "elementType": "x-ray",

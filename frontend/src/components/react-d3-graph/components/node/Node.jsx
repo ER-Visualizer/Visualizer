@@ -135,9 +135,16 @@ export default class Node extends React.Component {
             nodeProps.fill = this.props.fill;
             nodeProps.stroke = this.props.stroke;
             nodeProps.strokeWidth = this.props.strokeWidth;
-
             label = <text {...textProps}>{this.props.label}</text>;
-            node = <path {...nodeProps} />;
+            node = (<foreignObject width="211" height="180" {...nodeProps}>
+                <div className="Station">
+                    <h1 className="title">{this.props.elementType}</h1>
+                    <div className="infoBox">{this.props.distribution}({this.props.distributionParameters.join(", ")})</div>
+                    <div className="infoBox">{this.props.queueType}</div>
+                    <div className="infoBox">{this.props.numberOfActors} actors</div>
+                </div>
+             </foreignObject>);
+            // node = <path {...nodeProps} />;
         }
 
         const gProps = {
