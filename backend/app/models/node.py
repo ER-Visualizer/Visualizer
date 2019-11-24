@@ -1,6 +1,6 @@
 from .queues import Queue, Stack, Heap
 from .global_strings import *
-from .distributions import *
+from .distributions import Distributions
 from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
@@ -74,7 +74,7 @@ class Node:
         return self.priority_function
 
     def get_output_process_ids(self):
-        return self.output_processes_ids
+        return self.output_process_ids
 
     def get_resource(self, resource_id):
         return self.resource_dict[resource_id]
@@ -95,7 +95,7 @@ class Node:
         if self.get_distribution_name() is None: 
             duration = 0
         else:
-            duration = class_distributions[self.get_distribution_name()](
+            duration = Distributions.class_distributions[self.get_distribution_name()](
                 *self.get_distribution_parameters())
         finish_time = GlobalTime.time + duration
         return finish_time, duration
@@ -152,9 +152,16 @@ class Node:
 
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
+        print("in put patient") 
+        print(patient.id)
         if not self.fill_spot(patient):
+            print("actually putting them in ")
             # Push Patient inside queue
             self.queue.put(patient)
+
+            # put queue in patient record
+            patient_record = patient.get_patient_record()
+            patient_record.put_process_in_queue(self.id)
 
     # when called from a subprocess, this means that the subprocess just
     # handled a patient, and needs a new one
@@ -206,6 +213,10 @@ class Node:
                         # extract from the queue. no need to store him, as we
                         # already have a hold of him
                         self.queue.remove(patient)
+                    
+                    # once removed from queue, update patient record
+                    patient_record = patient.get_patient_record()
+                    patient_record.remove_process_from_queue(self.id)
 
                     self.insert_patient_to_resource_and_heap(
                         patient, subprocess)
@@ -234,6 +245,7 @@ class Node:
         # TODO: consider random order
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
+            print("is availble ")
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
@@ -249,9 +261,15 @@ class Node:
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
-        # insert patient into resource, since it's free
-        time, duration = self.generate_finish_time()
-        resource.insert_patient(patient, time, duration)
+        # insert patient into resource, since it's available
+        finish_time, duration = self.generate_finish_time()
+        resource.insert_patient(patient, finish_time, duration)
+        
+        # add curr node to patient record
+        patient_record = patient.get_patient_record()
+        patient_record.set_curr_node(self.id, resource.get_id(), GlobalTime.time, finish_time)
+
+        # now add the event to the heap
         self.add_to_heap(resource.get_id())
 
     '''A resource has just been filled with a patient.
@@ -259,7 +277,7 @@ class Node:
 
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
-        event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time(), self.output_process_ids)
+        event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
         # heap = run.get_heap()
 
         heapq.heappush(GlobalHeap().heap, event)

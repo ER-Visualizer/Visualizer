@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar } from '../redux/actions';
+import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode} from '../redux/actions';
 
 class Main extends React.Component {
     constructor(props) {
@@ -15,10 +15,18 @@ class Main extends React.Component {
         this.state = {
             events: [],
             selectedNode: null,
-            ws: null
+            ws: null,
+            run: false
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
+        this.child = React.createRef();
+    }
+
+    runHandler = () =>{
+        console.log("run handler")
+        this.setState({run: true})
+        this.connect();
     }
 
     parseEventData(eventData) {
@@ -34,6 +42,9 @@ class Main extends React.Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
+        console.log("connect")
+        console.log(this.state.run)
+
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
         var connectInterval;
@@ -48,11 +59,11 @@ class Main extends React.Component {
         };
 
         ws.onmessage = event => {
-            console.log("raw event")
-            console.log(event.data);
+            // console.log("raw event")
+            // console.log(event.data);
                 // console.log(this.parseEventData(event.data))
                 const eventData = JSON.parse(event.data)
-                console.log(eventData)
+                // console.log(eventData)
                 const events = eventData["Events"]
                 console.log("events")
                 console.log(events)
@@ -65,26 +76,32 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
+                    console.log({events});
+                    
+                    this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
                     console.log("stats true")
                     delete eventData['stats']
                     this.setState({
-                    events: this.state.events.concat({message: JSON.stringify(eventData)})
+                    events: this.state.events.concat({message: JSON.stringify(eventData)}),
+                    run: false
                     })
+                    this.child.updateRunButton()
+
                 }
                 
         }
 
         // websocket onclose event listener
         ws.onclose = e => {
-            console.log(
-                `Socket is closed. Reconnect will be attempted in ${Math.min(
-                    10000 / 1000,
-                    (that.timeout + that.timeout) / 1000
-                )} second.`,
-                e.reason
-            );
+            // console.error(
+            //     `Socket is closed. Reconnect will be attempted in ${Math.min(
+            //         10000 / 1000,
+            //         (that.timeout + that.timeout) / 1000
+            //     )} second.`,
+            //     e.reason
+            // );
 
             that.timeout = that.timeout + that.timeout; //increment retry interval
             connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
@@ -100,30 +117,44 @@ class Main extends React.Component {
 
             ws.close();
         };
+    
+
     };
 
     /**
      * utilited by the @function connect to check if the connection is close, if so attempts to reconnect
      */
     check = () => {
-        const { ws } = this.state;
-        if (!ws || ws.readyState == WebSocket.CLOSED) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+        const { ws, run } = this.state;
+        if (run && (!ws || ws.readyState == WebSocket.CLOSED)) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
     componentDidMount() {
-        this.connect();
+     
+        // this.connect();
     }
     componentWillUnmount() {
       if (this.state.ws) {
               this.state.ws.close();
           }
     }
+
+    updateNodePatients(new_events) {
+        // console.log("in updatenodepatients");
+        // console.log(this.state.events);
+        new_events.forEach((event) => {                  
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
+        })
+    }
+
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
         } else if (this.props.showNodeSidebar && this.state.selectedNode) {
-            let node_to_send = JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) // deepcopy
-
-            this.sidebarLastContent = <NodeSidebarContent node={node_to_send}/>
+            if (this.props.nodes[this.state.selectedNode]){ // node becomes undefined after we delete it 
+                let node_to_send = JSON.parse(JSON.stringify(this.props.nodes[this.state.selectedNode])) // deepcopy
+                this.sidebarLastContent = <NodeSidebarContent node={node_to_send} numNodes={this.props.nodes.length}/>
+            }
+            
             
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
@@ -134,38 +165,59 @@ class Main extends React.Component {
         // instead of abruptly disappearing.
         return this.sidebarLastContent;
     }
+
+    renderNode() {
+        return <div className="object">Hello world</div>
+    }
     
     update_graph(nodes){
         let graphical_data = {nodes: [], links: []}
-
         nodes.map( // map the JSON representation of the node to the representation required by the graph
             (node) => {graphical_data.nodes.push(
-                { id: `${node.id}`, name : `${node.elementType}${node.id}`});
+                { 
+                    id: `${node.id}`,
+                    name : `${node.elementType}${node.id}`,
+                    ...node
+                });
                 
                 node.children.map( 
                     (child) => {graphical_data.links.push(
-                        { source: `${node.id}`, target: `${child}` })}
+                        { source: node.id, target: child })}
                 )
             }
         )
-        
+        console.log(graphical_data);
         return graphical_data;
     };
 
     nodeClick(nodeId) {
         console.log(nodeId);
         
-        const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-        console.log(shouldHide);
-        this.setState({
-            selectedNode: nodeId
-        })
+        if (this.props.shouldBuildLink){
+            this.props.connectNode(parseInt(nodeId))
+        } 
+        else { // dont toggle sidebars when build link mode on
+
+            const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+            console.log(shouldHide);
+            this.setState({
+                selectedNode: nodeId
+            })
+            
+            
+            this.props.hideSidebar();
+            setTimeout(function() {
+                this.props.showNodeConfig(shouldHide);
+            }.bind(this), 300);
+        }
         
-        
-        this.props.hideSidebar();
-        setTimeout(function() {
-            this.props.showNodeConfig(shouldHide);
-        }.bind(this), 300);
+    }
+
+    linkClick(source, target){
+        if (this.props.shouldDeleteLink){
+            // react-d3-graph gives strings for these...            
+            this.props.deleteLink(parseInt(source), parseInt(target))
+        }
     }
 
     sidebarColor() {
@@ -192,13 +244,16 @@ class Main extends React.Component {
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
+                    
                 >
-                <Navbar />
+                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)}/>
                 <Graph
+                directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}
                 config={graphConfig}
                 onClickNode={this.nodeClick.bind(this)}
+                onClickLink={this.linkClick.bind(this)}
                 />
                 </Sidebar> 
             </div>
@@ -206,24 +261,28 @@ class Main extends React.Component {
     }
 }
 
-const graphConfig = {
+const graphConfig = { // TODO: move this into store
     nodeHighlightBehavior: true,
     width: window.innerWidth,
     height: window.innerHeight,
     directed: true,
     node: {
         color: "grey",
-        size: 200,
+        size: 30,
         highlightStrokeColor: "blue",
         labelProperty: (node) => node.name 
     },
     link: {
-        highlightColor: "lightblue",
+        type: "CURVE_SMOOTH" 
+        // could make straight if the two nodes are not pointing at eachother.
+        // needs to be round. otw cannot click link that is rendered
     },
 };
 
 const mapStateToProps = state => {
   return {
+      shouldDeleteLink: state.shouldDeleteLink, 
+      shouldBuildLink: state.shouldBuildLink,
       showLogsSidebar: state.showLogsSidebar, 
       showNodeSidebar: state.showNodeSidebar, 
       showJSONEntrySidebar: state.showJSONEntrySidebar,
@@ -239,7 +298,17 @@ const mapDispatchToProps = dispatch => {
         },
         hideSidebar: () => {
             dispatch(hideSidebar())
+        },
+        updatePatientLocation: (patient, currNode, newNode) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode))
+        },
+        deleteLink: (sourceId, targetId) => {
+            dispatch(deleteLink(sourceId, targetId))
+        },
+        connectNode: (nodeId) => {
+            dispatch(connectNode(nodeId))
         }
+
     }
 }
 

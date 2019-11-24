@@ -23,9 +23,80 @@
     box-sizing: border-box;
 }
 
+.NodeSidebarContent select {
+    margin-bottom: 24px;
+    margin-top: 12px;
+    font-family: 'Roboto Mono';
+    padding: 8px;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .NodeSidebarContent h3 {
     margin-top: 0;
     font-weight: 500;
     font-size: 16px;
     margin-bottom: 24px;
+}
+
+.SaveNodebutton:hover{
+    background-color: rgb(184, 184, 184)
+}
+
+.SaveNodebutton svg{
+    height : 16px;
+    width: 16px;
+}
+
+.SaveNodebutton{
+    float: right;
+    margin-right: 16px;
+    vertical-align: middle;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E4159;
+
+    background-color: white;
+    box-shadow: none;
+    border: 1px solid #DCE4E9;
+    border-radius: 100px;
+    padding-left: 13px;
+    padding-right: 16px;
+    min-height: 35px;
+    min-width: 120px;
+
+    transition-duration: 0.4s;
+    outline: 0;
+}
+
+.DeleteNodebutton:hover{
+    background-color: rgb(178, 34, 34);
+    color: white;
+}
+
+.DeleteNodebutton svg{
+    height : 16px;
+    width: 16px;
+}
+
+.DeleteNodebutton{
+    float: left;
+    margin-left: 16px;
+    vertical-align: middle;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E4159;
+
+    background-color: white;
+    box-shadow: none;
+    border: 1px solid #DCE4E9;
+    border-radius: 100px;
+    padding-left: 13px;
+    padding-right: 16px;
+    min-height: 35px;
+    min-width: 120px;
+
+    transition-duration: 0.4s;
+    outline: 0;
 }

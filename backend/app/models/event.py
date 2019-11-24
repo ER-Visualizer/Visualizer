@@ -16,11 +16,10 @@ class Event():
     #     self.node_id = node_id
     #     self.node_resource = node_resources
 
-    def __init__(self, node_id, node_resource_id,  patient_id, event_time, next_nodes):
+    def __init__(self, node_id, node_resource_id,  patient_id, event_time):
         self.patient_id = patient_id
         self.event_time = event_time
         self.node_id = node_id
-        self.next_nodes = next_nodes
         self.node_resource_id = node_resource_id
 
     def __lt__(self, other):

@@ -58,7 +58,7 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
     const x2 = nodes?.[target]?.x || 0;
     const y2 = nodes?.[target]?.y || 0;
     const type = link.type || config.link.type;
-    const d = buildLinkPathDefinition({ source: { x: x1, y: y1 }, target: { x: x2, y: y2 } }, type);
+    const d = buildLinkPathDefinition({ source: { x: x1 + 200, y: y1 + 100 }, target: { x: x2, y: y2 + 100 } }, type);
 
     let mainNodeParticipates = false;
 
@@ -195,8 +195,8 @@ function buildNodeProps(node, config, nodeCallbacks = {}, highlightedNode, highl
         ...node,
         className: CONST.NODE_CLASS_NAME,
         cursor: config.node.mouseCursor,
-        cx: node?.x || "0",
-        cy: node?.y || "0",
+        cx: node?.x || "100", // modified to change starting position of new nodes. initial values were 0
+        cy: node?.y || "100",
         dx,
         fill,
         fontColor,
