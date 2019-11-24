@@ -10,22 +10,22 @@ const initialState = {
     shouldDeleteLink: false,
     shouldBuildLink: false, 
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
-    nodeCount: 4, // max ID of any node
+    nodeCount: 5, // max ID of any node
     nodes: [
         new ProcessNode(0, "reception", "receptiondist", [5], 1,
-            "receptionstack", "receptionprior", [2, 10],
+            "receptionstack", "receptionprior", [2, 5],
             [new Patient(0, 2), new Patient(1, 3)]),
         new ProcessNode(1, "triage", "triagedist", [3], 2,
             "triagestack", "triageprior", [3, 2],
             [new Patient(2, 4), new Patient(3, 1)]),
         new ProcessNode(2, "doctor", "doctordist", [10], 3,
-            "doctorqueue", "doctorprior", [10],
+            "doctorqueue", "doctorprior", [5],
             [new Patient(1, 5), new Patient(3, 2)]),
         new ProcessNode(3, "x-ray", "xraydist", [1, 1], 4,
             "xrayqueue", "xrayprior", [], []),
         new ProcessNode(4, "station", "stationdist", [10], 1,
             "stationqueue", "stationprior", [2], []),
-        new ProcessNode(10, "doctor", "doctordist", [100, 30], 3,
+        new ProcessNode(5, "doctor", "doctordist", [100, 30], 3,
             "doctorqueue", "doctorprior", [], [])
     ]
 }
@@ -192,7 +192,8 @@ function addNewNode(nodes, nodeNum){
         "numberOfActors": 0,
         "queueType": "newNode",
         "priorityFunction": "newNode",
-        "children": []
+        "children": [],
+        "patients": [],
     })
 
     // modifying clonedNodes doesn't seem to modify original nodes list...

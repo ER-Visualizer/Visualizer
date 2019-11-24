@@ -1,0 +1,7 @@
+.QueueContainer {
+    width: 100%;
+    border: 1px solid #01121E;
+    height: 100px;
+    margin: 10px 0;
+    overflow: scroll;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
 import { editNodeProperties, deleteNode } from '../redux/actions'
+import Queue from './Queue';
 
 export class NodeSidebarContent extends React.Component {
     constructor(props) {
@@ -144,6 +145,11 @@ export class NodeSidebarContent extends React.Component {
                         <option value="acuity">Acuity</option>
                         <option value="arrival time">Arrival Time</option>
                     </select>
+                </div>
+
+                <div className="input-container">
+                    <label>Current Queue</label><br/>
+                    <Queue patients={this.state.node.patients} />
                 </div>
 
                 {/* <div className="input-container">
