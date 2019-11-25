@@ -72,15 +72,16 @@ class Heap():
     def iter_priority_queue(self):
         if len(self.q) == 0:
             return
-        q = self.q
         next_indices = [0]
         while next_indices:
-            min_index = min(next_indices, key=q.__getitem__)
-            yield q[min_index]
+            min_index = min(next_indices, key=self.q.__getitem__)
+            # create generator
+            yield self.q[min_index]
             next_indices.remove(min_index)
-            if 2 * min_index + 1 < len(q):
+            # get next smallest elements
+            if 2 * min_index + 1 < len(self.q):
                 next_indices.append(2 * min_index + 1)
-            if 2 * min_index + 2 < len(q):
+            if 2 * min_index + 2 < len(self.q):
                 next_indices.append(2 * min_index + 2)
 
     def __iter__(self):
