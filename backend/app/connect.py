@@ -42,7 +42,7 @@ class WebsocketServer:
 
     def close(self):
         self.server.close()
-        print("closing socketssssssss")
+        print("closing sockets")
         asyncio.get_event_loop().run_until_complete(self.server.wait_closed())
         asyncio.get_event_loop().stop()
         asyncio.get_event_loop().close()

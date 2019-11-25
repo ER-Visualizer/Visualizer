@@ -123,7 +123,7 @@ class Node:
     '''
 
     def handle_finished_patient(self, resource_id):
-
+        print("finished patient")
         resource = self.resource_dict[resource_id]
         # get the patient out of the subprocess. this
         # automatically sets him to available
@@ -149,13 +149,12 @@ class Node:
     '''
 
     def put_patient_in_node(self, patient):
-
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
         if not self.fill_spot(patient):
            self.put_inside_queue(patient)
 
-    def put_inside_queue(self,patient):
+    def put_inside_queue(self, patient):
          # Push Patient inside queue
         self.queue.put(patient)
         # TODO Consider whether it's good to move it inside the queue
@@ -245,7 +244,6 @@ class Node:
         # TODO: consider random order
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
-            print("is availble ")
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
@@ -264,7 +262,6 @@ class Node:
         # insert patient into resource, since it's available
         finish_time, duration = self.generate_finish_time()
         resource.insert_patient(patient, self.id, finish_time, duration)
-
         # now add the event to the heap
         self.add_to_heap(resource.get_id())
 
@@ -275,5 +272,4 @@ class Node:
         resource = self.resource_dict[resource_id]
         event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
         # heap = run.get_heap()
-
         heapq.heappush(GlobalHeap().heap, event)
