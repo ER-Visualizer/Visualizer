@@ -2,7 +2,7 @@ import React from 'react'
 import axios, { post } from 'axios';
 import "./Navbar.css";
 
-class SimpleReactFileUpload extends React.Component {
+class FileUploadForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -47,4 +47,4 @@ class SimpleReactFileUpload extends React.Component {
 
 
 
-export default SimpleReactFileUpload
+export default FileUploadForm

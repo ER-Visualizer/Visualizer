@@ -6,7 +6,7 @@ import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
-import SimpleReactFileUpload from './UploadButton.js'
+import FileUploadForm from './UploadButton.js'
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -71,7 +71,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
-                <SimpleReactFileUpload className="FileUploadButton"> </SimpleReactFileUpload>
+                <FileUploadForm className="FileUploadButton"> </FileUploadForm>
                 <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
