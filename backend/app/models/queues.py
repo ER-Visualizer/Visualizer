@@ -58,6 +58,7 @@ class Heap():
     # TODO: We are heapifying an already existing heap. What is time complexity on that?
     # IF bigger than O(1), just set it directly. Maybe implement a flag
     def __init__(self, l=[]):
+        l = l[:]
         heapq.heapify(l)
         self.q = l
 
@@ -68,30 +69,44 @@ class Heap():
 
         return heapq.heappop(self.q)
 
+    def iter_priority_queue(self):
+        if len(self.q) == 0:
+            return
+        q = self.q
+        next_indices = [0]
+        while next_indices:
+            min_index = min(next_indices, key=q.__getitem__)
+            yield q[min_index]
+            next_indices.remove(min_index)
+            if 2 * min_index + 1 < len(q):
+                next_indices.append(2 * min_index + 1)
+            if 2 * min_index + 2 < len(q):
+                next_indices.append(2 * min_index + 2)
+
     def __iter__(self):
-        self.length = len(self.q)
-        return self.length
+        self.iter = self.iter_priority_queue()
+        return self.iter
 
     def __next__(self):
-        if(self.length != 0):
-            next = heapq.heappop(self.q)
-            self.length -= 1
-            return next
-        else:
-            raise StopIteration()
+        return next(self.iter)
+
+    def remove(self, val):
+        self.q.remove(val)
+        heapq.heapify(self.q)
+        return
+
 
     # https://stackoverflow.com/questions/10162679/python-delete-element-from-heap
     # Can get it to be more efficient
 
-    def remove(self, val):
-        # find the element
-        index_to_remove = self.q.index(val)
-        return self.remove_by_index(index_to_remove)
+    # def remove(self, val):
+    #     # find the element
+    #     index_to_remove = self.q.index(val)
+    #     return self.remove_by_index(index_to_remove)
 
     def remove_by_index(self, index_to_remove):
         el = self.q[index_to_remove]
-        self.q[index_to_remove] = self.q[-1]
-        self.q.pop()
+        self.q.pop(index_to_remove)
         heapq.heapify(self.q)
         return el
 

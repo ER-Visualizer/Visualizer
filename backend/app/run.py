@@ -52,7 +52,7 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters": [5],
                 "numberOfActors": 1,
-                "queueType": "queue",
+                "queueType": "priority queue",
                 "priorityFunction": "",
                 "children": [1]
             },
@@ -62,7 +62,7 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters": [3],
                 "numberOfActors": 2,
-                "queueType": "queue",
+                "queueType": "priority queue",
                 "priorityFunction": "",
                 "children": [2, 3]
             },
@@ -72,7 +72,7 @@ def canvas_parser(canvas_json):
                 "distribution": "fixed",
                 "distributionParameters": [10],
                 "numberOfActors": 3,
-                "queueType": "queue",
+                "queueType": "priority queue",
                 "priorityFunction": "",
                 "children": []
             },
@@ -82,7 +82,7 @@ def canvas_parser(canvas_json):
                 "distribution": "binomial",
                 "distributionParameters": [1, 1],
                 "numberOfActors": 2,
-                "queueType": "queue",
+                "queueType": "priority queue",
                 "priorityFunction": "",
                 "children": []
             }
@@ -92,7 +92,6 @@ def canvas_parser(canvas_json):
 
 def create_queues():
     global initial_time, nodes_list
-    print("CQ")
     for node in canvas["elements"]:
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
@@ -164,10 +163,8 @@ def send_e():
 
 
 def process_heap():
-    # print("process heap")
     # exit condition for simulation loop
     if len(event_heap) == 0:
-        # print("heap empty")
         return 0
 
     completed_event = heapq.heappop(event_heap)

@@ -14,7 +14,7 @@ class Patient:
     with a priority function given to us from canvas'''
 
     def __lt__(self, other):
-        return self.acuity > other.acuity
+        return self.acuity < other.acuity
 
     def get_id(self):
         return self.id
