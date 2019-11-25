@@ -22,11 +22,26 @@ const showPatientInfo = patient => {
 const PatientBox = ({ patient }) => {
     return <React.Fragment>
         <div 
-            data-tip='tooltip'
+            data-tip={`Id: ${patient.id} <br> Accuity: ${patient.accuity}`}
             style={{background: getBackgroundColor(patient.accuity)}} 
             className="Patient">
         </div>
-        <ReactTooltip />
+        <ReactTooltip
+            multiline
+            effect="solid"
+            className="tooltip"
+            overridePosition={ ({ left, top },
+                                currentEvent, currentTarget, node) => {
+                const d = document.documentElement;
+
+                left = Math.min(d.clientWidth - node.clientWidth, left);
+                top = Math.min(d.clientHeight - node.clientHeight, top);
+
+                left = Math.max(0, left);
+                top = Math.max(0, top);
+
+                return { top, left }
+            } } />
     </React.Fragment>
 };
 
