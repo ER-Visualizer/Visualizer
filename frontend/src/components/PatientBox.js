@@ -15,10 +15,6 @@ const getBackgroundColor = accuity => {
     return `rgba(${newRed.r}, ${newRed.g}, ${newRed.b})`;
 };
 
-const showPatientInfo = patient => {
-    console.log(patient.id, patient.accuity);
-}
-
 const PatientBox = ({ patient }) => {
     return <React.Fragment>
         <div 
