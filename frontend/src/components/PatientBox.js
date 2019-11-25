@@ -1,10 +1,9 @@
 import React from 'react';
 import './PatientBox.css';
+import ReactTooltip from 'react-tooltip';
 
 const getBackgroundColor = accuity => {
     const baseRed = {r: 200, g: 44, b: 5};
-
-    // const newRed = baseRed;
     const tintFactor = 1 - (2 / accuity);
 
     const newRed = {
@@ -16,13 +15,19 @@ const getBackgroundColor = accuity => {
     return `rgba(${newRed.r}, ${newRed.g}, ${newRed.b})`;
 };
 
+const showPatientInfo = patient => {
+    console.log(patient.id, patient.accuity);
+}
+
 const PatientBox = ({ patient }) => {
-    return (
-        <div
+    return <React.Fragment>
+        <div 
+            data-tip='tooltip'
             style={{background: getBackgroundColor(patient.accuity)}} 
             className="Patient">
         </div>
-    )
+        <ReactTooltip />
+    </React.Fragment>
 };
 
 export default PatientBox;

@@ -17,6 +17,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
     "react-sidebar": "^3.0.2",
+    "react-tooltip": "^3.11.1",
     "redux": "^4.0.4",
     "typescript": "^3.6.4",
     "yup": "^0.27.0"
