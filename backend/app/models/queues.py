@@ -97,25 +97,6 @@ class Heap():
         return
 
 
-    # https://stackoverflow.com/questions/10162679/python-delete-element-from-heap
-    # Can get it to be more efficient
-
-    # def remove(self, val):
-    #     # find the element
-    #     index_to_remove = self.q.index(val)
-    #     return self.remove_by_index(index_to_remove)
-
-    def remove_by_index(self, index_to_remove):
-        el = self.q[index_to_remove]
-        self.q.pop(index_to_remove)
-        heapq.heapify(self.q)
-        return el
-
-    # TODO: implement an iterator for it
-    # For the iterator: Make a copy of the list and just extract from it.
-    # Then when we find the element, call remove() on the actual heap
-
-
 def test_remove_from_heap():
     el = Heap()
     el.put(3)
