@@ -123,7 +123,6 @@ class Node:
     '''
 
     def handle_finished_patient(self, resource_id):
-        print("finished patient")
         resource = self.resource_dict[resource_id]
         # get the patient out of the subprocess. this
         # automatically sets him to available
@@ -152,7 +151,7 @@ class Node:
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
         if not self.fill_spot(patient):
-           self.put_inside_queue(patient)
+            self.put_inside_queue(patient)
 
     def put_inside_queue(self, patient):
          # Push Patient inside queue

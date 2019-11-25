@@ -91,9 +91,9 @@ def canvas_parser(canvas_json):
 
 
 def create_queues():
-    global initial_time
+    global initial_time, nodes_list
+    print("CQ")
     for node in canvas["elements"]:
-
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
@@ -106,21 +106,23 @@ def create_queues():
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
-
+    print("open csv")
     # read csv (for now, all patients added to reception queue at beginning)
-    dict_reader = csv.DictReader(
-        open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
-    for row in dict_reader:
-        if initial_time is None:
-            initial_time = row["time"]
-        FMT = '%Y-%m-%d %H:%M:%S.%f'
-        patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
-        patient_time = float(patient_time.seconds)/60
-        next_patient = Patient(
-            int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
-        # All of the patients first get loaded up into the
-        nodes_list[-1].put_patient_in_node(next_patient)
-        all_patients[next_patient.get_id()] = next_patient
+    with open("/app/test.csv") as csvfile:
+        csvfile.seek(0)
+        dict_reader = csv.DictReader(csvfile, delimiter=',')
+        for row in dict_reader:
+            print(row)
+            if initial_time is None:
+                initial_time = row["time"]
+            FMT = '%Y-%m-%d %H:%M:%S.%f'
+            patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
+            patient_time = float(patient_time.seconds)/60
+            next_patient = Patient(
+                int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+            # All of the patients first get loaded up into the
+            nodes_list[-1].put_patient_in_node(next_patient)
+            all_patients[next_patient.get_id()] = next_patient
 
 
 
@@ -162,8 +164,10 @@ def send_e():
 
 
 def process_heap():
+    # print("process heap")
     # exit condition for simulation loop
     if len(event_heap) == 0:
+        # print("heap empty")
         return 0
 
     completed_event = heapq.heappop(event_heap)
@@ -232,7 +236,9 @@ def get_curr_time():
 
 def main():
     GlobalTime.time = 0
-    global initial_time, nodes_list, event_changes, statistics, packet_start, counter
+    GlobalHeap.heap = []
+    global initial_time, nodes_list, event_changes, statistics, packet_start, counter, event_heap
+    event_heap = GlobalHeap.heap
     initial_time = None
     event_changes = []
     nodes_list = {}

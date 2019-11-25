@@ -67,7 +67,7 @@ class WebsocketServer:
             try:
                 await websocket.send(message)
                 await asyncio.sleep(self.packet_rate)
-            except websockets.exceptions.ConnectionClosed:
+            except (websockets.exceptions.ConnectionClosed, websockets.exceptions.ConnectionClosedOK):
                 self.close()
                 break
 
