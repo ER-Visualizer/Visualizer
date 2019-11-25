@@ -7,8 +7,7 @@ import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar, deleteLink, connectNode } from '../redux/actions';
-
+import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode} from '../redux/actions';
 
 class Main extends React.Component {
     constructor(props) {
@@ -60,11 +59,11 @@ class Main extends React.Component {
         };
 
         ws.onmessage = event => {
-            console.log("raw event")
-            console.log(event.data);
+            // console.log("raw event")
+            // console.log(event.data);
                 // console.log(this.parseEventData(event.data))
                 const eventData = JSON.parse(event.data)
-                console.log(eventData)
+                // console.log(eventData)
                 const events = eventData["Events"]
                 console.log("events")
                 console.log(events)
@@ -77,6 +76,9 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
+                    console.log({events});
+                    
+                    this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
                     console.log("stats true")
@@ -135,6 +137,15 @@ class Main extends React.Component {
               this.state.ws.close();
           }
     }
+
+    updateNodePatients(new_events) {
+        // console.log("in updatenodepatients");
+        // console.log(this.state.events);
+        new_events.forEach((event) => {                  
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
+        })
+    }
+
     renderSidebarContent() {
         if(this.props.showLogsSidebar) {
             this.sidebarLastContent = <LogsSidebarContent logs={this.state.events}/>
@@ -154,22 +165,28 @@ class Main extends React.Component {
         // instead of abruptly disappearing.
         return this.sidebarLastContent;
     }
+
+    renderNode() {
+        return <div className="object">Hello world</div>
+    }
     
     update_graph(nodes){
         let graphical_data = {nodes: [], links: []}
-
         nodes.map( // map the JSON representation of the node to the representation required by the graph
             (node) => {graphical_data.nodes.push(
-                { id: `${node.id}`, name : `${node.elementType}${node.id}`});
+                { 
+                    id: `${node.id}`,
+                    name : `${node.elementType}${node.id}`,
+                    ...node
+                });
                 
                 node.children.map( 
                     (child) => {graphical_data.links.push(
-                        { source: `${node.id}`, target: `${child}` })}
+                        { source: node.id, target: child })}
                 )
             }
         )
-
-        
+        console.log(graphical_data);
         return graphical_data;
     };
 
@@ -231,6 +248,7 @@ class Main extends React.Component {
                 >
                 <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)}/>
                 <Graph
+                directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
                 data={this.update_graph(this.props.nodes)}
                 config={graphConfig}
@@ -250,7 +268,7 @@ const graphConfig = { // TODO: move this into store
     directed: true,
     node: {
         color: "grey",
-        size: 200,
+        size: 30,
         highlightStrokeColor: "blue",
         labelProperty: (node) => node.name 
     },
@@ -280,6 +298,9 @@ const mapDispatchToProps = dispatch => {
         },
         hideSidebar: () => {
             dispatch(hideSidebar())
+        },
+        updatePatientLocation: (patient, currNode, newNode) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

@@ -42,7 +42,7 @@ Returns a json response.
 def send_json_response(message: dict):
     resp = jsonify(message)
     resp.status_code = 200
-    print(resp)
+    # print(resp)
     return resp
  
 if __name__ == "__main__":

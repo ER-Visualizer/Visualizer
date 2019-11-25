@@ -1,7 +1,5 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
 import { object } from 'prop-types';
-
-
 
 const initialState = {
     showLogsSidebar: false,
@@ -20,7 +18,8 @@ const initialState = {
             "numberOfActors": 1,
             "queueType": "receptionstack",
             "priorityFunction": "receptionprior",
-            "children": [2]
+            "children": [2, 10],
+            "patients": [0]
         },
         {
             "id": 1,
@@ -30,7 +29,8 @@ const initialState = {
             "numberOfActors": 2,
             "queueType": "triagestack",
             "priorityFunction": "triageprior",
-            "children": [3, 2]
+            "children": [3, 2],
+            "patients": []
         },
         {
             "id": 2,
@@ -40,8 +40,21 @@ const initialState = {
             "numberOfActors": 3,
             "queueType": "doctorqueue",
             "priorityFunction": "doctorprior",
-            "children": []
+            "children": [10],
+            "patients": []
         },
+        {
+            "id": 10,
+            "elementType": "doctor",
+            "distribution": "doctordist",
+            "distributionParameters": [100, 30],
+            "numberOfActors": 3,
+            "queueType": "doctorqueue",
+            "priorityFunction": "doctorprior",
+            "children": [],
+            "patients": []
+        },
+        
         {
             "id": 3,
             "elementType": "x-ray",
@@ -50,7 +63,8 @@ const initialState = {
             "numberOfActors": 4,
             "queueType": "xrayqueue",
             "priorityFunction": "xrayprior",
-            "children": []
+            "children": [],
+            "patients": []
         },
         {
             "id": 4,
@@ -60,7 +74,8 @@ const initialState = {
             "numberOfActors": 1,
             "queueType": "stationqueue",
             "priorityFunction": "stationprior",
-            "children": [2]
+            "children": [2],
+            "patients": []
         }
 
     ]
@@ -92,6 +107,13 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: false, 
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false
+            }); 
+        case UPDATE_PATIENT_LOCATION:
+            return  Object.assign({}, state, {
+                showLogsSidebar: state.showLogsSidebar, 
+                showNodeSidebar: state.showNodeSidebar, 
+                showJSONEntrySidebar: state.showJSONEntrySidebar,
+                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -163,8 +185,50 @@ function EDSimulation(state = initialState, action) {
             return state
     }
 }
+const movePatient = (nodes, patient, currNode, newNode) => {
+    // moves patient A from startNode to endNode
+    console.log("in move patient ");
+    console.log("patient id", patient, "currentnode", currNode, "nextnode",newNode)
 
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
+    // if the first node is the patient loadeer
+    if (currNode == -1){
+        clonedNodes[0].patients.push(patient)        
+        return clonedNodes
+    }
+
+    let removedPatient;
+    clonedNodes.forEach((node) => {
+       console.log(node.id, "vs", currNode);
+       if (node.id == currNode){
+           console.log("in here");
+           // Need to change to id when Mit changes it 
+           removedPatient = node.patients.filter((currPatient) => currPatient != patient );
+           node.patients = removedPatient
+        }
+    });
+    console.log({removedPatient});
+
+    if (removedPatient){
+        // console.log({removedPatient})
+        const newNodesList = clonedNodes.map((node) => {
+            const newCurNode = {...node}
+
+            if (node.id == newNode){
+                newCurNode.patients.push(patient)
+            }
+            return newCurNode
+
+        });
+        console.log({newNodesList});
+        
+        return newNodesList; 
+    } else {
+        return nodes;
+    }
+    
+}
 function addNewNode(nodes, nodeNum){
     // https://stackoverflow.com/questions/597588/how-do-you-clone-an-array-of-objects-in-javascript
     

@@ -46,9 +46,9 @@ counter = 0
 def canvas_parser(canvas_json):
     global canvas
     canvas = {
-        "elements": [
+        "elements": [ 
             {
-                "id": 1,
+                "id": 0,
                 "elementType": "reception",
                 "distribution": "fixed",
                 "distributionParameters": [5],
@@ -58,9 +58,9 @@ def canvas_parser(canvas_json):
                 "children": [2]
             },
             {
-                "id": 2,
+                "id": 1,
                 "elementType": "triage",
-                "distribution": "fixed",
+                "distribution": "queue",
                 "distributionParameters":[3],
                 "numberOfActors": 2,
                 "queueType": "queue",
@@ -68,7 +68,7 @@ def canvas_parser(canvas_json):
                 "children": [3, 4]
             },
             {
-                "id": 3,
+                "id": 2,
                 "elementType": "doctor",
                 "distribution": "fixed",
                 "distributionParameters": [10],
@@ -78,7 +78,7 @@ def canvas_parser(canvas_json):
                 "children": []
             },
             {
-                "id": 4,
+                "id": 3,
                 "elementType": "x-ray",
                 "distribution": "binomial",
                 "distributionParameters": [1, 1],
@@ -92,10 +92,10 @@ def canvas_parser(canvas_json):
 
 
 def create_queues():
-    print("IN CQ")
+    # print("IN CQ")
     global initial_time
     for node in canvas["elements"]:
-        print("IN NODE")
+        # print("IN NODE")
 
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
@@ -103,27 +103,31 @@ def create_queues():
                                         distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
 
         # create patient_loader node when reception is found
-        if node["elementType"] == "reception":
+        if node["elementType"] == "reception": 
             nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
                                           distribution_name="fixed", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
 
-            # read csv (for now, all patients added to reception queue at beginning)
-            dict_reader = csv.DictReader(
-                open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
-            for row in dict_reader:
-                if initial_time is None:
-                    initial_time = row["time"]
-                FMT = '%Y-%m-%d %H:%M:%S.%f'
-                patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
-                patient_time = float(patient_time.seconds)/60
-                next_patient = Patient(
-                    int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
-                # All of the patients first get loaded up into the 
-                nodes_list[-1].put_patient_in_node(next_patient)
-                all_patients[next_patient.get_id()] = next_patient
+    # read csv (for now, all patients added to reception queue at beginning)
+    dict_reader = csv.DictReader(
+        open("app/patient_csv/sample_ED_input.csv"), delimiter=',')
+    for row in dict_reader:
+        print(row) 
+        if initial_time is None: 
+            initial_time = row["time"] 
+        FMT = '%Y-%m-%d %H:%M:%S.%f' 
+        patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
+        patient_time = float(patient_time.seconds)/60
+        next_patient = Patient(
+            int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+        # All of the patients first get loaded up into the  
+        nodes_list[-1].put_patient_in_node(next_patient)
+        for p in nodes_list[-1].queue: 
+            print(p.id)
+        print(nodes_list[-1].queue.contents)   
+        all_patients[next_patient.get_id()] = next_patient
 
 
 
@@ -138,20 +142,23 @@ def send_e():
     if len(event_changes) == 0:
         # send nothing if no changess
         return []
-
-    new_changes = []
-    global packet_start
+    new_changes = [] 
+    global packet_start 
     if packet_start == -1:
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
+
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_moved_to():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
             event_dict = {
+                "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
+                "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "patientId": event_changes[0].get_patient_id(),
+                "curNodeId": event_changes[0].get_node_id(), 
                 "movedTo": nodes_list[next_q].get_process_name(),
-                "startedAtId": event_changes[0].get_node_id(),
+                "nextNodeId": nodes_list[next_q].get_id(), 
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time()
             }
@@ -250,7 +257,7 @@ def main():
     # create_heap(get_heap())
 
     # this will read patients csv
-    print("create queues")
+    # print("create queues")
     create_queues()
     counter = 0
     # setup websocket server

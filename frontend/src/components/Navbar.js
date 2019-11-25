@@ -24,6 +24,7 @@ class Navbar extends React.Component {
     }
     async sendCanvas(e){
         try {
+            // console.log("send canvas");
             console.log(e)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()

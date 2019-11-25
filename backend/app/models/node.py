@@ -245,6 +245,7 @@ class Node:
         # TODO: consider random order
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
+            print("is availble ")
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
