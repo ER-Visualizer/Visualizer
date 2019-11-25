@@ -163,7 +163,7 @@ class Node:
         patient_record = patient.get_patient_record()
         patient_record.put_process_in_queue(self.id)
 
-    # when called from a subprocess, this means that the subprocess just
+    # when called from a subprocess, this means that the subprocess justs
     # handled a patient, and needs a new one
     # so fill his spot, and return true if you can
     def fill_spot_for_resource(self, subprocess):

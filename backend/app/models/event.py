@@ -21,6 +21,7 @@ class Event():
         self.event_time = event_time
         self.node_id = node_id
         self.node_resource_id = node_resource_id
+        self.moved_to = None
 
     def __lt__(self, other):
         return self.event_time < other.event_time
@@ -36,6 +37,9 @@ class Event():
 
     def get_node_resource_id(self):
         return self.node_resource_id
-  
-    def get_next_nodes(self):
-        return self.next_nodes
+
+    def set_moved_to(self, node_ids):
+        self.moved_to = node_ids
+
+    def get_moved_to(self):
+        return self.moved_to

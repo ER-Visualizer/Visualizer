@@ -78,14 +78,14 @@ class ObjectRecord():
             self.visited.append(self.curr_node)
         self.curr_node = None
 
-
-
-
     def get_curr_duration(self):
         return self.curr_node.get_curr_resource_end_time() - \
             self.curr_node.get_curr_resource_start_time()
 
-    def get_finish_time_of_last_process(self):
+    def get_end_time_of_last_process(self):
+        # handles case where there is no previously processed node (when patient is in patient_loader)
+        if len(self.visited) == 0:
+            return 0
         # go into the last visited node, and get the finish time
         return self.visited[-1].get_curr_resource_end_time()
 

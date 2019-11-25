@@ -28,7 +28,7 @@ packet_start = -1
 packet_duration = 300
 
 # default: send every 5 seconds
-packet_rate = 1
+packet_rate = 0
 
 # instantiate statistics
 statistics = Statistic()
@@ -133,7 +133,6 @@ def create_queues():
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
-
 def send_e():
     global event_changes
     if len(event_changes) == 0:
@@ -147,10 +146,8 @@ def send_e():
     else:
         packet_start = packet_start + packet_duration
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        print("send_e", event_changes[0].get_patient_id())
-        for next_q in nodes_list[event_changes[0].get_node_id()].get_output_process_ids():
+        for next_q in event_changes[0].get_moved_to():
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
-            # next_resource = nodes_list[next_q].get_resource(nodes_list[next_q].get_node_resource_id())
             event_dict = {
                 "patientId": event_changes[0].get_patient_id(),
                 "movedTo": nodes_list[next_q].get_process_name(),
@@ -180,25 +177,24 @@ def process_heap():
 
     head_node_id = completed_event.get_node_id()
     head_resource_id = completed_event.get_node_resource_id()
-
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
 
-    # patient for the event
+    # patient record for the patient in the event
     patient_record = resource.get_curr_patient().get_patient_record()
-
-    # time where patient finishes the process
-    finish_time = resource.get_finish_time()
-    # time where patient joins queue for the process
-    join_queue_time = patient_record.get_finish_time_of_last_process()
-    # the patient joins a new queue at the current time
-
+    # NOTE: THE FOLLOWING ACTIONS MUST BE DONE IN THIS ORDER
+    process_duration = patient_record.get_curr_duration()
+    # get time when patient entered finishing nodes
+    join_queue_time = patient_record.get_end_time_of_last_process()
+    # handle patient by placing it in its next node (either in a queue or directly into a resource)
+    nodes_list[head_node_id].handle_finished_patient(head_resource_id)
+    # get time when patient is leaving finishing node (which is also the time when patient joins current node)
+    finish_time = patient_record.get_end_time_of_last_process()
     # record process time
     process_time = finish_time - join_queue_time
     process_name = nodes_list[completed_event.get_node_id()].get_process_name()
     statistics.add_process_time(patient_record.get_id(), process_name, process_time)
-
     # record wait time
-    wait_time = process_time - patient_record.get_curr_duration()
+    wait_time = process_time - process_duration
     statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
 
     # record doctor
@@ -211,10 +207,13 @@ def process_heap():
         # can remove in the future and just use process_times
         statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
 
-
-    # send patient to next queuesss
-    nodes_list[head_node_id].handle_finished_patient(head_resource_id)
-    print(completed_event.patient_id, completed_event.get_node_id())
+    # get all queues patient was added to
+    next_nodes = list(patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
+    # get resource patient is in (if any)
+    if patient_record.get_curr_process_id():
+        next_nodes.append(patient_record.get_curr_process_id())
+    # send patient to next queues/resources
+    completed_event.set_moved_to(next_nodes)
     event_changes.append(completed_event)
 
     # TODO off by one error, change if statement to check for counter > 0 where counter is the number of patients
