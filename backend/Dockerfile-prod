@@ -5,6 +5,7 @@ WORKDIR /app
 RUN apt-get clean \
     && apt-get -y update
 
+
 RUN apt-get -y install nginx \
     && apt-get -y install python3-dev \
     && apt-get -y install build-essential
@@ -14,6 +15,6 @@ RUN pip install -r requirements.txt --src /usr/local/src
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV FLASK_APP=./main.py
-COPY nginx.conf /etc/nginx
-RUN chmod +x /app/start.sh
-ENTRYPOINT ["sh", "/app/start.sh"]
+
+
+ENTRYPOINT ["sh", "./nginx.sh"]

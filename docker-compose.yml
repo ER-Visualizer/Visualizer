@@ -3,6 +3,7 @@ services:
     server:
         build: 
           context: "./backend"
+          dockerfile: Dockerfile
           args:
             - SERVER_PORT=${SERVER_PORT}
         ports:
