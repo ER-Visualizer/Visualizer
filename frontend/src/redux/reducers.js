@@ -15,7 +15,7 @@ const initialState = {
         new ProcessNode(0, "reception", "fixed", [5], 1,
             "priority queue", "", [1, 2, 3], []),
         new ProcessNode(1, "triage", "fixed", [3], 2,
-            "priority queue", "", [2], []),
+            "priority queue", "", [3], []),
         new ProcessNode(2, "doctor", "fixed", [10], 3,
             "priority queue", "", [], []),
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
@@ -234,7 +234,7 @@ const movePatient = (nodes, patient, currNode, newNode, patientAcuity) => {
         const newNodesList = clonedNodes.map((node) => {
             const newCurNode = {...node}
 
-            if (node.id == newNode){
+            if (node.id == newNode && newNode !== "end"){
                 console.log("added -------------");
                 console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",node.id)
                 newCurNode.patients.push(new Patient(patient, patientAcuity))

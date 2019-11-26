@@ -65,7 +65,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 2,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2]
+                "children": [3]
             },
             {
                 "id": 2,
@@ -154,7 +154,7 @@ def send_e():
                 "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "curNodeId": event_changes[0].get_node_id(),
                 "nextNodeId": "end",
-                "movedTo": nodes_list[next_q].get_process_name(),
+                "movedTo": "None",
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
                 "timeStamp": event_changes[0].get_event_time(),
                 "inQueue": False
