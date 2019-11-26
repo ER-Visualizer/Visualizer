@@ -19,3 +19,4 @@ for line in `sed '/^$/d' $1`; do
 	echo "$res" | sed 's/.$//'
 	echo "$res" | sed 's/.$//' >> "$file"
 done
+echo "REACT_APP_DEV_ENV=$DEV_ENV" >> "$file"
