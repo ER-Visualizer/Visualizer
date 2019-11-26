@@ -12,58 +12,14 @@ const initialState = {
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
     nodeCount: 5, // max ID of any node
     nodes: [
-        // new ProcessNode(0, "reception", "fixed", [5], 1,
-        //     "queue", "", [1], []),
-        // new ProcessNode(1, "triage", "queue", [3], 2,
-        //     "queue", "", [2], []),
-        // new ProcessNode(2, "doctor", "fixed", [10], 3,
-        //     "queue", "", [3], []),
-        // new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
-        //     "queue", "", [], [])
-            {
-                "id": 0,
-                "elementType": "reception",
-                "distribution": "fixed",
-                "distributionParameters": [5],
-                "numberOfActors": 1,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [1],
-                "patients": []
-            },
-            {
-                "id": 1,
-                "elementType": "triage",
-                "distribution": "fixed",
-                "distributionParameters": [3],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [2, 3],
-                "patients": []
-            },
-            {
-                "id": 2,
-                "elementType": "doctor",
-                "distribution": "fixed",
-                "distributionParameters": [10],
-                "numberOfActors": 3,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [],
-                "patients": []
-            },
-            {
-                "id": 3,
-                "elementType": "x-ray",
-                "distribution": "binomial",
-                "distributionParameters": [1, 1],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [],
-                "patients": []
-            }
+        new ProcessNode(0, "reception", "fixed", [5], 1,
+            "priority queue", "", [1, 2, 3], []),
+        new ProcessNode(1, "triage", "fixed", [3], 2,
+            "priority queue", "", [2], []),
+        new ProcessNode(2, "doctor", "fixed", [10], 3,
+            "priority queue", "", [], []),
+        new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
+            "priority queue", "", [], [])
         // {
         //     "id": 0,
         //     "elementType": "reception",
@@ -173,7 +129,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode)
+                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode, action.pAcuity)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -245,16 +201,20 @@ function EDSimulation(state = initialState, action) {
             return state
     }
 }
-const movePatient = (nodes, patient, currNode, newNode) => {
+const movePatient = (nodes, patient, currNode, newNode, patientAcuity) => {
     // moves patient A from startNode to endNode
     console.log("in move patient ");
-    console.log("patient id", patient, "currentnode", currNode, "nextnode",newNode)
+    console.log("before");
+    
+    console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",newNode)
 
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
     if (currNode == -1){
-        clonedNodes[0].patients.push(patient)        
+        console.log("added -------------");
+        console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode", 0)
+        clonedNodes[0].patients.push(new Patient(patient, patientAcuity))        
         return clonedNodes
     }
 
@@ -262,13 +222,12 @@ const movePatient = (nodes, patient, currNode, newNode) => {
     clonedNodes.forEach((node) => {
        console.log(node.id, "vs", currNode);
        if (node.id == currNode){
-           console.log("in here");
-           // Need to change to id when Mit changes it 
-           removedPatient = node.patients.filter((currPatient) => currPatient != patient );
+           console.log("cur patient", patientAcuity, patient);
+           removedPatient = node.patients.filter((currPatient) => currPatient.id != patient );
            node.patients = removedPatient
         }
     });
-    console.log({removedPatient});
+    // console.log({removedPatient});
 
     if (removedPatient){
         // console.log({removedPatient})
@@ -276,7 +235,9 @@ const movePatient = (nodes, patient, currNode, newNode) => {
             const newCurNode = {...node}
 
             if (node.id == newNode){
-                newCurNode.patients.push(patient)
+                console.log("added -------------");
+                console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",node.id)
+                newCurNode.patients.push(new Patient(patient, patientAcuity))
             }
             return newCurNode
 

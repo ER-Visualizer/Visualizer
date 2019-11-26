@@ -31,7 +31,7 @@ class Main extends React.Component {
 
     runHandler = async () =>{
         await this.sleep(2000);
-        console.log("run handler")
+        // console.log("run handler")
         this.setState({run: true})
         this.connect();
     }
@@ -49,8 +49,8 @@ class Main extends React.Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
-        console.log("connect")
-        console.log(this.state.run)
+        // console.log("connect")
+        // console.log(this.state.run)
 
         var ws = new WebSocket("ws://localhost:8765");
         let that = this; // cache the this
@@ -88,7 +88,7 @@ class Main extends React.Component {
                     this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
-                    console.log("stats true")
+                    // console.log("stats true")
                     delete eventData['stats']
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
@@ -148,8 +148,8 @@ class Main extends React.Component {
     updateNodePatients(new_events) {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
-        new_events.forEach((event) => {                  
-            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
+        new_events.forEach((event) => {        
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAquity'])
         })
     }
 
@@ -193,12 +193,12 @@ class Main extends React.Component {
                 )
             }
         )
-        console.log(graphical_data);
+        // console.log(graphical_data);
         return graphical_data;
     };
 
     nodeClick(nodeId) {
-        console.log(nodeId);
+        // console.log(nodeId);
         
         if (this.props.shouldBuildLink){
             this.props.connectNode(parseInt(nodeId))
@@ -206,7 +206,7 @@ class Main extends React.Component {
         else { // dont toggle sidebars when build link mode on
 
             const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-            console.log(shouldHide);
+            // console.log(shouldHide);
             this.setState({
                 selectedNode: nodeId
             })
@@ -315,8 +315,8 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        updatePatientLocation: (patient, currNode, newNode) => {
-            dispatch(updatePatientLocation(patient, currNode, newNode))
+        updatePatientLocation: (patient, currNode, newNode, patientAquity) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode, patientAquity))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

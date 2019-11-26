@@ -55,8 +55,8 @@ export class NodeSidebarContent extends React.Component {
 
     render() {
 
-    	console.log("node queue type")
-    	console.log(this.state.node.queueType)
+    	// console.log("node queue type")
+    	// console.log(this.state.node.queueType)
         return (
             <div className="NodeSidebarContent">                
                 
