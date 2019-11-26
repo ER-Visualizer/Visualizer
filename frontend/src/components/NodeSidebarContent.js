@@ -152,7 +152,8 @@ export class NodeSidebarContent extends React.Component {
                     </select>
                     {this.state.node.priorityType == 'custom' &&
 	                    <div>
-	                    <label>Priority Function</label><br/>
+	                    <label>Priority Function</label><br/><br/>
+                        def __lt__(self, other):<br/><br/>
 	                    <textarea 
 	                        type="text"
 	                        name="priorityFunction"

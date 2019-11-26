@@ -12,6 +12,8 @@ from .connect import WebsocketServer
 from .models.global_time import GlobalTime
 from .models.global_heap import GlobalHeap
 from .models.global_strings import *
+from .models.rules.frequency_rule import FrequencyRule
+from .models.rules.prediction_rule import PredictionRule
 
 # indexed by strings
 canvas = {"elements": []}
@@ -75,7 +77,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": []
+                "children": [2]
             },
             {
                 "id": 3,
@@ -94,11 +96,18 @@ def canvas_parser(canvas_json):
 def create_queues():
     global initial_time, nodes_list
     for node in canvas["elements"]:
+        rules = []
+
+        # create all of the rules here
+        # TODO: delete this and create actual rules from JSON once JSON format is created
+        if(node["id"] == 2):
+            prediction = FrequencyRule("xray", node["id"])
+            rules.append(prediction)
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
-                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"])
-
+                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
+        # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
             nodes_list[-1] = Node(-1, "priority queue",  None, 1, process_name="patient_loader",

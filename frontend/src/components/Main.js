@@ -52,7 +52,7 @@ class Main extends React.Component {
         // console.log("connect")
         // console.log(this.state.run)
 
-        var ws = new WebSocket("ws://localhost:8765");
+        var ws = new WebSocket("ws://localhost:" + process.env.REACT_APP_WEB_SOCKET_PORT);
         let that = this; // cache the this
         var connectInterval;
         // websocket onopen event listener
