@@ -22,6 +22,12 @@ class ObjectRecord():
 
     def get_id(self):
         return self.object_id
+    
+    def get_last_visited_node_id(self):
+        if len(self.visited) == 0:
+            return None
+        else:
+            return self.visited[-1].get_curr_process_id()
 
     def get_curr_process_id(self):
         if(self.curr_node != None):
