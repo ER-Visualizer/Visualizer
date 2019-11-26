@@ -3,6 +3,7 @@ services:
     server:
         build: 
           context: "./backend"
+          dockerfile: Dockerfile
           args:
             - SERVER_PORT=${SERVER_PORT}
         ports:
@@ -19,14 +20,14 @@ services:
     client:
         build:
           context: "./frontend"
-          dockerfile: Dockerfile
+          dockerfile: Dockerfile-prod
         expose:
           - ${REACT_APP_PORT}
         volumes:
           - './frontend:/app'
           - '/app/node_modules'
         ports:
-          - "${REACT_APP_PORT}:3000"
+          - "${REACT_APP_PORT}:80"
         links:
           - server
         environment:
