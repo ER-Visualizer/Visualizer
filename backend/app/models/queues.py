@@ -26,7 +26,7 @@ class Queue():
 
     def put(self, el):
         self.q.append(el)
-        self.contents.append(el.id)
+        self.contents.append(el.get_id())
 
     def get(self):
         return self.q.popleft()

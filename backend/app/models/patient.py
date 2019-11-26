@@ -1,40 +1,42 @@
 from .object_record import ObjectRecord
 from .global_time import  GlobalTime
+from .global_strings import *
 class Patient:
 
-    def __init__(self, patient_id, acuity=None, start_time=None):
-        self.id = patient_id
+    '''properties is a dictionary which contains all of the'''
+    def __init__(self, properties):
+        self.properties = properties
         self.is_available = True
-        self.acuity = acuity
-        self.predicted_processes = {}
-        self.needed_processes = {}
-        self.patient_record = ObjectRecord(self.id, start_time)
+        self.patient_record = ObjectRecord(self.properties[ID], self.properties[START_TIME])
 
     ''' For use in comparison inside heaps. We will need to overwrite this
     with a priority function given to us from canvas'''
 
     def __lt__(self, other):
-        return self.acuity < other.acuity
+        return self.get_acuity() < other.get_acuity()
 
     def get_id(self):
-        return self.id
+        return self.properties[ID]
     
     def get_acuity(self):
-        return self.acuity
+        return self.properties[ACUITY]
 
     def set_acuity(self, acuity):
-        self.acuity = acuity
-
-    def set_needed_processes(self, needed_processes):
-        self.needed_processes = needed_processes
-
-    def set_predicted_processes(self, predicted_processes):
-        self.predicted_processes = predicted_processes
+        self.properties[ACUITY] = acuity
+    
+    def get_start_time(self):
+        return self.properties[START_TIME]
 
     def get_available(self):
         return self.is_available
+    
+    def get_attribute(self, attribute):
+        return self.properties[attribute]
+    
+    def set_attribute(self, attribute, value):
+        self.properties[attribute] = value
 
-#TODO consider whether to move setting properties for the patient_record inside the Node Class.
+    #TODO consider whether to move setting properties for the patient_record inside the Node Class.
     '''patient must be set unavailable right after he entered a new process'''
     def set_unavailable(self, node_id, resource_id, finish_time):
         self.is_available = False
