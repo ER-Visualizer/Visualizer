@@ -25,7 +25,7 @@ class Navbar extends React.Component {
     async sendCanvas(e){
         try {
             // console.log("send canvas");
-            console.log(e)
+            // console.log(e)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
             console.log("send canvas");
@@ -47,8 +47,8 @@ class Navbar extends React.Component {
     }
 
     async updateRunButton(){
-        console.log("updateRunButton")
-        console.log(this.state.runButtonpressed, this.state.button)
+        // console.log("updateRunButton")
+        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }

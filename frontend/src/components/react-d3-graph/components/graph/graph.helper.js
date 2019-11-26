@@ -385,7 +385,7 @@ function initializeGraphState({ data, id, config }, state) {
             nodes: data.nodes.map(n => ({ ...n })),
             links: data.links.map(l => ({ ...l })),
         };
-        console.log("data", graph);
+        // console.log("data", graph);
     }
 
     let newConfig = { ...merge(DEFAULT_CONFIG, config || {}) },

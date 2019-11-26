@@ -41,10 +41,10 @@ export class NodeSidebarContent extends React.Component {
             for (let i = deleteId; i < numNodes; i++) {
                 continue
             }
-            console.log("PROPS:")
-            console.log(this.props)
-            console.log("\nSTATE:")
-            console.log(this.state)
+            // console.log("PROPS:")
+            // console.log(this.props)
+            // console.log("\nSTATE:")
+            // console.log(this.state)
 
         }
         else {

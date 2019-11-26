@@ -55,7 +55,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 1,
                 "queueType": "queue",
                 "priorityFunction": "",
-                "children": [2]
+                "children": [1]
             },
             {
                 "id": 1,
@@ -63,9 +63,9 @@ def canvas_parser(canvas_json):
                 "distribution": "queue",
                 "distributionParameters":[3],
                 "numberOfActors": 2,
-                "queueType": "stack",
+                "queueType": "queue",
                 "priorityFunction": "",
-                "children": [3, 4]
+                "children": [2]
             },
             {
                 "id": 2,
@@ -75,7 +75,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "queue",
                 "priorityFunction": "",
-                "children": []
+                "children": [3]
             },
             {
                 "id": 3,

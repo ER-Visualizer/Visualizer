@@ -12,18 +12,14 @@ const initialState = {
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
     nodeCount: 5, // max ID of any node
     nodes: [
-        new ProcessNode(0, "reception", "receptiondist", [5], 1,
-            "receptionstack", "receptionprior", [2, 5], []),
-        new ProcessNode(1, "triage", "triagedist", [3], 2,
-            "triagestack", "triageprior", [3, 2], []),
-        new ProcessNode(2, "doctor", "doctordist", [10], 3,
-            "doctorqueue", "doctorprior", [5], []),
-        new ProcessNode(3, "x-ray", "xraydist", [1, 1], 4,
-            "xrayqueue", "xrayprior", [], []),
-        new ProcessNode(4, "station", "stationdist", [10], 1,
-            "stationqueue", "stationprior", [2], []),
-        new ProcessNode(5, "doctor", "doctordist", [100, 30], 3,
-            "doctorqueue", "doctorprior", [], [])
+        new ProcessNode(0, "reception", "fixed", [5], 1,
+            "queue", "", [1], []),
+        new ProcessNode(1, "triage", "queue", [3], 2,
+            "queue", "", [2], []),
+        new ProcessNode(2, "doctor", "fixed", [10], 3,
+            "queue", "", [3], []),
+        new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
+            "queue", "", [], [])
     ]
 }
 
@@ -73,7 +69,7 @@ function EDSimulation(state = initialState, action) {
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
-            console.log(temp_node_count - 2);
+            // console.log(temp_node_count - 2);
             
             return Object.assign({}, state, {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
@@ -95,10 +91,10 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state,
                 {nodes: action.newNodeList})
         case CONNECT_NODE:
-            console.log(state.linkBeingBuilt);
+            // console.log(state.linkBeingBuilt);
             
             if (state.linkBeingBuilt.length == 1){ // connect the target node
-                console.log("checking candidate nodes");
+                // console.log("checking candidate nodes");
                 
                 if (state.linkBeingBuilt[0] === action.nodeId) {
                     return state // no self loops allowed       
@@ -109,7 +105,7 @@ function EDSimulation(state = initialState, action) {
                     return state
                 }
                 
-                console.log("creating new link");
+                // console.log("creating new link");
                 return Object.assign({}, state,
                     {
                         nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link
@@ -118,7 +114,7 @@ function EDSimulation(state = initialState, action) {
                 )
             }
             else {
-                console.log("selected link source");
+                // console.log("selected link source");
                 
                 
                 return Object.assign({}, state,  // add the source node
@@ -195,7 +191,7 @@ function addNewNode(nodes, nodeNum){
 
     // modifying clonedNodes doesn't seem to modify original nodes list...
     
-    console.log(clonedNodes);
+    // console.log(clonedNodes);
     
     return clonedNodes
 }
@@ -203,7 +199,7 @@ function addNewNode(nodes, nodeNum){
 
 function updateNodeProperties(nodes, newProps){
     // receives the node to be changed. just replace it inside the array
-    console.log(nodes);
+    // console.log(nodes);
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node

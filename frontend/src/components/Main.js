@@ -22,8 +22,12 @@ class Main extends React.Component {
         this.sidebarLastContent = null;
         this.child = React.createRef();
     }
+    sleep = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-    runHandler = () =>{
+    runHandler = async () =>{
+        await this.sleep(2000);
         console.log("run handler")
         this.setState({run: true})
         this.connect();
