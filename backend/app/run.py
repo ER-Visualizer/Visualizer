@@ -11,6 +11,7 @@ from .models.queues import Queue
 from .connect import WebsocketServer
 from .models.global_time import GlobalTime
 from .models.global_heap import GlobalHeap
+from .models.global_strings import *
 
 # indexed by strings
 canvas = {"elements": []}
@@ -117,8 +118,8 @@ def create_queues():
             FMT = '%Y-%m-%d %H:%M:%S.%f'
             patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
             patient_time = float(patient_time.seconds)/60
-            next_patient = Patient(
-                int(row["patient_id"]), int(row["patient_acuity"]), patient_time)
+            row[START_TIME] = patient_time
+            next_patient = Patient(row)
             # All of the patients first get loaded up into the
             nodes_list[-1].put_patient_in_node(next_patient)
             all_patients[next_patient.get_id()] = next_patient
