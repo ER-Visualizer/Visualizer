@@ -1,5 +1,5 @@
 class NodeAccessInfo():
-
+    #TODO change API from curr to normal(get resource_id, get process_id
     def __init__(self, curr_process_id=None, curr_resource_id=None,
                  start_time=None, end_time=None):
 
