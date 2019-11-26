@@ -145,14 +145,19 @@ export class NodeSidebarContent extends React.Component {
                     <select name="priorityType"
                             value={`${this.state.node.priorityType}`}
                             onChange={this.handleInputChange}>
-                        <option value="acuity">Acuity</option>
-                        <option value="arrival time">Arrival Time</option>
+                        <option value="acuity">Lowest Acuity</option>
+                        <option value="arrival time">Earliest Arrival Time</option>
+                        <option value="custom">Define Your Own</option>
                     </select>
-                    <label>Priority Function</label><br/>
-                    <input 
-                        type="text"
-                        name="priorityFunction"
-                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
+                    {this.state.node.priorityType == 'custom' &&
+	                    <div>
+	                    <label>Priority Function</label><br/>
+	                    <textarea 
+	                        type="text"
+	                        name="priorityFunction"
+	                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></textarea>
+	                     </div>
+                 }
                 </div>
             	}
 

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
 import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode} from '../redux/actions';
+import Slider from './Slider.js'
 
 class Main extends React.Component {
     constructor(props) {
@@ -16,7 +17,9 @@ class Main extends React.Component {
             events: [],
             selectedNode: null,
             ws: null,
-            run: false
+            run: false,
+            rate: 1,
+            duration: 5
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -212,7 +215,12 @@ class Main extends React.Component {
         }
         
     }
-
+    handleSliderRate(e){
+        this.setState({rate: e.target.value})
+    }
+    handleSliderDuration(e){
+        this.setState({duration: e.target.value})
+    }
     linkClick(source, target){
         if (this.props.shouldDeleteLink){
             // react-d3-graph gives strings for these...            
@@ -246,7 +254,7 @@ class Main extends React.Component {
                     pullRight={true}
                     
                 >
-                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)}/>
+                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)} rate={this.state.rate} duration={this.state.duration}/>
                 <Graph
                 directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
@@ -255,7 +263,11 @@ class Main extends React.Component {
                 onClickNode={this.nodeClick.bind(this)}
                 onClickLink={this.linkClick.bind(this)}
                 />
-                </Sidebar> 
+                </Sidebar>
+                <div className="slider">
+                <Slider initNum={this.state.rate} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
+                <Slider initNum={this.state.duration} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
+                </div>
             </div>
         )
     }

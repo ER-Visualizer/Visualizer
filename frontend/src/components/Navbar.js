@@ -25,12 +25,12 @@ class Navbar extends React.Component {
     }
     async sendCanvas(e){
         try {
-            // console.log("send canvas");
-            console.log(e)
+            console.log("send canvas");
+            console.log(this.props.nodes)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
-            console.log("send canvas");
-            // await this.updateRunButton()
+            let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
+            console.log(body)
             let response = await fetch('http://localhost:8000/start', {
                 method: 'POST',
                 headers: {
@@ -38,7 +38,7 @@ class Navbar extends React.Component {
                   'Content-Type': 'application/json',
                 },
                 mode: 'no-cors',
-                body: JSON.stringify(this.props.nodes),
+                body: JSON.stringify(body),
             });
             console.log(response);
             return response;
