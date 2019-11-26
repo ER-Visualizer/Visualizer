@@ -53,6 +53,9 @@ export class NodeSidebarContent extends React.Component {
 
 
     render() {
+
+    	console.log("node queue type")
+    	console.log(this.state.node.queueType)
         return (
             <div className="NodeSidebarContent">                
                 
@@ -136,15 +139,22 @@ export class NodeSidebarContent extends React.Component {
                     </select>
                 </div>
 
+                {this.state.node != null && this.state.node.queueType == 'priority queue' && 
                 <div className="input-container">
                     <label>Priority Type</label><br/>
-                    <select name="priorityFunction"
-                            value={`${this.state.node.priorityFunction}`}
+                    <select name="priorityType"
+                            value={`${this.state.node.priorityType}`}
                             onChange={this.handleInputChange}>
                         <option value="acuity">Acuity</option>
                         <option value="arrival time">Arrival Time</option>
                     </select>
+                    <label>Priority Function</label><br/>
+                    <input 
+                        type="text"
+                        name="priorityFunction"
+                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
                 </div>
+            	}
 
                 {/* <div className="input-container">
                     <label>Priority Function</label><br/>

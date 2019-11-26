@@ -66,7 +66,6 @@ class Heap():
         heapq.heappush(self.q, el)
 
     def get(self):
-
         return heapq.heappop(self.q)
 
     def iter_priority_queue(self):
