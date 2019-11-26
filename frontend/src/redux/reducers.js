@@ -10,79 +10,123 @@ const initialState = {
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
     nodeCount: 4, // max ID of any node
     nodes: [
-        {
-            "id": 0,
-            "elementType": "reception",
-            "distribution": "receptiondist",
-            "distributionParameters": [5],
-            "numberOfActors": 1,
-            "queueType": "stack",
-            "priorityType": "receptionprior",
-            "priorityFunction": "",
-            "children": [2, 10],
-            "patients": [0]
-        },
-        {
-            "id": 1,
-            "elementType": "triage",
-            "distribution": "triagedist",
-            "distributionParameters":[3],
-            "numberOfActors": 2,
-            "queueType": "stack",
-            "priorityType": "triageprior",
-            "priorityFunction": "",
-            "children": [3, 2],
-            "patients": []
-        },
-        {
-            "id": 2,
-            "elementType": "doctor",
-            "distribution": "doctordist",
-            "distributionParameters": [10],
-            "numberOfActors": 3,
-            "queueType": "queue",
-            "priorityType": "doctorprior",
-            "priorityFunction": "",
-            "children": [10],
-            "patients": []
-        },
-        {
-            "id": 10,
-            "elementType": "doctor",
-            "distribution": "doctordist",
-            "distributionParameters": [100, 30],
-            "numberOfActors": 3,
-            "queueType": "queue",
-            "priorityType": "doctorprior",
-            "priorityFunction": "",
-            "children": [],
-            "patients": []
-        },
+            {
+                "id": 0,
+                "elementType": "reception",
+                "distribution": "fixed",
+                "distributionParameters": [5],
+                "numberOfActors": 1,
+                "queueType": "priority queue",
+                "priorityFunction": "",
+                "children": [1],
+                "patients": []
+            },
+            {
+                "id": 1,
+                "elementType": "triage",
+                "distribution": "fixed",
+                "distributionParameters": [3],
+                "numberOfActors": 2,
+                "queueType": "priority queue",
+                "priorityFunction": "",
+                "children": [2, 3],
+                "patients": []
+            },
+            {
+                "id": 2,
+                "elementType": "doctor",
+                "distribution": "fixed",
+                "distributionParameters": [10],
+                "numberOfActors": 3,
+                "queueType": "priority queue",
+                "priorityFunction": "",
+                "children": [],
+                "patients": []
+            },
+            {
+                "id": 3,
+                "elementType": "x-ray",
+                "distribution": "binomial",
+                "distributionParameters": [1, 1],
+                "numberOfActors": 2,
+                "queueType": "priority queue",
+                "priorityFunction": "",
+                "children": [],
+                "patients": []
+            }
+        // {
+        //     "id": 0,
+        //     "elementType": "reception",
+        //     "distribution": "receptiondist",
+        //     "distributionParameters": [5],
+        //     "numberOfActors": 1,
+        //     "queueType": "stack",
+        //     "priorityType": "receptionprior",
+        //     "priorityFunction": "",
+        //     "children": [2, 10],
+        //     "patients": [0]
+        // },
+        // {
+        //     "id": 1,
+        //     "elementType": "triage",
+        //     "distribution": "triagedist",
+        //     "distributionParameters":[3],
+        //     "numberOfActors": 2,
+        //     "queueType": "stack",
+        //     "priorityType": "triageprior",
+        //     "priorityFunction": "",
+        //     "children": [3, 2],
+        //     "patients": []
+        // },
+        // {
+        //     "id": 2,
+        //     "elementType": "doctor",
+        //     "distribution": "doctordist",
+        //     "distributionParameters": [10],
+        //     "numberOfActors": 3,
+        //     "queueType": "queue",
+        //     "priorityType": "doctorprior",
+        //     "priorityFunction": "",
+        //     "children": [10],
+        //     "patients": []
+        // },
+        // {
+        //     "id": 10,
+        //     "elementType": "doctor",
+        //     "distribution": "doctordist",
+        //     "distributionParameters": [100, 30],
+        //     "numberOfActors": 3,
+        //     "queueType": "queue",
+        //     "priorityType": "doctorprior",
+        //     "priorityFunction": "",
+        //     "children": [],
+        //     "patients": []
+        // },
         
-        {
-            "id": 3,
-            "elementType": "x-ray",
-            "distribution": "xraydist",
-            "distributionParameters": [1, 1],
-            "numberOfActors": 4,
-            "queueType": "queue",
-            "priorityType": "xrayprior",
-            "priorityFunction": "",
-            "children": [],
-            "patients": []
-        },
-        {
-            "id": 4,
-            "elementType": "station",
-            "distribution": "stationdist",
-            "distributionParameters": [10],
-            "numberOfActors": 1,
-            "queueType": "queue",
-            "priorityType": "stationprior",
-            "priorityFunction": "",
-            "children": [2],
-            "patients": []
-        }
+        // {
+        //     "id": 3,
+        //     "elementType": "x-ray",
+        //     "distribution": "xraydist",
+        //     "distributionParameters": [1, 1],
+        //     "numberOfActors": 4,
+        //     "queueType": "queue",
+        //     "priorityType": "xrayprior",
+        //     "priorityFunction": "",
+        //     "children": [],
+        //     "patients": []
+        // },
+        // {
+        //     "id": 4,
+        //     "elementType": "station",
+        //     "distribution": "stationdist",
+        //     "distributionParameters": [10],
+        //     "numberOfActors": 1,
+        //     "queueType": "queue",
+        //     "priorityType": "stationprior",
+        //     "priorityFunction": "",
+        //     "children": [2],
+        //     "patients": []
+        // }
 
     ]
 }
