@@ -39,7 +39,7 @@ export class JSONEntrySidebarContent extends Component {
         } 
         
         const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children"];
-        console.log(this.state.valid);
+        // console.log(this.state.valid);
        
         for (let i = 0; i < validatedJSON.length; i++) {
             let node = validatedJSON[i]

@@ -123,7 +123,6 @@ class Node:
     '''
 
     def handle_finished_patient(self, resource_id):
-
         resource = self.resource_dict[resource_id]
         # get the patient out of the subprocess. this
         # automatically sets him to available
@@ -149,21 +148,20 @@ class Node:
     '''
 
     def put_patient_in_node(self, patient):
-
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
-        print("in put patient") 
-        print(patient.id)
         if not self.fill_spot(patient):
-            print("actually putting them in ")
-            # Push Patient inside queue
-            self.queue.put(patient)
+            self.put_inside_queue(patient)
 
-            # put queue in patient record
-            patient_record = patient.get_patient_record()
-            patient_record.put_process_in_queue(self.id)
+    def put_inside_queue(self, patient):
+         # Push Patient inside queue
+        self.queue.put(patient)
+        # TODO Consider whether it's good to move it inside the queue
+        # put queue in patient record
+        patient_record = patient.get_patient_record()
+        patient_record.put_process_in_queue(self.id)
 
-    # when called from a subprocess, this means that the subprocess just
+    # when called from a subprocess, this means that the subprocess justs
     # handled a patient, and needs a new one
     # so fill his spot, and return true if you can
     def fill_spot_for_resource(self, subprocess):
@@ -187,32 +185,11 @@ class Node:
         # deep copy so we don't have a hold of actual memory address.
         # TODO test case: make sure heap isn't changed
         # TODO make sure iterates correctly through heap
-        if(isinstance(self.queue, Heap)):
-
-            # need to make sure we iterate through the copy of the heap
-            heap_list = copy.deepcopy(self.queue.q)
-            # create a mapping of the indeces to the values. original queue
-            # will have an identical mapping.
-            # TODO check if it maps correctly
-            indices_to_patients = {k: v for v, k in enumerate(heap_list)}
-            iterator = Heap(heap_list)
-
-        else:
-            iterator = self.queue
-
+        iterator = self.queue
         for patient in iterator:
             if patient.get_available():
                 if subprocess.pass_rule(patient):
-                    # remove from queue
-                    if(isinstance(self.queue, Heap)):
-                        # get the index of the patient to remove
-                        index_to_remove = indices_to_patients[patient]
-                        # return the original patient, not the one from the copy of the queue
-                        patient = self.queue.remove_by_index(index_to_remove)
-                    else:
-                        # extract from the queue. no need to store him, as we
-                        # already have a hold of him
-                        self.queue.remove(patient)
+                    self.queue.remove(patient)
                     
                     # once removed from queue, update patient record
                     patient_record = patient.get_patient_record()
@@ -245,7 +222,6 @@ class Node:
         # TODO: consider random order
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
-            print("is availble ")
             # iterate through all resource(possibly random order) and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
@@ -263,12 +239,7 @@ class Node:
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's available
         finish_time, duration = self.generate_finish_time()
-        resource.insert_patient(patient, finish_time, duration)
-        
-        # add curr node to patient record
-        patient_record = patient.get_patient_record()
-        patient_record.set_curr_node(self.id, resource.get_id(), GlobalTime.time, finish_time)
-
+        resource.insert_patient(patient, self.id, finish_time, duration)
         # now add the event to the heap
         self.add_to_heap(resource.get_id())
 
@@ -279,5 +250,4 @@ class Node:
         resource = self.resource_dict[resource_id]
         event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
         # heap = run.get_heap()
-
         heapq.heappush(GlobalHeap().heap, event)
