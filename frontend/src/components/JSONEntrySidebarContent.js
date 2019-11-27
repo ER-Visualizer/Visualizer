@@ -37,7 +37,9 @@ export class JSONEntrySidebarContent extends Component {
             this.setState({ valid: false, invalidJSONError: "Enter at least 1 node" })
             return
         } 
-        
+        for(let i = 0; i < validatedJSON.length; i++){
+            validatedJSON[i].patients = []
+        }
         const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children"];
         // console.log(this.state.valid);
        
