@@ -46,6 +46,7 @@ input = list of nodes [{id: ..., next: [...]}, ... ] as json
 """
 counter = 0
 
+
 def canvas_parser(canvas_json):
     global canvas
     canvas = {
@@ -81,20 +82,20 @@ def canvas_parser(canvas_json):
                 "queueType": "priority queue",
                 "priorityFunction": "",
                 "children": [3],
-                "predictedChildren":[1,0],
+                "predictedChildren":[1, 0],
                 "nodeRules":[
                     {
-                        "ruleType":"prediction",
-                        "columnName":"pxray"
+                        "ruleType": "prediction",
+                        "columnName": "pxray"
                     },
                     {
                         "ruleType": "frequency",
                         "columnName": "xray"
                     }
                 ],
-                "resourceRules":[
+                "resourceRules": [
                     {
-                        "ruleType":"first_come_first_serve"
+                        "ruleType": "firstComeFirstServe"
                     }
                 ]
 
@@ -113,50 +114,68 @@ def canvas_parser(canvas_json):
     }
 
 
+'''Creates a list of node rules for a node'''
+def create_node_rules(node_rules, node_id):
+    rules = []
+
+    for node_rule in node_rules:
+        if node_rule["ruleType"] == "frequency":
+            frequency = FrequencyRule(node_rule["columnName"], node_id)
+            rules.append(frequency)
+
+        elif node_rule["ruleType"] == "prediction":
+            parent_ids = []
+            for other_node in canvas["elements"]:
+                if "predicted_children" in other_node and node_id in other_node["predicted_children"]:
+                    parent_ids.append(other_node["id"])
+
+            prediction = PredictionRule(
+                node_rule["columnName"], node_id, parent_ids)
+            rules.append(prediction)
+
+    return rules
+
+
 def create_queues():
     global initial_time, nodes_list
     for node in canvas["elements"]:
-        rules = []
+        node_rules = []
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
-        
-        frequency = FrequencyRule(node["elementType"], node["id"])
-        rules.append(frequency)
 
-        parent_ids = []
-
-        for other_node in canvas["elements"]:
-            if "predicted_children" in other_node and node["id"] in other_node["predicted_children"]:
-                parent_ids.append(other_node["id"])
-
-        prediction = PredictionRule(node["elementType"], node["elementType"], parent_ids)
-        rules.append(prediction)
+        if "nodeRules" in node:
+            node_rules = create_node_rules(node["nodeRules"], node["id"])
 
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
-                                        process_name=node["elementType"], distribution_name=node["distribution"],
-                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
-        
-        '''Example of working with FrequencyRule and FirstComeFirstServeRule
-        if(node["id"] == 2):
-            # get list of all resources for the node
+                                      process_name=node["elementType"], distribution_name=node["distribution"],
+                                      distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules)
+
+        # get list of all resources for the node
+        if "resourceRules" in node:
             list_of_resources = nodes_list[node["id"]].get_list_of_resources()
+
             # generate a list of new rules for each resource
             for resource in list_of_resources:
-                new_rule = FirstComeFirstServeRule(node["id"],resource.get_id())
-                resource.set_resource_rules([new_rule])
-            frequency = FrequencyRule("xray", node["id"])
-            rules.append(frequency)
-            nodes_list[node["id"]].set_node_rules(rules)'''
+                resource_rules = []
+                
+                for resource_rule in node["resourceRules"]:
+                    if resource_rule["ruleType"] == "firstComeFirstServe":
+
+                        resource_rules.append(FirstComeFirstServeRule(
+                            node["id"], resource.get_id()))
+                            
+                resource.set_resource_rules(resource_rules)
+
         # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
             nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
-                                          distribution_name="fixed", distribution_parameters=[0],
-                                          output_process_ids=[node["id"]])
+                                  distribution_name="fixed", distribution_parameters=[0],
+                                  output_process_ids=[node["id"]])
 
-            # TODO: find a way to get patients.csv from frontend
+        # TODO: find a way to get patients.csv from frontend
     print("open csv")
     # read csv (for now, all patients added to reception queue at beginning)
     with open("/app/test.csv") as csvfile:
@@ -167,7 +186,8 @@ def create_queues():
             if initial_time is None:
                 initial_time = row["time"]
             FMT = '%Y-%m-%d %H:%M:%S.%f'
-            patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
+            patient_time = datetime.strptime(
+                row["time"], FMT) - datetime.strptime(initial_time, FMT)
             patient_time = float(patient_time.seconds)/60
             row[START_TIME] = patient_time
             next_patient = Patient(row)
@@ -176,13 +196,14 @@ def create_queues():
             all_patients[next_patient.get_id()] = next_patient
 
 
-
 # """
 # Create event heaps
 # """
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
+
+
 def send_e():
     global event_changes
     if len(event_changes) == 0:
@@ -197,7 +218,8 @@ def send_e():
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         for next_q in event_changes[0].get_moved_to():
-            curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
+            curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(
+                event_changes[0].get_node_resource_id())
             event_dict = {
                 "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                 "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
@@ -225,7 +247,6 @@ def process_heap():
     if not isinstance(completed_event, Event):
         raise Exception("Non Event object in event heap")
 
-
     head_node_id = completed_event.get_node_id()
     head_resource_id = completed_event.get_node_resource_id()
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
@@ -243,7 +264,8 @@ def process_heap():
     # record process time
     process_time = finish_time - join_queue_time
     process_name = nodes_list[completed_event.get_node_id()].get_process_name()
-    statistics.add_process_time(patient_record.get_id(), process_name, process_time)
+    statistics.add_process_time(
+        patient_record.get_id(), process_name, process_time)
     # record wait time
     wait_time = process_time - process_duration
     statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
@@ -256,10 +278,12 @@ def process_heap():
         # Length of doctor/patient interaction per patient per doctor
         # average or record all?
         # can remove in the future and just use process_times
-        statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
+        statistics.add_doc_patient_time(
+            doctor_id, patient_record.get_id(), process_time)
 
     # get all queues patient was added to
-    next_nodes = list(patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
+    # create new list to prevent mutating it
+    next_nodes = list(patient_record.get_queues_since_last_finished_process())
     # get resource patient is in (if any)
     if patient_record.get_curr_process_id() is not None:
         next_nodes.append(patient_record.get_curr_process_id())
@@ -303,7 +327,8 @@ def main():
     create_queues()
     counter = 0
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
+    server = WebsocketServer("localhost", 8765, send_e,
+                             process_heap, report_statistics, packet_rate)
     server.start()
 
     print(report_statistics())
