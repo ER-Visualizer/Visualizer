@@ -2,6 +2,7 @@ import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
 import { editNodeProperties, deleteNode } from '../redux/actions'
+import Queue from './Queue';
 
 export class NodeSidebarContent extends React.Component {
     constructor(props) {
@@ -40,10 +41,10 @@ export class NodeSidebarContent extends React.Component {
             for (let i = deleteId; i < numNodes; i++) {
                 continue
             }
-            console.log("PROPS:")
-            console.log(this.props)
-            console.log("\nSTATE:")
-            console.log(this.state)
+            // console.log("PROPS:")
+            // console.log(this.props)
+            // console.log("\nSTATE:")
+            // console.log(this.state)
 
         }
         else {
@@ -54,8 +55,8 @@ export class NodeSidebarContent extends React.Component {
 
     render() {
 
-    	console.log("node queue type")
-    	console.log(this.state.node.queueType)
+    	// console.log("node queue type")
+    	// console.log(this.state.node.queueType)
         return (
             <div className="NodeSidebarContent">                
                 
@@ -161,6 +162,11 @@ export class NodeSidebarContent extends React.Component {
                  }
                 </div>
             	}
+
+                <div className="input-container">
+                    <label>Current Queue</label><br/>
+                    <Queue patients={this.state.node.patients} />
+                </div>
 
                 {/* <div className="input-container">
                     <label>Priority Function</label><br/>

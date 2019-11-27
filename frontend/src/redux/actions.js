@@ -42,8 +42,10 @@ export const addToLogs = (message) => {
     return {type: ADD_TO_LOGS, message: message}
 }
 
-export const updatePatientLocation = (patient, currNode, newNode) => {
-    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient}
+export const updatePatientLocation = (patient, currNode, newNode, patientAcuity) => {
+    console.log({patientAcuity});
+    
+    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient, pAcuity: patientAcuity}
 }
 export function addNode(){
     return {type: ADD_NODE}
