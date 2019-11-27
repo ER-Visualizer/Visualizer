@@ -6,4 +6,9 @@ echo "Transfering .env variables"
 ./transfer_env_vars_frontend.sh .env
 ./transfer_env_vars_backend.sh .env
 echo "Starting docker-compose"
-docker-compose -f docker-compose-prod.yml up --build
+if [ "$1" = "build" ]
+then
+	docker-compose -f docker-compose-prod.yml up --build --force-recreate
+else
+	docker-compose -f docker-compose-prod.yml up
+fi

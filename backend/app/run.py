@@ -221,9 +221,16 @@ def process_heap():
     # get resource patient is in (if any)
     if patient_record.get_curr_process_id() is not None:
         next_nodes.append(patient_record.get_curr_process_id())
-    # send patient to next queues/resources
-    completed_event.set_moved_to(next_nodes)
-    event_changes.append(completed_event)
+    # if did not go straight to resource without waiting
+    if wait_time != 0:
+        start_process_time = completed_event.get_event_time() - process_duration
+        leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
+        leave_queue.set_in_queue(False)
+        # send patient to next queues/resources
+        completed_event.set_moved_to(next_nodes)
+        leave_queue.set_moved_to([completed_event.get_node_id()])
+        event_changes.append(leave_queue)
+        event_changes.append(completed_event)
 
     global counter, all_patients
     if counter < len(all_patients) - 1:
