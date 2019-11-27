@@ -14,9 +14,16 @@ from .models.global_heap import GlobalHeap
 from .models.global_strings import *
 from .models.rules.frequency_rule import FrequencyRule
 from .models.rules.prediction_rule import PredictionRule
+from flask import Flask
 
-# indexed by strings
-canvas = {"elements": []}
+app = Flask(__name__)
+
+import logging
+
+# indexed by strings, args from post request
+canvas = {}
+duration = 0
+rate = 0
 
 # indexed by integers
 nodes_list = {}
@@ -47,63 +54,65 @@ counter = 0
 
 def canvas_parser(canvas_json):
     global canvas
-    canvas = {
-        "elements": [
-            {
-                "id": 0,
-                "elementType": "reception",
-                "distribution": "fixed",
-                "distributionParameters": [5],
-                "numberOfActors": 1,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [1,2,3]
-            },
-            {
-                "id": 1,
-                "elementType": "triage",
-                "distribution": "fixed",
-                "distributionParameters": [3],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [3]
-            },
-            {
-                "id": 2,
-                "elementType": "doctor",
-                "distribution": "fixed",
-                "distributionParameters": [10],
-                "numberOfActors": 3,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [2]
-            },
-            {
-                "id": 3,
-                "elementType": "x-ray",
-                "distribution": "binomial",
-                "distributionParameters": [1, 1],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": []
-            }
-        ]
-    }
+    canvas = canvas_json
+    # canvas = {
+    #     "elements": [
+    #         {
+    #             "id": 0,
+    #             "elementType": "reception",
+    #             "distribution": "fixed",
+    #             "distributionParameters": [5],
+    #             "numberOfActors": 1,
+    #             "queueType": "priority queue",
+    #             "priorityFunction": "",
+    #             "children": [1,2,3]
+    #         },
+    #         {
+    #             "id": 1,
+    #             "elementType": "triage",
+    #             "distribution": "fixed",
+    #             "distributionParameters": [3],
+    #             "numberOfActors": 2,
+    #             "queueType": "priority queue",
+    #             "priorityFunction": "",
+    #             "children": [3]
+    #         },
+    #         {
+    #             "id": 2,
+    #             "elementType": "doctor",
+    #             "distribution": "fixed",
+    #             "distributionParameters": [10],
+    #             "numberOfActors": 3,
+    #             "queueType": "priority queue",
+    #             "priorityFunction": "",
+    #             "children": [2]
+    #         },
+    #         {
+    #             "id": 3,
+    #             "elementType": "x-ray",
+    #             "distribution": "binomial",
+    #             "distributionParameters": [1, 1],
+    #             "numberOfActors": 2,
+    #             "queueType": "priority queue",
+    #             "priorityFunction": "",
+    #             "children": []
+    #         }
+    #     ]
+    # }
 
 
 def create_queues():
     global initial_time, nodes_list
-    for node in canvas["elements"]:
+    for node in canvas:
+        app.logger.info(f"cur node {node}")
         rules = []
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
         if(node["id"] == 2):
             prediction = FrequencyRule("xray", node["id"])
-            rules.append(prediction)
-        # create node
+            rules.append(prediction)   
+        # create node 
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
                                         distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
@@ -115,13 +124,13 @@ def create_queues():
                                           output_process_ids=[node["id"]])
 
             # TODO: find a way to get patients.csv from frontend
-    print("open csv")
+    app.logger.info("open csv")
     # read csv (for now, all patients added to reception queue at beginning)
     with open("/app/test.csv") as csvfile:
         csvfile.seek(0)
         dict_reader = csv.DictReader(csvfile, delimiter=',')
         for row in dict_reader:
-            print(row)
+            app.logger.info(row)
             if initial_time is None:
                 initial_time = row["time"]
             FMT = '%Y-%m-%d %H:%M:%S.%f'
@@ -259,19 +268,24 @@ def get_curr_time():
     return GlobalTime.time
 
 
-def main():
+def main(args=()):
+    app.logger.info("starting simulation in main")
     GlobalTime.time = 0
     GlobalHeap.heap = []
     global initial_time, nodes_list, event_changes, statistics, packet_start, counter, event_heap
     event_heap = GlobalHeap.heap
     initial_time = None
-    event_changes = []
-    nodes_list = {}
-    statistics = Statistic()
+    event_changes = [] 
+    nodes_list = {}  
+    statistics = Statistic()  
     packet_start = -1
+    # read args from post request  
+    global canvas, duration, rate 
+    canvas, duration, rate = args
+    app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
 
     # this will read canvas json
-    canvas_parser({})
+    canvas_parser(canvas)
 
     # create_heap(get_heap())
 
@@ -282,7 +296,7 @@ def main():
     server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
     server.start()
 
-    print(report_statistics())
+    app.logger.info(report_statistics())
 
 
 if __name__ == "__main__":

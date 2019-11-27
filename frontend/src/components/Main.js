@@ -30,7 +30,7 @@ class Main extends React.Component {
     }
 
     runHandler = async () =>{
-        await this.sleep(2000);
+        await this.sleep(5000);
         // console.log("run handler")
         this.setState({run: true})
         this.connect();
