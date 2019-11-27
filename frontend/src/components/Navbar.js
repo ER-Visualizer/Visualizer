@@ -26,7 +26,7 @@ class Navbar extends React.Component {
     async sendCanvas(e){
         try {
             console.log("send canvas");
-            console.log(this.props.nodes)
+            // console.log(e)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
             let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
@@ -40,7 +40,7 @@ class Navbar extends React.Component {
                 mode: 'no-cors',
                 body: JSON.stringify(body),
             });
-            console.log(response);
+            // console.log(response);
             return response;
         } catch (error) {
             console.error(error);
@@ -48,8 +48,8 @@ class Navbar extends React.Component {
     }
 
     async updateRunButton(){
-        console.log("updateRunButton")
-        console.log(this.state.runButtonpressed, this.state.button)
+        // console.log("updateRunButton")
+        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }

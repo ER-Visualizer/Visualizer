@@ -57,7 +57,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 1,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [1]
+                "children": [1,2,3]
             },
             {
                 "id": 1,
@@ -67,7 +67,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 2,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [3]
             },
             {
                 "id": 2,
@@ -110,7 +110,7 @@ def create_queues():
         # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "priority queue",  None, 1, process_name="patient_loader",
                                           distribution_name="fixed", distribution_parameters=[0],
                                           output_process_ids=[node["id"]])
 
@@ -154,21 +154,39 @@ def send_e():
         packet_start = packet_start + packet_duration
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        for next_q in event_changes[0].get_moved_to():
+        if len(event_changes[0].get_moved_to()) == 0:
             curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
+                # if cur node and next node are same and inqueue is true don't set,
+                # log it as an err 
             event_dict = {
                 "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
-                "patientidendy": all_patients[event_changes[0].get_patient_id()].get_id(),
-                "patientId": event_changes[0].get_patient_id(),
+                "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
                 "curNodeId": event_changes[0].get_node_id(),
-                "movedTo": nodes_list[next_q].get_process_name(),
-                "nextNodeId": nodes_list[next_q].get_id(),
+                "nextNodeId": "end",
+                "movedTo": "None",
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
-                "timeStamp": event_changes[0].get_event_time()
+                "timeStamp": event_changes[0].get_event_time(),
+                "inQueue": False
             }
             new_changes.append(event_dict)
+        else:
+            for next_q in event_changes[0].get_moved_to():
+                curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
+                # if cur node and next node are same and inqueue is true don't set,
+                # log it as an err 
+                event_dict = {
+                    "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
+                    "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
+                    "curNodeId": event_changes[0].get_node_id(),
+                    "nextNodeId": nodes_list[next_q].get_id(),
+                    "movedTo": nodes_list[next_q].get_process_name(),
+                    "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
+                    "timeStamp": event_changes[0].get_event_time(),
+                    "inQueue": False
+                }
+                new_changes.append(event_dict)
         event_changes.pop(0)
-
+# t
     return json.dumps({"Events": new_changes})
 
 
