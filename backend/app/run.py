@@ -57,7 +57,8 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 1,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [1]
+                "children": [1],
+                "predicted_children": [2]
             },
             {
                 "id": 1,
@@ -67,7 +68,8 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 2,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [2, 3],
+                "predicted_children": [2, 3]
             },
             {
                 "id": 2,
@@ -77,7 +79,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2]
+                "children": [3]
             },
             {
                 "id": 3,
@@ -107,7 +109,7 @@ def create_queues():
         parent_ids = []
 
         for other_node in canvas["elements"]:
-            if node["id"] in other_node["children"]:
+            if "predicted_children" in other_node and node["id"] in other_node["predicted_children"]:
                 parent_ids.append(other_node["id"])
 
         prediction = PredictionRule(node["elementType"], node["elementType"], parent_ids)
