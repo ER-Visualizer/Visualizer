@@ -239,6 +239,9 @@ const movePatient = (nodes, patient, currNode, newNode, patientAcuity) => {
                 console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",node.id)
                 newCurNode.patients.push(new Patient(patient, patientAcuity))
             }
+            if (newNode === "end" && patient == node.id){
+                newCurNode.patients = node.patients.filter((currPatient) => currPatient.id != patient );
+            }
             return newCurNode
 
         });

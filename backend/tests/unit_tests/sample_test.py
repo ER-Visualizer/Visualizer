@@ -8,6 +8,7 @@ import logging
 
 def test_ok():
     app.logger.info("ok")
+    return 0
 
 
 def test_work():
