@@ -162,7 +162,10 @@ export class NodeSidebarContent extends React.Component {
                  }
                 </div>
             	}
-
+                <div className="input-container-resource">
+                    <label>Currently being proccessed by actor</label><br/>
+                    <Queue patients={this.state.node.patients} />
+                </div> 
                 <div className="input-container">
                     <label>Current Queue</label><br/>
                     <Queue patients={this.state.node.patients} />
