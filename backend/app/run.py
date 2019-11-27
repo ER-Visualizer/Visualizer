@@ -69,15 +69,15 @@ def create_queues():
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
-                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
+                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
+                                        priority_type=node["priorityType"])
         # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "priority queue",  None, 1, process_name="patient_loader",
+            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
                                           distribution_name="fixed", distribution_parameters=[0],
-                                          output_process_ids=[node["id"]])
+                                          output_process_ids=[node["id"]], priority_type="")
 
-            # TODO: find a way to get patients.csv from frontend
     app.logger.info("open csv")
     # read csv (for now, all patients added to reception queue at beginning)
     with open("/app/test.csv") as csvfile:

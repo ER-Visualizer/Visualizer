@@ -5,6 +5,7 @@ chmod +x transfer_env_vars_backend.sh
 echo "Transfering .env variables"
 ./transfer_env_vars_frontend.sh .env
 ./transfer_env_vars_backend.sh .env
+docker-compose -f docker-compose-prod.yml down
 echo "Starting docker-compose"
 if [ "$1" = "build" ]
 then

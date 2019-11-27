@@ -22,16 +22,20 @@ class Node:
     '''rules is a list of Rule Objects'''
     def __init__(self, id, queue_type, priority_function, num_actors,
                  process_name=None, distribution_name=None,
-                 distribution_parameters=None, output_process_ids=None,rules=[]):
+                 distribution_parameters=None, output_process_ids=None, rules=[], priority_type=""):
 
         self.id = id
         # create the queue type, prior func and the queue itself
         self.queue_type = queue_type
 
-        if(priority_function == ""):
+        if priority_function == "":
             self.priority_function = None
         else:
             self.priority_function = priority_function
+        if priority_type == "":
+            self.priority_type = None
+        else:
+            self.priority_type = priority_type
         self.queue = self._set_queue()
 
         # create num actors and resource dict based on num actors
@@ -44,7 +48,7 @@ class Node:
         self.output_process_ids = output_process_ids
 
         Node.node_dict[self.id] = self
-        self.rules = rules
+        self.rules = rules[:]
 
     def set_id(self, id):
         self.id = id
@@ -94,6 +98,9 @@ class Node:
             return self.resource_dict[resource_id]
         return None
 
+    def get_priority_type(self):
+        return self.priority_type
+
     def _set_queue(self):
         # TODO Deal with Priority Queues
         # Note. All of these are not thread-safe, so can't use threads on them
@@ -102,7 +109,7 @@ class Node:
         elif self.queue_type == QUEUE:
             return Queue()
         elif self.queue_type == PRIORITY_QUEUE:
-            return Heap()
+            return Heap(self.get_priority_type(), self.get_priority_function())
         else:
             raise Exception("This type of queue is not implemented yet")
 

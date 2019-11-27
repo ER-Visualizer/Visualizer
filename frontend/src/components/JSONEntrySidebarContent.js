@@ -10,16 +10,26 @@ export class JSONEntrySidebarContent extends Component {
         this.handleReset = this.handleReset.bind(this)
         this.handleClear = this.handleClear.bind(this)
         this.handleDownload = this.handleDownload.bind(this)
+        this.cloneNodes = this.cloneNodes.bind(this)
     }
 
     componentDidMount() {
-        if (this.state.layoutJSON !== this.props.nodes) {
+
+        if (this.state.layoutJSON !== this.cloneNodes()) {
             this.handleReset()
         }
     }
-
+    cloneNodes(){
+        let clone = JSON.stringify(this.props.nodes, null, 1)
+        clone = JSON.parse(clone)
+        for(let i = 0; i < clone.length; i ++){
+            delete clone[i].patients
+        }
+        return clone
+    }
     handleReset() {
-        this.setState({ layoutJSON: JSON.stringify(this.props.nodes, null, 1), valid: true })
+        
+        this.setState({ layoutJSON: JSON.stringify(this.cloneNodes(), null, 1), valid: true })
     }
 
 
@@ -36,7 +46,25 @@ export class JSONEntrySidebarContent extends Component {
         if (!validatedJSON.length) {
             this.setState({ valid: false, invalidJSONError: "Enter at least 1 node" })
             return
-        } 
+        }
+        for(let j = 0; j < validatedJSON.length; j++){
+            if (validatedJSON[j].queueType == "priority queue" && validatedJSON[j].priorityType == ""){
+                this.setState({ valid: false, invalidJSONError: "Process with priority queue does not have a priorityType!" })
+                return 
+            }
+            else if (validatedJSON[j].queueType == "priority queue" && validatedJSON[j].priorityType == "custom" && (validatedJSON[j].priorityFunction).trim() == ""){
+                this.setState({ valid: false, invalidJSONError: "Process with custom priority queue's priority function is empty!" })
+                return 
+            }
+            else if (validatedJSON[j].queueType == "priority queue" && validatedJSON[j].priorityType == "custom" && (validatedJSON[j].priorityFunction).indexOf("_p_value") == -1){
+                this.setState({ valid: false, invalidJSONError: "_p_value isn't set in priority function!" })
+                return 
+            }
+            else if (validatedJSON[j].queueType == "priority queue" && validatedJSON[j].priorityType == "custom" && (validatedJSON[j].priorityFunction).indexOf("return ") != -1){
+                this.setState({ valid: false, invalidJSONError: "Do not return anything in a priority function!" })
+                return 
+            }
+        }
         for(let i = 0; i < validatedJSON.length; i++){
             validatedJSON[i].patients = []
         }
