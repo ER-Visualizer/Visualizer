@@ -202,12 +202,8 @@ class Node:
             # put queue in patient record
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
-<<<<<<< HEAD
             self.add_patient_join_queue_event(patient, prev_node_id)
-            print("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
-=======
             app.logger.info("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
->>>>>>> d934f010a2ba8cbcb9b21a7ae47ff6d902641f34
         else:
             app.logger.info("Attempted to Insert patient in same queue twice")
 

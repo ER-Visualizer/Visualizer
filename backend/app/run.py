@@ -62,7 +62,7 @@ def create_queues():
     global initial_time, nodes_list
     for node in canvas:
         app.logger.info(f"cur node {node}")
-
+        rules = []
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
 
@@ -255,14 +255,14 @@ def main(args=()):
     statistics = Statistic()
 
     packet_start = -1
-    # read args from post request  
+    # read args from post request  s
     global canvas, duration, rate 
     canvas, duration, rate = args
     app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
     global packet_duration, packet_rate
     packet_duration = int(duration) * 60
     packet_rate = int(rate)
-    
+
     # this will read canvas json
     canvas_parser(canvas)
 
