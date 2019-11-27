@@ -58,7 +58,8 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 1,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [1]
+                "children": [1],
+                "predicted_children": [2]
             },
             {
                 "id": 1,
@@ -68,7 +69,8 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 2,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2, 3]
+                "children": [2, 3],
+                "predicted_children": [2, 3]
             },
             {
                 "id": 2,
@@ -78,7 +80,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2],
+                "children": [3],
                 "predictedChildren":[1,0],
                 "nodeRules":[
                     {
@@ -118,7 +120,19 @@ def create_queues():
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
-    
+        
+        frequency = FrequencyRule(node["elementType"], node["id"])
+        rules.append(frequency)
+
+        parent_ids = []
+
+        for other_node in canvas["elements"]:
+            if "predicted_children" in other_node and node["id"] in other_node["predicted_children"]:
+                parent_ids.append(other_node["id"])
+
+        prediction = PredictionRule(node["elementType"], node["elementType"], parent_ids)
+        rules.append(prediction)
+
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
