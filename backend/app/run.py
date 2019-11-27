@@ -100,9 +100,19 @@ def create_queues():
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
-        if(node["id"] == 2):
-            prediction = FrequencyRule("xray", node["id"])
-            rules.append(prediction)
+        
+        frequency = FrequencyRule(node["elementType"], node["id"])
+        rules.append(frequency)
+
+        parent_ids = []
+
+        for other_node in canvas["elements"]:
+            if node["id"] in other_node["children"]:
+                parent_ids.append(other_node["id"])
+
+        prediction = PredictionRule(node["elementType"], node["elementType"], parent_ids)
+        rules.append(prediction)
+
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
