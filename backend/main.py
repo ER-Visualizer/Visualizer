@@ -30,6 +30,7 @@ def home():
 def start_simulation():
     app.logger.info("starting simulation")
     req_data = request.get_json()
+    print(req_data)
     app.logger.info(f"req data {req_data}")
     # time.sleep(1)
     run.main()

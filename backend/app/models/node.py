@@ -5,6 +5,7 @@ from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
+from .global_events import GlobalEvents
 import copy
 import heapq
 import numpy as np
@@ -84,7 +85,9 @@ class Node:
         return self.output_process_ids
 
     def get_resource(self, resource_id):
-        return self.resource_dict[resource_id]
+        if resource_id in self.resource_dict:
+            return self.resource_dict[resource_id]
+        return None
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
@@ -143,6 +146,7 @@ class Node:
         resource = self.resource_dict[resource_id]
         # get the patient out of the subprocess. this
         # automatically sets him to available
+        old_id = ((resource.get_curr_patient()).get_patient_record()).get_curr_process_id()
         patient = resource.clear_patient()
         print("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id()))
@@ -163,18 +167,17 @@ class Node:
         # to be put in (outgoing processes from
         # parent_process)
         for process_id in self.output_process_ids:
-            Node.node_dict[process_id].put_patient_in_node(patient)
+            Node.node_dict[process_id].put_patient_in_node(patient, old_id)
 
         # call fill_spot on this subprocess because now we have an empty spot there and want to fill it with another
         # patient
         self.fill_spot_for_resource(resource)
-
     '''
     Call when you're inserting into a node. This will check if patient is allowed into the node, and if it is,
     then will try to find an available spot, and if can't find one, will place him in a queueu
     '''
 
-    def put_patient_in_node(self, patient):
+    def put_patient_in_node(self, patient, prev_node_id=None):
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
 
@@ -183,9 +186,9 @@ class Node:
         # if you can't, insert him into a queue
         if self.pass_node_rules(patient):
             if not self.fill_spot(patient):
-                self.put_inside_queue(patient)
+                self.put_inside_queue(patient, prev_node_id)
 
-    def put_inside_queue(self, patient):
+    def put_inside_queue(self, patient, prev_node_id=None):
         # Push Patient inside queue
         # only add if patient is not already in the queue
         if self.id not in patient.get_patient_record().get_all_queues():
@@ -194,9 +197,11 @@ class Node:
             # put queue in patient record
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
+            self.add_patient_join_queue_event(patient, prev_node_id)
             print("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
         else:
             print("Attempted to Insert patient in same queue twice")
+
 
     # when called from a subprocess, this means that the subprocess justs
     # handled a patient, and needs a new one
@@ -232,13 +237,35 @@ class Node:
                         # once removed from queue, update patient record
                         patient_record = patient.get_patient_record()
                         patient_record.remove_process_from_queue(self.id)
-
+                        # record event of patient joining resource
+                        self.add_patient_join_resource_event(patient, subprocess)
                         self.insert_patient_to_resource_and_heap(
                             patient, subprocess)
                         return True
 
         return False
 
+    def add_patient_join_resource_event(self, patient, resource):
+        leave_queue = Event(self.get_id(), resource.get_id(),
+                            patient.get_id(), GlobalTime.time)
+        leave_queue.set_in_queue(False)
+        leave_queue.set_moved_to([self.get_id()])
+        GlobalEvents.event_changes.append(leave_queue)
+
+    def add_patient_join_queue_event(self, patient, old_id):
+        if old_id is None:
+            return
+        join_queue = Event(old_id, 'N/A', patient.get_id(), GlobalTime.time)
+        patient_record = patient.patient_record
+        # get all queues patient was added to
+        next_nodes = list(
+            patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
+        # get resource patient is in (if any)
+        if patient_record.get_curr_process_id() is not None:
+            next_nodes.append(patient_record.get_curr_process_id())
+        join_queue.set_moved_to(next_nodes)
+        if patient_record.get_curr_process_id is not None:
+            GlobalEvents.event_changes.append(join_queue)
     '''
     Try to insert a patient into an available resource, if there exists one.
     Return true if patient inserted successfully.
@@ -278,7 +305,8 @@ class Node:
                             # once removed from queue, update patient record
                             patient_record = patient.get_patient_record()
                             patient_record.remove_process_from_queue(self.id)
-
+                        # record event of patient joining resource
+                        self.add_patient_join_resource_event(patient, resource)
                         self.insert_patient_to_resource_and_heap(
                             patient, resource)
                         return True

@@ -11,6 +11,7 @@ from .models.queues import Queue
 from .connect import WebsocketServer
 from .models.global_time import GlobalTime
 from .models.global_heap import GlobalHeap
+from .models.global_events import GlobalEvents
 from .models.global_strings import *
 from .models.rules.frequency_rule import FrequencyRule
 from .models.rules.prediction_rule import PredictionRule
@@ -22,7 +23,7 @@ canvas = {"elements": []}
 nodes_list = {}
 initial_time = None
 event_heap = GlobalHeap.heap
-event_changes = []
+event_changes = GlobalEvents.event_changes
 
 packet_start = -1
 
@@ -57,7 +58,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 1,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [1,2,3]
+                "children": [1]
             },
             {
                 "id": 1,
@@ -67,7 +68,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 2,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [3]
+                "children": [2]
             },
             {
                 "id": 2,
@@ -77,7 +78,7 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2]
+                "children": [3]
             },
             {
                 "id": 3,
@@ -100,10 +101,10 @@ def create_queues():
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
-        if(node["id"] == 2):
-            prediction = FrequencyRule("xray", node["id"])
+        if node["id"] == 3:
+            prediction = PredictionRule("xray", node["id"], [1])
             rules.append(prediction)
-        # create node
+        # create nodes
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
                                         distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
@@ -164,7 +165,7 @@ def send_e():
                 "curNodeId": event_changes[0].get_node_id(),
                 "nextNodeId": "end",
                 "movedTo": "None",
-                "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
+                "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name(),
                 "timeStamp": event_changes[0].get_event_time(),
                 "inQueue": False
             }
@@ -175,14 +176,14 @@ def send_e():
                 # if cur node and next node are same and inqueue is true don't set,
                 # log it as an err 
                 event_dict = {
-                    "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
+                    "patientAcuity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                     "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
                     "curNodeId": event_changes[0].get_node_id(),
                     "nextNodeId": nodes_list[next_q].get_id(),
                     "movedTo": nodes_list[next_q].get_process_name(),
-                    "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name() + ":" + str(curr_resource.get_id()),
+                    "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name(),
                     "timeStamp": event_changes[0].get_event_time(),
-                    "inQueue": False
+                    "inQueue": event_changes[0].get_in_queue()
                 }
                 new_changes.append(event_dict)
         event_changes.pop(0)
@@ -205,7 +206,8 @@ def process_heap():
     head_node_id = completed_event.get_node_id()
     head_resource_id = completed_event.get_node_resource_id()
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
-
+    if resource is None:
+        return 1
     # patient record for the patient in the event
     patient_record = resource.get_curr_patient().get_patient_record()
     # NOTE: THE FOLLOWING ACTIONS MUST BE DONE IN THIS ORDER!!!
@@ -240,15 +242,26 @@ def process_heap():
     if patient_record.get_curr_process_id() is not None:
         next_nodes.append(patient_record.get_curr_process_id())
     # if did not go straight to resource without waiting
-    if wait_time != 0:
-        start_process_time = completed_event.get_event_time() - process_duration
-        leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
-        leave_queue.set_in_queue(False)
-        # send patient to next queues/resources
-        completed_event.set_moved_to(next_nodes)
-        leave_queue.set_moved_to([completed_event.get_node_id()])
-        event_changes.append(leave_queue)
-        event_changes.append(completed_event)
+
+    # start_process_time = completed_event.get_event_time() - process_duration
+    # leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
+    # leave_queue.set_in_queue(False)
+    # leave_queue.set_moved_to([completed_event.get_node_id()])
+    # event_changes.append(leave_queue)
+    # patient went straight into next resource
+    # enter_into_resource = None
+    # if patient_record.get_curr_resource_id() is not None:
+    #     enter_into_resource = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), completed_event.get_event_time())
+    #     enter_into_resource.set_in_queue(False)
+
+    # send patient to next queues/resources
+    # completed_event.set_moved_to(next_nodes)
+    # if patient_record.get_curr_process_id is not None:
+    #     event_changes.append(completed_event)
+    # TODO HANDLE CASE WHERE RESOURCE IS EMPTY AND PICKS SOMEONE FROM QUEUE
+    # if enter_into_resource is not None:
+    #     event_changes.append(enter_into_resource)
+    #     enter_into_resource.set_moved_to([patient_record.get_curr_process_id()])
 
     global counter, all_patients
     if counter < len(all_patients) - 1:
@@ -272,7 +285,8 @@ def main():
     global initial_time, nodes_list, event_changes, statistics, packet_start, counter, event_heap
     event_heap = GlobalHeap.heap
     initial_time = None
-    event_changes = []
+    GlobalEvents.event_changes = []
+    event_changes = GlobalEvents.event_changes
     nodes_list = {}
     statistics = Statistic()
     packet_start = -1

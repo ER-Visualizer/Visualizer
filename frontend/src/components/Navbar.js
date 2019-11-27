@@ -37,7 +37,6 @@ class Navbar extends React.Component {
                   Accept: 'application/json',
                   'Content-Type': 'application/json',
                 },
-                mode: 'no-cors',
                 body: JSON.stringify(body),
             });
             // console.log(response);
