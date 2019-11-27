@@ -14,6 +14,7 @@ from .models.global_heap import GlobalHeap
 from .models.global_strings import *
 from .models.rules.frequency_rule import FrequencyRule
 from .models.rules.prediction_rule import PredictionRule
+from .models.rules.first_come_first_serve_rule import FirstComeFirstServeRule
 
 # indexed by strings
 canvas = {"elements": []}
@@ -77,7 +78,24 @@ def canvas_parser(canvas_json):
                 "numberOfActors": 3,
                 "queueType": "priority queue",
                 "priorityFunction": "",
-                "children": [2]
+                "children": [2],
+                "predictedChildren":[1,0],
+                "nodeRules":[
+                    {
+                        "ruleType":"prediction",
+                        "columnName":"pxray"
+                    },
+                    {
+                        "ruleType": "frequency",
+                        "columnName": "xray"
+                    }
+                ],
+                "resourceRules":[
+                    {
+                        "ruleType":"first_come_first_serve"
+                    }
+                ]
+
             },
             {
                 "id": 3,
@@ -100,13 +118,23 @@ def create_queues():
 
         # create all of the rules here
         # TODO: delete this and create actual rules from JSON once JSON format is created
-        if(node["id"] == 2):
-            prediction = FrequencyRule("xray", node["id"])
-            rules.append(prediction)
+    
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                         process_name=node["elementType"], distribution_name=node["distribution"],
                                         distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules)
+        
+        '''Example of working with FrequencyRule and FirstComeFirstServeRule
+        if(node["id"] == 2):
+            # get list of all resources for the node
+            list_of_resources = nodes_list[node["id"]].get_list_of_resources()
+            # generate a list of new rules for each resource
+            for resource in list_of_resources:
+                new_rule = FirstComeFirstServeRule(node["id"],resource.get_id())
+                resource.set_resource_rules([new_rule])
+            frequency = FrequencyRule("xray", node["id"])
+            rules.append(frequency)
+            nodes_list[node["id"]].set_node_rules(rules)'''
         # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
         # create patient_loader node when reception is found
         if node["elementType"] == "reception":

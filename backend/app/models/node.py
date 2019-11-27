@@ -5,6 +5,7 @@ from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
+from .rules.rule_verifier import RuleVerifier
 import copy
 import heapq
 import numpy as np
@@ -38,7 +39,7 @@ class Node:
         self.output_process_ids = output_process_ids
 
         Node.node_dict[self.id] = self
-        self.rules = rules
+        self.node_rules = rules
 
     def set_id(self, id):
         self.id = id
@@ -53,11 +54,11 @@ class Node:
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
     
-    def set_rules(self,rules):
-        self.rules = rules
+    def set_node_rules(self,rules):
+        self.node_rules = rules
 
-    def get_rules(self, rules):
-        return self.rules
+    def get_node_rules(self):
+        return self.node_rules
 
     def get_id(self):
         return self.id
@@ -85,6 +86,9 @@ class Node:
 
     def get_resource(self, resource_id):
         return self.resource_dict[resource_id]
+
+    def get_list_of_resources(self):
+        return list(self.resource_dict.values())
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
@@ -123,16 +127,7 @@ class Node:
             new_resource = Resource(id=i)
             resource_dict[i] = new_resource
         return resource_dict
-    '''check if the patient passes all of the rules in order to see whether
-    patient is eligible to visit'''
-    def pass_node_rules(self, patient):
-        passes_rule = True
-        counter = 0
-        while passes_rule and counter < len(self.rules):
-            rule = self.rules[counter]
-            passes_rule = rule.check(patient)
-            counter += 1
-        return passes_rule
+
 
     '''
     Occurs whenever the minimum element from the heap is extracted, which
@@ -181,7 +176,7 @@ class Node:
         # first check if it passes all of the rules for the patient
         # if it does, check if you can directly insert him into a resource
         # if you can't, insert him into a queue
-        if self.pass_node_rules(patient):
+        if RuleVerifier.pass_rules(patient, self.get_node_rules()):
             if not self.fill_spot(patient):
                 self.put_inside_queue(patient)
 
@@ -226,7 +221,7 @@ class Node:
         for patient in iterator:
             if patient.get_available():
                 if subprocess.is_available():
-                    if subprocess.pass_rule(patient):
+                    if RuleVerifier.pass_rules(patient,subprocess.get_resource_rules()):
                         self.queue.remove(patient)
 
                         # once removed from queue, update patient record
@@ -268,7 +263,7 @@ class Node:
             # 4. Add the element on the heap
             for resource in self.resource_dict.values():
                 if resource.is_available():
-                    if resource.pass_rule(patient):
+                    if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
                         # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
                         # as you're visiting now. This makes sense because if he's inserted in the resource, you can
                         # consider that as him finishing the queue.
