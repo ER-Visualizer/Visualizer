@@ -29,14 +29,17 @@ def home():
 @app.route('/start', methods=['POST'])
 def start_simulation():
     app.logger.info("starting simulation")
-    req_data = request.get_json()
-    print(req_data)
-    app.logger.info(f"req data {req_data}")
-    # time.sleep(1)
-    run.main()
-    # TODO: call a function from run.py to start simulation
-    return send_json_response(req_data)
-
+    req_data = request.json 
+    if req_data:  
+        canvas = req_data['nodes'] 
+        duration = req_data['duration'] 
+        rate = req_data['rate']
+        # app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
+        run.main((canvas, duration, rate))
+        return send_json_response("Succesfully ran simulation")
+    else:  
+        print("hre") 
+        return send_json_response("Invalid Canvas")
 
 @app.route('/csv', methods=['POST'])
 def store_csv():
@@ -44,7 +47,7 @@ def store_csv():
     if 'file' not in request.files:
         return send_json_response({"response": "no file part"})
     file = request.files['file']
-    # print(file)
+    # app.logger.info(file)
     if file.filename == '':
         return send_json_response({"response": "file not sent"})
     if not allowed_file(file.filename):
@@ -60,7 +63,7 @@ Returns a json response.
 def send_json_response(message: dict):
     resp = jsonify(message)
     resp.status_code = 200
-    # print(resp)
+    # app.logger.info(resp)
     return resp
  
 if __name__ == "__main__":

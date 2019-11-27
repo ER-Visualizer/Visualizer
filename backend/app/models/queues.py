@@ -1,3 +1,10 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+import logging
+
+
 try:
     from collections.abc import deque  # noqa
 except ImportError:
@@ -105,16 +112,16 @@ def test_remove_from_heap():
     el.put(120)
     el.put(1)
 
-    print(el.q)
-    print(el.remove(120))
-    print(el.q)
-    print(el.remove_by_index(2))
-    print(el.q)
+    app.logger.info(el.q)
+    app.logger.info(el.remove(120))
+    app.logger.info(el.q)
+    app.logger.info(el.remove_by_index(2))
+    app.logger.info(el.q)
 
 
 if __name__ == "__main__":
     q = Queue()
-    print(isinstance(q, Heap))
-    print(isinstance(q, Stack))
-    print(isinstance(q, Queue))
+    app.logger.info(isinstance(q, Heap))
+    app.logger.info(isinstance(q, Stack))
+    app.logger.info(isinstance(q, Queue))
     test_remove_from_heap()

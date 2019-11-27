@@ -9,6 +9,11 @@ from .global_events import GlobalEvents
 import copy
 import heapq
 import numpy as np
+from flask import Flask
+
+app = Flask(__name__)
+
+import logging
 
 
 class Node:
@@ -148,7 +153,7 @@ class Node:
         # automatically sets him to available
         old_id = ((resource.get_curr_patient()).get_patient_record()).get_curr_process_id()
         patient = resource.clear_patient()
-        print("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
+        app.logger.info("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id()))
 
         # TODO see if we need to do this in random order to avoid bias, and create a multi-threaded simulation
@@ -197,10 +202,14 @@ class Node:
             # put queue in patient record
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
+<<<<<<< HEAD
             self.add_patient_join_queue_event(patient, prev_node_id)
             print("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
+=======
+            app.logger.info("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
+>>>>>>> d934f010a2ba8cbcb9b21a7ae47ff6d902641f34
         else:
-            print("Attempted to Insert patient in same queue twice")
+            app.logger.info("Attempted to Insert patient in same queue twice")
 
 
     # when called from a subprocess, this means that the subprocess justs
@@ -314,7 +323,7 @@ class Node:
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's available
-        print("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
+        app.logger.info("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id(),))
 
         finish_time, duration = self.generate_finish_time()
