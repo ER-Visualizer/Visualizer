@@ -40,7 +40,7 @@ export class JSONEntrySidebarContent extends Component {
         for(let i = 0; i < validatedJSON.length; i++){
             validatedJSON[i].patients = []
         }
-        const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children"];
+        const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children", "priorityType"];
         // console.log(this.state.valid);
        
         for (let i = 0; i < validatedJSON.length; i++) {
