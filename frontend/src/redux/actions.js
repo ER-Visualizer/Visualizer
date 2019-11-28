@@ -17,6 +17,7 @@ export const CONNECT_NODE = 'CONNECT_NODE'
 export const BUILD_LINK_MODE = 'BUILD_LINK_MODE'
 export const DELETE_LINK = 'DELETE_LINK'
 export const DELETE_LINK_MODE = 'DELETE_LINK_MODE'
+export const SHOW_LINK_SIDEBAR = 'SHOW_LINK_SIDEBAR'
 
 
 /*
@@ -77,4 +78,8 @@ export function replaceNodeList(newNodeList){
 
 export function buildLinkModeSwitch(){
     return {type: BUILD_LINK_MODE}
+}
+
+export function showLinkSidebar() {
+    return {type: SHOW_LINK_SIDEBAR}
 }

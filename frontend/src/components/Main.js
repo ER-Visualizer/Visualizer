@@ -2,12 +2,13 @@ import React from 'react';
 import Sidebar from "react-sidebar";
 import NodeSidebarContent from './NodeSidebarContent'
 import LogsSidebarContent from './LogsSidebarContent'
+import LinkSidebarContent from './LinkSidebarContent'
 import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar, deleteLink, connectNode } from '../redux/actions';
+import { showNodeConfig, hideSidebar, deleteLink, connectNode, showLinkSidebar } from '../redux/actions';
 
 
 class Main extends React.Component {
@@ -16,6 +17,7 @@ class Main extends React.Component {
         this.state = {
             events: [],
             selectedNode: null,
+            selectedLink: null,
             ws: null,
             run: false
         }
@@ -144,9 +146,10 @@ class Main extends React.Component {
                 this.sidebarLastContent = <NodeSidebarContent node={node_to_send} numNodes={this.props.nodes.length}/>
             }
             
-            
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
+        } else if (this.props.showLinkSidebar) {
+            this.sidebarLastContent = <LinkSidebarContent />
         }
 
         // we return the last content so that the sidebar content
@@ -202,10 +205,15 @@ class Main extends React.Component {
         
     }
 
-    linkClick(source, target){
+    linkClick(source, target){  
         if (this.props.shouldDeleteLink){
             // react-d3-graph gives strings for these...            
             this.props.deleteLink(parseInt(source), parseInt(target))
+        } else {
+            this.setState({
+                selectedLink: [source, target]
+            });
+            this.props.showLinkSidebar();
         }
     }
 
@@ -230,7 +238,7 @@ class Main extends React.Component {
             <div className="Main">
                 <Sidebar
                     sidebar={this.renderSidebarContent()}
-                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar || this.props.shouldShowLinkSidebar}
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
                     
@@ -275,6 +283,7 @@ const mapStateToProps = state => {
       showLogsSidebar: state.showLogsSidebar, 
       showNodeSidebar: state.showNodeSidebar, 
       showJSONEntrySidebar: state.showJSONEntrySidebar,
+      shouldShowLinkSidebar: state.showLinkSidebar,
       nodes: state.nodes,
     }
 }
@@ -293,8 +302,10 @@ const mapDispatchToProps = dispatch => {
         },
         connectNode: (nodeId) => {
             dispatch(connectNode(nodeId))
+        },
+        showLinkSidebar: () => {
+            dispatch(showLinkSidebar())
         }
-
     }
 }
 

@@ -1,10 +1,11 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR} from './actions';
 import { object } from 'prop-types';
 
 const initialState = {
     showLogsSidebar: false,
     showNodeSidebar: false,
     showJSONEntrySidebar: false,
+    showLinkSidebar: false,
     shouldDeleteLink: false,
     shouldBuildLink: false, 
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
@@ -82,11 +83,13 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state, {
                 showLogsSidebar: !state.showLogsSidebar, // to allow for toggling
                 showNodeSidebar: false,
+                showLinkSidebar: false,
                 showJSONEntrySidebar: false
             });
         case SHOW_NODE_SIDEBAR:
             return Object.assign({}, state, {
                 showLogsSidebar: false, 
+                showLinkSidebar: false,
                 showNodeSidebar: !action.shouldHide, 
                 showJSONEntrySidebar: false
             });
@@ -94,14 +97,23 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state, {
                 showLogsSidebar: false, 
                 showNodeSidebar: false, 
+                showLinkSidebar: false,
                 showJSONEntrySidebar: !state.showJSONEntrySidebar // to allow for toggling
             }); 
+        case SHOW_LINK_SIDEBAR:
+            return Object.assign({}, state, {
+                showLogsSidebar: false,
+                showNodeSidebar: false, 
+                showJSONEntrySidebar: false,
+                showLinkSidebar: !state.showLinkSidebar
+            });  
         case HIDE_SIDEBAR:
             return Object.assign({}, state, {
                 showLogsSidebar: false, 
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false
             }); 
+            
         case ADD_NODE:
             temp_node_count = state.nodes.length
             return Object.assign({}, state, {

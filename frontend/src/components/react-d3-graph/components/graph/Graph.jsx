@@ -566,6 +566,8 @@ export default class Graph extends React.Component {
         }
     }
 
+    
+
     /**
      * Calls d3 simulation.restart().<br/>
      * {@link https://github.com/d3/d3-force#simulation_restart}
