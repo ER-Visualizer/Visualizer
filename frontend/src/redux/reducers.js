@@ -14,11 +14,11 @@ const initialState = {
     nodes: [
         new ProcessNode(0, "reception", "fixed", [5], 1,
             "priority queue", "", [1], [], "acuity"),
-        new ProcessNode(1, "triage", "fixed", [3], 2,
+        new ProcessNode(1, "triage", "fixed", [3], 1,
             "priority queue", "", [2, 3], [], "acuity"),
-        new ProcessNode(2, "doctor", "fixed", [10], 3,
+        new ProcessNode(2, "doctor", "fixed", [10], 1,
             "priority queue", "", [3], [], "acuity"),
-        new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
+        new ProcessNode(3, "x-ray", "binomial", [1, 1], 1,
             "priority queue", "", [], [], "acuity")
         // {
         //     "id": 0,
@@ -129,7 +129,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode, action.pAcuity)
+                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode, action.pAcuity, action.inQueue)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -201,58 +201,66 @@ function EDSimulation(state = initialState, action) {
             return state
     }
 }
-const movePatient = (nodes, patient, currNode, newNode, patientAcuity) => {
+const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
     // moves patient A from startNode to endNode
     console.log("in move patient ");
     console.log("before");
-    
-    console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",newNode)
-
+    if (currNode != -1){
+        console.log("inQueue", inQueue, "patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
+    }
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
     if (currNode == -1){
-        console.log("added -------------");
-        console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode", 0)
-        clonedNodes[0].patients.push(new Patient(patient, patientAcuity))        
+        if (inQueue){ 
+            console.log("added -------------");
+            console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
+            clonedNodes[0].patients.push(new Patient(patient, patientAcuity))        
+        }
+        console.log({clonedNodes});
         return clonedNodes
     }
 
-    let removedPatient;
+    // remove the patient from their current queue/resource
+    let patientsWithoutCurPatient;
+    let processingListWithoutCurPatient;
     clonedNodes.forEach((node) => {
-       console.log(node.id, "vs", currNode);
+    //    console.log(node.id, "vs", currNode);
        if (node.id == currNode){
-           console.log("cur patient", patientAcuity, patient);
-           removedPatient = node.patients.filter((currPatient) => currPatient.id != patient );
-           node.patients = removedPatient
+        //    console.log("cur patient", patientAcuity, patient);
+           patientsWithoutCurPatient = node.patients.filter((currPatient) => currPatient.id != patient );
+           processingListWithoutCurPatient = node.processing.filter((currPatient) => currPatient.id != patient );
+           node.patients = patientsWithoutCurPatient;
+           node.processing = processingListWithoutCurPatient;
+           
         }
     });
-    // console.log({removedPatient});
 
-    if (removedPatient){
-        // console.log({removedPatient})
-        const newNodesList = clonedNodes.map((node) => {
-            const newCurNode = {...node}
-
-            if (node.id == newNode && newNode !== "end"){
-                console.log("added -------------");
-                console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",node.id)
-                newCurNode.patients.push(new Patient(patient, patientAcuity))
+   
+    const newNodesList = clonedNodes.map((node) => {
+        const newCurNode = {...node}
+        if (nextNode == "end"){
+            // remove patient from all resources and patient lists
+            newCurNode.patients = node.patients.filter((currPatient) => currPatient.id != patient );
+            newCurNode.processing = node.processing.filter((currPatient) => currPatient.id != patient );
+        }else {
+            // add them to the correct one based on the inqueue value and the value of nextnodeid
+            console.log("added -------------");
+            console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
+            if (node.id == nextNode){
+                if (inQueue){
+                    newCurNode.patients.push(new Patient(patient, patientAcuity))
+                } else {
+                    newCurNode.processing.push(new Patient(patient, patientAcuity))
+                }
             }
-            if (newNode === "end" && patient == node.id){
-                newCurNode.patients = node.patients.filter((currPatient) => currPatient.id != patient );
-            }
-            return newCurNode
-
-        });
-        console.log({newNodesList});
-        
-        return newNodesList; 
-    } else {
-        return nodes;
-    }
-    
+        }      
+        return newCurNode;
+    });
+    console.log({newNodesList});
+    return newNodesList; 
 }
+
 function addNewNode(nodes, nodeNum){
     // https://stackoverflow.com/questions/597588/how-do-you-clone-an-array-of-objects-in-javascript
     

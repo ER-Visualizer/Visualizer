@@ -3,6 +3,7 @@ import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
 import { editNodeProperties, deleteNode } from '../redux/actions'
 import Queue from './Queue';
+import ResourceQueue from './ResourceQueue';
 
 export class NodeSidebarContent extends React.Component {
     constructor(props) {
@@ -185,7 +186,10 @@ export class NodeSidebarContent extends React.Component {
                  }
                 </div>
             	}
-
+                <div className="input-container">
+                    <label>Currently being proccessed by actor</label><br/>
+                    <ResourceQueue patients={this.state.node.processing} />
+                </div>
                 <div className="input-container">
                     <label>Current Queue</label><br/>
                     <Queue patients={this.state.node.patients} />

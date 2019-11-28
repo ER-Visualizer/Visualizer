@@ -1,9 +1,9 @@
 import React from 'react';
-import './Queue.css';
+import './ResourceQueue.css';
 import PatientBox from './PatientBox';
 import Patient from '../models/Patient';
 
-const Queue = ({ patients }) => {
+const ResourceQueue = ({ patients }) => {
     // console.log({patients});
     if (patients.length > 1){
         patients.sort((patient1, patient2) =>
@@ -14,12 +14,12 @@ const Queue = ({ patients }) => {
     );
 
     return (
-        <div className="QueueContainer">
-            <div className="Queue">
+        <div className="ResourceQueueContainer">
+            <div className="ResourceQueue">
                 {PatientBoxes}
             </div>
         </div>
     )
 };
 
-export default Queue;
+export default ResourceQueue;
