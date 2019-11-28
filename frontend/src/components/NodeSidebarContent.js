@@ -2,14 +2,15 @@ import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
 import { editNodeProperties, deleteNode } from '../redux/actions'
+import Queue from './Queue';
 
 export class NodeSidebarContent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {node:null, numNodes:null}
         this.state.node = this.props.node 
-        console.log("NODESIDEBAR")
-        console.log(this.props.node)
+        // console.log("NODESIDEBAR")
+        // console.log(this.props.node)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
@@ -20,6 +21,10 @@ export class NodeSidebarContent extends React.Component {
 
         
         let new_node = Object.assign({}, this.state.node, {[name]: value})
+        if(new_node.queueType != "priority queue"){
+            new_node.priorityFunction = ""
+            new_node.priorityType = ""
+        }
         this.setState({
             node: new_node
         })
@@ -40,10 +45,10 @@ export class NodeSidebarContent extends React.Component {
             for (let i = deleteId; i < numNodes; i++) {
                 continue
             }
-            console.log("PROPS:")
-            console.log(this.props)
-            console.log("\nSTATE:")
-            console.log(this.state)
+            // console.log("PROPS:")
+            // console.log(this.props)
+            // console.log("\nSTATE:")
+            // console.log(this.state)
 
         }
         else {
@@ -53,6 +58,9 @@ export class NodeSidebarContent extends React.Component {
 
 
     render() {
+
+    	// console.log("node queue type")
+    	// console.log(this.state.node.queueType)
         return (
             <div className="NodeSidebarContent">                
                 
@@ -136,14 +144,51 @@ export class NodeSidebarContent extends React.Component {
                     </select>
                 </div>
 
+                {this.state.node != null && this.state.node.queueType == 'priority queue' && 
                 <div className="input-container">
                     <label>Priority Type</label><br/>
-                    <select name="priorityFunction"
-                            value={`${this.state.node.priorityFunction}`}
+                    <select name="priorityType"
+                            value={`${this.state.node.priorityType}`}
                             onChange={this.handleInputChange}>
-                        <option value="acuity">Acuity</option>
-                        <option value="arrival time">Arrival Time</option>
+                        <option value="acuity">Lowest Acuity</option>
+                        <option value="arrival time">Earliest Arrival Time</option>
+                        <option value="custom">Define Your Own</option>
                     </select>
+                    {this.state.node.priorityType == 'custom' &&
+	                    <div>
+	                    <label>Priority Function</label><br/><br/>
+                        <div style={{display: "inline-block"}}>def <div style={{color: '#F2870C', display: "inline-block"}}> _calculate_priority_value(patient):</div><br/></div>
+                        <div style={{color: 'green', marginLeft: '20px'}}>
+                        """<br/>
+                        Calculate a priority value representing a patient's priority within the priority queue<br/><br/>
+
+                        Attributes available:<br/>
+                        patient.get_acuity() <br/> Returns a integer value of the patient's acuity<br/><br/>
+                        patient.get_start_time() <br/> Returns the number of minutes it took for patient to enter the simulation
+                        after the simulation started.<br/><br/>
+                        patient.get_attribute(attribute) <br/> Returns the value of the attribute for the patient as indicated by the uploaded CSV
+                        <br/><br/>
+                        """
+                        </div>
+                        <br/>
+                        <div style={{marginLeft: '20px'}}>
+                        _p_value = 0<br/>
+                        <div style={{color: 'grey'}}> # Set _p_value to the priority you want to return <br/>
+                        # DO NOT RETURN ANYTHING IN THE CODE <br/></div>
+                        </div>
+	                    <textarea 
+	                        type="text"
+	                        name="priorityFunction"
+                            style={{marginLeft: '20px', width: '80%', fontSize: '15px'}}
+	                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></textarea>
+	                     </div>
+                 }
+                </div>
+            	}
+
+                <div className="input-container">
+                    <label>Current Queue</label><br/>
+                    <Queue patients={this.state.node.patients} />
                 </div>
 
                 {/* <div className="input-container">

@@ -5,8 +5,8 @@ export const SHOW_LOGS_SIDEBAR = 'SHOW_LOGS_SIDEBAR'
 export const SHOW_NODE_SIDEBAR = 'SHOW_NODE_SIDEBAR'
 export const SHOW_JSON_ENTRY_SIDEBAR = 'SHOW_JSON_ENTRY_SIDEBAR'
 export const HIDE_SIDEBAR = 'HIDE_SIDEBAR'
-
 export const ADD_TO_LOGS = 'ADD_TO_LOGS'
+export const UPDATE_PATIENT_LOCATION = 'UPDATE_PATIENT_LOCATION'
 
 export const REPLACE_NODE_LIST = 'REPLACE_NODE_LIST'
 
@@ -23,26 +23,31 @@ export const SHOW_LINK_SIDEBAR = 'SHOW_LINK_SIDEBAR'
 /*
 * Action Creators
 */ 
-export function showLogs() {
+export const showLogs = () => {
     return {type: SHOW_LOGS_SIDEBAR}
 }
 
-export function showNodeConfig(shouldHide) {
+export const showNodeConfig = (shouldHide) => {
     return {type: SHOW_NODE_SIDEBAR, shouldHide: shouldHide}
 }
 
-export function showJSONEntrySidebar(){
+export const showJSONEntrySidebar = () => {
     return {type: SHOW_JSON_ENTRY_SIDEBAR}
 }
 
-export function hideSidebar() {
+export const  hideSidebar = () => {
     return {type: HIDE_SIDEBAR}
 }
 
-export function addToLogs(message) {
+export const addToLogs = (message) => {
     return {type: ADD_TO_LOGS, message: message}
 }
 
+export const updatePatientLocation = (patient, currNode, newNode, patientAcuity) => {
+    console.log({patientAcuity});
+    
+    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient, pAcuity: patientAcuity}
+}
 export function addNode(){
     return {type: ADD_NODE}
 }

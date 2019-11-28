@@ -6,6 +6,7 @@ import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
+import FileUploadForm from './UploadButton.js'
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -24,30 +25,31 @@ class Navbar extends React.Component {
     }
     async sendCanvas(e){
         try {
-            console.log(e)
+            console.log("send canvas");
+            // console.log(e)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
-            console.log("send canvas");
-            // await this.updateRunButton()
-            let response = await fetch('http://localhost:8000/start', {
+            let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
+            console.log({body})
+            let response = await fetch('http://localhost:' + process.env.REACT_APP_SERVER_PORT + '/start', {
                 method: 'POST',
-                headers: {
-                  Accept: 'application/json',
+                headers: { 
+                  Accept: 
+                  'application/json',
                   'Content-Type': 'application/json',
                 },
-                mode: 'no-cors',
-                body: JSON.stringify(this.props.nodes),
+                body: JSON.stringify(body),
             });
-            console.log(response);
-            return response;
+            console.log({response});
+            return response
         } catch (error) {
             console.error(error);
         }
     }
 
     async updateRunButton(){
-        console.log("updateRunButton")
-        console.log(this.state.runButtonpressed, this.state.button)
+        // console.log("updateRunButton")
+        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }
@@ -69,6 +71,7 @@ class Navbar extends React.Component {
     render() {
         return (
             <div className="Navbar">   
+                <FileUploadForm className="FileUploadButton"> </FileUploadForm>
                 <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>

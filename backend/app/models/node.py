@@ -5,27 +5,37 @@ from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
+from .global_events import GlobalEvents
 import copy
 import heapq
 import numpy as np
+from flask import Flask
+
+app = Flask(__name__)
+
+import logging
 
 
 class Node:
 
     node_dict = {}
-
+    '''rules is a list of Rule Objects'''
     def __init__(self, id, queue_type, priority_function, num_actors,
                  process_name=None, distribution_name=None,
-                 distribution_parameters=None, output_process_ids=None):
+                 distribution_parameters=None, output_process_ids=None, rules=[], priority_type=""):
 
         self.id = id
         # create the queue type, prior func and the queue itself
         self.queue_type = queue_type
 
-        if(priority_function == ""):
+        if priority_function == "":
             self.priority_function = None
         else:
             self.priority_function = priority_function
+        if priority_type == "":
+            self.priority_type = None
+        else:
+            self.priority_type = priority_type
         self.queue = self._set_queue()
 
         # create num actors and resource dict based on num actors
@@ -38,6 +48,7 @@ class Node:
         self.output_process_ids = output_process_ids
 
         Node.node_dict[self.id] = self
+        self.rules = rules[:]
 
     def set_id(self, id):
         self.id = id
@@ -51,6 +62,12 @@ class Node:
 
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
+    
+    def set_rules(self,rules):
+        self.rules = rules
+
+    def get_rules(self, rules):
+        return self.rules
 
     def get_id(self):
         return self.id
@@ -77,7 +94,12 @@ class Node:
         return self.output_process_ids
 
     def get_resource(self, resource_id):
-        return self.resource_dict[resource_id]
+        if resource_id in self.resource_dict:
+            return self.resource_dict[resource_id]
+        return None
+
+    def get_priority_type(self):
+        return self.priority_type
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
@@ -87,7 +109,7 @@ class Node:
         elif self.queue_type == QUEUE:
             return Queue()
         elif self.queue_type == PRIORITY_QUEUE:
-            return Heap()
+            return Heap(self.get_priority_type(), self.get_priority_function())
         else:
             raise Exception("This type of queue is not implemented yet")
 
@@ -116,6 +138,16 @@ class Node:
             new_resource = Resource(id=i)
             resource_dict[i] = new_resource
         return resource_dict
+    '''check if the patient passes all of the rules in order to see whether
+    patient is eligible to visit'''
+    def pass_node_rules(self, patient):
+        passes_rule = True
+        counter = 0
+        while passes_rule and counter < len(self.rules):
+            rule = self.rules[counter]
+            passes_rule = rule.check(patient)
+            counter += 1
+        return passes_rule
 
     '''
     Occurs whenever the minimum element from the heap is extracted, which
@@ -123,44 +155,67 @@ class Node:
     '''
 
     def handle_finished_patient(self, resource_id):
-
         resource = self.resource_dict[resource_id]
         # get the patient out of the subprocess. this
         # automatically sets him to available
+        old_id = ((resource.get_curr_patient()).get_patient_record()).get_curr_process_id()
         patient = resource.clear_patient()
+        app.logger.info("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
+            self.get_process_name(), self.get_id(), resource.get_id()))
 
-        # TODO see if we need to do this in random order to avoid bias.
-        # Might have to, b/c if  spot is available,
-        #  patient will take that first available spot, so might
+        # TODO see if we need to do this in random order to avoid bias, and create a multi-threaded simulation
+        #  Might have to, b/c we don't want to bias which spot patient will take. In that case we will need to make
+        # TODO sure that patient checks previous queues and new nodes in random order!
         # have a case where patient always fills the first spot
 
-        # first send the patient to all of the queues that they need
+
+        # check if any of the processes where he's queued for
+        # have any available spots, and if yes, go to them. This is for the case when a resource becomes available and this
+        # patient was unavailable so it didn't insert him, even though he's in the queue.
+        for process_id in patient.get_patient_record().get_all_queues():
+            inserted = Node.node_dict[process_id].fill_spot(patient)
+            if(inserted): break
+        # send the patient to all of the queues that they need
         # to be put in (outgoing processes from
         # parent_process)
         for process_id in self.output_process_ids:
-            Node.node_dict[process_id].put_patient_in_node(patient)
+            Node.node_dict[process_id].put_patient_in_node(patient, old_id)
 
-        # call fill_spot on this subprocess because now we have an empty spot there
+        # call fill_spot on this subprocess because now we have an empty spot there and want to fill it with another
+        # patient
         self.fill_spot_for_resource(resource)
-
     '''
-    Called when a patient finishes some other process, and is sent to
-    wait in a queue for this current process
+    Call when you're inserting into a node. This will check if patient is allowed into the node, and if it is,
+    then will try to find an available spot, and if can't find one, will place him in a queueu
     '''
 
-    def put_patient_in_node(self, patient):
-
+    def put_patient_in_node(self, patient, prev_node_id=None):
         # Try to place patient directly into a resource, if available.
         # If patient couldn't fit, place him inside queue
-        if not self.fill_spot(patient):
-            # Push Patient inside queue
-            self.queue.put(patient)
 
+        # first check if it passes all of the rules for the patient
+        # if it does, check if you can directly insert him into a resource
+        # if you can't, insert him into a queue
+        if self.pass_node_rules(patient):
+            if not self.fill_spot(patient):
+                self.put_inside_queue(patient, prev_node_id)
+
+    def put_inside_queue(self, patient, prev_node_id=None):
+        # Push Patient inside queue
+        # only add if patient is not already in the queue
+        if self.id not in patient.get_patient_record().get_all_queues():
+            self.queue.put(patient)
+            # TODO Consider whether it's good to move it inside the queue
             # put queue in patient record
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
+            self.add_patient_join_queue_event(patient, prev_node_id)
+            app.logger.info("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
+        else:
+            app.logger.info("Attempted to Insert patient in same queue twice")
 
-    # when called from a subprocess, this means that the subprocess just
+
+    # when called from a subprocess, this means that the subprocess justs
     # handled a patient, and needs a new one
     # so fill his spot, and return true if you can
     def fill_spot_for_resource(self, subprocess):
@@ -184,43 +239,45 @@ class Node:
         # deep copy so we don't have a hold of actual memory address.
         # TODO test case: make sure heap isn't changed
         # TODO make sure iterates correctly through heap
-        if(isinstance(self.queue, Heap)):
-
-            # need to make sure we iterate through the copy of the heap
-            heap_list = copy.deepcopy(self.queue.q)
-            # create a mapping of the indeces to the values. original queue
-            # will have an identical mapping.
-            # TODO check if it maps correctly
-            indices_to_patients = {k: v for v, k in enumerate(heap_list)}
-            iterator = Heap(heap_list)
-
-        else:
-            iterator = self.queue
-
+        iterator = self.queue
         for patient in iterator:
             if patient.get_available():
-                if subprocess.pass_rule(patient):
-                    # remove from queue
-                    if(isinstance(self.queue, Heap)):
-                        # get the index of the patient to remove
-                        index_to_remove = indices_to_patients[patient]
-                        # return the original patient, not the one from the copy of the queue
-                        patient = self.queue.remove_by_index(index_to_remove)
-                    else:
-                        # extract from the queue. no need to store him, as we
-                        # already have a hold of him
+                if subprocess.is_available():
+                    if subprocess.pass_rule(patient):
                         self.queue.remove(patient)
-                    
-                    # once removed from queue, update patient record
-                    patient_record = patient.get_patient_record()
-                    patient_record.remove_process_from_queue(self.id)
 
-                    self.insert_patient_to_resource_and_heap(
-                        patient, subprocess)
-                    return True
+                        # once removed from queue, update patient record
+                        patient_record = patient.get_patient_record()
+                        patient_record.remove_process_from_queue(self.id)
+                        # record event of patient joining resource
+                        self.add_patient_join_resource_event(patient, subprocess)
+                        self.insert_patient_to_resource_and_heap(
+                            patient, subprocess)
+                        return True
 
         return False
 
+    def add_patient_join_resource_event(self, patient, resource):
+        leave_queue = Event(self.get_id(), resource.get_id(),
+                            patient.get_id(), GlobalTime.time)
+        leave_queue.set_in_queue(False)
+        leave_queue.set_moved_to([self.get_id()])
+        GlobalEvents.event_changes.append(leave_queue)
+
+    def add_patient_join_queue_event(self, patient, old_id):
+        if old_id is None:
+            return
+        join_queue = Event(old_id, 'N/A', patient.get_id(), GlobalTime.time)
+        patient_record = patient.patient_record
+        # get all queues patient was added to
+        next_nodes = list(
+            patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
+        # get resource patient is in (if any)
+        if patient_record.get_curr_process_id() is not None:
+            next_nodes.append(patient_record.get_curr_process_id())
+        join_queue.set_moved_to(next_nodes)
+        if patient_record.get_curr_process_id is not None:
+            GlobalEvents.event_changes.append(join_queue)
     '''
     Try to insert a patient into an available resource, if there exists one.
     Return true if patient inserted successfully.
@@ -251,6 +308,17 @@ class Node:
             for resource in self.resource_dict.values():
                 if resource.is_available():
                     if resource.pass_rule(patient):
+                        # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
+                        # as you're visiting now. This makes sense because if he's inserted in the resource, you can
+                        # consider that as him finishing the queue.
+                        if patient in self.queue:
+                            self.queue.remove(patient)
+
+                            # once removed from queue, update patient record
+                            patient_record = patient.get_patient_record()
+                            patient_record.remove_process_from_queue(self.id)
+                        # record event of patient joining resource
+                        self.add_patient_join_resource_event(patient, resource)
                         self.insert_patient_to_resource_and_heap(
                             patient, resource)
                         return True
@@ -258,13 +326,11 @@ class Node:
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's available
-        finish_time, duration = self.generate_finish_time()
-        resource.insert_patient(patient, finish_time, duration)
-        
-        # add curr node to patient record
-        patient_record = patient.get_patient_record()
-        patient_record.set_curr_node(self.id, resource.get_id(), GlobalTime.time, finish_time)
+        app.logger.info("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
+            self.get_process_name(), self.get_id(), resource.get_id(),))
 
+        finish_time, duration = self.generate_finish_time()
+        resource.insert_patient(patient, self.id, finish_time, duration)
         # now add the event to the heap
         self.add_to_heap(resource.get_id())
 
@@ -275,5 +341,4 @@ class Node:
         resource = self.resource_dict[resource_id]
         event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
         # heap = run.get_heap()
-
         heapq.heappush(GlobalHeap().heap, event)

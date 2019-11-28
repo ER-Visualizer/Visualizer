@@ -1,16 +1,20 @@
 import asyncio
 import websockets
 from random import randint, random
+from flask import Flask
 import json
 import time
 import signal
 
+app = Flask(__name__)
+
+import logging
 
 # Stop the loop concurrently
 @asyncio.coroutine
 def exit():
     loop = asyncio.get_event_loop()
-    print("Stop")
+    app.logger.info("Stop")
     loop.stop()
 
 
@@ -42,7 +46,7 @@ class WebsocketServer:
 
     def close(self):
         self.server.close()
-        print("closing socketssssssss")
+        app.logger.info("closing sockets")
         asyncio.get_event_loop().run_until_complete(self.server.wait_closed())
         asyncio.get_event_loop().stop()
         asyncio.get_event_loop().close()
@@ -67,7 +71,7 @@ class WebsocketServer:
             try:
                 await websocket.send(message)
                 await asyncio.sleep(self.packet_rate)
-            except websockets.exceptions.ConnectionClosed:
+            except (websockets.exceptions.ConnectionClosed, websockets.exceptions.ConnectionClosedOK):
                 self.close()
                 break
 
