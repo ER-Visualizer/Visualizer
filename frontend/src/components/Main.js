@@ -37,14 +37,21 @@ class Main extends React.Component {
     }
 
     parseEventData(eventData) {
-        if (eventData["inQueue"]){
-            console.log("inqueue:", eventData["inQueue"]);
-            console.log({eventData});
-        }else {
+        if(eventData.inQueue == true){
             return {
                 eventData: eventData,
-                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             }
+        }
+        else if(eventData.nextNodeId == "end"){
+            return {
+                eventData: eventData,
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has exited the simulation.`
+            }
+        }
+        return {
+            eventData: eventData,
+            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable
@@ -154,7 +161,7 @@ class Main extends React.Component {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
         new_events.forEach((event) => {        
-            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAquity'])
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'])
         })
     }
 
@@ -320,8 +327,8 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        updatePatientLocation: (patient, currNode, newNode, patientAquity) => {
-            dispatch(updatePatientLocation(patient, currNode, newNode, patientAquity))
+        updatePatientLocation: (patient, currNode, newNode, patientAcuity) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

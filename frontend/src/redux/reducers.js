@@ -13,13 +13,13 @@ const initialState = {
     nodeCount: 5, // max ID of any node
     nodes: [
         new ProcessNode(0, "reception", "fixed", [5], 1,
-            "priority queue", "", [1, 2, 3], []),
+            "priority queue", "", [1], [], "acuity"),
         new ProcessNode(1, "triage", "fixed", [3], 2,
-            "priority queue", "", [3], []),
+            "priority queue", "", [2, 3], [], "acuity"),
         new ProcessNode(2, "doctor", "fixed", [10], 3,
-            "priority queue", "", [], []),
+            "priority queue", "", [3], [], "acuity"),
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
-            "priority queue", "", [], [])
+            "priority queue", "", [], [], "acuity")
         // {
         //     "id": 0,
         //     "elementType": "reception",

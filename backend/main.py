@@ -40,7 +40,7 @@ def start_simulation():
     else:  
         print("hre") 
         return send_json_response("Invalid Canvas")
- 
+
 @app.route('/csv', methods=['POST'])
 def store_csv():
     app.logger.info("recieved csv")

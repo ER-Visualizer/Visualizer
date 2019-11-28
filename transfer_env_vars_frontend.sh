@@ -9,13 +9,20 @@ for line in `sed '/^$/d' $1`; do
     res="REACT_APP_"
     for k in $key_value:
     do
-    	res+="$k"
-    	((index++))
-    	if [ $index -lt 2 ];
-    	then
-    		res+="="
-    	fi
-	done
+        if [[ $k == "REACT_APP"* ]]; then
+            res="$k"
+            res+="="
+            ((index++))
+            continue;
+        else
+            res+="$k"
+            ((index++))
+            if [ $index -lt 2 ];
+            then
+                res+="="
+            fi
+        fi
+    done
 	echo "$res" | sed 's/.$//'
 	echo "$res" | sed 's/.$//' >> "$file"
 done
