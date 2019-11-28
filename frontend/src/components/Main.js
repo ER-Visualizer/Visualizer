@@ -160,8 +160,9 @@ class Main extends React.Component {
     updateNodePatients(new_events) {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
-        new_events.forEach((event) => {        
-            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'])
+        
+        new_events.forEach((event) => {    
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'], event['inQueue'])
         })
     }
 
@@ -327,8 +328,8 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        updatePatientLocation: (patient, currNode, newNode, patientAcuity) => {
-            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity))
+        updatePatientLocation: (patient, currNode, newNode, patientAcuity, inQueue) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity, inQueue))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

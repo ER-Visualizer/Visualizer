@@ -188,7 +188,7 @@ export class NodeSidebarContent extends React.Component {
             	}
                 <div className="input-container">
                     <label>Currently being proccessed by actor</label><br/>
-                    <ResourceQueue patients={this.state.node.patients} />
+                    <ResourceQueue patients={this.state.node.processing} />
                 </div>
                 <div className="input-container">
                     <label>Current Queue</label><br/>
