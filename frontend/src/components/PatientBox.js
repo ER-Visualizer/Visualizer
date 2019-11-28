@@ -21,6 +21,7 @@ const PatientBox = ({ patient }) => {
             data-tip={`Id: ${patient.id} <br> Accuity: ${patient.accuity}`}
             style={{background: getBackgroundColor(patient.accuity)}} 
             className="Patient">
+                {patient.id}
         </div>
         <ReactTooltip
             multiline
