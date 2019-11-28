@@ -51,6 +51,55 @@ class WebsocketServer:
         asyncio.get_event_loop().stop()
         asyncio.get_event_loop().close()
 
+    async def get_formatted_stats(self, stats):
+        set_pdata = set()
+        for patient in stats["patients"]:
+            for key in stats["patients"][patient]:
+                set_pdata.add(key)
+            break
+        patient_keys = list(set_pdata)
+        patient_header = ["Patient id"]
+        patient_header.extend(patient_keys)
+        # get doctor header data 
+        set_ddata = set()
+        for doctor in stats["doctors"]:
+            for key in stats["doctors"][doctor]:
+                set_ddata.add(key)
+        doctor_keys = list(set_ddata)
+        doctor_header = ["Doctor id"]
+        doctor_header.extend(doctor_keys)
+        # get hospital headers 
+        hospital_keys = list(stats["hospital"].keys())
+
+
+
+        formatted_stats = {"stats": stats["stats"], "patients": [patient_header], "hospital": [hospital_keys], "doctors": [doctor_header]}
+        for key in stats:
+            app.logger.info(key)
+            if key == "patients":
+                for p in stats[key]:
+                    patient_id = p.split("_")[1]
+                    curp_data = [patient_id] 
+                    for i in range(len(stats[key][p])):
+                        curp_data.append(stats[key][p][patient_keys[i]])
+                    formatted_stats['patients'].append(curp_data)
+            if key == "doctors":
+                for d in stats[key]:
+                    d_id = d.split("_")[1]
+                    curd_data = [d_id]
+                    for i in range(len(stats[key][d])):
+                        curd_data.append(stats[key][d][doctor_keys[i]])
+                    if len(curd_data) != len(doctor_header):
+                        for j in range(len(doctor_header)-len(curd_data)):
+                            curd_data.append("None")
+                    formatted_stats['doctors'].append(curd_data)
+            if key == "hospital":
+                curh_data = []
+                for i in range(len(stats["hospital"])):
+                    curh_data.append(stats["hospital"][hospital_keys[i]])
+                formatted_stats['hospital'].append(curh_data)
+        return formatted_stats
+
     async def __producer_handler(self, websocket, path):
         while True:
             check = self.process()
@@ -59,7 +108,9 @@ class WebsocketServer:
             message = self.producerFunc()
             if not check and not self.sent_stats:
                 stats = self.stats()
-                message = json.dumps(stats)
+                formatted_stats = await self.get_formatted_stats(stats)
+                app.logger.info(formatted_stats)
+                message = json.dumps(formatted_stats)
                 self.sent_stats = True
                 await websocket.send(message)
                 self.close()
