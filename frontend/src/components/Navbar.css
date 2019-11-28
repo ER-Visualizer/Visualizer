@@ -16,12 +16,11 @@
 
 .Navbar .logo {
     align-self: flex-start;
-}
-
-.Navbar .ourlogo {
-    width: 260px;
-    height: 46px;
-    padding-right: 30px;
+    max-width: 170px;
+    max-height: 40px;
+    position: absolute;
+    left: 16px;
+    top: 16px;
 }
 
 .uploadButton {

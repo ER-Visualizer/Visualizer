@@ -128,7 +128,7 @@ class Navbar extends React.Component {
             ];
         return (
             <div className="Navbar">   
-                <img className="ourlogo" src={logo} />
+                <img className="logo" src={logo} />
                 
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
 
