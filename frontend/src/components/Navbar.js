@@ -8,7 +8,7 @@ import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 import FileUploadForm from './UploadButton.js'
 import { CSVLink } from 'react-csv';
-
+import logo from './logo_green.png';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -128,6 +128,7 @@ class Navbar extends React.Component {
             ];
         return (
             <div className="Navbar">   
+                <img className="ourlogo" src={logo} />
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
                 <button className="ShowLogsButton" onClick={this.download}> Download</button>
                 <CSVLink data={this.state.patientDataToDownload}

@@ -18,6 +18,11 @@
     align-self: flex-start;
 }
 
+.Navbar .ourlogo {
+    width: 260px;
+    height: 46px;
+}
+
 .Navbar .ShowLogsButton {
     float: right;
     margin-right: 16px;
