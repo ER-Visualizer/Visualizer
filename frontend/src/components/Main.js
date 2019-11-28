@@ -19,7 +19,8 @@ class Main extends React.Component {
             ws: null,
             run: false,
             rate: 1,
-            duration: 5
+            duration: 5,
+            stats: []
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -36,7 +37,8 @@ class Main extends React.Component {
         }
         await this.sleep(5000);
         // console.log("run handler")
-        this.setState({run: true})
+        this.setState({run: true,
+                       statsAvailable: false})
         this.connect();
     }
 
@@ -104,16 +106,15 @@ class Main extends React.Component {
                     this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
-                    // console.log("stats true")
                     delete eventData['stats']
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
-                    run: false
+                    run: false,
+                    stats: eventData
                     })
+                    console.log({eventData});
                     this.child.updateRunButton()
-
                 }
-                
         }
 
         // websocket onclose event listener
@@ -275,7 +276,11 @@ class Main extends React.Component {
                     pullRight={true}
                     
                 >
-                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)} rate={this.state.rate} duration={this.state.duration}/>
+                <Navbar stats={this.state.stats}
+                        runHandler={this.runHandler} 
+                        onRef={ref => (this.child = ref)} 
+                        rate={this.state.rate} 
+                        duration={this.state.duration}/>
                 <Graph
                 directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
