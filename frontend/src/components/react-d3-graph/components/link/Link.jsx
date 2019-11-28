@@ -69,8 +69,8 @@ export default class Link extends React.Component {
 
     render() {
         const lineStyle = {
-            strokeWidth: this.props.strokeWidth,
-            stroke: this.props.stroke,
+            strokeWidth: 2,
+            stroke: "#8C9FAB",
             opacity: this.props.opacity,
             fill: "none",
             cursor: this.props.mouseCursor,
@@ -116,6 +116,7 @@ export default class Link extends React.Component {
         // If the link represents a predicted link, give the link custom styling
         if(this.props.isPredictedLink) {
             lineProps.strokeDasharray = "5, 5"
+            lineProps.style.strokeWidth = 3
         }
         
         // The second transparent path allows the thin line to have a larger

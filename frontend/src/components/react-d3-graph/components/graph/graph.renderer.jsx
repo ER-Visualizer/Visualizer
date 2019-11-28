@@ -113,6 +113,8 @@ function _renderDefs() {
             markerHeight: config.link.markerHeight,
         };
 
+        config.link.color = "#8C9FAB";
+
         cachedDefs = (
             <defs>
                 <Marker id={MARKERS.MARKER_S} refX={small} fill={config.link.color} {...markerProps} />
