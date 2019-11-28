@@ -119,6 +119,8 @@ class Main extends React.Component {
                 }
                 else if(eventData["stats"] == "true"){
                     delete eventData['stats']
+                    console.log("recieved stats")
+                    console.log(eventData)
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
                     run: false,

@@ -231,21 +231,10 @@ function EDSimulation(state = initialState, action) {
 }
 const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
     // moves patient A from startNode to endNode
-    console.log("in move patient ");
-    console.log("before");
-    if (currNode != -1){
-        console.log("inQueue", inQueue, "patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
-    }
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
     if (currNode == -1){
-        // if (inQueue){ 
-        //     console.log("added -------------");
-        //     console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
-        //     // clonedNodes[0].patients.push(new Patient(patient, patientAcuity))        
-        // }
-        // console.log({clonedNodes});
         return clonedNodes
     }
 
@@ -256,9 +245,9 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
     const newNodesList = clonedNodes.map((node) => {
         const newCurNode = {...node}
         if (nextNode == "end"){
-            // remove patient from all resources 
+            // remove patient from all resources if its leaving a resource
             newCurNode.processing = node.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
-            // newCurNode.patients = node.patients.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+
         }else {
             // add them to the correct one based on the inqueue value and the value of nextnodeid
 
@@ -277,6 +266,7 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
     });
     let removedNodes = newNodesList.map((node) => {
         if(nextNode == "end"){
+            // already removed from resources previously
             return node
         }
         // if patient is going to a resource, they cannot be in any other resource
@@ -284,7 +274,6 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
  
                // patients have to be removed from a queue of the node they are being processed at 
                if(parseInt(node.id) == parseInt(nextNode)){
-                    console.log("SAME NODE ID")
 
                     patientsWithoutCurPatient = []
                    for(let i = 0; i < node.patients.length; i++){
@@ -295,24 +284,15 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
                    }
                 
                     node.patients = patientsWithoutCurPatient
-                    console.log("patient", patient, node.patients)
+
                }
                
-               // node.patients = patientsWithoutCurPatient;
-               // console.log(patient, processingListWithoutCurPatient)
 
             }
            
         
         return node
     });
-    console.log("removed")
-    console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",nextNode)
-
-    console.log(removedNodes)
-   
-    
-    console.log("results")
 
     return removedNodes; 
 }

@@ -120,8 +120,6 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
         fontColor = link.fontColor || config.link.fontColor;
         fontWeight = highlight ? config.link.highlightFontWeight : config.link.fontWeight;
     }
-
-    console.log(nodes);
     let isPredictedLink = nodes?.[source]?.predictedChildren.indexOf(parseInt(target)) >= 0
 
     return {

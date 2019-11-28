@@ -76,8 +76,9 @@ class Navbar extends React.Component {
     }
 
     download = (event) => {
+        console.log("download")
         console.log(this.props.stats);
-        if (this.props.stats){
+        if (this.props.stats != undefined && this.props.stats != null && this.props.stats){
             console.log("----------------------------");
             const patient_data_to_download = this.props.stats["patients"]
             const hospital_data_to_download = this.props.stats["hospital"]
@@ -94,10 +95,10 @@ class Navbar extends React.Component {
         }else{
             console.log("no stats availble my guy");
             let data_to_download = {}
-            this.setState({ patientDataToDownload: data_to_download }, () => {
-                // click the CSVLink component to trigger the CSV download
-                this.csvLink.link.click()
-            })
+            // this.setState({ patientDataToDownload: data_to_download }, () => {
+            //     // click the CSVLink component to trigger the CSV download
+            //     // this.csvLink.link.click()
+            // })
         }
         // const currentRecords = this.reactTable.getResolvedState().sortedData;
         // var data_to_download = []
