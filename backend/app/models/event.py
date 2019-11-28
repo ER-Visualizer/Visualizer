@@ -23,12 +23,16 @@ class Event():
         self.node_resource_id = node_resource_id
         self.moved_to = None
         self.in_queue = True
+        self.finished = False
 
     def __lt__(self, other):
         return self.event_time < other.event_time
 
     def get_patient_id(self):
         return self.patient_id
+
+    def get_finished(self):
+        return self.finished
 
     def get_event_time(self):
         return self.event_time
@@ -47,6 +51,9 @@ class Event():
 
     def set_in_queue(self, in_queue):
         self.in_queue = in_queue
+
+    def set_finished(self):
+        self.finished = True
 
     def get_moved_to(self):
         return self.moved_to

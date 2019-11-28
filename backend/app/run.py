@@ -117,8 +117,8 @@ def send_e():
         packet_start = packet_start + packet_duration
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        if len(event_changes[0].get_moved_to()) == 0:
-            curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
+        if event_changes[0].get_finished() is True:
+            app.logger.info("Patient: " + str(all_patients[event_changes[0].get_patient_id()].get_id()) + " exited")
                 # if cur node and next node are same and inqueue is true don't set,
                 # log it as an err 
             event_dict = {
@@ -191,7 +191,7 @@ def process_heap():
     # record doctor statistics
     if process_name == "doctor":
         doctor_id = resource.get_id()
-        statistics.increment_doc_seen(doctor_id)
+        # statistics.increment_doc_seen(doctor_id)
         # TODO
         # Length of doctor/patient interaction per patient per doctor
         # average or record all?

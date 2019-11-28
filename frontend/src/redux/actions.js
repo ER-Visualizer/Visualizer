@@ -21,6 +21,8 @@ export const SHOW_LINK_SIDEBAR = 'SHOW_LINK_SIDEBAR'
 export const ADD_PREDICTED_CHILD = 'ADD_PREDICTED_CHILD'
 export const REMOVE_PREDICTED_CHILD = 'REMOVE_PREDICTED_CHILD'
 
+export const SIMULATION_STARTED = 'SIMULATION_STARTED'
+
 
 /*
 * Action Creators
@@ -45,10 +47,10 @@ export const addToLogs = (message) => {
     return {type: ADD_TO_LOGS, message: message}
 }
 
-export const updatePatientLocation = (patient, currNode, newNode, patientAcuity) => {
-    console.log({patientAcuity});
-    
-    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode, newNode: newNode,  patient: patient, pAcuity: patientAcuity}
+export const updatePatientLocation = (patient, currNode, newNode, patientAcuity, inQueue) => {
+    return {type: UPDATE_PATIENT_LOCATION, currNode: currNode,
+            newNode: newNode,  patient: patient,
+            pAcuity: patientAcuity, inQueue: inQueue}
 }
 export function addNode(){
     return {type: ADD_NODE}
@@ -97,4 +99,8 @@ export function addPredictedChild(parent, child) {
 
 export function removePredictedChild(parent, child) {
     return {type: REMOVE_PREDICTED_CHILD, parent: parent, child: child}
+}
+
+export function simulationStarted() {
+    return {type: SIMULATION_STARTED}
 }

@@ -22,7 +22,8 @@ class Main extends React.Component {
             ws: null,
             run: false,
             rate: 1,
-            duration: 5
+            duration: 5,
+            stats: []
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -33,9 +34,14 @@ class Main extends React.Component {
     }
 
     runHandler = async () =>{
+        for(let i = 0; i < this.props.nodes.length; i++){
+            this.props.nodes[i].patients = []
+            this.props.nodes[i].processing = []
+        }
         await this.sleep(5000);
         // console.log("run handler")
-        this.setState({run: true})
+        this.setState({run: true,
+                       statsAvailable: false})
         this.connect();
     }
 
@@ -49,7 +55,7 @@ class Main extends React.Component {
         else if(eventData.nextNodeId == "end"){
             return {
                 eventData: eventData,
-                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has exited the simulation.`
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             }
         }
         return {
@@ -103,16 +109,15 @@ class Main extends React.Component {
                     this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
-                    // console.log("stats true")
                     delete eventData['stats']
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
-                    run: false
+                    run: false,
+                    stats: eventData
                     })
+                    console.log({eventData});
                     this.child.updateRunButton()
-
                 }
-                
         }
 
         // websocket onclose event listener
@@ -163,8 +168,9 @@ class Main extends React.Component {
     updateNodePatients(new_events) {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
-        new_events.forEach((event) => {        
-            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'])
+        
+        new_events.forEach((event) => {    
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'], event['inQueue'])
         })
     }
 
@@ -287,7 +293,11 @@ class Main extends React.Component {
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
                 >
-                <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)} rate={this.state.rate} duration={this.state.duration}/>
+                <Navbar stats={this.state.stats}
+                        runHandler={this.runHandler} 
+                        onRef={ref => (this.child = ref)} 
+                        rate={this.state.rate} 
+                        duration={this.state.duration}/>
                 <Graph
                 directed={true}
                 id="graph-id" // id is mandatory, if no id is defined rd3g will throw an error
@@ -298,8 +308,8 @@ class Main extends React.Component {
                 />
                 </Sidebar>
                 <div className="slider">
-                <Slider initNum={this.state.rate} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
-                <Slider initNum={this.state.duration} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
+                <Slider initNum={this.state.rate} max={10} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
+                <Slider initNum={this.state.duration} max={100} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
                 </div>
             </div>
         )
@@ -345,8 +355,8 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        updatePatientLocation: (patient, currNode, newNode, patientAcuity) => {
-            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity))
+        updatePatientLocation: (patient, currNode, newNode, patientAcuity, inQueue) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity, inQueue))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

@@ -24,7 +24,7 @@ class Node:
                  process_name=None, distribution_name=None,
                  distribution_parameters=None, output_process_ids=None, rules=[], priority_type=""):
 
-        self.id = id
+        self.id = int(id)
         # create the queue type, prior func and the queue itself
         self.queue_type = queue_type
 
@@ -39,7 +39,7 @@ class Node:
         self.queue = self._set_queue()
 
         # create num actors and resource dict based on num actors
-        self.num_actors = num_actors
+        self.num_actors = int(num_actors)
         self.resource_dict = self._create_resource_dict()
 
         self.process_name = process_name
@@ -162,6 +162,7 @@ class Node:
         patient = resource.clear_patient()
         app.logger.info("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id()))
+        self.add_patient_leave_resource_event(patient, old_id)
 
         # TODO see if we need to do this in random order to avoid bias, and create a multi-threaded simulation
         #  Might have to, b/c we don't want to bias which spot patient will take. In that case we will need to make
@@ -178,9 +179,9 @@ class Node:
         # send the patient to all of the queues that they need
         # to be put in (outgoing processes from
         # parent_process)
+
         for process_id in self.output_process_ids:
             Node.node_dict[process_id].put_patient_in_node(patient, old_id)
-
         # call fill_spot on this subprocess because now we have an empty spot there and want to fill it with another
         # patient
         self.fill_spot_for_resource(resource)
@@ -249,13 +250,19 @@ class Node:
                         # once removed from queue, update patient record
                         patient_record = patient.get_patient_record()
                         patient_record.remove_process_from_queue(self.id)
-                        # record event of patient joining resource
-                        self.add_patient_join_resource_event(patient, subprocess)
                         self.insert_patient_to_resource_and_heap(
                             patient, subprocess)
                         return True
 
         return False
+
+    def add_patient_leave_resource_event(self, patient, old_id):
+        if old_id is None:
+            return
+        leave_resource = Event(self.get_id(), 'N/A', patient.get_id(), GlobalTime.time)
+        leave_resource.set_in_queue(False)
+        leave_resource.set_finished()
+        GlobalEvents.event_changes.append(leave_resource)
 
     def add_patient_join_resource_event(self, patient, resource):
         leave_queue = Event(self.get_id(), resource.get_id(),
@@ -318,7 +325,6 @@ class Node:
                             patient_record = patient.get_patient_record()
                             patient_record.remove_process_from_queue(self.id)
                         # record event of patient joining resource
-                        self.add_patient_join_resource_event(patient, resource)
                         self.insert_patient_to_resource_and_heap(
                             patient, resource)
                         return True
@@ -331,6 +337,9 @@ class Node:
 
         finish_time, duration = self.generate_finish_time()
         resource.insert_patient(patient, self.id, finish_time, duration)
+        # record event of patient joining resource
+        self.add_patient_join_resource_event(patient, resource)
+
         # now add the event to the heap
         self.add_to_heap(resource.get_id())
 

@@ -22,7 +22,10 @@ class ObjectRecord():
 
     def get_id(self):
         return self.object_id
-    
+
+    def get_finished(self):
+        return self.finished
+
     def get_last_visited_node_id(self):
         if len(self.visited) == 0:
             return None

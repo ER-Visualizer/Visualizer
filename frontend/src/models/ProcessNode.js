@@ -1,7 +1,9 @@
 class ProcessNode {
     constructor(id, elementType, distribution, distributionParameters,
         numberOfActors, queueType, priorityFunction, children,
-        patients, priorityType, predictedChildren) {
+        patients = [], priorityType, processing = [], predictedChildren) {
+          console.log(priorityType);
+          console.log(predictedChildren);
       this.id = id;
       this.elementType = elementType;
       this.distribution = distribution;
@@ -10,7 +12,8 @@ class ProcessNode {
       this.queueType = queueType;
       this.priorityFunction = priorityFunction;
       this.children = children;
-      this.patients = patients;
+      this.patients = patients.slice();
+      this.processing = processing.slice();
       this.priorityType = priorityType;
       this.predictedChildren = predictedChildren;
     }
