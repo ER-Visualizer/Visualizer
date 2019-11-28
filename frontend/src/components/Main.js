@@ -20,7 +20,7 @@ class Main extends React.Component {
             run: false,
             rate: 1,
             duration: 5,
-            stats: {}
+            stats: []
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -106,7 +106,7 @@ class Main extends React.Component {
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
                     run: false,
-                    stats: [JSON.stringify(eventData)]
+                    stats: eventData
                     })
                     console.log({eventData});
                     this.child.updateRunButton()
