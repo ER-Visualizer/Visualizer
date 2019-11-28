@@ -17,7 +17,11 @@ class Navbar extends React.Component {
         this.sendCanvas = this.sendCanvas.bind(this);
         this.updateRunButton = this.updateRunButton.bind(this);
         this.handleLinkDeleteButton = this.handleLinkDeleteButton.bind(this)
-        this.state = {runButtonpressed: false, button: null, dataToDownload: []};
+        this.state = {runButtonpressed: false, 
+                      button: null, 
+                      patientDataToDownload: [],
+                      hospitalDataToDownload: [],
+                      doctorDataToDownload: []};
     }
     componentDidMount() {
         this.props.onRef(this)
@@ -74,16 +78,22 @@ class Navbar extends React.Component {
         console.log(this.props.stats);
         if (this.props.stats){
             console.log("----------------------------");
-            let data_to_download = this.props.stats["patients"]
-            this.setState({ dataToDownload: data_to_download }, () => {
+            const patient_data_to_download = this.props.stats["patients"]
+            const hospital_data_to_download = this.props.stats["hospital"]
+            const doctor_data_to_download = this.props.stats["doctors"]
+            this.setState({ patientDataToDownload: patient_data_to_download, 
+                            doctorDataToDownload: doctor_data_to_download,
+                            hospitalDataToDownload: hospital_data_to_download}, () => {
                 // click the CSVLink component to trigger the CSV download
-                this.csvLink.link.click()
+                this.csvLinkpatients.link.click()
+                this.csvLinkdoctors.link.click()
+                this.csvLinkhospital.link.click()
              })
-            // console.log(this.props.stats);
+            console.log(this.props.stats);
         }else{
             console.log("no stats availble my guy");
             let data_to_download = {}
-            this.setState({ dataToDownload: data_to_download }, () => {
+            this.setState({ patientDataToDownload: data_to_download }, () => {
                 // click the CSVLink component to trigger the CSV download
                 this.csvLink.link.click()
             })
@@ -97,7 +107,7 @@ class Navbar extends React.Component {
         //    }
         //    data_to_download.push(record_to_download)
         // }
-        // this.setState({ dataToDownload: data_to_download }, () => {
+        // this.setState({ patientDataToDownload: data_to_download }, () => {
         //    // click the CSVLink component to trigger the CSV download
         //    this.csvLink.link.click()
         // })
@@ -118,11 +128,21 @@ class Navbar extends React.Component {
             <div className="Navbar">   
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
                 <button className="ShowLogsButton" onClick={this.download}> Download</button>
-                <CSVLink data={this.state.dataToDownload}
-                        filename="data.csv"
+                <CSVLink data={this.state.patientDataToDownload}
+                        filename="patient_data.csv"
                         className="hidden"
-                        ref={(r) => this.csvLink = r}
+                        ref={(r) => this.csvLinkpatients = r}
                         target="_blank"/>
+                <CSVLink data={this.state.hospitalDataToDownload}
+                    filename="hospital_data.csv"
+                    className="hidden"
+                    ref={(r) => this.csvLinkhospital = r}
+                    target="_blank"/>
+                <CSVLink data={this.state.doctorDataToDownload}
+                    filename="doctor_data.csv"
+                    className="hidden"
+                    ref={(r) => this.csvLinkdoctors = r}
+                    target="_blank"/>
                 <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
