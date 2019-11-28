@@ -37,9 +37,14 @@ class Main extends React.Component {
     }
 
     parseEventData(eventData) {
-        return {
-            eventData: eventData,
-            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
+        if (eventData["inQueue"]){
+            console.log("inqueue:", eventData["inQueue"]);
+            console.log({eventData});
+        }else {
+            return {
+                eventData: eventData,
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
+            }
         }
     }
     timeout = 250; // Initial timeout duration as a class variable

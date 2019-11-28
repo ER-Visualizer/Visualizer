@@ -1,0 +1,17 @@
+.ResourceQueueContainer {
+  display: flex;
+  width: 100%;
+  border: 1px solid rgb(206, 206, 206);
+  border-radius: 4px;
+  height: 90px;
+  margin: 10px 0;
+}
+
+.ResourceQueue {
+  padding-top: 5px;
+  padding-left: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: scroll;
+}
