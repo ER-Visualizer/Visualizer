@@ -4,7 +4,7 @@ import PatientBox from './PatientBox';
 import Patient from '../models/Patient';
 
 const ResourceQueue = ({ patients }) => {
-    // console.log({patients});
+    console.log({patients});
     if (patients.length > 1){
         patients.sort((patient1, patient2) =>
         patient1.accuity - patient2.accuity);

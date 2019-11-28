@@ -2,12 +2,14 @@ import React from 'react';
 import Sidebar from "react-sidebar";
 import NodeSidebarContent from './NodeSidebarContent'
 import LogsSidebarContent from './LogsSidebarContent'
+import LinkSidebarContent from './LinkSidebarContent'
 import Graph from "./react-d3-graph/components/graph/Graph";
 import Navbar from "./Navbar";
 import { connect } from 'react-redux';
 import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
-import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode} from '../redux/actions';
+
+import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode, showLinkSidebar} from '../redux/actions';
 import Slider from './Slider.js'
 
 class Main extends React.Component {
@@ -16,6 +18,7 @@ class Main extends React.Component {
         this.state = {
             events: [],
             selectedNode: null,
+            selectedLink: null,
             ws: null,
             run: false,
             rate: 1,
@@ -189,9 +192,12 @@ class Main extends React.Component {
                 this.sidebarLastContent = <NodeSidebarContent node={node_to_send} numNodes={this.props.nodes.length}/>
             }
             
-            
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
+        } else if (this.props.shouldShowLinkSidebar) {
+            this.sidebarLastContent = <LinkSidebarContent 
+                    parent={this.state.selectedLink.parentId}
+                    child={this.state.selectedLink.childId} />
         }
 
         // we return the last content so that the sidebar content
@@ -233,16 +239,12 @@ class Main extends React.Component {
         else { // dont toggle sidebars when build link mode on
 
             const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-            // console.log(shouldHide);
+            let timeout = 0;
+
             this.setState({
                 selectedNode: nodeId
             })
-            
-            
-            this.props.hideSidebar();
-            setTimeout(function() {
-                this.props.showNodeConfig(shouldHide);
-            }.bind(this), 300);
+            this.props.showNodeConfig(shouldHide);
         }
         
     }
@@ -256,6 +258,22 @@ class Main extends React.Component {
         if (this.props.shouldDeleteLink){
             // react-d3-graph gives strings for these...            
             this.props.deleteLink(parseInt(source), parseInt(target))
+        } else {
+            const shouldHide = this.state.selectedLink?.parentId?.toString() == source && this.state.selectedLink?.childId?.toString() == target
+            
+            if (shouldHide) {
+                this.setState({
+                    selectedLink: null
+                });
+            } else {
+                this.setState({
+                    selectedLink: {
+                        parentId: parseInt(source),
+                        childId: parseInt(target)
+                    }
+                });
+            }
+            this.props.showLinkSidebar(shouldHide);
         }
     }
 
@@ -280,10 +298,9 @@ class Main extends React.Component {
             <div className="Main">
                 <Sidebar
                     sidebar={this.renderSidebarContent()}
-                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar}
+                    docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar || this.props.shouldShowLinkSidebar}
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
-                    
                 >
                 <Navbar stats={this.state.stats}
                         runHandler={this.runHandler} 
@@ -320,7 +337,7 @@ const graphConfig = { // TODO: move this into store
         labelProperty: (node) => node.name 
     },
     link: {
-        type: "CURVE_SMOOTH" 
+        type: "CURVE_SMOOTH",
         // could make straight if the two nodes are not pointing at eachother.
         // needs to be round. otw cannot click link that is rendered
     },
@@ -333,6 +350,7 @@ const mapStateToProps = state => {
       showLogsSidebar: state.showLogsSidebar, 
       showNodeSidebar: state.showNodeSidebar, 
       showJSONEntrySidebar: state.showJSONEntrySidebar,
+      shouldShowLinkSidebar: state.showLinkSidebar,
       nodes: state.nodes,
     }
 }
@@ -354,8 +372,10 @@ const mapDispatchToProps = dispatch => {
         },
         connectNode: (nodeId) => {
             dispatch(connectNode(nodeId))
+        },
+        showLinkSidebar: (shouldHide) => {
+            dispatch(showLinkSidebar(shouldHide))
         }
-
     }
 }
 

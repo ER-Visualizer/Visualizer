@@ -17,6 +17,11 @@ export const CONNECT_NODE = 'CONNECT_NODE'
 export const BUILD_LINK_MODE = 'BUILD_LINK_MODE'
 export const DELETE_LINK = 'DELETE_LINK'
 export const DELETE_LINK_MODE = 'DELETE_LINK_MODE'
+export const SHOW_LINK_SIDEBAR = 'SHOW_LINK_SIDEBAR'
+export const ADD_PREDICTED_CHILD = 'ADD_PREDICTED_CHILD'
+export const REMOVE_PREDICTED_CHILD = 'REMOVE_PREDICTED_CHILD'
+
+export const SIMULATION_STARTED = 'SIMULATION_STARTED'
 
 
 /*
@@ -82,4 +87,20 @@ export function replaceNodeList(newNodeList){
 
 export function buildLinkModeSwitch(){
     return {type: BUILD_LINK_MODE}
+}
+
+export function showLinkSidebar(shouldHide) {
+    return {type: SHOW_LINK_SIDEBAR, shouldHide: shouldHide}
+}
+
+export function addPredictedChild(parent, child) {
+    return {type: ADD_PREDICTED_CHILD, parent: parent, child: child}
+}
+
+export function removePredictedChild(parent, child) {
+    return {type: REMOVE_PREDICTED_CHILD, parent: parent, child: child}
+}
+
+export function simulationStarted() {
+    return {type: SIMULATION_STARTED}
 }

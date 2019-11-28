@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Navbar.css";
 import { connect } from 'react-redux';
-import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch, buildLinkModeSwitch } from '../redux/actions'
+import  {showLogs, showNodeConfig, showJSONEntrySidebar, addNode, deleteLinkModeSwitch, buildLinkModeSwitch, simulationStarted } from '../redux/actions'
 import {ReactComponent as PlayIcon} from '../play.svg';
 import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
@@ -33,6 +33,7 @@ class Navbar extends React.Component {
         try {
             console.log("send canvas");
             // console.log(e)
+            await this.props.simulationStarted()
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
             let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
@@ -143,7 +144,6 @@ class Navbar extends React.Component {
                     className="hidden"
                     ref={(r) => this.csvLinkdoctors = r}
                     target="_blank"/>
-                <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
                 <button className="ShowLogsButton" onClick={this.props.showLogs}><TerminalIcon /> Show Logs</button>
@@ -179,6 +179,9 @@ const mapDispatchToProps = dispatch => {
         },
         buildLinkModeSwitch: () => {
             dispatch(buildLinkModeSwitch())
+        },
+        simulationStarted: () => {
+            dispatch(simulationStarted())
         }
     }
 }
