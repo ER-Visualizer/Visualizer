@@ -91,7 +91,14 @@ class WebsocketServer:
                     d_id = d.split("_")[1]
                     curd_data = [d_id]
                     for i in range(len(stats[key][d])):
-                        curd_data.append(stats[key][d][doctor_keys[i]])
+                        app.logger.info("for loop")
+                        app.logger.info(stats[key])
+                        app.logger.info(stats[key][d])
+                        app.logger.info(doctor_keys[i])
+                        if doctor_keys[i] not in stats[key][d]:
+                            curd_data.append("None")
+                        else:
+                            curd_data.append(stats[key][d][doctor_keys[i]])
                     if len(curd_data) != len(doctor_header):
                         for j in range(len(doctor_header)-len(curd_data)):
                             curd_data.append("None")
@@ -111,7 +118,7 @@ class WebsocketServer:
             message = self.producerFunc()
             if not check and not self.sent_stats:
                 stats = self.stats()
-                formatted_stats = await self.get_formatted_stats(stats)
+                formatted_stats = stats
                 app.logger.info(formatted_stats)
                 message = json.dumps(formatted_stats)
                 self.sent_stats = True

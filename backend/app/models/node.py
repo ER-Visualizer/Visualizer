@@ -257,8 +257,6 @@ class Node:
         return False
 
     def add_patient_leave_resource_event(self, patient, old_id):
-        if old_id is None:
-            return
         leave_resource = Event(self.get_id(), 'N/A', patient.get_id(), GlobalTime.time)
         leave_resource.set_in_queue(False)
         leave_resource.set_finished()
@@ -277,12 +275,8 @@ class Node:
         join_queue = Event(old_id, 'N/A', patient.get_id(), GlobalTime.time)
         patient_record = patient.patient_record
         # get all queues patient was added to
-        next_nodes = list(
-            patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
-        # get resource patient is in (if any)
-        if patient_record.get_curr_process_id() is not None:
-            next_nodes.append(patient_record.get_curr_process_id())
-        join_queue.set_moved_to(next_nodes)
+
+        join_queue.set_moved_to([self.id])
         if patient_record.get_curr_process_id is not None:
             GlobalEvents.event_changes.append(join_queue)
     '''
