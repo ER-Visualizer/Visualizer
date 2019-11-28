@@ -79,7 +79,7 @@ class Node extends React.Component {
     _renderPatientQueue() {
         return (
             <div>
-                <label style={{"text-align": "center"}}>queue</label>
+                <label>queue</label>
                 <Queue className="infoBox" patients={this.props.patients} />
                 <label>processing</label>
                 <ResourceQueue className="infoBox"  patients={this.props.processing} />

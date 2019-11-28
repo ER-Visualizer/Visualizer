@@ -34,8 +34,8 @@ class Statistic:
     def calculate_stats(self):
         hospital_stats = self._calculate_hospital_avgs()
         res = {"stats": "true", "hospital": hospital_stats,
-               "patient": {"process": self.p_process_times, "wait": self.p_wait_times},
-               "doctor": {"seen": self.d_seen, "length": self.d_length}}
+               "patients": {"process": self.p_process_times, "wait": self.p_wait_times},
+               "doctors": {"seen": self.d_seen, "length": self.d_length}}
         return res
 
     """
