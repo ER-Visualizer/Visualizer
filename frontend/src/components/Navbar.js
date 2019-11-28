@@ -129,7 +129,9 @@ class Navbar extends React.Component {
         return (
             <div className="Navbar">   
                 <img className="ourlogo" src={logo} />
+                
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
+
                 <button className="ShowLogsButton" onClick={this.download}> Download</button>
                 <CSVLink data={this.state.patientDataToDownload}
                         filename="patient_data.csv"
