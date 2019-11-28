@@ -191,7 +191,7 @@ def process_heap():
     # record doctor statistics
     if process_name == "doctor":
         doctor_id = resource.get_id()
-        statistics.increment_doc_seen(doctor_id)
+        # statistics.increment_doc_seen(doctor_id)
         # TODO
         # Length of doctor/patient interaction per patient per doctor
         # average or record all?

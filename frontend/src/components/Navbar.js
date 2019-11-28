@@ -7,6 +7,8 @@ import {ReactComponent as TerminalIcon} from '../terminal.svg';
 import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 import FileUploadForm from './UploadButton.js'
+import { CSVLink } from 'react-csv';
+
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -68,10 +70,45 @@ class Navbar extends React.Component {
         this.props.deleteLinkModeSwitch()
     }
 
+    download = (event) => {
+        if (this.props.stats){
+            console.log("----------------------------");
+
+            // console.log(this.props.stats);
+        }else{
+            console.log("no stats availble my guy");
+        }
+        // const currentRecords = this.reactTable.getResolvedState().sortedData;
+        // var data_to_download = []
+        // for (var index = 0; index < currentRecords.length; index++) {
+        //    let record_to_download = {}
+        //    for(var colIndex = 0; colIndex < columns.length ; colIndex ++) {
+        //       record_to_download[columns[colIndex].Header] = currentRecords[index][columns[colIndex].accessor]
+        //    }
+        //    data_to_download.push(record_to_download)
+        // }
+        // this.setState({ dataToDownload: data_to_download }, () => {
+        //    // click the CSVLink component to trigger the CSV download
+        //    this.csvLink.link.click()
+        // })
+      } 
+
+                // {/* <CSVLink data={JSON.stringify(this.props.stats)}>Download me</CSVLink>; */}
+    
     render() {
+        const csvData = [
+            ["firstname", "lastname", "email"],
+            ["Ahmed", "Tomi", "ah@smthing.co.com"],
+            ["Raed", "Labes", "rl@smthing.co.com"],
+            ["Yezzi", "Min l3b", "ymin@cocococo.com"]
+            ];
         return (
             <div className="Navbar">   
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
+                <CSVLink data={[this.props.stats]} filename={"my-file.csv"}
+                        className="btn btn-primary" target="_blank"
+                        >Download me</CSVLink>;
+                <button className="ShowLogsButton" onClick={this.download}> Download</button>
                 <button className="ToggleLinkDeletebutton" onClick={this.props.deleteLinkModeSwitch}>Delete Links: { this.props.shouldDeleteLink? "on" : "off" }</button>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>
