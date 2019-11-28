@@ -1,4 +1,6 @@
 import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST} from './actions';
+import ProcessNode from '../models/ProcessNode';
+import Patient from '../models/Patient';
 import { object } from 'prop-types';
 
 const initialState = {
@@ -8,52 +10,16 @@ const initialState = {
     shouldDeleteLink: false,
     shouldBuildLink: false, 
     linkBeingBuilt: [], // the ID's of 2 nodes between which a link is being constructed.
-    nodeCount: 4, // max ID of any node
+    nodeCount: 5, // max ID of any node
     nodes: [
-            {
-                "id": 0,
-                "elementType": "reception",
-                "distribution": "fixed",
-                "distributionParameters": [5],
-                "numberOfActors": 1,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [1],
-                "patients": []
-            },
-            {
-                "id": 1,
-                "elementType": "triage",
-                "distribution": "fixed",
-                "distributionParameters": [3],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [2, 3],
-                "patients": []
-            },
-            {
-                "id": 2,
-                "elementType": "doctor",
-                "distribution": "fixed",
-                "distributionParameters": [10],
-                "numberOfActors": 3,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [],
-                "patients": []
-            },
-            {
-                "id": 3,
-                "elementType": "x-ray",
-                "distribution": "binomial",
-                "distributionParameters": [1, 1],
-                "numberOfActors": 2,
-                "queueType": "priority queue",
-                "priorityFunction": "",
-                "children": [],
-                "patients": []
-            }
+        new ProcessNode(0, "reception", "fixed", [5], 1,
+            "priority queue", "", [1], [], "acuity"),
+        new ProcessNode(1, "triage", "fixed", [3], 2,
+            "priority queue", "", [2, 3], [], "acuity"),
+        new ProcessNode(2, "doctor", "fixed", [10], 3,
+            "priority queue", "", [3], [], "acuity"),
+        new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
+            "priority queue", "", [], [], "acuity")
         // {
         //     "id": 0,
         //     "elementType": "reception",
@@ -163,7 +129,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode)
+                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode, action.pAcuity)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -177,7 +143,7 @@ function EDSimulation(state = initialState, action) {
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
-            console.log(temp_node_count - 2);
+            // console.log(temp_node_count - 2);
             
             return Object.assign({}, state, {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
@@ -199,10 +165,10 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state,
                 {nodes: action.newNodeList})
         case CONNECT_NODE:
-            console.log(state.linkBeingBuilt);
+            // console.log(state.linkBeingBuilt);
             
             if (state.linkBeingBuilt.length == 1){ // connect the target node
-                console.log("checking candidate nodes");
+                // console.log("checking candidate nodes");
                 
                 if (state.linkBeingBuilt[0] === action.nodeId) {
                     return state // no self loops allowed       
@@ -213,7 +179,7 @@ function EDSimulation(state = initialState, action) {
                     return state
                 }
                 
-                console.log("creating new link");
+                // console.log("creating new link");
                 return Object.assign({}, state,
                     {
                         nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link
@@ -222,7 +188,7 @@ function EDSimulation(state = initialState, action) {
                 )
             }
             else {
-                console.log("selected link source");
+                // console.log("selected link source");
                 
                 
                 return Object.assign({}, state,  // add the source node
@@ -235,16 +201,20 @@ function EDSimulation(state = initialState, action) {
             return state
     }
 }
-const movePatient = (nodes, patient, currNode, newNode) => {
+const movePatient = (nodes, patient, currNode, newNode, patientAcuity) => {
     // moves patient A from startNode to endNode
     console.log("in move patient ");
-    console.log("patient id", patient, "currentnode", currNode, "nextnode",newNode)
+    console.log("before");
+    
+    console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",newNode)
 
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
     if (currNode == -1){
-        clonedNodes[0].patients.push(patient)        
+        console.log("added -------------");
+        console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode", 0)
+        clonedNodes[0].patients.push(new Patient(patient, patientAcuity))        
         return clonedNodes
     }
 
@@ -252,21 +222,25 @@ const movePatient = (nodes, patient, currNode, newNode) => {
     clonedNodes.forEach((node) => {
        console.log(node.id, "vs", currNode);
        if (node.id == currNode){
-           console.log("in here");
-           // Need to change to id when Mit changes it 
-           removedPatient = node.patients.filter((currPatient) => currPatient != patient );
+           console.log("cur patient", patientAcuity, patient);
+           removedPatient = node.patients.filter((currPatient) => currPatient.id != patient );
            node.patients = removedPatient
         }
     });
-    console.log({removedPatient});
+    // console.log({removedPatient});
 
     if (removedPatient){
         // console.log({removedPatient})
         const newNodesList = clonedNodes.map((node) => {
             const newCurNode = {...node}
 
-            if (node.id == newNode){
-                newCurNode.patients.push(patient)
+            if (node.id == newNode && newNode !== "end"){
+                console.log("added -------------");
+                console.log("patient id", patient, "pAcuity", patientAcuity, "currentnode", currNode, "nextnode",node.id)
+                newCurNode.patients.push(new Patient(patient, patientAcuity))
+            }
+            if (newNode === "end" && patient == node.id){
+                newCurNode.patients = node.patients.filter((currPatient) => currPatient.id != patient );
             }
             return newCurNode
 
@@ -293,12 +267,13 @@ function addNewNode(nodes, nodeNum){
         "numberOfActors": 0,
         "queueType": "newNode",
         "priorityFunction": "newNode",
-        "children": []
+        "children": [],
+        "patients": [],
     })
 
     // modifying clonedNodes doesn't seem to modify original nodes list...
     
-    console.log(clonedNodes);
+    // console.log(clonedNodes);
     
     return clonedNodes
 }
@@ -306,7 +281,7 @@ function addNewNode(nodes, nodeNum){
 
 function updateNodeProperties(nodes, newProps){
     // receives the node to be changed. just replace it inside the array
-    console.log(nodes);
+    // console.log(nodes);
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node

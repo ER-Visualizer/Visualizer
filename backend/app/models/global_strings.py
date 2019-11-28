@@ -12,6 +12,7 @@ START_TIME = "start_time"
 # Rule names
 FREQUENCY = "frequency"
 PREDICTION = "prediction"
+MOST_RESPONSIBLE_DOCTOR = "mostResponsibleDoctor"
 
 DEVELOPMENT = "development"
 PRODUCTION = "production"

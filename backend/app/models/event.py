@@ -22,6 +22,7 @@ class Event():
         self.node_id = node_id
         self.node_resource_id = node_resource_id
         self.moved_to = None
+        self.in_queue = True
 
     def __lt__(self, other):
         return self.event_time < other.event_time
@@ -38,8 +39,14 @@ class Event():
     def get_node_resource_id(self):
         return self.node_resource_id
 
+    def get_in_queue(self):
+        return self.in_queue
+
     def set_moved_to(self, node_ids):
         self.moved_to = node_ids
+
+    def set_in_queue(self, in_queue):
+        self.in_queue = in_queue
 
     def get_moved_to(self):
         return self.moved_to

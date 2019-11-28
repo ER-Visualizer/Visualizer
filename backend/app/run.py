@@ -67,7 +67,9 @@ def create_queues():
         # create node
         nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                       process_name=node["elementType"], distribution_name=node["distribution"],
-                                      distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules)
+                                      distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules,
+                                      priority_type=node["priorityType"])
+                                      
 
         # get list of all resources for the node
         if "resourceRules" in node:
@@ -266,7 +268,7 @@ def main(args=()):
     statistics = Statistic()
 
     packet_start = -1
-    # read args from post request  s
+    # read args from post requests
     global canvas, duration, rate 
     canvas, duration, rate = args
     app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")

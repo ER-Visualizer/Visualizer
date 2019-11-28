@@ -26,30 +26,30 @@ class Navbar extends React.Component {
     async sendCanvas(e){
         try {
             console.log("send canvas");
-            console.log(this.props.nodes)
+            // console.log(e)
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
             let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
-            console.log(body)
+            console.log({body})
             let response = await fetch('http://localhost:' + process.env.REACT_APP_SERVER_PORT + '/start', {
                 method: 'POST',
-                headers: {
-                  Accept: 'application/json',
+                headers: { 
+                  Accept: 
+                  'application/json',
                   'Content-Type': 'application/json',
                 },
-                mode: 'no-cors',
                 body: JSON.stringify(body),
             });
-            console.log(response);
-            return response;
+            console.log({response});
+            return response
         } catch (error) {
             console.error(error);
         }
     }
 
     async updateRunButton(){
-        console.log("updateRunButton")
-        console.log(this.state.runButtonpressed, this.state.button)
+        // console.log("updateRunButton")
+        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }

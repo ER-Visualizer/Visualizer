@@ -1,12 +1,12 @@
 #!/bin/bash
-file="./frontend/.env"
+file="./backend/.env"
 if [ -f $file ] ; then
     rm $file
 fi
 for line in `sed '/^$/d' $1`; do
     key_value=$(echo $line | tr "=" "\n")
     index=0
-    res="REACT_APP_"
+    res=""
     for k in $key_value:
     do
     	res+="$k"
@@ -19,3 +19,4 @@ for line in `sed '/^$/d' $1`; do
 	echo "$res" | sed 's/.$//'
 	echo "$res" | sed 's/.$//' >> "$file"
 done
+echo "DEV_ENV=$DEV_ENV" >> "$file"

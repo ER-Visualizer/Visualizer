@@ -25,17 +25,33 @@ class Main extends React.Component {
         this.sidebarLastContent = null;
         this.child = React.createRef();
     }
+    sleep = (ms) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
-    runHandler = () =>{
-        console.log("run handler")
+    runHandler = async () =>{
+        await this.sleep(5000);
+        // console.log("run handler")
         this.setState({run: true})
         this.connect();
     }
 
     parseEventData(eventData) {
+        if(eventData.inQueue == true){
+            return {
+                eventData: eventData,
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
+            }
+        }
+        else if(eventData.nextNodeId == "end"){
+            return {
+                eventData: eventData,
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has exited the simulation.`
+            }
+        }
         return {
             eventData: eventData,
-            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} moved to ${eventData['movedTo']} from ${eventData['startedAt']}`
+            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable
@@ -45,8 +61,8 @@ class Main extends React.Component {
      * This function establishes the connect with the websocket and also ensures constant reconnection if connection closes
      */
     connect = () => {
-        console.log("connect")
-        console.log(this.state.run)
+        // console.log("connect")
+        // console.log(this.state.run)
 
         var ws = new WebSocket("ws://localhost:" + process.env.REACT_APP_WEB_SOCKET_PORT);
         let that = this; // cache the this
@@ -84,7 +100,7 @@ class Main extends React.Component {
                     this.updateNodePatients(events)
                 }
                 else if(eventData["stats"] == "true"){
-                    console.log("stats true")
+                    // console.log("stats true")
                     delete eventData['stats']
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
@@ -144,8 +160,8 @@ class Main extends React.Component {
     updateNodePatients(new_events) {
         // console.log("in updatenodepatients");
         // console.log(this.state.events);
-        new_events.forEach((event) => {                  
-            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'])
+        new_events.forEach((event) => {        
+            this.props.updatePatientLocation(event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'])
         })
     }
 
@@ -189,12 +205,12 @@ class Main extends React.Component {
                 )
             }
         )
-        console.log(graphical_data);
+        // console.log(graphical_data);
         return graphical_data;
     };
 
     nodeClick(nodeId) {
-        console.log(nodeId);
+        // console.log(nodeId);
         
         if (this.props.shouldBuildLink){
             this.props.connectNode(parseInt(nodeId))
@@ -202,7 +218,7 @@ class Main extends React.Component {
         else { // dont toggle sidebars when build link mode on
 
             const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-            console.log(shouldHide);
+            // console.log(shouldHide);
             this.setState({
                 selectedNode: nodeId
             })
@@ -311,8 +327,8 @@ const mapDispatchToProps = dispatch => {
         hideSidebar: () => {
             dispatch(hideSidebar())
         },
-        updatePatientLocation: (patient, currNode, newNode) => {
-            dispatch(updatePatientLocation(patient, currNode, newNode))
+        updatePatientLocation: (patient, currNode, newNode, patientAcuity) => {
+            dispatch(updatePatientLocation(patient, currNode, newNode, patientAcuity))
         },
         deleteLink: (sourceId, targetId) => {
             dispatch(deleteLink(sourceId, targetId))

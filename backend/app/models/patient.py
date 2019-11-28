@@ -19,13 +19,13 @@ class Patient:
         return self.properties[ID]
     
     def get_acuity(self):
-        return self.properties[ACUITY]
+        return int(self.properties[ACUITY])
 
     def set_acuity(self, acuity):
         self.properties[ACUITY] = acuity
     
     def get_start_time(self):
-        return self.properties[START_TIME]
+        return int(self.properties[START_TIME])
 
     def get_available(self):
         return self.is_available
