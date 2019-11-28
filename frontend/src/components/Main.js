@@ -30,6 +30,10 @@ class Main extends React.Component {
     }
 
     runHandler = async () =>{
+        for(let i = 0; i < this.props.nodes.length; i++){
+            this.props.nodes[i].patients = []
+            this.props.nodes[i].processing = []
+        }
         await this.sleep(5000);
         // console.log("run handler")
         this.setState({run: true})
@@ -282,8 +286,8 @@ class Main extends React.Component {
                 />
                 </Sidebar>
                 <div className="slider">
-                <Slider initNum={this.state.rate} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
-                <Slider initNum={this.state.duration} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
+                <Slider initNum={this.state.rate} max={10} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
+                <Slider initNum={this.state.duration} max={100} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
                 </div>
             </div>
         )

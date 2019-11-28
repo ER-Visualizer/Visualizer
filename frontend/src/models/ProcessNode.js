@@ -10,8 +10,8 @@ class ProcessNode {
       this.queueType = queueType;
       this.priorityFunction = priorityFunction;
       this.children = children;
-      this.patients = patients;
-      this.processing = processing;
+      this.patients = patients.slice();
+      this.processing = processing.slice();
       this.priorityType = priorityType;
     }
   }

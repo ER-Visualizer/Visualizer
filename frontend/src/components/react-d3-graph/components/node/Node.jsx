@@ -3,7 +3,9 @@ import React from "react";
 import CONST from "./node.const";
 
 import nodeHelper from "./node.helper";
-
+import Queue from "../../../Queue.js"
+import ResourceQueue from "../../../ResourceQueue.js"
+import store from '../../../../redux/store'
 /**
  * Node component is responsible for encapsulating node render.
  * @example
@@ -74,6 +76,7 @@ export default class Node extends React.Component {
     handleOnMouseOutNode = () => this.props.onMouseOut && this.props.onMouseOut(this.props.id);
 
     render() {
+        // console.log("NODE JSX", store.getState())
         const nodeProps = {
             cursor: this.props.cursor,
             onClick: this.handleOnClickNode,
@@ -98,7 +101,14 @@ export default class Node extends React.Component {
             gty = this.props.cy,
             label = null,
             node = null;
-
+        let patient_list = null
+        let processing_list = []
+        for(let i = 0; i < store.getState().nodes.length; i++){
+            if(store.getState().nodes[i].id == this.props.id){
+                patient_list = store.getState().nodes[i].patients
+                processing_list = store.getState().nodes[i].processing
+            }
+        }
         if (this.props.svg || this.props.viewGenerator) {
             const height = size / 10;
             const width = size / 10;
@@ -136,13 +146,22 @@ export default class Node extends React.Component {
             nodeProps.stroke = this.props.stroke;
             nodeProps.strokeWidth = this.props.strokeWidth;
             label = <text {...textProps}>{this.props.label}</text>;
-            node = (<foreignObject width="211" height="180" {...nodeProps}>
+            node = (<foreignObject width="211" height="495" {...nodeProps}>
+
                 <div className="Station">
+                
                     <h1 className="title">{this.props.elementType}</h1>
                     <div className="infoBox">{this.props.distribution}({this.props.distributionParameters.join(", ")})</div>
                     <div className="infoBox">{this.props.queueType}</div>
                     <div className="infoBox">{this.props.numberOfActors} actors</div>
+                    <div className="input-container">
+                    <label style={{"text-align": "center"}}>queue</label>
+                    <Queue className="infoBox" patients={patient_list} />
+                    <label>processing</label>
+                    <ResourceQueue className="infoBox"  patients={processing_list} />
+                    </div>
                 </div>
+                
              </foreignObject>);
             // node = <path {...nodeProps} />;
         }
@@ -154,11 +173,16 @@ export default class Node extends React.Component {
             id: this.props.id,
             transform: `translate(${gtx},${gty})`,
         };
-
+        
+        if(patient_list == null){
+            console.log("ERROR")
+        }
         return (
             <g {...gProps}>
                 {node}
+                
                 {this.props.renderLabel && label}
+
             </g>
         );
     }

@@ -3,7 +3,7 @@ class Slider extends React.Component {
 	constructor(props) {
         super(props);
         this.rangeChange = this.rangeChange.bind(this)
-        this.state = {number: this.props.initNum};
+        this.state = {number: this.props.initNum, max: this.props.max};
 
     }
 
@@ -18,7 +18,7 @@ class Slider extends React.Component {
         <label>
           { this.state.number }
         </label>
-        <input type="range" min="0" max="100" value={ this.state.number } onChange={ this.rangeChange } />
+        <input type="range" min="0" max={this.state.max} value={ this.state.number } onChange={ this.rangeChange } />
       </div>
     )
   }
