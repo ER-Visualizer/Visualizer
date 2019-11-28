@@ -39,7 +39,10 @@ class WebsocketServer:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         self.wserver = websockets.serve(self.__producer_handler, port=self.port, loop=loop)
-        self.server = loop.run_until_complete(self.wserver)
+        try:
+            self.server = loop.run_until_complete(self.wserver)
+        except Exception:
+            self.close()
 
         loop.run_forever()
 

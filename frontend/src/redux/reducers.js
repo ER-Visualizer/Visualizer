@@ -231,9 +231,9 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
     const newNodesList = clonedNodes.map((node) => {
         const newCurNode = {...node}
         if (nextNode == "end"){
-            // remove patient from all resources and patient lists
+            // remove patient from all resources 
             newCurNode.processing = node.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
-            newCurNode.patients = node.patients.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+            // newCurNode.patients = node.patients.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
         }else {
             // add them to the correct one based on the inqueue value and the value of nextnodeid
 

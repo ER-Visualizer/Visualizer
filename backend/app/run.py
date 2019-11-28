@@ -117,7 +117,10 @@ def send_e():
         packet_start = packet_start + packet_duration
 
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
-        if event_changes[0].get_finished() is True:
+        if event_changes[0].get_moved_to() is not None and len(event_changes[0].get_moved_to()) > 0 and event_changes[0].get_moved_to()[0] == -1:
+            pass
+
+        elif event_changes[0].get_finished() is True:
             app.logger.info("Patient: " + str(all_patients[event_changes[0].get_patient_id()].get_id()) + " exited")
                 # if cur node and next node are same and inqueue is true don't set,
                 # log it as an err 

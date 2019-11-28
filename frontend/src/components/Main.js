@@ -92,18 +92,27 @@ class Main extends React.Component {
                 const events = eventData["Events"]
                 console.log("events")
                 console.log(events)
+                let updated_events = []
                 if(events != undefined && events.length != []){
                     let new_events = this.state.events
+                    let prev = null
                     for(let i = 0; i < events.length; i++){
                         let event = events[i]
-                        new_events = new_events.concat(this.parseEventData(event))
+                        if(prev == null || ( prev != null && JSON.stringify(event) != JSON.stringify(prev))){
+                            new_events = new_events.concat(this.parseEventData(event))
+                            updated_events.push(event)
+
+                        }else{
+                            console.log("REMOVED", i, event)
+                        }
+                        prev = event
+
                     }
                     this.setState({
                     events: new_events
                     })
-                    console.log({events});
-                    
-                    this.updateNodePatients(events)
+                    console.log(events, updated_events)
+                    this.updateNodePatients(updated_events)
                 }
                 else if(eventData["stats"] == "true"){
                     delete eventData['stats']
