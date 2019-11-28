@@ -121,6 +121,8 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
         fontWeight = highlight ? config.link.highlightFontWeight : config.link.fontWeight;
     }
 
+    let isPredictedLink = nodes?.[source]?.predictedChildren.indexOf(parseInt(target)) >= 0
+
     return {
         className: CONST.LINK_CLASS_NAME,
         d,
@@ -135,6 +137,7 @@ function buildLinkProps(link, nodes, links, config, linkCallbacks, highlightedNo
         stroke,
         strokeWidth,
         target,
+        isPredictedLink,
         onClickLink: linkCallbacks.onClickLink,
         onMouseOutLink: linkCallbacks.onMouseOutLink,
         onMouseOverLink: linkCallbacks.onMouseOverLink,

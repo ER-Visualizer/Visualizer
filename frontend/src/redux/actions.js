@@ -18,6 +18,8 @@ export const BUILD_LINK_MODE = 'BUILD_LINK_MODE'
 export const DELETE_LINK = 'DELETE_LINK'
 export const DELETE_LINK_MODE = 'DELETE_LINK_MODE'
 export const SHOW_LINK_SIDEBAR = 'SHOW_LINK_SIDEBAR'
+export const ADD_PREDICTED_CHILD = 'ADD_PREDICTED_CHILD'
+export const REMOVE_PREDICTED_CHILD = 'REMOVE_PREDICTED_CHILD'
 
 
 /*
@@ -87,4 +89,12 @@ export function buildLinkModeSwitch(){
 
 export function showLinkSidebar() {
     return {type: SHOW_LINK_SIDEBAR}
+}
+
+export function addPredictedChild(parent, child) {
+    return {type: ADD_PREDICTED_CHILD, parent: parent, child: child}
+}
+
+export function removePredictedChild(parent, child) {
+    return {type: REMOVE_PREDICTED_CHILD, parent: parent, child: child}
 }

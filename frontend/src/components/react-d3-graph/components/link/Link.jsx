@@ -75,16 +75,29 @@ export default class Link extends React.Component {
             fill: "none",
             cursor: this.props.mouseCursor,
         };
+        const transparentOverlayLineStyle = {
+            fill: "none",
+            opacity: 0,
+            strokeWidth: 10,
+            stroke: "red",
+            strokeOpacity: 0,
+            cursor: this.props.mouseCursor,
+        }
 
         const lineProps = {
+            className: this.props.className,
+            d: this.props.d,
+            style: lineStyle,
+        };
+        const transparentLineProps = {
             className: this.props.className,
             d: this.props.d,
             onClick: this.handleOnClickLink,
             onContextMenu: this.handleOnRightClickLink,
             onMouseOut: this.handleOnMouseOutLink,
             onMouseOver: this.handleOnMouseOverLink,
-            style: lineStyle,
-        };
+            style: transparentOverlayLineStyle
+        }
 
         if (this.props.markerId) {
             lineProps.markerEnd = `url(#${this.props.markerId})`;
@@ -100,9 +113,17 @@ export default class Link extends React.Component {
             },
         };
 
+        // If the link represents a predicted link, give the link custom styling
+        if(this.props.isPredictedLink) {
+            lineProps.strokeDasharray = "5, 5"
+        }
+        
+        // The second transparent path allows the thin line to have a larger
+        // click area for onClick events
         return (
             <g>
-                <path {...lineProps} id={id} />
+                <path {...lineProps} id={id} style={lineStyle} />
+                <path {...transparentLineProps} id={id} />
                 {label && (
                     <text style={{ textAnchor: "middle" }} {...textProps}>
                         <textPath href={`#${id}`} startOffset="50%">

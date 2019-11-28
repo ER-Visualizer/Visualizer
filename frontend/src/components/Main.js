@@ -179,8 +179,11 @@ class Main extends React.Component {
             
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
-        } else if (this.props.showLinkSidebar) {
-            this.sidebarLastContent = <LinkSidebarContent />
+        } else if (this.props.shouldShowLinkSidebar) {
+            console.log("updating render", this.props);
+            this.sidebarLastContent = <LinkSidebarContent 
+                    parent={this.state.selectedLink.parentId}
+                    child={this.state.selectedLink.childId} />
         }
 
         // we return the last content so that the sidebar content
@@ -247,7 +250,10 @@ class Main extends React.Component {
             this.props.deleteLink(parseInt(source), parseInt(target))
         } else {
             this.setState({
-                selectedLink: [source, target]
+                selectedLink: {
+                    parentId: parseInt(source),
+                    childId: parseInt(target)
+                }
             });
             this.props.showLinkSidebar();
         }
@@ -277,7 +283,6 @@ class Main extends React.Component {
                     docked={this.props.showLogsSidebar || this.props.showNodeSidebar || this.props.showJSONEntrySidebar || this.props.shouldShowLinkSidebar}
                     styles={{ sidebar: { background: this.sidebarColor(), color: "black", border: this.sidebarBorder() } }}
                     pullRight={true}
-                    
                 >
                 <Navbar runHandler={this.runHandler} onRef={ref => (this.child = ref)} rate={this.state.rate} duration={this.state.duration}/>
                 <Graph
@@ -310,7 +315,7 @@ const graphConfig = { // TODO: move this into store
         labelProperty: (node) => node.name 
     },
     link: {
-        type: "CURVE_SMOOTH" 
+        type: "CURVE_SMOOTH",
         // could make straight if the two nodes are not pointing at eachother.
         // needs to be round. otw cannot click link that is rendered
     },

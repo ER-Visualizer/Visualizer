@@ -1,7 +1,7 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD} from './actions';
 import ProcessNode from '../models/ProcessNode';
 import Patient from '../models/Patient';
-import { object } from 'prop-types';
+import { object } from 'prop-types'; 
 
 const initialState = {
     showLogsSidebar: false,
@@ -14,13 +14,13 @@ const initialState = {
     nodeCount: 5, // max ID of any node
     nodes: [
         new ProcessNode(0, "reception", "fixed", [5], 1,
-            "priority queue", "", [1], [], "acuity"),
+            "priority queue", "", [1], [], "acuity", []),
         new ProcessNode(1, "triage", "fixed", [3], 2,
-            "priority queue", "", [2, 3], [], "acuity"),
+            "priority queue", "", [2, 3], [], "acuity", []),
         new ProcessNode(2, "doctor", "fixed", [10], 3,
-            "priority queue", "", [3], [], "acuity"),
+            "priority queue", "", [3], [], "acuity", []),
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
-            "priority queue", "", [], [], "acuity")
+            "priority queue", "", [], [], "acuity", [])
         // {
         //     "id": 0,
         //     "elementType": "reception",
@@ -133,7 +133,8 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state, {
                 showLogsSidebar: false, 
                 showNodeSidebar: false, 
-                showJSONEntrySidebar: false
+                showJSONEntrySidebar: false,
+                showLinkSidebar: false
             }); 
         case UPDATE_PATIENT_LOCATION:
             return  Object.assign({}, state, {
@@ -201,13 +202,20 @@ function EDSimulation(state = initialState, action) {
             else {
                 // console.log("selected link source");
                 
-                
                 return Object.assign({}, state,  // add the source node
                     {   linkBeingBuilt: [action.nodeId],
                     }) 
             }
-            
-
+        case ADD_PREDICTED_CHILD:    
+            return Object.assign({}, state, {
+                nodes: addPredictedChildToParent(state.nodes, action.parent, action.child)
+            })
+        case REMOVE_PREDICTED_CHILD:
+            console.log("removing predicted child")
+            console.log(removePredictedChildFromParent(state.nodes, action.parent, action.child))
+            return Object.assign({}, state, {
+                nodes: removePredictedChildFromParent(state.nodes, action.parent, action.child)
+            })
         default:
             return state
     }
@@ -338,9 +346,36 @@ function deleteLinkFromState(nodes, sourceId, targetId){    // need to delete fr
 
     // cannot have duplicate links
     node_to_update.children.splice(index, 1) 
+
+    // also remove child as predicted edge if it exists
+    clonedNodes = removePredictedChildFromParent(clonedNodes, sourceId, targetId); 
     
     return clonedNodes;
 }
+
+function addPredictedChildToParent(nodes, parentId, childId) {
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+    let node_to_update = clonedNodes.find(node => node.id == parentId);
+    let index = node_to_update.predictedChildren.indexOf(childId);
+    if (index <= -1) {
+        node_to_update.predictedChildren.push(childId)
+    }
+    return clonedNodes;
+}
+
+function removePredictedChildFromParent(nodes, parentId, childId) {
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+    let node_to_update = clonedNodes.find(node => node.id == parentId);
+    let index = node_to_update.predictedChildren.indexOf(childId);
+    if (index <= -1) {
+        console.log(`Warning: child is already not a predicted child: (parent: ${parentId}, child: ${childId})`);
+    }
+
+    node_to_update.predictedChildren.splice(index, 1) 
+    return clonedNodes;
+}
+
+
 
 
 
