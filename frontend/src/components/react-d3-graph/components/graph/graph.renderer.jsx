@@ -34,7 +34,7 @@ function _renderLinks(nodes, links, linksMatrix, config, linkCallbacks, highligh
     if (config.collapsible) {
         outLinks = outLinks.filter(({ isHidden }) => !isHidden);
     }
-    console.log("renderLinks: ", nodes, links);
+
     return outLinks.map(link => {
         const { source, target } = link;
         const sourceId = getId(source);

@@ -180,7 +180,6 @@ class Main extends React.Component {
         } else if (this.props.showJSONEntrySidebar) {
             this.sidebarLastContent = <JSONEntrySidebarContent/>
         } else if (this.props.shouldShowLinkSidebar) {
-            console.log("updating render", this.props);
             this.sidebarLastContent = <LinkSidebarContent 
                     parent={this.state.selectedLink.parentId}
                     child={this.state.selectedLink.childId} />
@@ -225,16 +224,12 @@ class Main extends React.Component {
         else { // dont toggle sidebars when build link mode on
 
             const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
-            // console.log(shouldHide);
+            let timeout = 0;
+
             this.setState({
                 selectedNode: nodeId
             })
-            
-            
-            this.props.hideSidebar();
-            setTimeout(function() {
-                this.props.showNodeConfig(shouldHide);
-            }.bind(this), 300);
+            this.props.showNodeConfig(shouldHide);
         }
         
     }
@@ -249,13 +244,21 @@ class Main extends React.Component {
             // react-d3-graph gives strings for these...            
             this.props.deleteLink(parseInt(source), parseInt(target))
         } else {
-            this.setState({
-                selectedLink: {
-                    parentId: parseInt(source),
-                    childId: parseInt(target)
-                }
-            });
-            this.props.showLinkSidebar();
+            const shouldHide = this.state.selectedLink?.parentId?.toString() == source && this.state.selectedLink?.childId?.toString() == target
+            
+            if (shouldHide) {
+                this.setState({
+                    selectedLink: null
+                });
+            } else {
+                this.setState({
+                    selectedLink: {
+                        parentId: parseInt(source),
+                        childId: parseInt(target)
+                    }
+                });
+            }
+            this.props.showLinkSidebar(shouldHide);
         }
     }
 
@@ -351,8 +354,8 @@ const mapDispatchToProps = dispatch => {
         connectNode: (nodeId) => {
             dispatch(connectNode(nodeId))
         },
-        showLinkSidebar: () => {
-            dispatch(showLinkSidebar())
+        showLinkSidebar: (shouldHide) => {
+            dispatch(showLinkSidebar(shouldHide))
         }
     }
 }

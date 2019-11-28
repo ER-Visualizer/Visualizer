@@ -13,7 +13,6 @@ class LinkSidebarContent extends React.Component {
     }
 
     getParentNode() {
-        console.log(this.props)
         return this.props.nodes.find(node => node.id == this.props.parent)
     }
 
@@ -35,19 +34,28 @@ class LinkSidebarContent extends React.Component {
     }
 
     render() {
-        console.log("re rendering link sidebar", this.props);
-        console.log(this.childIsPredicted())
+        console.log(this.getParentNode())
         return (
-            <div className="LinkSidebarContent">      
+            <div className="LinkSidebarContent">   
+                <h3> {this.getParentNode().elementType} → {this.getChildNode().elementType} </h3>   
                 <div className="input-container">
+                    <label> Options </label>
                     <input type="checkbox" 
                         onChange={() => this.updateLink()}
                         checked={this.childIsPredicted()}>
                      </input>
-                    <label>Predicted edge</label>
+                    <div className="checkbox-label">
+                        <span className="title">Predicted edge</span><br/>
+                        <span className="description">A predicted edge is an edge that 
+                                allows a patient to directly follow 
+                                this edge to another queue without
+                                having to first follow mandatory edges
+                        </span>
+                    </div>
+                    
                 </div>  
 
-                <button className="DeleteNodebutton" onClick={()=>{this.handleDelete()}}> Delete </button>       
+                <button className="DeleteLinkButton" onClick={()=>{this.handleDelete()}}> Delete edge</button>       
             </div>
         )
     }

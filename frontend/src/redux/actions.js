@@ -87,8 +87,8 @@ export function buildLinkModeSwitch(){
     return {type: BUILD_LINK_MODE}
 }
 
-export function showLinkSidebar() {
-    return {type: SHOW_LINK_SIDEBAR}
+export function showLinkSidebar(shouldHide) {
+    return {type: SHOW_LINK_SIDEBAR, shouldHide: shouldHide}
 }
 
 export function addPredictedChild(parent, child) {

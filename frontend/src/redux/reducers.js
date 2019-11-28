@@ -123,11 +123,12 @@ function EDSimulation(state = initialState, action) {
                 showJSONEntrySidebar: !state.showJSONEntrySidebar // to allow for toggling
             }); 
         case SHOW_LINK_SIDEBAR:
+            console.log(action)
             return Object.assign({}, state, {
                 showLogsSidebar: false,
                 showNodeSidebar: false, 
                 showJSONEntrySidebar: false,
-                showLinkSidebar: !state.showLinkSidebar
+                showLinkSidebar: !action.shouldHide
             });  
         case HIDE_SIDEBAR:
             return Object.assign({}, state, {

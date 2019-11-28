@@ -78,7 +78,7 @@ export default class Link extends React.Component {
         const transparentOverlayLineStyle = {
             fill: "none",
             opacity: 0,
-            strokeWidth: 10,
+            strokeWidth: 15,
             stroke: "red",
             strokeOpacity: 0,
             cursor: this.props.mouseCursor,
