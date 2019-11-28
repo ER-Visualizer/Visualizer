@@ -24,6 +24,7 @@ export class JSONEntrySidebarContent extends Component {
         clone = JSON.parse(clone)
         for(let i = 0; i < clone.length; i ++){
             delete clone[i].patients
+            delete clone[i].processing
         }
         return clone
     }
@@ -67,6 +68,7 @@ export class JSONEntrySidebarContent extends Component {
         }
         for(let i = 0; i < validatedJSON.length; i++){
             validatedJSON[i].patients = []
+            validatedJSON[i].processing = []
         }
         const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children", "priorityType"];
         // console.log(this.state.valid);

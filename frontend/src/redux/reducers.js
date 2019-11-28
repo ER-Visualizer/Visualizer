@@ -232,8 +232,8 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
         const newCurNode = {...node}
         if (nextNode == "end"){
             // remove patient from all resources and patient lists
-            newCurNode.patients = node.patients.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
             newCurNode.processing = node.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+            newCurNode.patients = node.patients.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
         }else {
             // add them to the correct one based on the inqueue value and the value of nextnodeid
 
@@ -256,22 +256,9 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
         }
         // if patient is going to a resource, they cannot be in any other resource
             if(!inQueue){
-                // remove patients from other resources
-                if(parseInt(node.id) != parseInt(currNode)){
-                    processingListWithoutCurPatient = []
-                   for(let i = 0; i < node.processing.length; i++){
-                        console.log(node.processing[i], patient)
-                        if(parseInt(node.processing[i].id) != parseInt(patient)){
-                            processingListWithoutCurPatient.push(node.processing[i])
-
-                        }
-                    }
-                    node.processing = processingListWithoutCurPatient;
-
-
-                }
+ 
                // patients have to be removed from a queue of the node they are being processed at 
-               if(parseInt(node.id) == parseInt(currNode)){
+               if(parseInt(node.id) == parseInt(nextNode)){
                     console.log("SAME NODE ID")
 
                     patientsWithoutCurPatient = []

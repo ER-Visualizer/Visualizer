@@ -13,5 +13,5 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  overflow: scroll;
+  overflow: auto;
 }

@@ -50,7 +50,7 @@ class Main extends React.Component {
         else if(eventData.nextNodeId == "end"){
             return {
                 eventData: eventData,
-                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has exited the simulation.`
+                message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             }
         }
         return {
