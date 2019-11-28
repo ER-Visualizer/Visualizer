@@ -79,9 +79,9 @@ class Node extends React.Component {
     _renderPatientQueue() {
         return (
             <div>
-                <label>queue</label>
+                <h1 className="title">queue</h1>
                 <Queue className="infoBox" patients={this.props.patients} />
-                <label>processing</label>
+                <h1 className="title">processing</h1>
                 <ResourceQueue className="infoBox"  patients={this.props.processing} />
             </div>
         );
