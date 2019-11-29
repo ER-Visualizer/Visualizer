@@ -146,7 +146,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatient(state.nodes, action.patient, action.currNode, action.newNode, action.pAcuity, action.inQueue)
+                nodes: movePatients(state.nodes, action.events)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -230,9 +230,17 @@ function EDSimulation(state = initialState, action) {
     }
 }
 
-// const movePatients = (nodes, patient) => {
-//     movePatient()
-// }
+const movePatients = (nodes, events) => {
+    console.log("move events!!")
+    let new_nodes = nodes
+    for(let i = 0; i < events.length; i++){
+        let event = events[i]
+        console.log("move events")
+        new_nodes = movePatient(new_nodes, event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'], event['inQueue'])
+    }
+    return new_nodes
+
+}
 const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
     // moves patient A from startNode to endNode
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
