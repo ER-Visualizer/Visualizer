@@ -229,15 +229,18 @@ function EDSimulation(state = initialState, action) {
             return state
     }
 }
+
+// const movePatients = (nodes, patient) => {
+//     movePatient()
+// }
 const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
     // moves patient A from startNode to endNode
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
-    if (currNode == -1){
+    if (nextNode == -1){
         return clonedNodes
     }
-
 
     let patientsWithoutCurPatient;
     let processingListWithoutCurPatient;
@@ -253,11 +256,12 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
 
             if (parseInt(node.id) === parseInt(nextNode)){
 
-                console.log("added -------------");
-                console.log(node.id)
+                // console.log("added -------------");
+                // console.log(node.id)
                 if (inQueue){
                     newCurNode.patients.push(new Patient(patient, patientAcuity))
                 } else {
+                    console.log("added to queue!!!")
                     newCurNode.processing.push(new Patient(patient, patientAcuity))
                 }
             }
