@@ -17,7 +17,7 @@ export class NodeSidebarContent extends React.Component {
 
     handleInputChange(event) {
         const name = event.target.name
-        const value = name !== "distributionParameters" ? event.target.value : event.target.value.split(",")
+        const value = name !== "distributionParameters" ? event.target.value : event.target.value.split(",").map(item => item.trim());
         // user enters csvs for distribution parameters box. e.g. 5,3,6
 
         
@@ -46,10 +46,6 @@ export class NodeSidebarContent extends React.Component {
             for (let i = deleteId; i < numNodes; i++) {
                 continue
             }
-            // console.log("PROPS:")
-            // console.log(this.props)
-            // console.log("\nSTATE:")
-            // console.log(this.state)
 
         }
         else {
