@@ -2,23 +2,56 @@ import React from 'react';
 import './ResourceQueue.css';
 import PatientBox from './PatientBox';
 import Patient from '../models/Patient';
+import { FixedSizeGrid as Grid } from 'react-window';
+class ResourceQueue extends React.Component{
+    constructor(props){
+        super(props)
 
-const ResourceQueue = ({ patients }) => {
-    if (patients.length > 1){
-        patients.sort((patient1, patient2) =>
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+      return JSON.stringify(this.props.patients) !== JSON.stringify(nextProps.patients);
+    }
+    render(){
+    let patients = this.props.patients
+    let list_patients = []
+    let patient_keys = (Object.keys(patients))
+    if (patient_keys.length > 1){
+        list_patients = []
+        for(let i = 0; i < (patient_keys).length; i++){
+            if(patients[(patient_keys)[i]] != null){
+                list_patients.push(patients[(patient_keys[i])])
+
+            }
+        }
+        console.log(list_patients)
+        list_patients.sort((patient1, patient2) =>
         patient1.accuity - patient2.accuity);
     }
-    const PatientBoxes = patients.map((patient, i) =>
-        <PatientBox key={i} patient={patient} />
+    const Cell = ({ columnIndex, rowIndex, style }) => (
+      <div style={style}>
+        {(rowIndex * 6) + columnIndex < list_patients.length && 
+            <PatientBox key={columnIndex.toString() + "," + rowIndex.toString()} patient={list_patients[(rowIndex * 6) + columnIndex]} /> 
+        }
+      </div>
     );
-
+    let row_count = Math.ceil(list_patients.length/6)
     return (
         <div className="ResourceQueueContainer">
             <div className="ResourceQueue">
-                {PatientBoxes}
+               <Grid
+                columnCount={6}
+                columnWidth={30}
+                height={145}
+                rowCount={row_count}
+                rowHeight={30}
+                width={200}
+              >
+                {Cell}
+              </Grid>
             </div>
         </div>
     )
-};
-
+    
+}
+}
 export default ResourceQueue;

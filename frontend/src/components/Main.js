@@ -93,8 +93,8 @@ class Main extends React.Component {
                 const eventData = JSON.parse(event.data)
                 // console.log(eventData)
                 const events = eventData["Events"]
-                console.log("events")
-                console.log(events)
+                // console.log("events")
+                // console.log(events)
                 let updated_events = []
                 if(events != undefined && events.length != []){
                     let new_events = this.state.events
@@ -105,8 +105,6 @@ class Main extends React.Component {
                             new_events = new_events.concat(this.parseEventData(event))
                             updated_events.push(event)
 
-                        }else{
-                            console.log("REMOVED", i, event)
                         }
                         prev = event
 
@@ -114,19 +112,19 @@ class Main extends React.Component {
                     this.setState({
                     events: new_events
                     })
-                    console.log(events, updated_events)
+                    // console.log(events, updated_events)
                     this.updateNodePatients(updated_events)
                 }
                 else if(eventData["stats"] == "true"){
                     delete eventData['stats']
-                    console.log("recieved stats")
-                    console.log(eventData)
+                    // console.log("recieved stats")
+                    // console.log(eventData)
                     this.setState({
                     events: this.state.events.concat({message: JSON.stringify(eventData)}),
                     run: false,
                     stats: eventData
                     })
-                    console.log({eventData});
+                    // console.log({eventData});
                     this.child.updateRunButton()
                 }
         }
@@ -177,7 +175,7 @@ class Main extends React.Component {
     }
 
     updateNodePatients(new_events) {
-        console.log("in updatenodepatients");
+        // console.log("in updatenodepatients");
         // console.log(this.state.events);
         this.props.updatePatientLocation(new_events)
         // new_events.forEach((event) => {    

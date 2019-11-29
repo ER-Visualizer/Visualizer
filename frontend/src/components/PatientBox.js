@@ -15,19 +15,30 @@ const getBackgroundColor = accuity => {
     return `rgba(${newRed.r}, ${newRed.g}, ${newRed.b})`;
 };
 
-const PatientBox = ({ patient }) => {
-    return <React.Fragment>
-        <div 
-            data-tip={`Id: ${patient.id} <br> Accuity: ${patient.accuity}`}
-            style={{background: getBackgroundColor(patient.accuity)}} 
-            className="Patient">
-                {patient.id}
-        </div>
-        <ReactTooltip
-            multiline
-            effect="solid"
-            className="tooltip" />
-    </React.Fragment>
-};
+class PatientBox extends React.Component {
+    constructor(props){
+        super(props)
+
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+      return this.props.patient.id !== nextProps.patient.id && this.props.patient.accuity !== nextProps.patient.accuity
+    }
+    render(){
+        let patient = this.props.patient
+        return <React.Fragment>
+            <div 
+                data-tip={`Id: ${patient.id} <br> Accuity: ${patient.accuity}`}
+                style={{background: getBackgroundColor(patient.accuity)}} 
+                className="Patient">
+                    {patient.id}
+            </div>
+            <ReactTooltip
+                multiline
+                effect="solid"
+                className="tooltip" />
+        </React.Fragment>
+    };
+}
+
 
 export default PatientBox;

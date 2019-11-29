@@ -146,7 +146,7 @@ function EDSimulation(state = initialState, action) {
                 showLogsSidebar: state.showLogsSidebar, 
                 showNodeSidebar: state.showNodeSidebar, 
                 showJSONEntrySidebar: state.showJSONEntrySidebar,
-                nodes: movePatients(state.nodes, action.events)
+                nodes: movePatients(state.idToIndex, state.nodes, action.events)
             }); 
         case ADD_NODE:
             temp_node_count = state.nodes.length
@@ -223,25 +223,34 @@ function EDSimulation(state = initialState, action) {
             })
         case SIMULATION_STARTED:
                 return Object.assign({}, state, {
-                    simulationStarted: true
+                    simulationStarted: true,
+                    idToIndex: createNodeMap(state.nodes)
+
                 })
         default:
             return state
     }
 }
 
-const movePatients = (nodes, events) => {
-    console.log("move events!!")
+const createNodeMap = (nodes) => {
+    let map = {}
+    for(let i = 0; i < nodes.length; i++){
+        let node = nodes[i]
+        map[node.id] = i
+    }
+    return map
+}
+const movePatients = (idToIndex, nodes, events) => {
+
     let new_nodes = nodes
     for(let i = 0; i < events.length; i++){
         let event = events[i]
-        console.log("move events")
-        new_nodes = movePatient(new_nodes, event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'], event['inQueue'])
+        new_nodes = movePatient(idToIndex, new_nodes, event['patientId'], event['curNodeId'], event['nextNodeId'], event['patientAcuity'], event['inQueue'])
     }
     return new_nodes
 
 }
-const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
+const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuity, inQueue) => {
     // moves patient A from startNode to endNode
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
@@ -253,60 +262,33 @@ const movePatient = (nodes, patient, currNode, nextNode, patientAcuity, inQueue)
     let patientsWithoutCurPatient;
     let processingListWithoutCurPatient;
     // add patient to the node its going to
-    const newNodesList = clonedNodes.map((node) => {
-        const newCurNode = {...node}
-        if (nextNode == "end"){
-            // remove patient from all resources if its leaving a resource
-            newCurNode.processing = node.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
-
-        }else {
-            // add them to the correct one based on the inqueue value and the value of nextnodeid
-
-            if (parseInt(node.id) === parseInt(nextNode)){
-
-                // console.log("added -------------");
-                // console.log(node.id)
-                if (inQueue){
-                    newCurNode.patients.push(new Patient(patient, patientAcuity))
-                } else {
-                    console.log("added to queue!!!")
-                    newCurNode.processing.push(new Patient(patient, patientAcuity))
-                }
-            }
-        }      
-        return newCurNode;
-    });
-    let removedNodes = newNodesList.map((node) => {
-        if(nextNode == "end"){
-            // already removed from resources previously
-            return node
+    let nodeIndex = idToIndex[nextNode]
+    let nodeToHandle = clonedNodes[nodeIndex]
+    // handle adding nodes and removing patient from resource
+    if(nextNode == "end"){
+        // optimize removing 
+        let currNodeHandle = clonedNodes[idToIndex[currNode]]
+        if(patient in currNodeHandle.processing){
+            delete currNodeHandle.processing[patient]
         }
-        // if patient is going to a resource, they cannot be in any other resource
-            if(!inQueue){
- 
-               // patients have to be removed from a queue of the node they are being processed at 
-               if(parseInt(node.id) == parseInt(nextNode)){
+        // currNodeHandle.processing = currNodeHandle.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+    }else{
+        if(inQueue){
+            nodeToHandle.patients[patient] = new Patient(patient, patientAcuity)
+        }else{
+            nodeToHandle.processing[patient] = new Patient(patient, patientAcuity)
+        }
+    }
+    // handle removing patient from queue for the resource its in
+    if(nextNode != "end" && !inQueue){
+           patientsWithoutCurPatient = []
+           // optimize to remove patients
+           if(patient in nodeToHandle.patients){
+                delete nodeToHandle.patients[patient]
+           }
+    }
 
-                    patientsWithoutCurPatient = []
-                   for(let i = 0; i < node.patients.length; i++){
-                        if(parseInt(node.patients[i].id) != parseInt(patient)){
-                            patientsWithoutCurPatient.push(node.patients[i])
-
-                        }
-                   }
-                
-                    node.patients = patientsWithoutCurPatient
-
-               }
-               
-
-            }
-           
-        
-        return node
-    });
-
-    return removedNodes; 
+    return clonedNodes; 
 }
 
 function addNewNode(nodes, nodeNum){
