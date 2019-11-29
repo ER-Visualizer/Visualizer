@@ -119,7 +119,7 @@ class Node:
         else:
             duration = Distributions.class_distributions[self.get_distribution_name()](
                 *self.get_distribution_parameters())
-        finish_time = GlobalTime.time + duration
+        finish_time = GlobalTime.time + int(duration)
         return finish_time, duration
 
     '''
@@ -328,8 +328,11 @@ class Node:
         # insert patient into resource, since it's available
         app.logger.info("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id(),))
-
-        finish_time, duration = self.generate_finish_time()
+        if self.get_id() == -1:
+            finish_time = patient.get_start_time()
+            duration = finish_time - GlobalTime.time
+        else:
+            finish_time, duration = self.generate_finish_time()
         resource.insert_patient(patient, self.id, finish_time, duration)
         # record event of patient joining resource
         self.add_patient_join_resource_event(patient, resource)

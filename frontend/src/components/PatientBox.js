@@ -1,6 +1,5 @@
 import React from 'react';
 import './PatientBox.css';
-import ReactTooltip from 'react-tooltip';
 
 const getBackgroundColor = accuity => {
     const baseRed = {r: 200, g: 44, b: 5};
@@ -32,10 +31,7 @@ class PatientBox extends React.Component {
                 className="Patient">
                     {patient.id}
             </div>
-            <ReactTooltip
-                multiline
-                effect="solid"
-                className="tooltip" />
+
         </React.Fragment>
     };
 }

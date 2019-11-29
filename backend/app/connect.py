@@ -40,19 +40,27 @@ class WebsocketServer:
         asyncio.set_event_loop(loop)
         self.wserver = websockets.serve(self.__producer_handler, port=self.port, loop=loop)
         try:
-            self.server = loop.run_until_complete(self.wserver)
+            self.server = asyncio.get_event_loop()
+            self.server.run_until_complete(self.wserver)
+            self.server.run_forever()
         except Exception:
             self.close()
 
         loop.run_forever()
 
-
-    def close(self):
+    async def _internalStop(self):
+        self.wserver.close()
+        await self.wserver.wait_closed()
+        self.server.stop()
+        while (self.server.is_running()):
+            time.sleep(0.5)
         self.server.close()
+        self.server = None
+    def close(self):
+        # self.server.close()
         app.logger.info("closing sockets")
-        asyncio.get_event_loop().run_until_complete(self.server.wait_closed())
-        asyncio.get_event_loop().stop()
-        asyncio.get_event_loop().close()
+        # asyncio.get_event_loop().run_until_complete(self.server.wait_closed())
+        self._internalStop()
 
     async def get_formatted_stats(self, stats):
         all_patients = [key for key in stats['patients']['process']]
@@ -130,7 +138,7 @@ class WebsocketServer:
                 self.sent_stats = False
             try:
                 await websocket.send(message)
-                await asyncio.sleep(self.packet_rate)
+                await asyncio.sleep(self.packet_rate * 0.1)
             except (websockets.exceptions.ConnectionClosed, websockets.exceptions.ConnectionClosedOK):
                 self.close()
                 break

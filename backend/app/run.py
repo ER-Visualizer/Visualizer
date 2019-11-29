@@ -16,7 +16,7 @@ from .models.global_strings import *
 from .models.rules.frequency_rule import FrequencyRule
 from .models.rules.prediction_rule import PredictionRule
 from flask import Flask
-
+import threading
 app = Flask(__name__)
 
 import logging
@@ -58,43 +58,46 @@ def canvas_parser(canvas_json):
     canvas = canvas_json
 
 
-def create_queues():
-    global initial_time, nodes_list
-    for node in canvas:
-        app.logger.info(f"cur node {node}")
-        rules = []
-        # create all of the rules here
-        # TODO: delete this and create actual rules from JSON once JSON format is created
+class Worker(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+    def run(self):
+        global initial_time, nodes_list
+        for node in canvas:
+            app.logger.info(f"cur node {node}")
+            rules = []
+            # create all of the rules here
+            # TODO: delete this and create actual rules from JSON once JSON format is created
 
-        # create node
-        nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
-                                        process_name=node["elementType"], distribution_name=node["distribution"],
-                                        distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
-                                        priority_type=node["priorityType"])
-        # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
-        # create patient_loader node when reception is found
-        if node["elementType"] == "reception":
-            nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
-                                          distribution_name="fixed", distribution_parameters=[0],
-                                          output_process_ids=[node["id"]], priority_type="")
+            # create node
+            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+                                            process_name=node["elementType"], distribution_name=node["distribution"],
+                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
+                                            priority_type=node["priorityType"])
+            # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
+            # create patient_loader node when reception is found
+            if node["elementType"] == "reception":
+                nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+                                              distribution_name="fixed", distribution_parameters=[0],
+                                              output_process_ids=[node["id"]], priority_type="")
 
-    app.logger.info("open csv")
-    # read csv (for now, all patients added to reception queue at beginning)
-    with open("/app/test.csv") as csvfile:
-        csvfile.seek(0)
-        dict_reader = csv.DictReader(csvfile, delimiter=',')
-        for row in dict_reader:
-            app.logger.info(row)
-            if initial_time is None:
-                initial_time = row["time"]
-            FMT = '%Y-%m-%d %H:%M:%S.%f'
-            patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
-            patient_time = float(patient_time.seconds)/60
-            row[START_TIME] = patient_time
-            next_patient = Patient(row)
-            # All of the patients first get loaded up into the
-            nodes_list[-1].put_patient_in_node(next_patient)
-            all_patients[next_patient.get_id()] = next_patient
+        app.logger.info("open csv")
+        # read csv (for now, all patients added to reception queue at beginning)
+        with open("/app/test.csv") as csvfile:
+            csvfile.seek(0)
+            dict_reader = csv.DictReader(csvfile, delimiter=',')
+            for row in dict_reader:
+                app.logger.info(row)
+                if initial_time is None:
+                    initial_time = row["time"]
+                FMT = '%Y-%m-%d %H:%M:%S.%f'
+                patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
+                patient_time = float(patient_time.seconds)/60
+                row[START_TIME] = patient_time
+                next_patient = Patient(row)
+                # All of the patients first get loaded up into the
+                nodes_list[-1].put_patient_in_node(next_patient)
+                all_patients[next_patient.get_id()] = next_patient
 
 
 
@@ -111,11 +114,11 @@ def send_e():
         return []
     new_changes = []
     global packet_start
+    event_changes.sort(key=lambda  k:k.get_event_time())
     if packet_start == -1:
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
-
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
         if event_changes[0].get_moved_to() is not None and len(event_changes[0].get_moved_to()) > 0 and event_changes[0].get_moved_to()[0] == -1:
             pass
@@ -230,10 +233,10 @@ def process_heap():
     #     event_changes.append(enter_into_resource)
     #     enter_into_resource.set_moved_to([patient_record.get_curr_process_id()])
 
-    global counter, all_patients
-    if counter < len(all_patients) - 1:
-        counter += 1
-        return 2
+    # global counter, all_patients
+    # if counter < len(all_patients) - 1:
+    #     counter += 1
+    #     return 2
     # continue simulation loop
     return 1
 
@@ -274,8 +277,10 @@ def main(args=()):
     # create_heap(get_heap())
 
     # this will read patients csv
-    create_queues()
+    # create_queues()
     counter = 0
+    worker = Worker()
+    worker.start()
     # setup websocket server
     server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
     server.start()

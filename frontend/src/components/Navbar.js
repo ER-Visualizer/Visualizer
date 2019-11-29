@@ -36,7 +36,7 @@ class Navbar extends React.Component {
             await this.props.simulationStarted()
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
-            let body = {nodes: this.props.nodes, duration: this.props.duration, rate: this.props.rate}
+            let body = {nodes: this.props.nodes, duration: parseInt(this.props.duration), rate: parseInt(this.props.rate)}
             console.log({body})
             let response = await fetch('http://localhost:' + process.env.REACT_APP_SERVER_PORT + '/start', {
                 method: 'POST',
