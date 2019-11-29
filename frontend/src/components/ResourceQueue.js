@@ -29,17 +29,18 @@ class ResourceQueue extends React.Component{
     }
     const Cell = ({ columnIndex, rowIndex, style }) => (
       <div style={style}>
-        {(rowIndex * 6) + columnIndex < list_patients.length && 
-            <PatientBox key={columnIndex.toString() + "," + rowIndex.toString()} patient={list_patients[(rowIndex * 6) + columnIndex]} /> 
+        {(rowIndex * 5) + columnIndex < list_patients.length && 
+            <PatientBox key={columnIndex.toString() + "," + rowIndex.toString()} patient={list_patients[(rowIndex * 5) + columnIndex]} /> 
         }
       </div>
     );
     let row_count = Math.ceil(list_patients.length/6)
     return (
         <div className="ResourceQueueContainer">
+        <label>{list_patients.length}</label>
             <div className="ResourceQueue">
                <Grid
-                columnCount={6}
+                columnCount={5}
                 columnWidth={30}
                 height={145}
                 rowCount={row_count}
