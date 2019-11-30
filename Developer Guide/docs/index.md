@@ -1,4 +1,4 @@
-# User Guide for ER | Visualizer
+# Developer Guide for ER | Visualizer
 
 <!-- Use this for spacing -->
 <br> 
@@ -24,7 +24,7 @@ Add text like any markdown file
         tests/
             models/
             unit_tests/
-    documentation/
+    Developer Guide/
         docs/
     frontend/
         node_modules/
@@ -36,5 +36,6 @@ Add text like any markdown file
                 ...
             redux/
                 ...
-
+    User Guide/
+        docs/
 
