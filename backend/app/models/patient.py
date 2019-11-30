@@ -35,6 +35,9 @@ class Patient:
     
     def set_attribute(self, attribute, value):
         self.properties[attribute] = value
+    
+    def has_attribute(self,attribute):
+        return attribute in self.properties
 
     #TODO consider whether to move setting properties for the patient_record inside the Node Class.
     '''patient must be set unavailable right after he entered a new process'''
