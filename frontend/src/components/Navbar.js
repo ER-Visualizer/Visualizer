@@ -8,7 +8,7 @@ import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 import FileUploadForm from './UploadButton.js'
 import { CSVLink } from 'react-csv';
-import logo from './logo_green.png';
+import {ReactComponent as Logo} from '../logo_green.svg';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -106,7 +106,8 @@ class Navbar extends React.Component {
         return (
             <div className="Navbar">   
              <ToastContainer />
-                <img className="logo" src={logo} />
+                {/* <img className="logo" src={logo} /> */}
+                <Logo className="logo"/>
                 
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
 
