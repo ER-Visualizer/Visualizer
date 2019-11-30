@@ -6,14 +6,10 @@ from .event import Event
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
 from .global_events import GlobalEvents
-import copy
 import heapq
-import numpy as np
 from flask import Flask
 
 app = Flask(__name__)
-
-import logging
 
 
 class Node:
@@ -162,7 +158,7 @@ class Node:
         patient = resource.clear_patient()
         app.logger.info("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id()))
-        self.add_patient_leave_resource_event(patient, old_id)
+        self.add_patient_leave_resource_event(patient)
 
         # TODO see if we need to do this in random order to avoid bias, and create a multi-threaded simulation
         #  Might have to, b/c we don't want to bias which spot patient will take. In that case we will need to make
@@ -256,13 +252,21 @@ class Node:
 
         return False
 
-    def add_patient_leave_resource_event(self, patient, old_id):
+    def add_patient_leave_resource_event(self, patient):
+        """
+        Add the event of patient leaving a resource into global event_changes
+        :param patient: Patient object of the patient thats is leaving a resource
+        """
         leave_resource = Event(self.get_id(), 'N/A', patient.get_id(), GlobalTime.time)
         leave_resource.set_in_queue(False)
         leave_resource.set_finished()
         GlobalEvents.event_changes.append(leave_resource)
 
     def add_patient_join_resource_event(self, patient, resource):
+        """
+        Add the event of patient entering a resource into global event_changes
+        :param patient: Patient object of the patient thats is entering a resource
+        """
         leave_queue = Event(self.get_id(), resource.get_id(),
                             patient.get_id(), GlobalTime.time)
         leave_queue.set_in_queue(False)
@@ -270,13 +274,16 @@ class Node:
         GlobalEvents.event_changes.append(leave_queue)
 
     def add_patient_join_queue_event(self, patient, old_id):
+        """
+        Add the event of patient joining a queue into global event_changes
+        :param patient: Patient object of the patient thats is joining a queue
+        """
         if old_id is None:
             return
         join_queue = Event(old_id, 'N/A', patient.get_id(), GlobalTime.time)
         patient_record = patient.patient_record
-        # get all queues patient was added to
+        join_queue.set_moved_to([self.get_id()])
 
-        join_queue.set_moved_to([self.id])
         if patient_record.get_curr_process_id is not None:
             GlobalEvents.event_changes.append(join_queue)
     '''
@@ -328,6 +335,8 @@ class Node:
         # insert patient into resource, since it's available
         app.logger.info("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
             self.get_process_name(), self.get_id(), resource.get_id(),))
+        # if resource is patient loader, set duration to be when the patient is supposed to join
+        # reception
         if self.get_id() == -1:
             finish_time = patient.get_start_time()
             duration = finish_time - GlobalTime.time
@@ -346,5 +355,4 @@ class Node:
     def add_to_heap(self, resource_id):
         resource = self.resource_dict[resource_id]
         event = Event(self.id, resource_id, resource.get_curr_patient().get_id(), resource.get_finish_time())
-        # heap = run.get_heap()
         heapq.heappush(GlobalHeap().heap, event)

@@ -60,23 +60,27 @@ class Stack(Queue):
         self.q.appendleft(el)
 
 
-# patient = None
+class Heap:
 
-class Heap():
-
-    # TODO: We are heapifying an already existing heap. What is time complexity on that?
-    # IF bigger than O(1), just set it directly. Maybe implement a flag
     def __init__(self, priority_type, priority_function, l=[]):
+        # convert input list into heap
         l = l[:]
         heapq.heapify(l)
+        # assign q into heap
         self.q = l
+        # assign priority type
         self.p_type = priority_type
+        # assign priority function
         self.p_func = priority_function
-        self._return_line = ""
+        # if priority is custom then parse the input code
         if self.p_type == "custom":
             self._parse_p_func()
 
     def _parse_p_func(self):
+        """
+        Helper function to help fix spacing and remove empty lines
+        Assign self.p_func to be the parse string
+        """
         split = self.p_func.split("\n")
         new_split = []
         for line in split:
@@ -88,6 +92,11 @@ class Heap():
         app.logger.info(self.p_func)
 
     def _calculate_priority_value(self, patient):
+        """
+        Returns the patient priority value (lower value is higher priority)
+        :param patient: Input patient to calculate priority of
+        :return: The priority value of the input patient
+        """
         if self.p_type == "acuity":
             app.logger.info("p_type acuity")
             return patient.get_acuity()
@@ -98,20 +107,33 @@ class Heap():
             app.logger.info("p_type custom")
             _p_value = 0
             l = locals()
+            # executes input code string
+            # need to pass in locals and globals to mutate _p_value
             exec(self.p_func, globals(), l)
             app.logger.info(l['_p_value'])
             return l['_p_value']
 
     def put(self, el):
-        # global patient
-        # patient = el
+        """
+        Put patient into the heap based on its priority
+        :param el: The patient to add
+        """
         p_val = self._calculate_priority_value(el)
+        # adds patients to min heap by priority
         heapq.heappush(self.q, (p_val, el))
 
     def get(self):
+        """
+        Get top patient from the heap
+        :return: Highest priority patient
+        """
+        # return element 1 since element 0 is the priority value
         return heapq.heappop(self.q)[1]
 
     def iter_priority_queue(self):
+        """
+        Iterator for min heap
+        """
         if len(self.q) == 0:
             return
         next_indices = [0]
@@ -134,6 +156,10 @@ class Heap():
         return next(self.iter)
 
     def remove(self, val):
+        """
+        Remove patient from min heap
+        :param val: patient to remove
+        """
         index = 0
         while index < len(self.q):
             patient = self.q[index][1]
@@ -141,6 +167,7 @@ class Heap():
                 self.q.pop(index)
                 break
             index += 1
+        # heapify queue again
         heapq.heapify(self.q)
         return
 

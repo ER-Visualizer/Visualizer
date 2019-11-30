@@ -4,11 +4,8 @@ from random import randint, random
 from flask import Flask
 import json
 import time
-import signal
 
 app = Flask(__name__)
-
-import logging
 
 
 class WebsocketServer:

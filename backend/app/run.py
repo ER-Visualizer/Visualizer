@@ -223,10 +223,6 @@ def process_heap():
     if process_name == "doctor":
         doctor_id = resource.get_id()
         statistics.increment_doc_seen(doctor_id)
-        # TODO
-        # Length of doctor/patient interaction per patient per doctor
-        # average or record all?
-        # can remove in the future and just use process_times
         statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
 
     # continue simulation loop
