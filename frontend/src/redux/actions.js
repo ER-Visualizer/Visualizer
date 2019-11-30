@@ -54,7 +54,8 @@ export function addNode(){
     return {type: ADD_NODE}
 }
 
-export function editNodeProperties(newProps){ // newprops should be a copy of the node being edited, with the features updated
+export function editNodeProperties(newProps){ 
+    // newprops should be a copy of the node being edited, with the features updated
     return {type: EDIT_NODE_PROPERTIES, newProps: newProps}
     
 }

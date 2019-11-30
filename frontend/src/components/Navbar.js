@@ -58,8 +58,6 @@ class Navbar extends React.Component {
     }
 
     async updateRunButton(){
-        // console.log("updateRunButton")
-        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }
@@ -71,9 +69,7 @@ class Navbar extends React.Component {
         }
         this.setState({runButtonpressed: !this.state.runButtonpressed})
     }
-    // async clickHandler(e){
-
-    // }
+    
     handleLinkDeleteButton(e){
         this.props.deleteLinkModeSwitch()
     }

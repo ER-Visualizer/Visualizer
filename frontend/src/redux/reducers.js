@@ -25,80 +25,6 @@ const initialState = {
             "priority queue", "", [3], [], "acuity", [], []),
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
             "priority queue", "", [], [], "acuity", [], [])
-        // {
-        //     "id": 0,
-        //     "elementType": "reception",
-        //     "distribution": "receptiondist",
-        //     "distributionParameters": [5],
-        //     "numberOfActors": 1,
-        //     "queueType": "stack",
-        //     "priorityType": "receptionprior",
-        //     "priorityFunction": "",
-        //     "children": [2, 10],
-        //     "patients": [0]
-        // },
-        // {
-        //     "id": 1,
-        //     "elementType": "triage",
-        //     "distribution": "triagedist",
-        //     "distributionParameters":[3],
-        //     "numberOfActors": 2,
-        //     "queueType": "stack",
-        //     "priorityType": "triageprior",
-        //     "priorityFunction": "",
-        //     "children": [3, 2],
-        //     "patients": []
-        // },
-        // {
-        //     "id": 2,
-        //     "elementType": "doctor",
-        //     "distribution": "doctordist",
-        //     "distributionParameters": [10],
-        //     "numberOfActors": 3,
-        //     "queueType": "queue",
-        //     "priorityType": "doctorprior",
-        //     "priorityFunction": "",
-        //     "children": [10],
-        //     "patients": []
-        // },
-        // {
-        //     "id": 10,
-        //     "elementType": "doctor",
-        //     "distribution": "doctordist",
-        //     "distributionParameters": [100, 30],
-        //     "numberOfActors": 3,
-        //     "queueType": "queue",
-        //     "priorityType": "doctorprior",
-        //     "priorityFunction": "",
-        //     "children": [],
-        //     "patients": []
-        // },
-        
-        // {
-        //     "id": 3,
-        //     "elementType": "x-ray",
-        //     "distribution": "xraydist",
-        //     "distributionParameters": [1, 1],
-        //     "numberOfActors": 4,
-        //     "queueType": "queue",
-        //     "priorityType": "xrayprior",
-        //     "priorityFunction": "",
-        //     "children": [],
-        //     "patients": []
-        // },
-        // {
-        //     "id": 4,
-        //     "elementType": "station",
-        //     "distribution": "stationdist",
-        //     "distributionParameters": [10],
-        //     "numberOfActors": 1,
-        //     "queueType": "queue",
-        //     "priorityType": "stationprior",
-        //     "priorityFunction": "",
-        //     "children": [2],
-        //     "patients": []
-        // }
-
     ]
 }
 
@@ -160,12 +86,11 @@ function EDSimulation(state = initialState, action) {
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
-            // console.log(temp_node_count - 2);
-            
             return Object.assign({}, state, {
                 nodes: deleteNodeFromState(state.nodes, action.nodeId),
                 nodeCount: temp_node_count - 2, 
-                linkBeingBuilt: state.linkBeingBuilt[0] === action.nodeId ? [] : state.linkBeingBuilt
+                linkBeingBuilt: state.linkBeingBuilt[0] === action.nodeId ? [] : state.linkBeingBuilt 
+                // in case the node was part of a in-progress link
             })
         case DELETE_LINK:
             return Object.assign({}, state, {
@@ -173,7 +98,7 @@ function EDSimulation(state = initialState, action) {
             })
         case DELETE_LINK_MODE:
             return Object.assign({}, state,
-                {shouldDeleteLink: !state.shouldDeleteLink}) // reset anything in the link previously being built
+                {shouldDeleteLink: !state.shouldDeleteLink}) 
         case BUILD_LINK_MODE:
                 return Object.assign({}, state,
                     {shouldBuildLink: !state.shouldBuildLink,
@@ -182,21 +107,14 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state,
                 {nodes: action.newNodeList})
         case CONNECT_NODE:
-            // console.log(state.linkBeingBuilt);
-            
             if (state.linkBeingBuilt.length == 1){ // connect the target node
-                // console.log("checking candidate nodes");
-                
-                if (state.linkBeingBuilt[0] === action.nodeId) {
-                    return state // no self loops allowed       
+                if (state.linkBeingBuilt[0] === action.nodeId) { // no self loops allowed       
+                    return state 
                 }
-
                 let node_to_update = state.nodes.find((node) => node.id === state.linkBeingBuilt[0])
                 if (node_to_update.children.indexOf(action.nodeId) !== -1){ // link already exists
                     return state
                 }
-                
-                // console.log("creating new link");
                 return Object.assign({}, state,
                     {
                         nodes: addLinkToState(state.nodes, state.linkBeingBuilt[0], action.nodeId), // second node in the link
@@ -205,8 +123,6 @@ function EDSimulation(state = initialState, action) {
                 )
             }
             else {
-                // console.log("selected link source");
-                
                 return Object.assign({}, state,  // add the source node
                     {   linkBeingBuilt: [action.nodeId],
                     }) 
@@ -292,8 +208,6 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
 }
 
 function addNewNode(nodes, nodeNum){
-    // https://stackoverflow.com/questions/597588/how-do-you-clone-an-array-of-objects-in-javascript
-    
     let clonedNodes = JSON.parse(JSON.stringify(nodes)) // could use rd3g deepclone (see react-d3-graph doc, utils)
 
     clonedNodes.push(    
@@ -310,18 +224,12 @@ function addNewNode(nodes, nodeNum){
         "predictedChildren": [],
         "processing": []
     })
-
-    // modifying clonedNodes doesn't seem to modify original nodes list...
-    
-    // console.log(clonedNodes);
     
     return clonedNodes
 }
 
 
 function updateNodeProperties(nodes, newProps){
-    // receives the node to be changed. just replace it inside the array
-    // console.log(nodes);
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node
@@ -330,13 +238,13 @@ function updateNodeProperties(nodes, newProps){
     return clonedNodes    
 }
 
-function deleteNodeFromState(nodes, nodeId){ // TODO: this needs to delete the connections to 
+function deleteNodeFromState(nodes, nodeId){ 
     
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     clonedNodes = clonedNodes.filter((node) => node.id !== nodeId) // remove the node
 
-    clonedNodes = clonedNodes.map(
+    clonedNodes = clonedNodes.map( // delete any connections to the node being deleted
         (node) => {
             node.children = node.children.filter((id) => (id) !== nodeId);
             return node;
