@@ -39,3 +39,7 @@ Add text like any markdown file
     User Guide/
         docs/
 
+
+# Backend Diagram
+![Classes](./classes_.png)
+![Packages](./packages_.png)
