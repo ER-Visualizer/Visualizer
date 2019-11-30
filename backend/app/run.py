@@ -17,9 +17,12 @@ from .models.rules.frequency_rule import FrequencyRule
 from .models.rules.prediction_rule import PredictionRule
 from flask import Flask
 import threading
-app = Flask(__name__)
+import os
+from dotenv import load_dotenv
 
-import logging
+app = Flask(__name__)
+dotenv_path = '/app/.env'
+load_dotenv(dotenv_path)
 
 # indexed by strings, args from post request
 canvas = {}
@@ -58,10 +61,20 @@ def canvas_parser(canvas_json):
     canvas = canvas_json
 
 
-class Worker(threading.Thread):
+class SimulationWorker(threading.Thread):
+    """
+    Worker that starts the simulation on a thread
+
+    Needed so that simulation can run in parallel to websocket thread for
+    sending events to the frontend
+    """
     def __init__(self):
         threading.Thread.__init__(self)
-    def run(self):
+
+    def run(self)-> None:
+        """
+        Reads the input canvas and csv file then starts the simulation
+        """
         global initial_time, nodes_list
         for node in canvas:
             app.logger.info(f"cur node {node}")
@@ -74,7 +87,7 @@ class Worker(threading.Thread):
                                             process_name=node["elementType"], distribution_name=node["distribution"],
                                             distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
                                             priority_type=node["priorityType"])
-            # TODO: why do we need this conditional. Can't we just add it outside of the for loop?
+
             # create patient_loader node when reception is found
             if node["elementType"] == "reception":
                 nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
@@ -82,7 +95,7 @@ class Worker(threading.Thread):
                                               output_process_ids=[node["id"]], priority_type="")
 
         app.logger.info("open csv")
-        # read csv (for now, all patients added to reception queue at beginning)
+        # read csv
         with open("/app/test.csv") as csvfile:
             csvfile.seek(0)
             dict_reader = csv.DictReader(csvfile, delimiter=',')
@@ -95,15 +108,13 @@ class Worker(threading.Thread):
                 patient_time = float(patient_time.seconds)/60
                 row[START_TIME] = patient_time
                 next_patient = Patient(row)
-                # All of the patients first get loaded up into the
+                # All of the patients first get loaded up into the patient loader node
+                # each patient will stay in the patient loader until their start time
                 nodes_list[-1].put_patient_in_node(next_patient)
                 all_patients[next_patient.get_id()] = next_patient
 
 
 
-# """
-# Create event heaps
-# """
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
@@ -114,21 +125,24 @@ def send_e():
         return []
     new_changes = []
     global packet_start
-    event_changes.sort(key=lambda  k:k.get_event_time())
+    # ensure events are sorted
+    event_changes.sort(key=lambda k: k.get_event_time())
+    # set packet_start to be the first event's start time
     if packet_start == -1:
         packet_start = event_changes[0].get_event_time()
     else:
         packet_start = packet_start + packet_duration
+    # traverse through each event, while the event is within the time range we want to consider
     while (len(event_changes) > 0 and event_changes[0].get_event_time() - packet_start <= packet_duration):
+        # ignore event if moving to patient loader (frontend doesn't need this)
         if event_changes[0].get_moved_to() is not None and len(event_changes[0].get_moved_to()) > 0 and event_changes[0].get_moved_to()[0] == -1:
             pass
+        # ignore event if finishing patient loader
         elif event_changes[0].get_finished() is True and event_changes[0].get_node_id() == -1:
             pass
-
+        # event where patient left a resource
         elif event_changes[0].get_finished() is True:
             app.logger.info("Patient: " + str(all_patients[event_changes[0].get_patient_id()].get_id()) + " exited")
-                # if cur node and next node are same and inqueue is true don't set,
-                # log it as an err 
             event_dict = {
                 "patientAquity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                 "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
@@ -141,10 +155,8 @@ def send_e():
             }
             new_changes.append(event_dict)
         else:
+            # event where patient is joining a queue or resource
             for next_q in event_changes[0].get_moved_to():
-                curr_resource = nodes_list[event_changes[0].get_node_id()].get_resource(event_changes[0].get_node_resource_id())
-                # if cur node and next node are same and inqueue is true don't set,
-                # log it as an err 
                 event_dict = {
                     "patientAcuity": all_patients[event_changes[0].get_patient_id()].get_acuity(),
                     "patientId": all_patients[event_changes[0].get_patient_id()].get_id(),
@@ -156,12 +168,23 @@ def send_e():
                     "inQueue": event_changes[0].get_in_queue()
                 }
                 new_changes.append(event_dict)
+        # handled event so remove it
         event_changes.pop(0)
 
     return json.dumps({"Events": new_changes})
 
 
 def process_heap():
+    """
+    Processes the event with the lowest timestamp in the event_heap and
+    calls handle_finished_patient to trigger subsequent events.
+
+    Also in charge of reporting statistics to the Statistics class
+
+    :return: int:
+    0 = simulation has ended
+    1 = simulation should continue
+    """
     # exit condition for simulation loop
     if len(event_heap) == 0:
         return 0
@@ -172,10 +195,10 @@ def process_heap():
     if not isinstance(completed_event, Event):
         raise Exception("Non Event object in event heap")
 
-
     head_node_id = completed_event.get_node_id()
     head_resource_id = completed_event.get_node_resource_id()
     resource = nodes_list[head_node_id].get_resource(head_resource_id)
+    # ignore this event is resource is None
     if resource is None:
         return 1
     # patient record for the patient in the event
@@ -206,37 +229,6 @@ def process_heap():
         # can remove in the future and just use process_times
         statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
 
-    # get all queues patient was added to
-    next_nodes = list(patient_record.get_queues_since_last_finished_process())  # create new list to prevent mutating it
-    # get resource patient is in (if any)
-    if patient_record.get_curr_process_id() is not None:
-        next_nodes.append(patient_record.get_curr_process_id())
-    # if did not go straight to resource without waiting
-
-    # start_process_time = completed_event.get_event_time() - process_duration
-    # leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
-    # leave_queue.set_in_queue(False)
-    # leave_queue.set_moved_to([completed_event.get_node_id()])
-    # event_changes.append(leave_queue)
-    # patient went straight into next resource
-    # enter_into_resource = None
-    # if patient_record.get_curr_resource_id() is not None:
-    #     enter_into_resource = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), completed_event.get_event_time())
-    #     enter_into_resource.set_in_queue(False)
-
-    # send patient to next queues/resources
-    # completed_event.set_moved_to(next_nodes)
-    # if patient_record.get_curr_process_id is not None:
-    #     event_changes.append(completed_event)
-    # TODO HANDLE CASE WHERE RESOURCE IS EMPTY AND PICKS SOMEONE FROM QUEUE
-    # if enter_into_resource is not None:
-    #     event_changes.append(enter_into_resource)
-    #     enter_into_resource.set_moved_to([patient_record.get_curr_process_id()])
-
-    # global counter, all_patients
-    # if counter < len(all_patients) - 1:
-    #     counter += 1
-    #     return 2
     # continue simulation loop
     return 1
 
@@ -251,6 +243,10 @@ def get_curr_time():
 
 def main(args=()):
     app.logger.info("starting simulation in main")
+    app.logger.info("Environment: ")
+    app.logger.info(os.environ.get("DEV_ENV"))
+    # resets all variables for the simulation
+    # required in case user stops simulation mid way and runs again
     GlobalTime.time = 0
     GlobalHeap.heap = []
     global initial_time, nodes_list, event_changes, statistics, packet_start, counter, event_heap
@@ -274,15 +270,12 @@ def main(args=()):
     # this will read canvas json
     canvas_parser(canvas)
 
-    # create_heap(get_heap())
-
-    # this will read patients csv
-    # create_queues()
     counter = 0
-    worker = Worker()
+    # this will read patients csv
+    worker = SimulationWorker()
     worker.start()
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_e, process_heap, report_statistics, packet_rate)
+    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate)
     server.start()
 
     app.logger.info(report_statistics())

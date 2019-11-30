@@ -6,3 +6,4 @@ numpy
 pandas
 websockets
 flask_cors
+python-dotenv
