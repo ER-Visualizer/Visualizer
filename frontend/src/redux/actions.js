@@ -12,6 +12,7 @@ export const REPLACE_NODE_LIST = 'REPLACE_NODE_LIST'
 
 export const EDIT_NODE_PROPERTIES = 'EDIT_NODE_PROPERTIES'
 export const ADD_NODE = 'ADD_NODE'
+export const UPDATE_NODE_POSITIONS = 'UPDATE_NODE_POSITION'
 export const DELETE_NODE = 'DELETE_NODE'
 export const CONNECT_NODE = 'CONNECT_NODE'
 export const BUILD_LINK_MODE = 'BUILD_LINK_MODE'
@@ -52,6 +53,10 @@ export const updatePatientLocation = (events) => {
 }
 export function addNode(){
     return {type: ADD_NODE}
+}
+
+export function updateNodePositions(updatedNodes) {
+    return {type: UPDATE_NODE_POSITIONS, updatedNodes: updatedNodes}
 }
 
 export function editNodeProperties(newProps){ 

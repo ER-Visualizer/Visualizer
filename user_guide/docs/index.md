@@ -82,6 +82,16 @@ REACT_APP_PORT = {Frontend port number - default 5000}
 DEV_ENV = development
 WEB_SOCKET_PORT = {WSS port number - default 8765}
 ```
+## Using the Application
+- Once the application begins (your terminal should look the same as the image above), go to http://localhost:5000. 
+    -If you are using another port - based on REACT_APP_PORT that you have in your .env file. Then, a blank canvas will be presented where the hospital workflow can be created using different click operations.
+    - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
+- Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the add node button. The user can then enter the necessary properties of the process.
+- Clicking a process on the screen will allow the user to view and edit its properties.
+- To specify the processes to which the patient will travel, click the "add edges" button on the top right. Then, click the outbound process followed by the inbound process.
+- Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.
+- After the patient csv file is loaded, the simulation can start.
+- As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each acuity will also be displayed.
 
 ## Customizing ports
 

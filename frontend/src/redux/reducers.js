@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED, UPDATE_NODE_POSITIONS} from './actions';
 import ProcessNode from '../models/ProcessNode';
 import Patient from '../models/Patient';
 import { object } from 'prop-types';
@@ -83,6 +83,10 @@ function EDSimulation(state = initialState, action) {
         case EDIT_NODE_PROPERTIES:
             return Object.assign({}, state, {
                 nodes: updateNodeProperties(state.nodes, action.newProps)
+            })
+        case UPDATE_NODE_POSITIONS:
+            return Object.assign({}, state, {
+                nodes: updateNodePositions(state.nodes, action.updatedNodes)
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
@@ -187,7 +191,7 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
         if(patient in currNodeHandle.processing){
             delete currNodeHandle.processing[patient]
         }
-        // currNodeHandle.processing = currNodeHandle.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+        
     }else{
         if(inQueue){
             nodeToHandle.patients[patient] = new Patient(patient, patientAcuity)
@@ -210,28 +214,32 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
 function addNewNode(nodes, nodeNum){
     let clonedNodes = JSON.parse(JSON.stringify(nodes)) // could use rd3g deepclone (see react-d3-graph doc, utils)
 
-    clonedNodes.push(    
-        {
-        "id": nodeNum,
-        "elementType": "newNode",
-        "distribution": "newNode",
-        "distributionParameters": [0],
-        "numberOfActors": 0,
-        "queueType": "newNode",
-        "priorityFunction": "newNode",
-        "children": [],
-        "patients": [],
-        "predictedChildren": [],
-        "processing": []
-    })
+    clonedNodes.push(
+        new ProcessNode(nodeNum, "newNode", "newNode", [0], 0, 
+            "newNode", "", [], "newNode"
+        )
+    )
     
     return clonedNodes
 }
 
+function updateNodePositions(nodes, updatedNodes) {
+    let clonedNodes = JSON.parse(JSON.stringify(nodes))
+    for (var index in updatedNodes) {
+        let updatedNode = updatedNodes[index]
+        clonedNodes = clonedNodes.map((node) => {
+            if(updatedNode.id === node.id) {
+                node.x = updatedNode.x
+                node.y = updatedNode.y 
+            }
+            return node
+        })
+    }
+    return clonedNodes
+}
 
 function updateNodeProperties(nodes, newProps){
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
-
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node
     clonedNodes.splice(newProps.id, 0, newProps) // insert updated one at the same location
 
