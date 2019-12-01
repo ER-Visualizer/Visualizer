@@ -121,7 +121,7 @@ Development environment has the following features:
  ## Development requirements
  <!-- * If a developer were to set this up on their machine or a remote server, what are the technical requirements (e.g. OS, libraries, etc.)?
  * Briefly describe instructions for setting up and running the application (think a true README). -->
-## System Requirements for Windows
+### System Requirements for Windows
 
 - Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later)
 - Hyper-V and Containers Windows features must be enabled
@@ -135,7 +135,7 @@ Development environment has the following features:
 
    ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/virtualization-enabled.png)
 
-## System Requirements for Mac OS
+### System Requirements for Mac OS
 
 - Mac hardware must be a 2010 or newer model, with Intel’s hardware support for memory management unit (MMU) virtualization, including Extended Page Tables (EPT) and Unrestricted Mode. You can check to see if your machine has this support by running the following command in a terminal: sysctl kern.hv_support
 
@@ -151,7 +151,7 @@ Development environment has the following features:
 
 ### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version based on your OS.
 
-## Installing and running Docker Desktop on Windows
+### Installing and running Docker Desktop on Windows
 
 - Double-click Docker Desktop Installer.exe to run the installer.
 
@@ -163,7 +163,7 @@ Development environment has the following features:
 
 - Click Finish on the setup complete dialog and launch the Docker Desktop application.
 
-## Installing and running Docker Desktop on Mac
+### Installing and running Docker Desktop on Mac
 - Double-click Docker.dmg to open the installer, then drag the Docker icon to the Applications folder.
 
 - Install Docker app
