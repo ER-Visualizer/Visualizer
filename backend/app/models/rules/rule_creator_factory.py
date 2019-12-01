@@ -35,7 +35,7 @@ class NodeRuleCreator(RuleCreatorFactory):
 
                 # look for all nodes which have this node as a predicted child
                 for other_node in canvas:
-                    if "predicted_children" in other_node and node_id in other_node["predicted_children"]:
+                    if "predictedChildren" in other_node and node_id in other_node["predictedChildren"]:
                         parent_ids.append(other_node["id"])
 
                 prediction = PredictionRule(node_rule["columnName"], node_id, parent_ids)

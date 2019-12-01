@@ -198,8 +198,6 @@ class Graph extends React.Component {
      */
     _onDragEnd = () => {
         this.isDraggingNode = false;
-        this.props.updateNodePositions(this.state.nodes);
-        console.log(this.state.nodes, this.props.reduxNodes);
 
         if (this.state.draggedNode) {
             this.onNodePositionChange(this.state.draggedNode);
@@ -209,6 +207,9 @@ class Graph extends React.Component {
         !this.state.config.staticGraph &&
             this.state.config.automaticRearrangeAfterDropNode &&
             this.state.simulation.alphaTarget(this.state.config.d3.alphaTarget).restart();
+        
+        console.log("drag ended", this.state.nodes[0].x, this.state.nodes[0].y)
+        this.props.updateNodePositions(this.state.nodes);
     };
 
     /**
@@ -571,9 +572,8 @@ class Graph extends React.Component {
             x = start_x;
             y += 220; // set next node to be 256  positions down so it doesn't overlap with other root nodes
         }
-        console.log(this.state.nodes);
+
         this.props.updateNodePositions(this.state.nodes);
-        console.log(this.state.reduxNodes);
     }
 
 
@@ -637,6 +637,31 @@ class Graph extends React.Component {
             focusTransformation,
         });
     }
+
+    componentWillReceiveProps(nextProps) {
+        // when the simulation receives new node props that
+        // may have updated positions, we want to update the
+        // position of the nodes in the graph
+    
+        const nodes = nextProps.data.nodes;
+        if(this.state.nodes && nodes) {
+            for(let index in this.state.nodes) {
+                let node = this.state.nodes[index]
+                nodes.forEach((_node) => {
+                    if (_node.id === node.id) {
+                        console.log(_node.x, _node.y)
+                        if(_node.x || _node.x === 0) {
+                            node.x = _node.x;
+                        }
+                        if(_node.y || _node.y === 0) {
+                            node.y = _node.y;
+                        }
+                    }
+                })
+            }
+        }
+    }
+
 
     componentDidUpdate() {
         // if the property staticGraph was activated we want to stop possible ongoing simulation

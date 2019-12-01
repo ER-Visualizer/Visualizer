@@ -15,17 +15,17 @@ export class JSONEntrySidebarContent extends Component {
 
     componentDidMount() {
 
-        if (this.state.layoutJSON !== this.cloneNodes()) {
-            this.handleReset()
+        if (this.state.layoutJSON !== this.cloneNodes(this.props.nodes)) {
+            this.handleReset(this.props.nodes)
         }
     }
 
     componentWillReceiveProps(newProps) {
-        this.handleReset();
+        this.handleReset(newProps.nodes);
     }
 
-    cloneNodes(){
-        let clone = JSON.stringify(this.props.nodes, null, 1)
+    cloneNodes(nodes){
+        let clone = JSON.stringify(nodes, null, 1)
         clone = JSON.parse(clone)
         for(let i = 0; i < clone.length; i ++){
             delete clone[i].patients
@@ -33,8 +33,8 @@ export class JSONEntrySidebarContent extends Component {
         }
         return clone
     }
-    handleReset() {
-        this.setState({ layoutJSON: JSON.stringify(this.cloneNodes(), null, 1), valid: true })
+    handleReset(nodes) {
+        this.setState({ layoutJSON: JSON.stringify(this.cloneNodes(nodes), null, 1), valid: true })
     }
 
 
