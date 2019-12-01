@@ -2,6 +2,22 @@
 
 <br> 
 
+# Emergency Room Simulation
+
+## Description 
+
+* **visualizER** is an Emergency room simulator which provides medical professionals and researchers a way to visualize the impact of workflow changes in the emergency room.
+* Can be used by medical professionals to find the bottlenecks in the emergency room where they should allocate more resources.
+* Can be used by Researchers to test the efficiency of hypothetical hospital workflows.
+* Changes on an actual workflow are not feasible in a real working environment since it would require overwhelming amounts of hospital downtime in order to add and rearrange processes in the hospital.
+
+
+## Key Features
+
+* **Visual Representation of the emergency room workflow**: Users can create nodes representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those nodes to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.
+* **Live Visualization of patient flow through the ER**: users can see how patients move from station to station, and where bottlenecks appear.
+* **Statistics Report**: All statistics (e.g. actual wait times) on Emergency Room performance, patient wait times are recorded and saved to a CSV.
+
 ## System Requirements for Windows
 
 - Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later)
