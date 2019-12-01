@@ -151,10 +151,12 @@ Development environment has the following features:
 * Click the "Add Node" button in the navigation bar. A node will appear on the 
 screen that you position by can dragging around. The node's properties can be 
 specified by clicking on it and modifying the fields in the sidebar which opens.
+![Create a node](add_node.png)
 
 ##### How to delete a node
 * Click on a node. A side panel should appear. Scroll to the bottom
 and click on the "delete" button.
+![Delete a node](delete_node.png)
 
 ##### How to create a link 
 * In the navigation bar, click on the "build links: off" toggle button.
@@ -166,12 +168,18 @@ When you are finished click on the "build links: on" button
 to turn off link building. This last step is important
 so that when you click on nodes you aren't accidentally building
 links.
+![Build a link](build_links.png)
+
 
 ##### How to delete a link
 * Click on the link you want to delete and, in the sidebar, click "Delete edge".
+![Delete a link](delete_edge.png)
+
 
 ##### How to add a predicted edge
-* Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge".
+* Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge". Predicted edges will appear as dashed lines in the user interface.
+![Create predicted edge](set_predicted_edge.png)
+
 
 ##### How to manually enter a custom JSON
 * Open the JSON entry and clear the entry box. Paste in your custom JSON and press 
@@ -224,8 +232,18 @@ Everyone list out two  questions they remember Daniela had or would be commonly 
 
 * Q: Does the json in the custom JSON area update the doc
     * A: Yes, once you click Save
+* Q: How can I save the positions of the nodes?
+    * A: Copy the custom JSON code for the graph
+    by clicking on the "JSON Entry" button. The JSON
+    will contain the x, and y coordinates for each
+    node, so that when you reinput the json into
+    the JSON entry form, the nodes will be placed
+    back in the position you set them to. 
 * Q: Do the node id's have to be unique?
     * A: Yes
+* Q: What do the numbers in the square brackets ([])
+in the logs mean?
+    * A: They represent an integer timestamp for each logline.
 * Q: What do the numbers on the squares represent?
     * A: The id of the patient, the squares are individual patients, and their 
     color represents their acuity where red means actuity level 1 and acuity increases
