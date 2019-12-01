@@ -2,8 +2,6 @@ flask==1.0.2
 pytest
 pytest-cov
 requests==2.20.0
-numpy
-pandas
 websockets
 flask_cors
 python-dotenv
