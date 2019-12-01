@@ -1,6 +1,8 @@
 
 import numpy as np
 
+from flask import Flask
+app = Flask(__name__)
 
 class Statistic:
     """
@@ -18,6 +20,8 @@ class Statistic:
         self.sum_ratio_wait = 0.0
         self.sum_ratio_journey = 0.0
         self.sum_utilization = 0
+        self.start_time = float("INF")
+        self.end_time = float("-INF")
 
 
     def calculate_stats(self):
@@ -34,9 +38,11 @@ class Statistic:
         can be more than one PD interaction
         """
         hospital_stats = self._calculate_hospital_avgs()
+        util = hospital_stats["util"]
+        del hospital_stats["util"]
         res = {"stats": "true", "hospital": hospital_stats,
                "patients": {"process": self.p_process_times, "wait": self.p_wait_times},
-               "doctors": {"seen": self.d_seen, "length": self.d_length}}
+               "doctors": {"seen": self.d_seen, "length": self.d_length}, "util": util}
         return res
 
     def add_process_time(self, p_id, process, time):
@@ -79,7 +85,6 @@ class Statistic:
             self.d_length[d_id][p_id] = []
         self.d_length[d_id][p_id].append(time)
 
-
     def _calculate_hospital_avgs(self):
         """
         Private helper to calculate hospital statistics
@@ -91,18 +96,26 @@ class Statistic:
         # total wait times
         wait_times = []
         ratio = []
+        # time of starting and ending simulation
+        total_simulation_time = self.end_time - self.start_time
+        resources_utilization = {}
         for p_id in self.p_process_times:
             total_time = 0.0
             # total wait time
             wait_time = 0.0
             for resource in self.p_process_times[p_id]:
+                if resource not in resources_utilization:
+                    resources_utilization[resource] = 0.0
                 total_time += self.p_process_times[p_id][resource]
                 wait_time += self.p_wait_times[p_id][resource]
+                # track how long spent actually being processed in resource
+                resources_utilization[resource] += total_time - wait_time
 
             journey_lengths.append(total_time)
             wait_times.append(wait_time)
             r = wait_time / total_time if total_time != 0 else 0
             ratio.append(r)
-
-        # TODO Summary stats for utilization ratio of hospital resources (e.g. CT scan)
-        return {"journey": np.mean(journey_lengths), "wait": np.mean(wait_times), "ratio": np.mean(ratio)}
+        for resource in resources_utilization:
+            resources_utilization[resource] = float(resources_utilization[resource])/total_simulation_time if total_simulation_time != 0 else 0
+        app.logger.info("STATS")
+        return {"journey": np.mean(journey_lengths), "wait": np.mean(wait_times), "ratio": np.mean(ratio), "util": resources_utilization}

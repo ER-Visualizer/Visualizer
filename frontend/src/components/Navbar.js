@@ -23,7 +23,8 @@ class Navbar extends React.Component {
                       button: null, 
                       patientDataToDownload: [],
                       hospitalDataToDownload: [],
-                      doctorDataToDownload: []};
+                      doctorDataToDownload: [],
+                      utilDataToDownload: []};
     }
     componentDidMount() {
         this.props.onRef(this)
@@ -87,13 +88,15 @@ class Navbar extends React.Component {
             const patient_data_to_download = this.props.stats["patients"]
             const hospital_data_to_download = this.props.stats["hospital"]
             const doctor_data_to_download = this.props.stats["doctors"]
+            const util_data_to_download = this.props.stats["util"]
             this.setState({ patientDataToDownload: patient_data_to_download, 
                             doctorDataToDownload: doctor_data_to_download,
-                            hospitalDataToDownload: hospital_data_to_download}, () => {
+                            hospitalDataToDownload: hospital_data_to_download, utilDataToDownload: util_data_to_download}, () => {
                 // click the CSVLink component to trigger the CSV download
                 this.csvLinkpatients.link.click()
                 this.csvLinkdoctors.link.click()
                 this.csvLinkhospital.link.click()
+                this.csvLinkutil.link.click()
              })
             console.log(this.props.stats);
         }else{
@@ -129,6 +132,11 @@ class Navbar extends React.Component {
                     filename="doctor_data.csv"
                     className="hidden"
                     ref={(r) => this.csvLinkdoctors = r}
+                    target="_blank"/>
+                <CSVLink data={this.state.utilDataToDownload}
+                    filename="util_data.csv"
+                    className="hidden"
+                    ref={(r) => this.csvLinkutil = r}
                     target="_blank"/>
                 <button className="ToggleBuildLinksbutton" onClick={this.props.buildLinkModeSwitch}>Build Links: { this.props.shouldBuildLink? "on" : "off" }</button>
                 <button className="AddNodebutton" onClick={this.props.addNode}><NodeIcon/> Add Node</button>

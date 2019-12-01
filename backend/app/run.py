@@ -106,6 +106,7 @@ class SimulationWorker(threading.Thread):
                 FMT = '%Y-%m-%d %H:%M:%S.%f'
                 patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
                 patient_time = float(patient_time.seconds)/60
+                statistics.start_time = patient_time if statistics.start_time > patient_time else statistics.start_time
                 row[START_TIME] = patient_time
                 next_patient = Patient(row)
                 # All of the patients first get loaded up into the patient loader node
@@ -218,7 +219,7 @@ def process_heap():
     # record wait time
     wait_time = process_time - process_duration
     statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
-
+    statistics.end_time = finish_time if finish_time > statistics.end_time else statistics.end_time
     # record doctor statistics
     if process_name == "doctor":
         doctor_id = resource.get_id()
@@ -271,7 +272,7 @@ def main(args=()):
     worker = SimulationWorker()
     worker.start()
     # setup websocket server
-    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate)
+    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate, canvas=canvas)
     server.start()
 
     app.logger.info(report_statistics())

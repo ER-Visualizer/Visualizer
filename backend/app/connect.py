@@ -12,7 +12,7 @@ class WebsocketServer:
     """
     Websocket to send events to the frontend
     """
-    def __init__(self, host, port, producerFunc, process, statistics, packet_rate):
+    def __init__(self, host, port, producerFunc, process, statistics, packet_rate, canvas=[]):
         self.host = host
         self.port = port
         # function to get events
@@ -29,6 +29,7 @@ class WebsocketServer:
         self.sent_stats = False
         # the frequency of sending events
         self.packet_rate = packet_rate
+        self.canvas = canvas[:]
 
     def start(self) -> None:
         """
@@ -129,8 +130,15 @@ class WebsocketServer:
             hospital_data.append(value)
 
         hosptial_csv.append(hospital_data)
+        util_headers = []
+        util_body = []
+        # format resource utilization
+        for resource, util in stats["util"].items():
+            util_headers.append(resource)
+            util_body.append(util)
+        util_csv = [util_headers, util_body]
 
-        formatted_stats = {"stats": stats["stats"], "hospital": hosptial_csv, "doctors": doctor_csv, "patients": patient_csv}
+        formatted_stats = {"stats": stats["stats"], "hospital": hosptial_csv, "doctors": doctor_csv, "patients": patient_csv, "util": util_csv}
         return formatted_stats
 
     async def __producer_handler(self, websocket, path):
