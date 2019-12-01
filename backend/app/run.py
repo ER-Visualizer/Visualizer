@@ -310,7 +310,7 @@ def main(args=()):
     packet_rate = int(rate)
 
     # this will read canvas json
-    canvas_parser(canvas)
+    # canvas_parser(canvas)
 
     counter = 0
     # this will read patients csv
@@ -318,7 +318,7 @@ def main(args=()):
     worker.start()
     # setup websocket server
     server = WebsocketServer("localhost", 8765, send_e,
-                             process_heap, report_statistics, packet_rate)
+                             process_heap, report_statistics, packet_rate, canvas)
     server.start()
 
     app.logger.info(report_statistics())
