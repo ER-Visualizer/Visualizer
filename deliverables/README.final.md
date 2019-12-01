@@ -1,7 +1,5 @@
 # visualizER
 
-<!-- _Note:_ This document is intended to be relatively short. Be concise and precise. Assume the reader has no prior knowledge of your application and is non-technical. -->
-
 ## Description 
 
 Our application is an emergency room simulator which is highly configurable and can simulate a broad range of scenarios. It can be used by medical professionals/researchers to determine bottlenecks and areas in the emergency room which would benefit most from added resources.
