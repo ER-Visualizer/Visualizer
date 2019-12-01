@@ -2,25 +2,26 @@ import React, { Component } from 'react'
 import './JSONEntrySidebarContent.css'
 import { connect } from 'react-redux';
 import { replaceNodeList } from '../redux/actions'
+const Validator = require('jsonschema').Validator;
+const v = new Validator();
 const nodeScheme = {
-    "id": 0,
-    "elementType": "reception",
-    "distribution": "fixed",
-    "distributionParameters": [
-     5
-    ],
-    "numberOfActors": 1,
-    "queueType": "priority queue",
-    "priorityFunction": "",
-    "children": [
-     1
-    ],
-    "priorityType": "acuity",
-    "predictedChildren": [],
-    "nodeRules": [],
-    "resourceRules": [],
-    "x": 64,
-    "y": 64
+    "type": "object",
+    "properties": {
+        "id": { "type": "integer"},
+        "elementType": { "type": "string"},
+        "distribution": {"type": "string"},
+        "distributionParameters": {"type": "array", "items": {"type": "integer"}},
+        "numberOfActors": { "type": "integer"},
+        "queueType": { "type": "string"},
+        "priorityFunction": { "type": "string"},
+        "children": {"type": "array", "items": {"type": "integer"}},
+        "priorityType": { "type": "string"},
+        "predictedChildren": {"type": "array", "items": {"type": "integer"}},
+        "nodeRules": {"type": "object"},
+        "resourceRules": {"type": "object"},
+        "x": { "type": "integer"},
+        "y":{ "type": "integer"}
+    }
    };
 
 export class JSONEntrySidebarContent extends Component {
@@ -113,6 +114,19 @@ export class JSONEntrySidebarContent extends Component {
                 return
             }
         }
+        for (let i = 0; i < validatedJSON.length; i++) {
+            let node = validatedJSON[i]
+            let valid = v.validate(node, nodeScheme);
+            console.log({valid});
+            
+            if (valid) {
+                console.log('User data is valid');
+            } else {
+                console.log('User data is INVALID!');
+                console.log(v.errors);
+                return
+            }
+        }        
 
         if (this.state.valid) {
             this.props.replaceNodeList(validatedJSON)
