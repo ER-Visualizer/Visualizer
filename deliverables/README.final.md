@@ -13,9 +13,6 @@ In the waiting room of a hospital, each patient has an arrival time and a specif
 Our application also uses statistical distributions to simulate the random variations in the amount of time a patient requires to receive treatment, as opposed to simpler models which assume patients always take the same time. This allows our model to be more accurate and more effectively represent reality.
 
 ## Key Features
- * Described the key features in the application that the user can access
- * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application
-
  <!-- * Describe the key features in the application that the user can access
  * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application -->
  * Visual Representation of the emergency room: Users can create nodes representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those nodes to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.
@@ -107,11 +104,6 @@ Our application also uses statistical distributions to simulate the random varia
 
 
 ## Instructions
- * Clear instructions for how to use the application from the end-user's perspective
- * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
- * Provide clear steps for using each feature described above
- * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way.
- 
  <!-- * Clear instructions for how to use the application from the end-user's perspective
  * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
  * Provide clear steps for using each feature described above
