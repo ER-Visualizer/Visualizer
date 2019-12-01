@@ -13,10 +13,20 @@ import logging
 
 CORS(app)
 
+logging.basicConfig(filename='debug.log', level=logging.DEBUG,
+                    format='%(levelname)s: ER | Visualizer: %(asctime)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 
+
 def allowed_file(filename):
+    """
+    Returns true if file is a csv
+    :param filename: File name input as a str
+    :return: Boolean
+    """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'csv'
+
 
 @app.route('/hello')
 def home():

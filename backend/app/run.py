@@ -73,9 +73,8 @@ class SimulationWorker(threading.Thread):
 
         for node in canvas:
             app.logger.info(f"cur node {node}")
-            rules = []
+            node_rules = []
             # create all of the rules here
-            # TODO: delete this and create actual rules from JSON once JSON format is created
 
             if "nodeRules" in node:
                 node_rules = rule_creator.create_rules(type="node", node_rules= node["nodeRules"], node_id=node["id"], canvas=canvas)
@@ -83,13 +82,13 @@ class SimulationWorker(threading.Thread):
             # create node
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
-                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
+                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules,
                                             priority_type=node["priorityType"])
             # get list of all resources for the node
             if "resourceRules" in node:
                 list_of_resources = nodes_list[node["id"]].get_list_of_resources()
 
-                # generate a list of new rules for each resource
+                # currently, each resource in a node is designed to have the same rules
                 for resource in list_of_resources:
                     resource_rules = rule_creator.create_rules(type= "resource", resource_rules= node["resourceRules"], node_id= node["id"], resource= resource)
                     resource.set_resource_rules(resource_rules)
@@ -121,13 +120,10 @@ class SimulationWorker(threading.Thread):
                 all_patients[next_patient.get_id()] = next_patient
 
 
-
-"""
-Sends changes to frontend and repeats at intervals dictated by packet_rate
-"""
-
-
 def send_e():
+    """
+    Sends changes to frontend (to be displayed) and repeats at intervals dictated by packet_rate
+    """
     global event_changes
     if len(event_changes) == 0:
         # send nothing if no changes
