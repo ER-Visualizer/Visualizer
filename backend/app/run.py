@@ -110,10 +110,11 @@ class SimulationWorker(threading.Thread):
                     initial_time = row["time"]
                 FMT = '%Y-%m-%d %H:%M:%S.%f'
                 patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
-                patient_time = float(patient_time.seconds)/60
+                patient_time = float(patient_time.total_seconds())/60
                 statistics.start_time = patient_time if statistics.start_time > patient_time else statistics.start_time
                 row[START_TIME] = patient_time
                 next_patient = Patient(row)
+                app.logger.info("start_time for patient {} is {}".format(next_patient.get_id(),next_patient.get_start_time()))
                 # All of the patients first get loaded up into the patient loader node
                 # each patient will stay in the patient loader until their start time
                 nodes_list[-1].put_patient_in_node(next_patient)

@@ -69,7 +69,7 @@ def store_csv():
     file.stream.seek(0)
     file.save('/app/test.csv')
     now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
+    current_time = now.strftime("%H_%M_%S")
     # all uploaded CSVs are automatically stored under /app/csv folder locally
     path = '/app/csv/' + current_time + ".csv"
     os.makedirs(os.path.dirname(path), exist_ok=True)

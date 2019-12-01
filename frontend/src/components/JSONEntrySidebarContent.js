@@ -2,6 +2,26 @@ import React, { Component } from 'react'
 import './JSONEntrySidebarContent.css'
 import { connect } from 'react-redux';
 import { replaceNodeList } from '../redux/actions'
+const nodeScheme = {
+    "id": 0,
+    "elementType": "reception",
+    "distribution": "fixed",
+    "distributionParameters": [
+     5
+    ],
+    "numberOfActors": 1,
+    "queueType": "priority queue",
+    "priorityFunction": "",
+    "children": [
+     1
+    ],
+    "priorityType": "acuity",
+    "predictedChildren": [],
+    "nodeRules": [],
+    "resourceRules": [],
+    "x": 64,
+    "y": 64
+   };
 
 export class JSONEntrySidebarContent extends Component {
     constructor(props) {
@@ -11,7 +31,11 @@ export class JSONEntrySidebarContent extends Component {
         this.handleClear = this.handleClear.bind(this)
         this.handleDownload = this.handleDownload.bind(this)
         this.cloneNodes = this.cloneNodes.bind(this)
+
     }
+
+    
+
 
     componentDidMount() {
 
