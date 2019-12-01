@@ -212,10 +212,11 @@ by clicking on the "download" button in the navigation bar.
 ## CSV
 
 1. Each row represents 1 patient, and each column its attributes
-2. Must have columns with following names(outlined in global_strings.py):
+2. **Must have columns** with following names(outlined in global_strings.py):
    * time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.
-   * id: id of the simulation object(patient in this case)
-   * acuity: 1-5
+    * All patients **must be sorted by time in chronological order** from patient who arrives at hospital first, to patients who arrive at hospital last.
+   * id: id of the simulation object(patient in this case). **Id must be unique**
+   * acuity: 1-5. 
 3. For predicted columns, values must be: {1 for True, 0 for False}
 4. For frequency columns, values must be: >= 0
 
