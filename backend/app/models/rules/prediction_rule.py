@@ -17,7 +17,7 @@ class PredictionRule(CSVRule):
         if last_node_id != None:
             # if last node is the right node for the edge
             if last_node_id in self.from_node_ids:
-                predicted = patient.get_attribute(self.get_name_in_csv())
-                if predicted == "TRUE":
+                predicted = int(patient.get_attribute(self.get_name_in_csv()))
+                if predicted == 1:
                     return True
         return False

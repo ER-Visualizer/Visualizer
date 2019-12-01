@@ -125,7 +125,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
    * time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.
    * id: id of the simulation object(patient in this case)
    * acuity: 1-5
-3. For predicted columns, values must be: {"TRUE", "FALSE"}
+3. For predicted columns, values must be: {1 for True, 0 for False}
 4. For frequency columns, values must be: >= 0
 
 ## End-to-End flow of data
