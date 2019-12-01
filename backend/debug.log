@@ -1,0 +1,362 @@
+INFO: ER | Visualizer: 2019-12-01 01:28:56: 172.23.0.1 - - [01/Dec/2019 01:28:56] "OPTIONS /start HTTP/1.1" 200 -
+INFO: ER | Visualizer: 2019-12-01 01:28:56: starting simulation
+INFO: ER | Visualizer: 2019-12-01 01:28:56: starting simulation in main
+INFO: ER | Visualizer: 2019-12-01 01:28:56: Environment: 
+INFO: ER | Visualizer: 2019-12-01 01:28:56: development
+INFO: ER | Visualizer: 2019-12-01 01:28:56: canvas [{'id': 0, 'elementType': 'reception', 'distribution': 'fixed', 'distributionParameters': [5], 'numberOfActors': 1, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [1], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}, {'id': 1, 'elementType': 'triage', 'distribution': 'fixed', 'distributionParameters': [3], 'numberOfActors': 2, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [2, 3], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}, {'id': 2, 'elementType': 'doctor', 'distribution': 'fixed', 'distributionParameters': [10], 'numberOfActors': 3, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [3], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}, {'id': 3, 'elementType': 'x-ray', 'distribution': 'binomial', 'distributionParameters': [1, 1], 'numberOfActors': 2, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}], duration: 5, rate: 1
+INFO: ER | Visualizer: 2019-12-01 01:28:56: cur node {'id': 0, 'elementType': 'reception', 'distribution': 'fixed', 'distributionParameters': [5], 'numberOfActors': 1, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [1], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}
+INFO: ER | Visualizer: 2019-12-01 01:28:56: cur node {'id': 1, 'elementType': 'triage', 'distribution': 'fixed', 'distributionParameters': [3], 'numberOfActors': 2, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [2, 3], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}
+INFO: ER | Visualizer: 2019-12-01 01:28:56: cur node {'id': 2, 'elementType': 'doctor', 'distribution': 'fixed', 'distributionParameters': [10], 'numberOfActors': 3, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [3], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}
+INFO: ER | Visualizer: 2019-12-01 01:28:56: cur node {'id': 3, 'elementType': 'x-ray', 'distribution': 'binomial', 'distributionParameters': [1, 1], 'numberOfActors': 2, 'queueType': 'priority queue', 'priorityFunction': '', 'children': [], 'patients': [], 'processing': [], 'priorityType': 'acuity', 'predictedChildren': [], 'nodeRules': [], 'resourceRules': []}
+INFO: ER | Visualizer: 2019-12-01 01:28:56: open csv
+DEBUG: ER | Visualizer: 2019-12-01 01:28:56: Using selector: EpollSelector
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '1'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '1'), ('patient_admitted', 'TRUE'), ('xray', '1'), ('pxray', '1')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 1 is added to patient_loader(id:-1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '6'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '1'), ('patient_admitted', 'TRUE'), ('xray', '1'), ('pxray', '1')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 6 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '7'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '2'), ('patient_admitted', 'FALSE'), ('xray', '0'), ('pxray', '0')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 7 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '8'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '2'), ('patient_admitted', 'TRUE'), ('xray', '2'), ('pxray', '0')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 8 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '5'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '3'), ('patient_admitted', 'FALSE'), ('xray', '0'), ('pxray', '0')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 5 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '4'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '4'), ('patient_admitted', 'TRUE'), ('xray', '1'), ('pxray', '0')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 4 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '2'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '5'), ('patient_admitted', 'TRUE'), ('xray', '2'), ('pxray', '1')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 2 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '3'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '5'), ('patient_admitted', 'FALSE'), ('xray', '0'), ('pxray', '0')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 3 is added to queue of patient_loader(id:-1)
+INFO: ER | Visualizer: 2019-12-01 01:28:56: OrderedDict([('patient_id', '9'), ('time', '2019-01-01 00:00:00.958845'), ('patient_acuity', '5'), ('patient_admitted', 'TRUE'), ('xray', '1'), ('pxray', '1')])
+INFO: ER | Visualizer: 2019-12-01 01:28:56: patient 9 is added to queue of patient_loader(id:-1)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server - state = CONNECTING
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server - event = connection_made(<_SelectorSocketTransport fd=8 read=idle write=<idle, bufsize=0>>)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server - event = data_received(<546 bytes>)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server < GET / HTTP/1.1
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server < Headers([('Host', 'localhost:8765'), ('Connection', 'Upgrade'), ('Pragma', 'no-cache'), ('Cache-Control', 'no-cache'), ('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36'), ('Upgrade', 'websocket'), ('Origin', 'http://localhost:5000'), ('Sec-WebSocket-Version', '13'), ('Accept-Encoding', 'gzip, deflate, br'), ('Accept-Language', 'en-CA,en;q=0.9,hi-IN;q=0.8,hi;q=0.7,en-GB;q=0.6,en-US;q=0.5'), ('Sec-WebSocket-Key', 'EtNj7XV/ly7GAd60yZlqoQ=='), ('Sec-WebSocket-Extensions', 'permessage-deflate; client_max_window_bits')])
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > HTTP/1.1 101 Switching Protocols
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Headers([('Upgrade', 'websocket'), ('Connection', 'Upgrade'), ('Sec-WebSocket-Accept', 'hsFww6HtDpOMcCfHXCFFm+k4CC8='), ('Sec-WebSocket-Extensions', 'permessage-deflate'), ('Date', 'Sun, 01 Dec 2019 01:29:01 GMT'), ('Server', 'Python/3.7 websockets/8.1')])
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server - state = OPEN
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 1 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 1 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 6 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 1, "patientId": "1", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 0, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 6 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 6 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 7 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 1, "patientId": "6", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 7 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 7 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 8 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 2, "patientId": "7", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 8 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 8 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 5 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 2, "patientId": "8", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 5 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 5 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 4 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 3, "patientId": "5", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 4 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 4 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 2 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 4, "patientId": "4", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 2 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 2 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 3 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 5, "patientId": "2", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 3 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:01: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:01: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 3 is added to queue of reception(id:0)
+INFO: ER | Visualizer: 2019-12-01 01:29:01: patient 9 is added to patient_loader(id:-1), inside resource 0
+DEBUG: ER | Visualizer: 2019-12-01 01:29:01: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 5, "patientId": "3", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 9 finished patient_loader(id:-1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(0, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 9 is added to queue of reception(id:0)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAcuity": 5, "patientId": "9", "curNodeId": -1, "nextNodeId": 0, "movedTo": "reception", "startedAt": "patient_loader", "timeStamp": 0, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 1 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "1", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 5, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 5, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 5, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to doctor(id:2), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 1 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "1", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 8, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 8, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 8, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 6 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "6", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 10, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 10, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 10, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 is added to doctor(id:2), inside resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:02: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 6 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 6 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "6", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 13, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 13, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 13, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 7 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 8 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "8", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 15, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 15, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 15, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 finished doctor(id:2), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 1 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "1", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 18, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 18, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 18, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 is added to doctor(id:2), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 8 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 8 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "8", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 18, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 18, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 18, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:02: patient 1 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:02: Patient: 1 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:02: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "1", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 19, "inQueue": false}, {"patientAcuity": 1, "patientId": "1", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 19, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 7 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 7 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 7 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "7", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 20, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 20, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 20, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 1 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 1 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "1", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 20, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 finished doctor(id:2), resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 6 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "6", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 23, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 23, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 23, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 7 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 7 is added to doctor(id:2), inside resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:03: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 7 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 7 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "7", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 23, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 23, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 23, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 6 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "6", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 24, "inQueue": false}, {"patientAcuity": 1, "patientId": "6", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 24, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 4 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 5 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 3, "patientId": "5", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 25, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 25, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 25, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 6 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 6 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 1, "patientId": "6", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 25, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 8 finished doctor(id:2), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 8 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 8 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 8 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "8", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 28, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 28, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 28, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 is added to doctor(id:2), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:03: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:03: patient 5 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:03: Patient: 5 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:03: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 3, "patientId": "5", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 28, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 28, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 28, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 8 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 8 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 8 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "8", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 29, "inQueue": false}, {"patientAcuity": 2, "patientId": "8", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 29, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 4 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 4 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 2 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 4 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 4, "patientId": "4", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 30, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 30, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 30, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 8 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 8 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "8", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 30, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 finished doctor(id:2), resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 7 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "7", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 33, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 33, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 33, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 4 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 4 is added to doctor(id:2), inside resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:04: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 4 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 4 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 4, "patientId": "4", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 33, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 33, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 33, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 7 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "7", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 34, "inQueue": false}, {"patientAcuity": 2, "patientId": "7", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 34, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 2 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 2 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 9 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 2 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "2", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 35, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 35, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 35, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:04: patient 7 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:04: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:04: Patient: 7 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:04: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 2, "patientId": "7", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 35, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 finished doctor(id:2), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 5 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 3, "patientId": "5", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 38, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 38, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 38, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 2 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 2 is added to doctor(id:2), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 2 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 2 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "2", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 38, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 38, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 38, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 5 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 3, "patientId": "5", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 39, "inQueue": false}, {"patientAcuity": 3, "patientId": "5", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 39, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 9 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 9 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 3 is added to reception(id:0), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 9 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "9", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 40, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 40, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 0, "nextNodeId": 0, "movedTo": "reception", "startedAt": "reception", "timeStamp": 40, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 5 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 5 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 3, "patientId": "5", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 40, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 finished doctor(id:2), resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 4 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 4, "patientId": "4", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 43, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 43, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 43, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 9 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 9 is added to doctor(id:2), inside resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:05: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 9 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 9 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "9", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 43, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 43, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 43, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 4 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 4, "patientId": "4", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 44, "inQueue": false}, {"patientAcuity": 4, "patientId": "4", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 44, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 3 finished reception(id:0), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is [(1, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 3 is added to triage(id:1), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 3 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "3", "curNodeId": 0, "nextNodeId": "end", "movedTo": "None", "startedAt": "reception", "timeStamp": 45, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 1, "nextNodeId": 1, "movedTo": "triage", "startedAt": "triage", "timeStamp": 45, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:05: patient 4 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:05: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:05: Patient: 4 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:05: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 4, "patientId": "4", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 45, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 finished doctor(id:2), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 2 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "2", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 48, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 48, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 48, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 finished triage(id:1), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(2, 1), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 is added to doctor(id:2), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 3 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "3", "curNodeId": 1, "nextNodeId": "end", "movedTo": "None", "startedAt": "triage", "timeStamp": 48, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 2, "nextNodeId": 2, "movedTo": "doctor", "startedAt": "doctor", "timeStamp": 48, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 1, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "triage", "timeStamp": 48, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 2 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "2", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 49, "inQueue": false}, {"patientAcuity": 5, "patientId": "2", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 49, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 2 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 2 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "2", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 50, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 finished doctor(id:2), resource 1
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 9 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "9", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 53, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 53, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 53, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 9 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "9", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 54, "inQueue": false}, {"patientAcuity": 5, "patientId": "9", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 54, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 9 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 9 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "9", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 55, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 finished doctor(id:2), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0), (3, 1)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: p_type acuity
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 is added to queue of x-ray(id:3)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 3 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "3", "curNodeId": 2, "nextNodeId": "end", "movedTo": "None", "startedAt": "doctor", "timeStamp": 58, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 58, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 2, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "doctor", "timeStamp": 58, "inQueue": true}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: processes list is [(3, 0)]
+INFO: ER | Visualizer: 2019-12-01 01:29:06: patient 3 is added to x-ray(id:3), inside resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:06: Patient: 3 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:06: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "3", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 59, "inQueue": false}, {"patientAcuity": 5, "patientId": "3", "curNodeId": 3, "nextNodeId": 3, "movedTo": "x-ray", "startedAt": "x-ray", "timeStamp": 59, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:07: patient 3 finished x-ray(id:3), resource 0
+INFO: ER | Visualizer: 2019-12-01 01:29:07: processes list is []
+INFO: ER | Visualizer: 2019-12-01 01:29:07: Patient: 3 exited
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server > Frame(fin=True, opcode=1, data=b'{"Events": [{"patientAquity": 5, "patientId": "3", "curNodeId": 3, "nextNodeId": "end", "movedTo": "None", "startedAt": "x-ray", "timeStamp": 60, "inQueue": false}]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:07: {'stats': 'true', 'hospital': {'journey': 39.0, 'wait': 20.0, 'ratio': 0.4459665409925604}, 'patients': {'process': {'Patient_1': {'patient_loader': 0, 'reception': 5, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_6': {'patient_loader': 0, 'reception': 10, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_7': {'patient_loader': 0, 'reception': 20, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_8': {'patient_loader': 0, 'reception': 15, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_5': {'patient_loader': 0, 'reception': 25, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_4': {'patient_loader': 0, 'reception': 30, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_2': {'patient_loader': 0, 'reception': 35, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_3': {'patient_loader': 0, 'reception': 45, 'triage': 3, 'doctor': 10, 'x-ray': 1}, 'Patient_9': {'patient_loader': 0, 'reception': 40, 'triage': 3, 'doctor': 10, 'x-ray': 1}}, 'wait': {'Patient_1': {'patient_loader': 0, 'reception': 0, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_6': {'patient_loader': 0, 'reception': 5, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_7': {'patient_loader': 0, 'reception': 15, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_8': {'patient_loader': 0, 'reception': 10, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_5': {'patient_loader': 0, 'reception': 20, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_4': {'patient_loader': 0, 'reception': 25, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_2': {'patient_loader': 0, 'reception': 30, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_3': {'patient_loader': 0, 'reception': 40, 'triage': 0, 'doctor': 0, 'x-ray': 0}, 'Patient_9': {'patient_loader': 0, 'reception': 35, 'triage': 0, 'doctor': 0, 'x-ray': 0}}}, 'doctors': {'seen': {'Doctor_0': 5, 'Doctor_1': 4}, 'length': {'Doctor_0': {'Patient_1': [10], 'Patient_8': [10], 'Patient_5': [10], 'Patient_2': [10], 'Patient_3': [10]}, 'Doctor_1': {'Patient_6': [10], 'Patient_7': [10], 'Patient_4': [10], 'Patient_9': [10]}}}}
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server > Frame(fin=True, opcode=1, data=b'{"stats": "true", "hospital": [["journey", "wait", "ratio"], [39.0, 20.0, 0.4459665409925604]], "doctors": [["Doctor ID", "seen", "Patient_1", "Patient_6", "Patient_7", "Patient_8", "Patient_5", "Patient_4", "Patient_2", "Patient_3", "Patient_9"], ["Doctor_0", 5, "[10]", "None", "None", "[10]", "[10]", "None", "[10]", "[10]", "None"], ["Doctor_1", 4, "None", "[10]", "[10]", "None", "None", "[10]", "None", "None", "[10]"]], "patients": [["Patient ID", "doctor_process_time", "doctor_wait_time", "patient_loader_process_time", "patient_loader_wait_time", "reception_process_time", "reception_wait_time", "triage_process_time", "triage_wait_time", "x-ray_process_time", "x-ray_wait_time"], ["Patient_1", 10, 0, 0, 0, 5, 0, 3, 0, 1, 0], ["Patient_6", 10, 0, 0, 0, 10, 5, 3, 0, 1, 0], ["Patient_7", 10, 0, 0, 0, 20, 15, 3, 0, 1, 0], ["Patient_8", 10, 0, 0, 0, 15, 10, 3, 0, 1, 0], ["Patient_5", 10, 0, 0, 0, 25, 20, 3, 0, 1, 0], ["Patient_4", 10, 0, 0, 0, 30, 25, 3, 0, 1, 0], ["Patient_2", 10, 0, 0, 0, 35, 30, 3, 0, 1, 0], ["Patient_3", 10, 0, 0, 0, 45, 40, 3, 0, 1, 0], ["Patient_9", 10, 0, 0, 0, 40, 35, 3, 0, 1, 0]]}', rsv1=False, rsv2=False, rsv3=False)
+INFO: ER | Visualizer: 2019-12-01 01:29:07: closing sockets
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server - state = CLOSING
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server > Frame(fin=True, opcode=8, data=b'\x03\xe8', rsv1=False, rsv2=False, rsv3=False)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server - event = data_received(<8 bytes>)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server < Frame(fin=True, opcode=8, data=b'\x03\xe8', rsv1=False, rsv2=False, rsv3=False)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server x half-closing TCP connection
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server - event = eof_received()
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server - event = connection_lost(None)
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server - state = CLOSED
+DEBUG: ER | Visualizer: 2019-12-01 01:29:07: server x code = 1000, reason = [no reason]

@@ -100,3 +100,18 @@
     transition-duration: 0.4s;
     outline: 0;
 }
+
+.add-remove-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.RuleIcon {
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.RuleIcon:hover {
+    fill: rgb(106, 106, 106);
+}

@@ -2,15 +2,31 @@ import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
 import { editNodeProperties, deleteNode } from '../redux/actions'
+import NodeRule from './NodeRule';
+import ResourceRule from './ResourceRule';
+import {ReactComponent as AddIcon} from '../add.svg';
 import Queue from './Queue';
 import ResourceQueue from './ResourceQueue';
 
+const stationTypes = ["reception", "triage", "doctor", "x-ray"];
+
 export class NodeSidebarContent extends React.Component {
     constructor(props) {
-        super(props)
-        this.state = {node:null, numNodes:null}
-        this.state.node = this.props.node 
-        this.handleInputChange = this.handleInputChange.bind(this)
+        super(props);
+        this.state = {
+            node:null,
+            numNodes:null,
+            showOther: false,
+            tempText: '',
+        };
+        this.state.node = this.props.node;
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleRuleChange = this.handleRuleTypeChange.bind(this);
+        this.handleTextInputChange = this.handleTextInputChange.bind(this);
+        this.addNewNodeRule = this.addNewNodeRule.bind(this);
+        this.addNewResourceRule = this.addNewResourceRule.bind(this);
+        this.handleColumnNameChange = this.handleColumnNameChange.bind(this);
+        this.removeRule = this.removeRule.bind(this);
     }
 
     handleInputChange(event) {
@@ -24,9 +40,72 @@ export class NodeSidebarContent extends React.Component {
             new_node.priorityFunction = ""
             new_node.priorityType = ""
         }
+
+        // Empty the text inside the "other" field
+        if (name === "elementType" && value === "other") {
+            this.setState({ tempText: "" });
+        }
+
         this.setState({
             node: new_node
         })
+    }
+
+    handleTextInputChange(event) {
+        this.setState({ tempText: event.target.value });
+    }
+
+    addNewNodeRule() {
+        const rules = [...this.state.node.nodeRules];
+        rules.push({ "ruleType": "", "columnName": "" });
+        let new_node = Object.assign({}, this.state.node, {nodeRules: rules});
+        this.setState({
+            node: new_node
+        });
+    }
+
+    addNewResourceRule() {
+        const rules = [...this.state.node.resourceRules];
+        rules.push({ "ruleType": "" });
+        let new_node = Object.assign({}, this.state.node, {resourceRules: rules});
+        this.setState({
+            node: new_node
+        });
+    }
+
+    handleRuleTypeChange(event, i) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        const rules = [...this.state.node[name]];
+        rules[i] = {...rules[i], ruleType: value};
+        let new_node = {...this.state.node, [name]: rules};
+
+        this.setState({
+            node: new_node
+        });
+    }
+
+    handleColumnNameChange(event, i) {
+        const value = event.target.value;
+
+        const rules = [...this.state.node.nodeRules];
+        rules[i] = {...rules[i], columnName: value};
+        let new_node = {...this.state.node, nodeRules: rules};
+
+        this.setState({
+            node: new_node
+        });
+    }
+
+    removeRule(name, i) {
+        const rules = [...this.state.node[name]];
+        rules.splice(i, 1);
+        let new_node = {...this.state.node, [name]: rules};
+
+        this.setState({
+            node: new_node
+        });
     }
 
     componentWillReceiveProps({node, numNodes}){  
@@ -53,18 +132,52 @@ export class NodeSidebarContent extends React.Component {
 
 
     render() {
+        const NodeRules = this.state.node.nodeRules.map((rule, i) =>
+            <NodeRule
+                key={i}
+                ruleType={rule.ruleType}
+                columnName={rule.columnName}
+                onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
+                onInputChange={(e) => this.handleColumnNameChange(e, i)}
+                removeRule={() => this.removeRule("nodeRules", i)}
+            />
+        );
 
-    	// console.log("node queue type")
-    	// console.log(this.state.node.queueType)
+        const ResourceRules = this.state.node.resourceRules.map((rule, i) =>
+            <ResourceRule
+                key={i}
+                ruleType={rule.ruleType}
+                onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
+                removeRule={() => this.removeRule("resourceRules", i)}
+            />
+        );
+        
+
         return (
             <div className="NodeSidebarContent">                
                 
                 <div className="input-container"> 
                     <label>Station Type</label><br/>
-                    <input 
-                        type="text"
-                        name="elementType"
-                        value={this.state.node.elementType} onChange={this.handleInputChange}></input>
+                    <select name="elementType"
+                            value={stationTypes.includes(this.state.node.elementType) ? 
+                                this.state.node.elementType : "other"}
+                            onChange={this.handleInputChange}>
+                        <option value="reception">Reception</option>
+                        <option value="triage">Triage</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="x-ray">X-ray</option>
+                        <option value="other">Other</option>
+                    </select>
+                    {!stationTypes.includes(this.state.node.elementType) &&
+                        <input 
+                            type="text"
+                            name="elementType"
+                            placeholder="Station Type"
+                            value={this.state.tempText}
+                            onChange={this.handleTextInputChange}
+                            onBlur={this.handleInputChange}>
+                        </input>
+                    }
                 </div>
                 
                 <div className="input-container">
@@ -180,6 +293,22 @@ export class NodeSidebarContent extends React.Component {
                  }
                 </div>
             	}
+                <div className="input-container">
+                    <div className="add-remove-container">
+                        <label>Node Rules</label><br/>
+                        <AddIcon className="RuleIcon" onClick={this.addNewNodeRule} />
+                    </div>
+                    {NodeRules}
+                </div>
+
+                <div className="input-container">
+                    <div className="add-remove-container">
+                        <label>Resource Rules</label><br/>
+                        <AddIcon className="RuleIcon" onClick={this.addNewResourceRule} />
+                    </div>
+                    {ResourceRules}
+                </div>
+                
                 <div className="input-container">
                     <label>Currently being proccessed by actor</label><br/>
                     <ResourceQueue patients={this.state.node.processing} />

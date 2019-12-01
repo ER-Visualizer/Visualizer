@@ -15,36 +15,13 @@ import logging
 
 CORS(app)
 
+logging.basicConfig(filename='debug.log', level=logging.DEBUG,
+                    format='%(levelname)s: ER | Visualizer: %(asctime)s: %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() == 'csv'
-
-@app.route('/hello')
-def home():
-    # main()
-    return "hello world!"
-
-
-@app.route('/formatstats', methods=['POST'])
-def format_stats():
-    req_data = request.json
-    out = []
-
-#     for key in req_data["patient"]:
-#         cur_patient = {}
-#         for subkey in key:
-#             for time in subkey:
-#                 cur_patient[f"{subkey} {time} {key}"] = key[subkey][time]
-
-
-
-# [
-#   { firstname: "Ahmed", lastname: "Tomi", email: "ah@smthing.co.com" },
-#   { firstname: "Raed", lastname: "Labes", email: "rl@smthing.co.com" },
-#   { firstname: "Yezzi", lastname: "Min l3b", email: "ymin@cocococo.com" }
-# ];
-    return send_json_response("ye")
 
 @app.route('/start', methods=['POST'])
 def start_simulation():

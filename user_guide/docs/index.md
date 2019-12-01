@@ -1,6 +1,5 @@
 # User Guide for ER | Visualizer
 
-<!-- Use this for spacing -->
 <br> 
 
 ## System Requirements for Windows
@@ -59,19 +58,16 @@
  menu) in the status bar to dismiss this pop-up notification.
 
 
-- Click the Docker menu (whale menu) to see Preferences and other options.
+- Click the Docker menu to see Preferences and other options.
 
 - Select About Docker to verify that you have the latest version.
 
-## Instructions 
- <!-- * Clear instructions for how to use the application from the end-user's perspective
- * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
- * Provide clear steps for using each feature described above
- * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
-### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
-Then, start the application by double clicking the docker icon in your Applications folder.
+## Application Setup 
 
-### Running the Application:
+- Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
+- Then, start the application by double clicking the docker icon in your Applications folder.
+
+## Running the Application
 Run ```docker-compose down``` - in case you already have docker and have something running on the same port
 Then run ```docker-compose up --build``` - to build the image/run the application
   - The client and server services will be instantiated with the ports indicated in the .env file.
@@ -86,12 +82,13 @@ REACT_APP_PORT = {Frontend port number - default 5000}
 DEV_ENV = development
 WEB_SOCKET_PORT = {WSS port number - default 8765}
 ```
-### Using the Application:
-- Once the application begins (your terminal should look the same as the image above), go to http://localhost:5000. If you are using another port - based on REACT_APP_PORT that you have in your .env file. Then, a blank canvas will be presented where the hospital workflow can be created using different click operations.
-  - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
-  - Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the plus button. The user will then be prompted to enter the necessary properties of the process.
-  - Clicking a process on the screen will allow the user to view and edit its properties.
-  - To specify the processes to which the patient will travel, press and hold the shift key and click the outbound process followed by the inbound process.
+## Using the Application
+- Once the application begins (your terminal should look the same as the image above), go to http://localhost:5000. 
+    -If you are using another port - based on REACT_APP_PORT that you have in your .env file. Then, a blank canvas will be presented where the hospital workflow can be created using different click operations.
+    - Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.
+- Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the add node button. The user can then enter the necessary properties of the process.
+- Clicking a process on the screen will allow the user to view and edit its properties.
+- To specify the processes to which the patient will travel, click the "add edges" button on the top right. Then, click the outbound process followed by the inbound process.
 - Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.
 - After the patient csv file is loaded, the simulation can start.
 - As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each acuity will also be displayed.
