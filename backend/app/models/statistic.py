@@ -4,6 +4,7 @@ import numpy as np
 from flask import Flask
 app = Flask(__name__)
 
+
 class Statistic:
     """
     Statistics class to store data throughout the simulation
@@ -16,12 +17,13 @@ class Statistic:
         # structure: {'Patient_1': {'reception': 1 ...} ...}
         self.p_wait_times = {}
         # Doctor stats
+        # structure: {'Doctor_1': 1, ...}
         self.d_seen = {}
+        # structure: {'Doctor_1': {'Patient_1': [1], ...} ...}
         self.d_length = {}
         # Hospital stats
         self.sum_ratio_wait = 0.0
         self.sum_ratio_journey = 0.0
-        self.sum_utilization = 0
         self.start_time = float("INF")
         self.end_time = float("-INF")
 

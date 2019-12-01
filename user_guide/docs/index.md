@@ -84,8 +84,7 @@
 - Then, start the application by double clicking the docker icon in your Applications folder.
 
 ## Running the Application
-Run ```docker-compose down``` - in case you already have docker and have something running on the same port
-Then run ```./run_dev.sh build``` - to build the image/run the application
+Run ```./run_prod.sh build``` - to build the image/run the application in production.
   - The client and server services will be instantiated with the ports indicated in the .env file.
   - The client can be accessed at http://localhost:5000 by default.
 
@@ -152,10 +151,12 @@ Development environment has the following features:
 * Click the "Add Node" button in the navigation bar. A node will appear on the 
 screen that you position by can dragging around. The node's properties can be 
 specified by clicking on it and modifying the fields in the sidebar which opens.
+![Create a node](add_node.png)
 
 ##### How to delete a node
 * Click on a node. A side panel should appear. Scroll to the bottom
 and click on the "delete" button.
+![Delete a node](delete_node.png)
 
 ##### How to create a link 
 * In the navigation bar, click on the "build links: off" toggle button.
@@ -167,12 +168,18 @@ When you are finished click on the "build links: on" button
 to turn off link building. This last step is important
 so that when you click on nodes you aren't accidentally building
 links.
+![Build a link](build_links.png)
+
 
 ##### How to delete a link
 * Click on the link you want to delete and, in the sidebar, click "Delete edge".
+![Delete a link](delete_edge.png)
+
 
 ##### How to add a predicted edge
-* Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge".
+* Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge". Predicted edges will appear as dashed lines in the user interface.
+![Create predicted edge](set_predicted_edge.png)
+
 
 ##### How to manually enter a custom JSON
 * Open the JSON entry and clear the entry box. Paste in your custom JSON and press 
@@ -212,20 +219,32 @@ by clicking on the "download" button in the navigation bar.
 ## CSV
 
 1. Each row represents 1 patient, and each column its attributes
-2. Must have columns with following names(outlined in global_strings.py):
+2. **Must have columns** with following names(outlined in global_strings.py):
    * time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.
-   * id: id of the simulation object(patient in this case)
-   * acuity: 1-5
+    * All patients **must be sorted by time in chronological order** from patient who arrives at hospital first, to patients who arrive at hospital last.
+   * id: id of the simulation object(patient in this case). **Id must be unique**
+   * acuity: 1-5. 
 3. For predicted columns, values must be: {1 for True, 0 for False}
 4. For frequency columns, values must be: >= 0
 
 ## FAQ 
-Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers
+Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers.
+
 * Q: Does the json in the custom JSON area update the doc
     * A: Yes, once you click Save
+* Q: How can I save the positions of the nodes?
+    * A: Copy the custom JSON code for the graph
+    by clicking on the "JSON Entry" button. The JSON
+    will contain the x, and y coordinates for each
+    node, so that when you reinput the json into
+    the JSON entry form, the nodes will be placed
+    back in the position you set them to. 
 * Q: Do the node id's have to be unique?
     * A: Yes
-* Q: What do the numbers on the squares represent ?
-  * A: The id of the patient, the squares are individual patients, and their 
-  color represents their acuity where red means actuity level 1 and acuity increases
-  as the color gets lights so light red has a higher acuity than dark red.
+* Q: What do the numbers in the square brackets ([])
+in the logs mean?
+    * A: They represent an integer timestamp for each logline.
+* Q: What do the numbers on the squares represent?
+    * A: The id of the patient, the squares are individual patients, and their 
+    color represents their acuity where red means actuity level 1 and acuity increases
+    as the color gets lights so light red has a higher acuity than dark red.

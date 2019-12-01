@@ -227,17 +227,6 @@ class Node:
         # If yes, extract it from the queue
         # Insert it into the resource/subprocess(existing method)
         # Add element on the heap(existing method)
-
-        # TODO: test if for different types of queues,
-        # this iterates in the right orders
-        # This will iterate through stacks and queues in the right order
-
-        # If it's a heap, we need to iterate through a copy of the heap,
-        # as the iterator will mutate the heap list. Therefore, we need to create a deep
-        # copy of the list for the new Heap() to mutate. When we remove
-        # from the heap, we need to remove from the actual heap,
-        # and we'll use the index because we can't remove by Patient as it's a
-        # deep copy so we don't have a hold of actual memory address.
         app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), subprocess.get_id()))
         app.logger.debug("queue is {} with length {}".format(self.queue, len(self.queue._queue)))
         iterator = self.queue

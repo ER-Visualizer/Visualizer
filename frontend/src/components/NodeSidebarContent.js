@@ -18,6 +18,8 @@ export class NodeSidebarContent extends React.Component {
             numNodes:null,
             showOther: false,
             tempText: '',
+            valid: true, 
+            invalidNodeParamError: "",
         };
         this.state.node = this.props.node;
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -129,10 +131,43 @@ export class NodeSidebarContent extends React.Component {
             console.log("cannot delete last node");
         }
     }
+    
+    isNumber(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
 
+    isValidDistributionParams(array) {
+        let check = true;
+        array.forEach((element) => {
+            if (!this.isNumber(element)){
+                check = false
+            }
+        })
+        return check;
+    }
+
+    handleSave(){
+        if (!this.isNumber(this.state.node.numberOfActors) && !this.isValidDistributionParams(this.state.node.distributionParameters)){
+            this.setState({
+                        valid: false, invalidNodeParamError: "Invald Distribution Parameter(s) and Number of Actor(s) Paramaters"
+                    })
+        } else if (!this.isNumber(this.state.node.numberOfActors)){
+            this.setState({
+                valid: false, invalidNodeParamError: "Invald Number of Actor(s) Paramater"
+            })
+            
+        } else if (!this.isValidDistributionParams(this.state.node.distributionParameters)){
+            this.setState({
+                valid: false, invalidNodeParamError: "Invald Distribution Parameter(s)"
+            })
+        }
+        else {
+            this.setState({valid: true})
+            return this.props.editNodeProperties(this.state.node)
+        }
+    }
 
     render() {
-        console.log(this.state.node);
         const NodeRules = this.state.node.nodeRules.map((rule, i) =>
             <NodeRule
                 key={i}
@@ -311,23 +346,27 @@ export class NodeSidebarContent extends React.Component {
                 </div>
                 
                 <div className="input-container">
-                    <label>Currently being proccessed by actor</label><br/>
+                    <label> Being proccessed by actor(s)</label><br/>
                     <ResourceQueue patients={this.state.node.processing} />
                 </div>
                 <div className="input-container">
-                    <label>Current Queue</label><br/>
+                    <label>Waiting Queue</label><br/>
                     <Queue patients={this.state.node.patients} />
                 </div>
-
-                
-                <button className="SaveNodebutton" onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
+                <div className="JSONWarningContainer">
+                    <label className="WarningText">{this.state.valid ? false : this.state.invalidNodeParamError}</label> 
+                </div>
+                <button className="SaveNodebutton" onClick={()=>{this.handleSave()}}> Save </button>
                 <button className="DeleteNodebutton" onClick={()=>{this.handleDelete()}}> Delete </button>
+                
             </div> // TODO: make deleting close the sidebar 
         )
     }
 }
 
-const mapStateToProps = state => {}
+const mapStateToProps = state => {
+    return { nodes: state.nodes, shouldDeleteLink: state.shouldDeleteLink, shouldBuildLink: state.shouldBuildLink}
+}
 
 const mapDispatchToProps = dispatch => {
     return {
