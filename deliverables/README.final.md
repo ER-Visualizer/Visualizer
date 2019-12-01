@@ -149,7 +149,8 @@ Development environment has the following features:
 
 - VirtualBox prior to version 4.3.30 must not be installed as it is not compatible with Docker Desktop.
 
-### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version based on your OS.
+### Setup
+Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version based on your OS.
 
 ### Installing and running Docker Desktop on Windows
 
