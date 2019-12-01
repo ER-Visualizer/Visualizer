@@ -115,3 +115,10 @@
 .RuleIcon:hover {
     fill: rgb(106, 106, 106);
 }
+
+div .WarningText {
+    float:right;
+    margin-top: 10px;
+    margin-left: 20px;
+    color: maroon;
+}
