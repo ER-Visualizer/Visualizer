@@ -154,8 +154,8 @@ class Node:
         # automatically sets him to available
         old_id = ((resource.get_curr_patient()).get_patient_record()).get_curr_process_id()
         patient = resource.clear_patient()
-        app.logger.info("patient {} finished {}(id:{}), resource {}".format(patient.get_id(),\
-            self.get_process_name(), self.get_id(), resource.get_id()))
+        app.logger.info("patient {} finished {}(id:{}), resource {} at time {}".format(patient.get_id(),\
+            self.get_process_name(), self.get_id(), resource.get_id(),GlobalTime.time))
         self.add_patient_leave_resource_event(patient)
 
         # all_patient_queues are the list of processes for which the patient is in a queue, i.e [1,3,4]. 
@@ -211,9 +211,9 @@ class Node:
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
             self.add_patient_join_queue_event(patient, prev_node_id)
-            app.logger.info("patient {} is added to queue of {}(id:{})".format(patient.get_id(), self.get_process_name(), self.id))
+            app.logger.info("patient {} is added to queue of {}(id:{}) at time {}".format(patient.get_id(), self.get_process_name(), self.id,GlobalTime.time))
         else:
-            app.logger.info("Attempted to Insert patient in same queue twice")
+            app.logger.info("Attempted to Insert patient in same queue twice at time {}".format(GlobalTime.time))
 
 
     # when called from a subprocess, this means that the subprocess justs
@@ -238,11 +238,17 @@ class Node:
         # from the heap, we need to remove from the actual heap,
         # and we'll use the index because we can't remove by Patient as it's a
         # deep copy so we don't have a hold of actual memory address.
+        app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), subprocess.get_id()))
+        app.logger.debug("queue is {} with length {}".format(self.queue, len(self.queue._queue)))
         iterator = self.queue
         for patient in iterator:
+            app.logger.debug("filling spot:now trying patient {}".format(patient.get_id()))
             if patient.get_available():
+                app.logger.debug("filling spot: patient {} is available".format(patient.get_id()))
                 if subprocess.is_available():
+                    app.logger.debug("filling spot: resource {} is available".format(subprocess.get_id()))
                     if RuleVerifier.pass_rules(patient,subprocess.get_resource_rules()):
+                        app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
                         self.queue.remove(patient)
 
                         # once removed from queue, update patient record
@@ -250,8 +256,15 @@ class Node:
                         patient_record.remove_process_from_queue(self.id)
                         self.insert_patient_to_resource_and_heap(
                             patient, subprocess)
+                        app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
                         return True
-
+                    else:
+                        app.logger.debug("filling spot: patient {} did not pass rules".format(patient.get_id()))
+                else:
+                    app.logger.debug("filling spot: resource {} is not available".format(subprocess.get_id()))
+            else:
+                app.logger.debug("filling spot: patient {} is not available".format(patient.get_id()))
+        app.logger.debug("filling spot: returning false")
         return False
 
     def add_patient_leave_resource_event(self, patient):
@@ -292,7 +305,7 @@ class Node:
     def simulate_concur_env(self, res_to_shuffle, environment):
         '''
         Shuffles order of resources/processes to go to if in production,
-        otherwise returns them in the right order
+        otherwise returns them in a linear order that is easy to test/debug.
         '''
         if environment == DEVELOPMENT:
             return res_to_shuffle
@@ -348,8 +361,8 @@ class Node:
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
         # insert patient into resource, since it's available
-        app.logger.info("patient {} is added to {}(id:{}), inside resource {}".format(patient.get_id(),\
-            self.get_process_name(), self.get_id(), resource.get_id(),))
+        app.logger.info("patient {} is added to {}(id:{}), inside resource {} at time {}".format(patient.get_id(),\
+            self.get_process_name(), self.get_id(), resource.get_id(),GlobalTime.time))
         # if resource is patient loader, set duration to be when the patient is supposed to join
         # reception
         if self.get_id() == -1:
