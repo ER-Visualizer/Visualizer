@@ -294,7 +294,6 @@ class Main extends React.Component {
     }
 
     render() {
-        console.log("rendering main.js", this.props.nodes);
         return (
             <div className="Main">
                 <Sidebar

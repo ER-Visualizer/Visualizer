@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED, UPDATE_NODE_POSITIONS} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED} from './actions';
 import ProcessNode from '../models/ProcessNode';
 import Patient from '../models/Patient';
 import { object } from 'prop-types';
@@ -83,10 +83,6 @@ function EDSimulation(state = initialState, action) {
         case EDIT_NODE_PROPERTIES:
             return Object.assign({}, state, {
                 nodes: updateNodeProperties(state.nodes, action.newProps)
-            })
-        case UPDATE_NODE_POSITIONS:
-            return Object.assign({}, state, {
-                nodes: updateNodePositions(state.nodes, action.updatedNodes)
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
@@ -223,23 +219,10 @@ function addNewNode(nodes, nodeNum){
     return clonedNodes
 }
 
-function updateNodePositions(nodes, updatedNodes) {
-    let clonedNodes = JSON.parse(JSON.stringify(nodes))
-    for (var index in updatedNodes) {
-        let updatedNode = updatedNodes[index]
-        clonedNodes = clonedNodes.map((node) => {
-            if(updatedNode.id === node.id) {
-                node.x = updatedNode.x
-                node.y = updatedNode.y 
-            }
-            return node
-        })
-    }
-    return clonedNodes
-}
 
 function updateNodeProperties(nodes, newProps){
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
+
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node
     clonedNodes.splice(newProps.id, 0, newProps) // insert updated one at the same location
 
