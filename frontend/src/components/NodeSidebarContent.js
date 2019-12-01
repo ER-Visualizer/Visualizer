@@ -132,6 +132,7 @@ export class NodeSidebarContent extends React.Component {
 
 
     render() {
+        console.log(this.state.node);
         const NodeRules = this.state.node.nodeRules.map((rule, i) =>
             <NodeRule
                 key={i}
