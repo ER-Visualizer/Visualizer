@@ -88,7 +88,7 @@ class SimulationWorker(threading.Thread):
             if "resourceRules" in node:
                 list_of_resources = nodes_list[node["id"]].get_list_of_resources()
 
-                # generate a list of new rules for each resource
+                # currently, each resource in a node is designed to have the same rules
                 for resource in list_of_resources:
                     resource_rules = rule_creator.create_rules(type= "resource", resource_rules= node["resourceRules"], node_id= node["id"], resource= resource)
                     resource.set_resource_rules(resource_rules)
@@ -121,7 +121,7 @@ class SimulationWorker(threading.Thread):
 
 def send_e():
     """
-    Sends changes to frontend and repeats at intervals dictated by packet_rate
+    Sends changes to frontend (to be displayed) and repeats at intervals dictated by packet_rate
     """
     global event_changes
     if len(event_changes) == 0:
