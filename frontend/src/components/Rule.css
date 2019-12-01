@@ -1,0 +1,28 @@
+.Rule {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 12px;
+}
+
+.Rule select {
+    margin: 0;
+}
+
+.Rule input {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 10px;
+}
+
+.Rule .RuleIconContainer {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Rule .RuleIcon {
+    min-height: 20px;
+    min-width: 20px;
+}
