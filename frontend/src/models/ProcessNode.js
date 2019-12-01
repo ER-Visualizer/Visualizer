@@ -1,7 +1,8 @@
 class ProcessNode {
     constructor(id, elementType, distribution, distributionParameters,
         numberOfActors, queueType, priorityFunction, children,
-        patients = {}, priorityType, processing = {}, predictedChildren) {
+        patients = {}, priorityType, processing = {}, predictedChildren,
+        nodeRules = [], resourceRules = []) {
 
       this.id = id;
       this.elementType = elementType;
@@ -15,6 +16,8 @@ class ProcessNode {
       this.processing = JSON.parse(JSON.stringify(processing));
       this.priorityType = priorityType;
       this.predictedChildren = predictedChildren;
+      this.nodeRules = nodeRules;
+      this.resourceRules = resourceRules;
     }
   }
 
