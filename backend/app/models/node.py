@@ -297,7 +297,7 @@ class Node:
         if environment == DEVELOPMENT:
             return res_to_shuffle
         elif environment == PRODUCTION:
-            random.shuffle(res_to_shuffle)
+            random.shuffle(list(res_to_shuffle))
             return res_to_shuffle
 
 
@@ -327,7 +327,7 @@ class Node:
             # 3. If yes, insert the patient into
             # the specific resource(existing method
             # 4. Add the element on the heap
-            resource_list = self.simulate_concur_env(self.resource_dict.values(),Node.environment)
+            resource_list = self.simulate_concur_env(self.resource_dict.values(), Node.environment)
             for resource in resource_list:
                 if resource.is_available():
                     if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
