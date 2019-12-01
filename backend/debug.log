@@ -11588,3 +11588,5 @@ DEBUG: ER | Visualizer: 2019-12-01 03:46:44: server - event = eof_received()
 DEBUG: ER | Visualizer: 2019-12-01 03:46:44: server - event = connection_lost(None)
 DEBUG: ER | Visualizer: 2019-12-01 03:46:44: server - state = CLOSED
 DEBUG: ER | Visualizer: 2019-12-01 03:46:44: server x code = 1000, reason = [no reason]
+INFO: ER | Visualizer: 2019-12-01 03:51:25: recieved csv
+INFO: ER | Visualizer: 2019-12-01 03:51:26: 172.28.0.1 - - [01/Dec/2019 03:51:26] "POST /csv HTTP/1.1" 200 -
