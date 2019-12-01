@@ -69,7 +69,7 @@
 
 ## Running the Application
 Run ```docker-compose down``` - in case you already have docker and have something running on the same port
-Then run ```docker-compose up --build``` - to build the image/run the application
+Then run ```./run_dev.sh build``` - to build the image/run the application
   - The client and server services will be instantiated with the ports indicated in the .env file.
   - The client can be accessed at http://localhost:5000 by default.
 
@@ -127,3 +127,89 @@ Development environment has the following features:
 - Frontend:
   - Activates hot reloading
   - Directly serves files
+
+
+
+## Usage
+### Setup
+##### How to create a node
+* Click the "Add Node" button in the navigation bar. A node will appear on the 
+screen that you position by can dragging around. The node's properties can be 
+specified by clicking on it and modifying the fields in the sidebar which opens.
+
+##### How to delete a node
+* Click on a node. A side panel should appear. Scroll to the bottom
+and click on the "delete" button.
+
+##### How to create a link 
+* In the navigation bar, click on the "build links: off" toggle button.
+This should turn the button on to say: "build links: on". 
+Click on the node you want to be the parent.  
+Then click on the node you want to be the child.
+This will create a link between the parent and child node.
+When you are finished click on the "build links: on" button
+to turn off link building. This last step is important
+so that when you click on nodes you aren't accidentally building
+links.
+
+##### How to delete a link
+* Click on the link you want to delete and, in the sidebar, click "Delete edge".
+
+##### How to add a predicted edge
+* Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge".
+
+##### How to manually enter a custom JSON
+* Open the JSON entry and clear the entry box. Paste in your custom JSON and press 
+submit.
+![Custom JSON1](howcustomjson1.png)
+![Custom JSON2](howcustomjson2.png)
+![Custom JSON3](howcustomjson3.png)
+
+##### How to upload a csv
+* Click on the "choose file" button. Select your csv file. Then
+click on the upload button to use the CSV file. 
+![Upload CSV](howuploadcsv.png)
+
+##### Adding rules
+* Click on a node that you want to add a rule to. You can add both node rules 
+and resource rules.
+
+##### Modifying the simulation speed
+* At the bottom right of the canvas, there are two sliders that you can modify.
+Packet rate is used to control how often data is sent from the backend to the
+frontend. Packet duration controls how much time passes in the simulation.
+For example, if packet rate is set to 1 and the packet duration is set to 5, 
+then the frontend will be updated every second with 5 minutes of simulation 
+data.
+
+##### How to run simulation 
+* Once process nodes have been set up and a patient CSV has been uploaded, 
+press the Run button.
+![How Run](howrun.png)
+
+##### How to get statistics 
+* After the simulation has completely finished running,
+you can download the statistics for the simulation
+by clicking on the "download" button in the navigation bar.
+![How Upload CSV](howuploadcsv.png)
+
+## CSV
+
+1. Each row represents 1 patient, and each column its attributes
+2. Must have columns with following names(outlined in global_strings.py):
+   * time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.
+   * id: id of the simulation object(patient in this case)
+   * acuity: 1-5
+3. For predicted columns, values must be: {1 for True, 0 for False}
+4. For frequency columns, values must be: >= 0
+
+## FAQ 
+Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers
+* Q: Does the json in the custom JSON area update the doc
+    * A: Yes, once you click Save
+* Q: Do the node id's have to be unique?
+    * A: Yes
+* Q: What do the numbers on the squares represent ?
+  * A: The id of the patient, the squares are individual patients, and their 
+  color represents their acuity where red means actuity level 1 and acuity increases
+  as the color gets lights so light red has a higher acuity than dark red.

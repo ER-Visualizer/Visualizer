@@ -70,22 +70,16 @@ class WebsocketServer:
         app.logger.info("closing sockets")
         self._internalStop()
 
-    async def get_formatted_stats(self, stats)->dict:
+    async def get_formatted_stats(self, stats) -> dict:
         """
         Reformats stats into a csv parseable format
         :param stats: Dictionary of statistics
         """
         # get all patients
         all_patients = [key for key in stats['patients']['process']]
-        set_pdata = set()
-        # get all processes
-        for patient in stats["patients"]['process']:
-            for key in stats["patients"]['process'][patient]:
-                set_pdata.add(key)
-        for patient in stats["patients"]['wait']:
-            for key in stats["patients"]['wait'][patient]:
-                set_pdata.add(key)
-        processes = list(set_pdata)
+        all_patients.sort(key= lambda p: int(p[-1]))
+        # get all processes in sorted order
+        processes = self.nodes_in_bfs_order()
         patient_headers = ["Patient ID"]
         app.logger.info(stats)
         # set up patient.csv headers
@@ -136,9 +130,10 @@ class WebsocketServer:
         util_headers = []
         util_body = []
         # format resource utilization
-        for resource, util in stats["util"].items():
-            util_headers.append(resource)
-            util_body.append(util)
+        for resource in processes:
+            if resource in stats["util"]:
+                util_headers.append(resource)
+                util_body.append(stats["util"][resource])
         util_csv = [util_headers, util_body]
 
         formatted_stats = {"stats": stats["stats"], "hospital": hosptial_csv, "doctors": doctor_csv, "patients": patient_csv, "util": util_csv}
@@ -179,8 +174,6 @@ class WebsocketServer:
         
         # create the dictionary
         for node in self.canvas:
-            # create all of the rules here
-            # TODO: delete this and create actual rules from JSON once JSON format is created
             # create node
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
@@ -212,8 +205,10 @@ class WebsocketServer:
                 Sending unordered list of nodes instead".format(bfs_list))
             bfs_list = list(nodes_list.keys())
         app.logger.info("Nodes in order are {}".format(bfs_list))
-
-        return bfs_list
+        resource_name = []
+        for n_id in bfs_list:
+            resource_name.append(nodes_list[n_id].get_process_name())
+        return resource_name
 
 def producePatientData():
     time.sleep(random() * 2)
