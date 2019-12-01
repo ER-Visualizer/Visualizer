@@ -19,6 +19,11 @@ export class JSONEntrySidebarContent extends Component {
             this.handleReset()
         }
     }
+
+    componentWillReceiveProps(newProps) {
+        this.handleReset();
+    }
+
     cloneNodes(){
         let clone = JSON.stringify(this.props.nodes, null, 1)
         clone = JSON.parse(clone)
