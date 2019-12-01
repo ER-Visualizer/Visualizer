@@ -39,3 +39,14 @@ Add text like any markdown file
     User Guide/
         docs/
 
+# Simulation
+
+## Simulation
+
+
+### How the simulation runs
+
+1. Simulation is based on a Heap. Every time a patient is introduced inside a resource/actor
+2. 
+
+## Rules
