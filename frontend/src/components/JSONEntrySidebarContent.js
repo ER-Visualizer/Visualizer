@@ -17,8 +17,8 @@ const nodeScheme = {
         "children": {"type": "array", "items": {"type": "integer"}},
         "priorityType": { "type": "string"},
         "predictedChildren": {"type": "array", "items": {"type": "integer"}},
-        "nodeRules": {"type": "object"},
-        "resourceRules": {"type": "object"},
+        "nodeRules": {"type": "array"},
+        "resourceRules": {"type": "array"},
         "x": { "type": "integer"},
         "y":{ "type": "integer"}
     }
@@ -114,19 +114,30 @@ export class JSONEntrySidebarContent extends Component {
                 return
             }
         }
+        let errors = ""
         for (let i = 0; i < validatedJSON.length; i++) {
             let node = validatedJSON[i]
             let valid = v.validate(node, nodeScheme);
-            console.log({valid});
+            console.log(valid.errors);
             
-            if (valid) {
+            if (valid.errors.length === 0) {
                 console.log('User data is valid');
             } else {
                 console.log('User data is INVALID!');
-                console.log(v.errors);
-                return
+                console.log(valid.errors);
+                
+                for (let j = 0; j < valid.errors.length; j++) {
+                    errors += valid.errors[j]
+                    errors += "\n       "
+                }
+                // `${valid.errors}`
             }
         }        
+        if (errors !== ""){
+            this.setState({ valid: false, 
+                invalidJSONError: errors})
+            return
+        }
 
         if (this.state.valid) {
             this.props.replaceNodeList(validatedJSON)
