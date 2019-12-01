@@ -12,7 +12,6 @@ import DEFAULT_CONFIG from "./graph.config";
 import ERRORS from "../../err";
 
 
-import { getTargetLeafConnections, toggleLinksMatrixConnections, toggleLinksConnections } from "./collapse.helper";
 import {
     updateNodeHighlightedValue,
     checkForGraphConfigChanges,
@@ -21,7 +20,7 @@ import {
     initializeGraphState,
 } from "./graph.helper";
 import { renderGraph } from "./graph.renderer";
-import { merge, throwErr, throwWarning } from "../../utils";
+import { merge, throwErr } from "../../utils";
 
 /**
  * Graph component is the main component for react-d3-graph components, its interface allows its user
@@ -207,8 +206,7 @@ class Graph extends React.Component {
         !this.state.config.staticGraph &&
             this.state.config.automaticRearrangeAfterDropNode &&
             this.state.simulation.alphaTarget(this.state.config.d3.alphaTarget).restart();
-        
-        console.log("drag ended", this.state.nodes[0].x, this.state.nodes[0].y)
+    
         this.props.updateNodePositions(this.state.nodes);
     };
 
@@ -332,45 +330,6 @@ class Graph extends React.Component {
      */
     onClickNode = clickedNodeId => {
         this.props.onClickNode && this.props.onClickNode(clickedNodeId);
-        return;
-        if (this.state.config.collapsible) {
-            const leafConnections = getTargetLeafConnections(clickedNodeId, this.state.links, this.state.config);
-            const links = toggleLinksMatrixConnections(this.state.links, leafConnections, this.state.config);
-            const d3Links = toggleLinksConnections(this.state.d3Links, links);
-            const firstLeaf = leafConnections?.["0"];
-
-            let isExpanding = false;
-
-            if (firstLeaf) {
-                const visibility = links[firstLeaf.source][firstLeaf.target];
-
-                isExpanding = visibility === 1;
-            }
-
-            this._tick(
-                {
-                    links,
-                    d3Links,
-                },
-                () => {
-                    this.props.onClickNode && this.props.onClickNode(clickedNodeId);
-
-                    if (isExpanding) {
-                        this._graphNodeDragConfig();
-                    }
-                }
-            );
-        } else {
-            if (!this.nodeClickTimer) {
-                this.nodeClickTimer = setTimeout(() => {
-                    this.props.onClickNode && this.props.onClickNode(clickedNodeId);
-                    this.nodeClickTimer = null;
-                }, CONST.TTL_DOUBLE_CLICK_IN_MS);
-            } else {
-                this.props.onDoubleClickNode && this.props.onDoubleClickNode(clickedNodeId);
-                this.nodeClickTimer = clearTimeout(this.nodeClickTimer);
-            }
-        }
     };
 
     /**
@@ -535,7 +494,7 @@ class Graph extends React.Component {
         const root_nodes = this.getRootNodes(this.state.nodes)
         const id_to_node = this.getIdToNode(this.state.nodes)
 
-        if(Object.keys(root_nodes).length == 0 && Object.keys(this.state.nodes).length > 0) {
+        if(Object.keys(root_nodes).length === 0 && Object.keys(this.state.nodes).length > 0) {
             root_nodes[0] = true;
         }
 
@@ -649,7 +608,6 @@ class Graph extends React.Component {
                 let node = this.state.nodes[index]
                 nodes.forEach((_node) => {
                     if (_node.id === node.id) {
-                        console.log(_node.x, _node.y)
                         if(_node.x || _node.x === 0) {
                             node.x = _node.x;
                         }

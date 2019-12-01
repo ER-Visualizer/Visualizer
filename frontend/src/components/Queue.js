@@ -1,13 +1,8 @@
 import React from 'react';
 import './Queue.css';
 import PatientBox from './PatientBox';
-import Patient from '../models/Patient';
 import { FixedSizeGrid as Grid } from 'react-window';
 class Queue extends React.Component{
-    constructor(props){
-        super(props)
-
-    }
     shouldComponentUpdate(nextProps, nextState) {
       return JSON.stringify(this.props.patients) !== JSON.stringify(nextProps.patients);
     }

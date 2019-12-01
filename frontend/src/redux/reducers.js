@@ -2,7 +2,7 @@ import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSO
 import ProcessNode from '../models/ProcessNode';
 import Patient from '../models/Patient';
 import { object } from 'prop-types';
-if(process.env.REACT_DEV_ENV == "production"){
+if(process.env.REACT_DEV_ENV === "production"){
     console.log = function() {}
 
 }
@@ -113,7 +113,7 @@ function EDSimulation(state = initialState, action) {
             return Object.assign({}, state,
                 {nodes: action.newNodeList})
         case CONNECT_NODE:
-            if (state.linkBeingBuilt.length == 1){ // connect the target node
+            if (state.linkBeingBuilt.length === 1){ // connect the target node
                 if (state.linkBeingBuilt[0] === action.nodeId) { // no self loops allowed       
                     return state 
                 }
@@ -177,7 +177,7 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
 
     // if the first node is the patient loadeer
-    if (nextNode == -1){
+    if (nextNode === -1){
         return clonedNodes
     }
 
@@ -294,7 +294,7 @@ function deleteLinkFromState(nodes, sourceId, targetId){    // need to delete fr
 
 function addPredictedChildToParent(nodes, parentId, childId) {
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
-    let node_to_update = clonedNodes.find(node => node.id == parentId);
+    let node_to_update = clonedNodes.find(node => node.id === parentId);
     let index = node_to_update.predictedChildren.indexOf(childId);
     if (index <= -1) {
         node_to_update.predictedChildren.push(childId)
@@ -304,7 +304,7 @@ function addPredictedChildToParent(nodes, parentId, childId) {
 
 function removePredictedChildFromParent(nodes, parentId, childId) {
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
-    let node_to_update = clonedNodes.find(node => node.id == parentId);
+    let node_to_update = clonedNodes.find(node => node.id === parentId);
     let index = node_to_update.predictedChildren.indexOf(childId);
     if (index <= -1) {
         console.log(`Warning: child is already not a predicted child: (parent: ${parentId}, child: ${childId})`);

@@ -38,7 +38,7 @@ export class NodeSidebarContent extends React.Component {
 
         
         let new_node = Object.assign({}, this.state.node, {[name]: value})
-        if(new_node.queueType != "priority queue"){
+        if(new_node.queueType !== "priority queue"){
             new_node.priorityFunction = ""
             new_node.priorityType = ""
         }
@@ -288,7 +288,7 @@ export class NodeSidebarContent extends React.Component {
                     </select>
                 </div>
 
-                {this.state.node != null && this.state.node.queueType == 'priority queue' && 
+                {this.state.node != null && this.state.node.queueType === 'priority queue' && 
                 <div className="input-container">
                     <label>Priority Type</label><br/>
                     <select name="priorityType"
@@ -298,7 +298,7 @@ export class NodeSidebarContent extends React.Component {
                         <option value="arrival time">Earliest Arrival Time</option>
                         <option value="custom">Define Your Own</option>
                     </select>
-                    {this.state.node.priorityType == 'custom' &&
+                    {this.state.node.priorityType === 'custom' &&
 	                    <div>
 	                    <label>Priority Function</label><br/><br/>
                         <div style={{display: "inline-block"}}>def <div style={{color: '#F2870C', display: "inline-block"}}> _calculate_priority_value(patient):</div><br/></div>
