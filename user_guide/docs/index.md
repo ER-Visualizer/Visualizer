@@ -220,12 +220,13 @@ by clicking on the "download" button in the navigation bar.
 4. For frequency columns, values must be: >= 0
 
 ## FAQ 
-Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers
+Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers.
+
 * Q: Does the json in the custom JSON area update the doc
     * A: Yes, once you click Save
 * Q: Do the node id's have to be unique?
     * A: Yes
-* Q: What do the numbers on the squares represent ?
-  * A: The id of the patient, the squares are individual patients, and their 
-  color represents their acuity where red means actuity level 1 and acuity increases
-  as the color gets lights so light red has a higher acuity than dark red.
+* Q: What do the numbers on the squares represent?
+    * A: The id of the patient, the squares are individual patients, and their 
+    color represents their acuity where red means actuity level 1 and acuity increases
+    as the color gets lights so light red has a higher acuity than dark red.
