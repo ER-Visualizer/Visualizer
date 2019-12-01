@@ -12,7 +12,8 @@ class WebsocketServer:
     """
     Websocket to send events to the frontend
     """
-    def __init__(self, host, port, producerFunc, process, statistics, packet_rate):
+    def __init__(self, host, port, producerFunc, process, statistics, packet_rate,
+                canvas):
         self.host = host
         self.port = port
         # function to get events
@@ -29,6 +30,8 @@ class WebsocketServer:
         self.sent_stats = False
         # the frequency of sending events
         self.packet_rate = packet_rate
+        # the canvas 
+        self.canvas = canvas
 
     def start(self) -> None:
         """
