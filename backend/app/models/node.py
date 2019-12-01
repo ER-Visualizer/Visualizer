@@ -228,7 +228,7 @@ class Node:
         # Insert it into the resource/subprocess(existing method)
         # Add element on the heap(existing method)
         app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), subprocess.get_id()))
-        app.logger.debug("queue is {} with length {}".format(self.queue, len(self.queue._queue)))
+        app.logger.debug("queue is {}".format(self.queue))
         iterator = self.queue
         for patient in iterator:
             app.logger.debug("filling spot:now trying patient {}".format(patient.get_id()))
