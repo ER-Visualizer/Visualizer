@@ -1,13 +1,16 @@
 import React from "react";
 
+import { updateNodePositions } from '../../../../redux/actions';
+import { connect } from 'react-redux';
+
 import { drag as d3Drag } from "d3-drag";
-import { forceLink as d3ForceLink } from "d3-force";
 import { select as d3Select, selectAll as d3SelectAll, event as d3Event } from "d3-selection";
 import { zoom as d3Zoom } from "d3-zoom";
 
 import CONST from "./graph.const";
 import DEFAULT_CONFIG from "./graph.config";
 import ERRORS from "../../err";
+
 
 import { getTargetLeafConnections, toggleLinksMatrixConnections, toggleLinksConnections } from "./collapse.helper";
 import {
@@ -18,7 +21,7 @@ import {
     initializeGraphState,
 } from "./graph.helper";
 import { renderGraph } from "./graph.renderer";
-import { merge, throwErr } from "../../utils";
+import { merge, throwErr, throwWarning } from "../../utils";
 
 /**
  * Graph component is the main component for react-d3-graph components, its interface allows its user
@@ -117,7 +120,7 @@ import { merge, throwErr } from "../../utils";
  *      onMouseOverLink={onMouseOverLink}
  *      onMouseOutLink={onMouseOutLink}/>
  */
-export default class Graph extends React.Component {
+class Graph extends React.Component {
     /**
      * Obtain a set of properties which will be used to perform the focus and zoom animation if
      * required. In case there's not a focus and zoom animation in progress, it should reset the
@@ -195,6 +198,8 @@ export default class Graph extends React.Component {
      */
     _onDragEnd = () => {
         this.isDraggingNode = false;
+        this.props.updateNodePositions(this.state.nodes);
+        console.log(this.state.nodes, this.props.reduxNodes);
 
         if (this.state.draggedNode) {
             this.onNodePositionChange(this.state.draggedNode);
@@ -566,9 +571,11 @@ export default class Graph extends React.Component {
             x = start_x;
             y += 220; // set next node to be 256  positions down so it doesn't overlap with other root nodes
         }
+        console.log(this.state.nodes);
+        this.props.updateNodePositions(this.state.nodes);
+        console.log(this.state.reduxNodes);
     }
 
-    
 
     /**
      * Calls d3 simulation.restart().<br/>
@@ -723,3 +730,23 @@ export default class Graph extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        reduxNodes: state.nodes,
+      }
+  }
+  
+  
+  const mapDispatchToProps = dispatch => {
+      return {
+            updateNodePositions: (newProps) => {
+              dispatch(updateNodePositions(newProps))
+          }
+      }
+  }
+  
+  export default connect(
+      mapStateToProps,
+      mapDispatchToProps
+  )(Graph)
