@@ -4,6 +4,7 @@ from random import randint, random
 from flask import Flask
 import json
 import time
+from .models.node import Node
 
 app = Flask(__name__)
 
@@ -12,7 +13,8 @@ class WebsocketServer:
     """
     Websocket to send events to the frontend
     """
-    def __init__(self, host, port, producerFunc, process, statistics, packet_rate):
+    def __init__(self, host, port, producerFunc, process, statistics, packet_rate,
+                canvas):
         self.host = host
         self.port = port
         # function to get events
@@ -29,6 +31,8 @@ class WebsocketServer:
         self.sent_stats = False
         # the frequency of sending events
         self.packet_rate = packet_rate
+
+        self.canvas = canvas[:]
 
     def start(self) -> None:
         """
@@ -129,8 +133,15 @@ class WebsocketServer:
             hospital_data.append(value)
 
         hosptial_csv.append(hospital_data)
+        util_headers = []
+        util_body = []
+        # format resource utilization
+        for resource, util in stats["util"].items():
+            util_headers.append(resource)
+            util_body.append(util)
+        util_csv = [util_headers, util_body]
 
-        formatted_stats = {"stats": stats["stats"], "hospital": hosptial_csv, "doctors": doctor_csv, "patients": patient_csv}
+        formatted_stats = {"stats": stats["stats"], "hospital": hosptial_csv, "doctors": doctor_csv, "patients": patient_csv, "util": util_csv}
         return formatted_stats
 
     async def __producer_handler(self, websocket, path):
@@ -161,6 +172,48 @@ class WebsocketServer:
                 self.close()
                 break
 
+    def nodes_in_bfs_order(self):
+        app.logger.info("Creating a BFS order")
+        nodes_list = {}
+        bfs_list = []
+        
+        # create the dictionary
+        for node in self.canvas:
+            # create all of the rules here
+            # TODO: delete this and create actual rules from JSON once JSON format is created
+            # create node
+            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+                                            process_name=node["elementType"], distribution_name=node["distribution"],
+                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=[],
+                                            priority_type=node["priorityType"])
+        # Do a BFS
+        # open_list is the list to be explored. Append to it the ids to explore,
+        # from the first node, which will be the reception(id:0).
+        open_list = nodes_list[0].get_output_process_ids()
+        # append the 0th id, reception
+        bfs_list.append(0)
+        app.logger.info("open_list is {}".format(open_list))
+        while len(open_list) != 0:
+            node_id = open_list.pop(0)
+            # don't append an id to visited, if it's already been visited
+            if node_id not in bfs_list:
+                # append the node_id in the bfs list that you just explored
+                bfs_list.append(node_id)
+            # append the children in the open_list to be explored
+            children_to_explore = nodes_list[node_id].get_output_process_ids()
+            # don't append to visit a child if we visited it before
+            for child_id in children_to_explore:
+                if child_id not in bfs_list:
+                    open_list.append(child_id)
+        # if there is a bug, i.e not all  of the node_ids have been added,
+        # log a warning, and just send an unordered one
+        if len(set(bfs_list)) != len(nodes_list):
+            app.logger.warn("Not all ids are stored in bfs_list: {}.\
+                Sending unordered list of nodes instead".format(bfs_list))
+            bfs_list = list(nodes_list.keys())
+        app.logger.info("Nodes in order are {}".format(bfs_list))
+
+        return bfs_list
 
 def producePatientData():
     time.sleep(random() * 2)
@@ -169,7 +222,4 @@ def producePatientData():
         {"patientId": 3, "from": randint(1, 10), "to": randint(1, 10)}]
     return json.dumps(jsonToSend)
 
-# asyncio.get_event_loop().run_until_complete(start_server)
-# asyncio.get_event_loop().run_forever()
-# test travis
 

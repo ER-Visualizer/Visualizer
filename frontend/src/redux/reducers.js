@@ -191,7 +191,7 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
         if(patient in currNodeHandle.processing){
             delete currNodeHandle.processing[patient]
         }
-        // currNodeHandle.processing = currNodeHandle.processing.filter((currPatient) => {return parseInt(currPatient.id) != parseInt(patient) });
+        
     }else{
         if(inQueue){
             nodeToHandle.patients[patient] = new Patient(patient, patientAcuity)
@@ -214,20 +214,11 @@ const movePatient = (idToIndex, nodes, patient, currNode, nextNode, patientAcuit
 function addNewNode(nodes, nodeNum){
     let clonedNodes = JSON.parse(JSON.stringify(nodes)) // could use rd3g deepclone (see react-d3-graph doc, utils)
 
-    clonedNodes.push(    
-        {
-        "id": nodeNum,
-        "elementType": "newNode",
-        "distribution": "newNode",
-        "distributionParameters": [0],
-        "numberOfActors": 0,
-        "queueType": "newNode",
-        "priorityFunction": "newNode",
-        "children": [],
-        "patients": [],
-        "predictedChildren": [],
-        "processing": []
-    })
+    clonedNodes.push(
+        new ProcessNode(nodeNum, "newNode", "newNode", [0], 0, 
+            "newNode", "", [], "newNode"
+        )
+    )
     
     return clonedNodes
 }

@@ -63,7 +63,7 @@ class SimulationWorker(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def run(self)-> None:
+    def run(self) -> None:
         """
         Reads the input canvas and csv file then starts the simulation
         """
@@ -73,9 +73,8 @@ class SimulationWorker(threading.Thread):
 
         for node in canvas:
             app.logger.info(f"cur node {node}")
-            rules = []
+            node_rules = []
             # create all of the rules here
-            # TODO: delete this and create actual rules from JSON once JSON format is created
 
             if "nodeRules" in node:
                 node_rules = rule_creator.create_rules(type="node", node_rules= node["nodeRules"], node_id=node["id"], canvas=canvas)
@@ -83,13 +82,13 @@ class SimulationWorker(threading.Thread):
             # create node
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
-                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
+                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules,
                                             priority_type=node["priorityType"])
             # get list of all resources for the node
             if "resourceRules" in node:
                 list_of_resources = nodes_list[node["id"]].get_list_of_resources()
 
-                # generate a list of new rules for each resource
+                # currently, each resource in a node is designed to have the same rules
                 for resource in list_of_resources:
                     resource_rules = rule_creator.create_rules(type= "resource", resource_rules= node["resourceRules"], node_id= node["id"], resource= resource)
                     resource.set_resource_rules(resource_rules)
@@ -112,6 +111,7 @@ class SimulationWorker(threading.Thread):
                 FMT = '%Y-%m-%d %H:%M:%S.%f'
                 patient_time = datetime.strptime(row["time"], FMT) - datetime.strptime(initial_time, FMT)
                 patient_time = float(patient_time.seconds)/60
+                statistics.start_time = patient_time if statistics.start_time > patient_time else statistics.start_time
                 row[START_TIME] = patient_time
                 next_patient = Patient(row)
                 # All of the patients first get loaded up into the patient loader node
@@ -120,13 +120,10 @@ class SimulationWorker(threading.Thread):
                 all_patients[next_patient.get_id()] = next_patient
 
 
-
-"""
-Sends changes to frontend and repeats at intervals dictated by packet_rate
-"""
-
-
 def send_e():
+    """
+    Sends changes to frontend (to be displayed) and repeats at intervals dictated by packet_rate
+    """
     global event_changes
     if len(event_changes) == 0:
         # send nothing if no changes
@@ -227,56 +224,21 @@ def process_heap():
     # record wait time
     wait_time = process_time - process_duration
     statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
-
+    statistics.end_time = finish_time if finish_time > statistics.end_time else statistics.end_time
     # record doctor statistics
     if process_name == "doctor":
         doctor_id = resource.get_id()
         statistics.increment_doc_seen(doctor_id)
-        # TODO
-        # Length of doctor/patient interaction per patient per doctor
-        # average or record all?
-        # can remove in the future and just use process_times
         statistics.add_doc_patient_time(
             doctor_id, patient_record.get_id(), process_time)
 
-    # get all queues patient was added to
-    # create new list to prevent mutating it
-    next_nodes = list(patient_record.get_queues_since_last_finished_process())
-    # get resource patient is in (if any)
-    if patient_record.get_curr_process_id() is not None:
-        next_nodes.append(patient_record.get_curr_process_id())
-    # if did not go straight to resource without waiting
-
-    # start_process_time = completed_event.get_event_time() - process_duration
-    # leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
-    # leave_queue.set_in_queue(False)
-    # leave_queue.set_moved_to([completed_event.get_node_id()])
-    # event_changes.append(leave_queue)
-    # patient went straight into next resource
-    # enter_into_resource = None
-    # if patient_record.get_curr_resource_id() is not None:
-    #     enter_into_resource = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), completed_event.get_event_time())
-    #     enter_into_resource.set_in_queue(False)
-
-    # send patient to next queues/resources
-    # completed_event.set_moved_to(next_nodes)
-    # if patient_record.get_curr_process_id is not None:
-    #     event_changes.append(completed_event)
-    # TODO HANDLE CASE WHERE RESOURCE IS EMPTY AND PICKS SOMEONE FROM QUEUE
-    # if enter_into_resource is not None:
-    #     event_changes.append(enter_into_resource)
-    #     enter_into_resource.set_moved_to([patient_record.get_curr_process_id()])
-
-    global counter, all_patients
-    if counter < len(all_patients) - 1:
-        counter += 1
-        return 2
     # continue simulation loop
     return 1
 
 
 def report_statistics():
-    return statistics.calculate_stats()
+    global canvas
+    return statistics.calculate_stats(canvas)
 
 
 def get_curr_time():
@@ -309,16 +271,14 @@ def main(args=()):
     packet_duration = int(duration) * 60
     packet_rate = int(rate)
 
-    # this will read canvas json
-    canvas_parser(canvas)
-
     counter = 0
     # this will read patients csv
     worker = SimulationWorker()
     worker.start()
     # setup websocket server
-    server = WebsocketServer("localhost", 8765, send_e,
-                             process_heap, report_statistics, packet_rate)
+
+    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate, canvas)
+
     server.start()
 
     app.logger.info(report_statistics())
