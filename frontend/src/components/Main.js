@@ -210,9 +210,9 @@ class Main extends React.Component {
         return <div className="object">Hello world</div>
     }
     
-    update_graph(nodes){
+    update_graph(nodes){// Map the store's node model to rd3g's node model
         let graphical_data = {nodes: [], links: []}
-        nodes.map( // map the JSON representation of the node to the representation required by the graph
+        nodes.map( 
             (node) => {graphical_data.nodes.push(
                 { 
                     id: `${node.id}`,
@@ -256,8 +256,8 @@ class Main extends React.Component {
     }
     linkClick(source, target){
         if (this.props.shouldDeleteLink){
-            // react-d3-graph gives strings for these...            
-            this.props.deleteLink(parseInt(source), parseInt(target))
+            
+            this.props.deleteLink(parseInt(source), parseInt(target)) // react-d3-graph gives strings for these...            
         } else {
             const shouldHide = this.state.selectedLink?.parentId?.toString() == source && this.state.selectedLink?.childId?.toString() == target
             
@@ -325,7 +325,7 @@ class Main extends React.Component {
     }
 }
 
-const graphConfig = { // TODO: move this into store
+const graphConfig = { 
     nodeHighlightBehavior: true,
     width: window.innerWidth,
     height: window.innerHeight,
@@ -338,8 +338,6 @@ const graphConfig = { // TODO: move this into store
     },
     link: {
         type: "CURVE_SMOOTH",
-        // could make straight if the two nodes are not pointing at eachother.
-        // needs to be round. otw cannot click link that is rendered
     },
 };
 

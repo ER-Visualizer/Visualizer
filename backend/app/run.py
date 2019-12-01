@@ -13,8 +13,9 @@ from .models.global_time import GlobalTime
 from .models.global_heap import GlobalHeap
 from .models.global_events import GlobalEvents
 from .models.global_strings import *
-from .models.rules.frequency_rule import FrequencyRule
+from .models.rules.rule_creator_factory import *
 from .models.rules.prediction_rule import PredictionRule
+from .models.rules.first_come_first_serve_rule import FirstComeFirstServeRule
 from flask import Flask
 import threading
 import os
@@ -49,16 +50,7 @@ statistics = Statistic()
 # instantiate array of all patients
 all_patients = {}
 
-"""
-Setup Canvas:
-
-input = list of nodes [{id: ..., next: [...]}, ... ] as json
-"""
 counter = 0
-
-def canvas_parser(canvas_json):
-    global canvas
-    canvas = canvas_json
 
 
 class SimulationWorker(threading.Thread):
@@ -71,22 +63,36 @@ class SimulationWorker(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
 
-    def run(self)-> None:
+    def run(self) -> None:
         """
         Reads the input canvas and csv file then starts the simulation
         """
         global initial_time, nodes_list
+    
+        rule_creator = RuleCreatorFactory()
+
         for node in canvas:
             app.logger.info(f"cur node {node}")
             rules = []
             # create all of the rules here
             # TODO: delete this and create actual rules from JSON once JSON format is created
 
+            if "nodeRules" in node:
+                node_rules = rule_creator.create_rules(type="node", node_rules= node["nodeRules"], node_id=node["id"], canvas=canvas)
+
             # create node
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
                                             distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
                                             priority_type=node["priorityType"])
+            # get list of all resources for the node
+            if "resourceRules" in node:
+                list_of_resources = nodes_list[node["id"]].get_list_of_resources()
+
+                # generate a list of new rules for each resource
+                for resource in list_of_resources:
+                    resource_rules = rule_creator.create_rules(type= "resource", resource_rules= node["resourceRules"], node_id= node["id"], resource= resource)
+                    resource.set_resource_rules(resource_rules)
 
             # create patient_loader node when reception is found
             if node["elementType"] == "reception":
@@ -119,6 +125,8 @@ class SimulationWorker(threading.Thread):
 """
 Sends changes to frontend and repeats at intervals dictated by packet_rate
 """
+
+
 def send_e():
     global event_changes
     if len(event_changes) == 0:
@@ -215,7 +223,8 @@ def process_heap():
     # record process time
     process_time = finish_time - join_queue_time
     process_name = nodes_list[completed_event.get_node_id()].get_process_name()
-    statistics.add_process_time(patient_record.get_id(), process_name, process_time)
+    statistics.add_process_time(
+        patient_record.get_id(), process_name, process_time)
     # record wait time
     wait_time = process_time - process_duration
     statistics.add_wait_time(patient_record.get_id(), process_name, wait_time)
@@ -224,14 +233,16 @@ def process_heap():
     if process_name == "doctor":
         doctor_id = resource.get_id()
         statistics.increment_doc_seen(doctor_id)
-        statistics.add_doc_patient_time(doctor_id, patient_record.get_id(), process_time)
+        statistics.add_doc_patient_time(
+            doctor_id, patient_record.get_id(), process_time)
 
     # continue simulation loop
     return 1
 
 
 def report_statistics():
-    return statistics.calculate_stats()
+    global canvas
+    return statistics.calculate_stats(canvas)
 
 
 def get_curr_time():
@@ -256,7 +267,7 @@ def main(args=()):
     statistics = Statistic()
 
     packet_start = -1
-    # read args from post request  s
+    # read args from post requests
     global canvas, duration, rate 
     canvas, duration, rate = args
     app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
@@ -264,15 +275,14 @@ def main(args=()):
     packet_duration = int(duration) * 60
     packet_rate = int(rate)
 
-    # this will read canvas json
-    canvas_parser(canvas)
-
     counter = 0
     # this will read patients csv
     worker = SimulationWorker()
     worker.start()
     # setup websocket server
-    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate, canvas=canvas)
+
+    server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate, canvas)
+
     server.start()
 
     app.logger.info(report_statistics())

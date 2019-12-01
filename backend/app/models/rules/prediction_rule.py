@@ -1,5 +1,5 @@
-from .rule import Rule
-class PredictionRule(Rule):
+from .csv_rule import CSVRule
+class PredictionRule(CSVRule):
 
     def __init__(self, name_in_csv, node_id, from_node_ids):
         super().__init__(name_in_csv, node_id)

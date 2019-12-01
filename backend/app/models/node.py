@@ -5,9 +5,12 @@ from .resource import Resource
 from .event import Event
 from .global_time import GlobalTime
 from .global_heap import GlobalHeap
+from .rules.rule_verifier import RuleVerifier
 from .global_events import GlobalEvents
 import heapq
 from flask import Flask
+import os
+import random
 
 app = Flask(__name__)
 
@@ -15,6 +18,7 @@ app = Flask(__name__)
 class Node:
 
     node_dict = {}
+    environment = os.environ.get("DEV_ENV")
     '''rules is a list of Rule Objects'''
     def __init__(self, id, queue_type, priority_function, num_actors,
                  process_name=None, distribution_name=None,
@@ -44,7 +48,7 @@ class Node:
         self.output_process_ids = output_process_ids
 
         Node.node_dict[self.id] = self
-        self.rules = rules[:]
+        self.node_rules = rules[:]
 
     def set_id(self, id):
         self.id = id
@@ -59,11 +63,11 @@ class Node:
     def set_output_process_ids(self, output_process_ids):
         self.output_processes_ids = output_process_ids
     
-    def set_rules(self,rules):
-        self.rules = rules
+    def set_node_rules(self,rules):
+        self.node_rules = rules
 
-    def get_rules(self, rules):
-        return self.rules
+    def get_node_rules(self):
+        return self.node_rules
 
     def get_id(self):
         return self.id
@@ -96,6 +100,9 @@ class Node:
 
     def get_priority_type(self):
         return self.priority_type
+
+    def get_list_of_resources(self):
+        return list(self.resource_dict.values())
 
     def _set_queue(self):
         # TODO Deal with Priority Queues
@@ -134,16 +141,7 @@ class Node:
             new_resource = Resource(id=i)
             resource_dict[i] = new_resource
         return resource_dict
-    '''check if the patient passes all of the rules in order to see whether
-    patient is eligible to visit'''
-    def pass_node_rules(self, patient):
-        passes_rule = True
-        counter = 0
-        while passes_rule and counter < len(self.rules):
-            rule = self.rules[counter]
-            passes_rule = rule.check(patient)
-            counter += 1
-        return passes_rule
+
 
     '''
     Occurs whenever the minimum element from the heap is extracted, which
@@ -160,26 +158,32 @@ class Node:
             self.get_process_name(), self.get_id(), resource.get_id()))
         self.add_patient_leave_resource_event(patient)
 
-        # TODO see if we need to do this in random order to avoid bias, and create a multi-threaded simulation
-        #  Might have to, b/c we don't want to bias which spot patient will take. In that case we will need to make
-        # TODO sure that patient checks previous queues and new nodes in random order!
-        # have a case where patient always fills the first spot
+        # all_patient_queues are the list of processes for which the patient is in a queue, i.e [1,3,4]. 
+        # we will attempt to insert him in any of the available resources into those processes, as this is the case when a 
+        # resource became available while the patient was busy, but is now free.
+        # patient_ougoing_processes are the list of processes that the patient must go to from this node i.e [2,1,5]
+        # we will attempt to insert him in available resources for these processes, and if the patient is already
+        # busy, or if all resources are busy, he will be queued for those processes instead.
+        # simulate_concur_env() shuffles order if we're in production, otherwise keeps
+        # it linear, through it(first through all_patient_queues and then through all_processes)
+        all_patient_queues = [(k,0) for k in patient.get_patient_record().get_all_queues()]
+        outgoing_processes = [(m,1) for m in self.output_process_ids]
+        all_processes = all_patient_queues + outgoing_processes
+        all_processes = self.simulate_concur_env(all_processes, Node.environment)
+        app.logger.info("processes list is {}".format(all_processes))
 
-
-        # check if any of the processes where he's queued for
-        # have any available spots, and if yes, go to them. This is for the case when a resource becomes available and this
-        # patient was unavailable so it didn't insert him, even though he's in the queue.
-        for process_id in patient.get_patient_record().get_all_queues():
-            inserted = Node.node_dict[process_id].fill_spot(patient)
-            if(inserted): break
-        # send the patient to all of the queues that they need
-        # to be put in (outgoing processes from
-        # parent_process)
-
-        for process_id in self.output_process_ids:
-            Node.node_dict[process_id].put_patient_in_node(patient, old_id)
-        # call fill_spot on this subprocess because now we have an empty spot there and want to fill it with another
-        # patient
+        for (process_id, marker) in all_processes:
+            # we stop trying to insert patient into processes from old queues, when he's
+            # already been inserted. However, we don't stop if he's been inserted in an
+            # outgoing process, because in that case, he still needs to be put in queues
+            # for other processes
+            if(marker == 0):
+                Node.node_dict[process_id].fill_spot(patient)
+            elif(marker == 1):
+                Node.node_dict[process_id].put_patient_in_node(patient, old_id)
+      
+        # call fill_spot on this subprocess because now we have an empty spot
+        # there and want to fill it with another patient
         self.fill_spot_for_resource(resource)
     '''
     Call when you're inserting into a node. This will check if patient is allowed into the node, and if it is,
@@ -193,7 +197,7 @@ class Node:
         # first check if it passes all of the rules for the patient
         # if it does, check if you can directly insert him into a resource
         # if you can't, insert him into a queue
-        if self.pass_node_rules(patient):
+        if RuleVerifier.pass_rules(patient, self.get_node_rules()):
             if not self.fill_spot(patient):
                 self.put_inside_queue(patient, prev_node_id)
 
@@ -234,13 +238,11 @@ class Node:
         # from the heap, we need to remove from the actual heap,
         # and we'll use the index because we can't remove by Patient as it's a
         # deep copy so we don't have a hold of actual memory address.
-        # TODO test case: make sure heap isn't changed
-        # TODO make sure iterates correctly through heap
         iterator = self.queue
         for patient in iterator:
             if patient.get_available():
                 if subprocess.is_available():
-                    if subprocess.pass_rule(patient):
+                    if RuleVerifier.pass_rules(patient,subprocess.get_resource_rules()):
                         self.queue.remove(patient)
 
                         # once removed from queue, update patient record
@@ -286,36 +288,49 @@ class Node:
 
         if patient_record.get_curr_process_id is not None:
             GlobalEvents.event_changes.append(join_queue)
-    '''
-    Try to insert a patient into an available resource, if there exists one.
-    Return true if patient inserted successfully.
     
-    Will be false only if:
-        - All resources are currently occupied
-        - Doesn't pass the rule for any of the available resources
-            - If a resource is available, then we know that
-                - either queue is empty
-                - none of the elements in the queue passed the rule for this
-                resource, so then try the current patient
-                    to see if he passes
-    Will be true if:
-        - Patient is available, and there is a resource in the process
-        that is available,and patient passes the rule for a specific resource
-    '''
+    def simulate_concur_env(self, res_to_shuffle, environment):
+        '''
+        Shuffles order of resources/processes to go to if in production,
+        otherwise returns them in the right order
+        '''
+        if environment == DEVELOPMENT:
+            return res_to_shuffle
+        elif environment == PRODUCTION:
+            random.shuffle(res_to_shuffle)
+            return res_to_shuffle
+
 
     def fill_spot(self, patient):
-        # TODO: consider random order
+        '''
+        Try to insert a patient into an available resource, if there exists one.
+        Return true if patient inserted successfully.
+        
+        Will be false only if:
+            - All resources are currently occupied
+            - Doesn't pass the rule for any of the available resources
+                - If a resource is available, then we know that
+                    - either queue is empty
+                    - none of the elements in the queue passed the rule for this
+                    resource, so then try the current patient
+                        to see if he passes
+        Will be true if:
+            - Patient is available, and there is a resource in the process
+            that is available,and patient passes the rule for a specific resource
+        '''
+
         # 1. Check: Is patient busy? If no, proceed
         if patient.get_available():
-            # iterate through all resource(possibly random order) and check
+            # iterate through all resource and check
             # 1. Is resource available
             # 2. If it's available, does this element pass the resource rule
             # 3. If yes, insert the patient into
             # the specific resource(existing method
             # 4. Add the element on the heap
-            for resource in self.resource_dict.values():
+            resource_list = self.simulate_concur_env(self.resource_dict.values(),Node.environment)
+            for resource in resource_list:
                 if resource.is_available():
-                    if resource.pass_rule(patient):
+                    if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
                         # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
                         # as you're visiting now. This makes sense because if he's inserted in the resource, you can
                         # consider that as him finishing the queue.

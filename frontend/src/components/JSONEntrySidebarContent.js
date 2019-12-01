@@ -29,7 +29,6 @@ export class JSONEntrySidebarContent extends Component {
         return clone
     }
     handleReset() {
-        
         this.setState({ layoutJSON: JSON.stringify(this.cloneNodes(), null, 1), valid: true })
     }
 
@@ -108,7 +107,6 @@ export class JSONEntrySidebarContent extends Component {
         document.body.removeChild(element);
     }
 
-
     render() {
         return (
             <div className="JSONEntrySidebarContent">
@@ -120,9 +118,8 @@ export class JSONEntrySidebarContent extends Component {
                 <button className="ResetJSONButton" onClick={this.handleReset}>Reset</button>
                 <button className="ClearJSONButton" onClick={this.handleClear}>Clear</button>
                 <button className="DownloadJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
-                {/* TODO: give this button its own class */}
                 <div className="JSONWarningContainer">
-                    <label className="JSONWarningText">{this.state.valid ? "" : this.state.invalidJSONError}</label> {/* this seems to be broken now?? */}
+                    <label className="JSONWarningText">{this.state.valid ? "" : this.state.invalidJSONError}</label> 
                 </div>
 
             </div>

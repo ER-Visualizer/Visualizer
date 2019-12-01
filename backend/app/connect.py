@@ -12,7 +12,8 @@ class WebsocketServer:
     """
     Websocket to send events to the frontend
     """
-    def __init__(self, host, port, producerFunc, process, statistics, packet_rate, canvas=[]):
+    def __init__(self, host, port, producerFunc, process, statistics, packet_rate,
+                canvas):
         self.host = host
         self.port = port
         # function to get events
@@ -29,6 +30,7 @@ class WebsocketServer:
         self.sent_stats = False
         # the frequency of sending events
         self.packet_rate = packet_rate
+
         self.canvas = canvas[:]
 
     def start(self) -> None:
@@ -177,7 +179,4 @@ def producePatientData():
         {"patientId": 3, "from": randint(1, 10), "to": randint(1, 10)}]
     return json.dumps(jsonToSend)
 
-# asyncio.get_event_loop().run_until_complete(start_server)
-# asyncio.get_event_loop().run_forever()
-# test travis
 

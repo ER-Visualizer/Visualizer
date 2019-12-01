@@ -11,7 +11,9 @@ class Statistic:
 
     def __init__(self):
         # Patient stats
+        # structure: {'Patient_1': {'reception': 1 ...} ...}
         self.p_process_times = {}
+        # structure: {'Patient_1': {'reception': 1 ...} ...}
         self.p_wait_times = {}
         # Doctor stats
         self.d_seen = {}
@@ -24,7 +26,7 @@ class Statistic:
         self.end_time = float("-INF")
 
 
-    def calculate_stats(self):
+    def calculate_stats(self, canvas):
         """
         Return current statistics
 
@@ -37,7 +39,7 @@ class Statistic:
         doctor: length: For each doctor, the length of the patient doctor interaction of each patient (is a list since there
         can be more than one PD interaction
         """
-        hospital_stats = self._calculate_hospital_avgs()
+        hospital_stats = self._calculate_hospital_avgs(canvas)
         util = hospital_stats["util"]
         del hospital_stats["util"]
         res = {"stats": "true", "hospital": hospital_stats,
@@ -85,7 +87,7 @@ class Statistic:
             self.d_length[d_id][p_id] = []
         self.d_length[d_id][p_id].append(time)
 
-    def _calculate_hospital_avgs(self):
+    def _calculate_hospital_avgs(self, canvas):
         """
         Private helper to calculate hospital statistics
 
@@ -104,12 +106,17 @@ class Statistic:
             # total wait time
             wait_time = 0.0
             for resource in self.p_process_times[p_id]:
-                if resource not in resources_utilization:
-                    resources_utilization[resource] = 0.0
+                # record a patients total wait time and time in a node throughout their journey
                 total_time += self.p_process_times[p_id][resource]
                 wait_time += self.p_wait_times[p_id][resource]
-                # track how long spent actually being processed in resource
-                resources_utilization[resource] += total_time - wait_time
+                if resource not in resources_utilization:
+                    resources_utilization[resource] = 0.0
+                # track how much of the simulation time the resource used processing patients (to know utilization)
+                if p_id in self.p_wait_times and resource in self.p_wait_times[p_id]:
+                    resource_wait = self.p_wait_times[p_id][resource]
+                else:
+                    resource_wait = 0
+                resources_utilization[resource] += self.p_process_times[p_id][resource] - resource_wait
 
             journey_lengths.append(total_time)
             wait_times.append(wait_time)
@@ -117,5 +124,8 @@ class Statistic:
             ratio.append(r)
         for resource in resources_utilization:
             resources_utilization[resource] = float(resources_utilization[resource])/total_simulation_time if total_simulation_time != 0 else 0
+        for node in canvas:
+            if node["elementType"] in resources_utilization and node["numberOfActors"] != 0:
+                resources_utilization[node["elementType"]] = resources_utilization[node["elementType"]]/node["numberOfActors"]
         app.logger.info("STATS")
         return {"journey": np.mean(journey_lengths), "wait": np.mean(wait_times), "ratio": np.mean(ratio), "util": resources_utilization}
