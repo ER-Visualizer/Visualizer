@@ -8,6 +8,7 @@
     "d3": "^5.12.0",
     "formik": "^2.0.3",
     "jquery": "^3.4.0",
+    "jsonschema": "^1.2.5",
     "rc-slider": "^8.7.1",
     "react": "^16.11.0",
     "react-bootstrap": "^1.0.0-beta.14",
