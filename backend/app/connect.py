@@ -77,7 +77,7 @@ class WebsocketServer:
         """
         # get all patients
         all_patients = [key for key in stats['patients']['process']]
-
+        all_patients.sort(key= lambda p: int(p[-1]))
         # get all processes in sorted order
         processes = self.nodes_in_bfs_order()
         patient_headers = ["Patient ID"]
