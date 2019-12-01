@@ -15,10 +15,6 @@ const getBackgroundColor = accuity => {
 };
 
 class PatientBox extends React.Component {
-    constructor(props){
-        super(props)
-
-    }
     shouldComponentUpdate(nextProps, nextState) {
       return this.props.patient.id !== nextProps.patient.id && this.props.patient.accuity !== nextProps.patient.accuity
     }
