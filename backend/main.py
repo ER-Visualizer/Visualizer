@@ -43,7 +43,7 @@ def start_simulation():
         rate = req_data['rate']
         app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
         now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
+        current_time = now.strftime("%H_%M_%S")
         path = '/app/canvas/' + current_time + '.txt'
         os.makedirs(os.path.dirname(path), exist_ok=True)
         # all uploaded canvas are automatically stored under /app/canvas folder locally
