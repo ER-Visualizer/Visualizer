@@ -13086,3 +13086,5 @@ DEBUG: ER | Visualizer: 2019-12-01 03:57:21: server - event = eof_received()
 DEBUG: ER | Visualizer: 2019-12-01 03:57:21: server - event = connection_lost(None)
 DEBUG: ER | Visualizer: 2019-12-01 03:57:21: server - state = CLOSED
 DEBUG: ER | Visualizer: 2019-12-01 03:57:21: server x code = 1000, reason = [no reason]
+INFO: ER | Visualizer: 2019-12-01 17:47:27:  * Detected change in '/app/main.py', reloading
+INFO: ER | Visualizer: 2019-12-01 17:47:27:  * Restarting with stat

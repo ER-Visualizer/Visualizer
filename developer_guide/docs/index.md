@@ -140,8 +140,8 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
 at the right time (as dictated in the csv input).
 5. Changes to the simulation (such as patients getting treated by a resource) are represented by Event objects. Event objects have a time attribute which dictate
 when they occur, and are stored in an event heap. 
-6. Events are handled one at a time, and a global time variable will be updated to the time of the event popped from the event heap.
-7. After an event is handled, the patient from the event is placed into the next queues and the Statistics object is updated. The event is then recorded in a list that will be sent to the frontend.
+6. Events are handled one at a time in process_heap(), and a global time variable will be updated to the time of the event popped from the event heap.
+7. After an event is handled, the Statistics object is updated.
 8. When communicating with the frontend, there will be a list of all the processed events. Instead of sending the entire list at once, only a user-specified time interval of events will be 
 sent. The user can also specify how often the backend sends changes to the frontend. Since communication is independent of the simulation, changing these parameters will not affect the 
 simulation in the backend.
@@ -156,15 +156,16 @@ of time in a chronological fashion.
 ### Websocket
 * The WebsocketServer class is located at connect.py and sends events to the frontend.
 * WebsockerServer has the following attributes:
-  * host: The host name the server is being served on (in our use case its localhost)
-  * port: The port to send events on.
-  * producerFunc: The function to generate events to send to the frontend (send_e from run.py).
-  * server: The event loop in the websocket thread.
-  * wserver: The websocket server.
-  * process: The function to process events in the event heap (process_heap)
-  * stats: The function to get simulation statistics.
-  * sent_stats: Checks whether stats have been sent.
-  * packet_rate: The frequency to send events.
+    * host: The host name the server is being served on (in our use case its localhost)
+    * port: The port to send events on.
+    * producerFunc: The function to generate events to send to the frontend (send_e from run.py).
+    * server: The event loop in the websocket thread.
+    * wserver: The websocket server.
+    * process: The function to process events in the event heap (process_heap)
+    * stats: The function to get simulation statistics.
+    * sent_stats: Checks whether stats have been sent.
+    * packet_rate: The frequency to send events.
+<p>&nbsp;</p>
 1. The start method is called by run.py which starts the websocket thread that runs until the simulation ends.
 2. __producer_handler is then constantly called which is in charge of running the process_heap method from run.py. This allows the simulation to continue running by continuously processing generated events.
 3. The rate in which __producer_handler is called is changed by the input packet rate, passed in from the frontend. Thus, this then allows the rate of the simulation to be changed.
@@ -193,28 +194,31 @@ of time in a chronological fashion.
   * node_rules: all of the rules for a specific node.
 * **Important Methods**:
   * Technically, nodes are the ones that run the simulation. They move the patients from one to another, ass the patients into the right resource, into the right queues.
-  * handle_finished_patient(resource_id)
+  * `handle_finished_patient(resource_id)`:
     * Called from run.py whenever an event is popped off the heap, which 
     signifies that it finished. At that point, handle_finished_patient() is called which is responsible for 2 things: insert patients into the next nodes
     that the patient needs to go to, fill the resource that the patient just finished with an appropriate patient from the queue of the node.
     * Because the patient is still in some queues, the node attempts to insert him into resources for the nodes where the patient is still queued(patient is still in queue to get a CT-scan so handle_finished_patient() will check to see if any CT scans have been freed), as well as into the outgoing nodes from this current node(i.e this node is triage and has an outgoint edge: Triage->Doctor).
-  * put_patient_in_node(patient):
+    * An event is created and sent to GlobalEvents, which is read by run.py to send to the frontend. The event will be a patient leaving a resource.
+  * `put_patient_in_node(patient)`:
     * Called whenever a patient is inserted into a node X.
     * First check if patient passes all of the rules which make him eligible to be inside of node X(e.g: have acuity > 5, etc).
     * If passes all rules, then try to insert him into a resource. If that fails,
     place him inside the queue.
-  * put_inside_queue(patient):
-    * place patient inside of ahe queue, and put that into patient's current record
-  * fill_spot(patient):
+  * `put_inside_queue(patient)`:
+    * place patient inside of ahe queue, and put that into patient's current record.
+    * An event is created and sent to GlobalEvents, which is read by run.py to send to the frontend. The event will be a patient joining a queue.
+  * `fill_spot(patient)`:
     * Patient is passed and attempts to enter any available resources. If either
     the patient becomes unavailable, or all resources are busy, fill_spot returns False.
     * If The patient is available, and a resource is free, and patient passes the test for it, `insert_patient_to_resource_and_heap` gets called.
   * `insert_patient_to_resource_and_heap(patient, resource)`:
     * Patient is inserted into the resource,his patient_record gets updated, and he is set as unavailable.
     * **An event is created and inserted onto the heap with the finish time of when the patient will finish the given resource.** So whenever a patient is inserted inside a resource, the event gets registered on the heap.
+    * An event is created and sent to GlobalEvents, which is read by run.py to send to the frontend. The event will be a patient joining a resource.
   *  `fill_spot_for_resource`:
      *  Called when a patient finishes a resource, so the resource becomes available and can take another patient. Resources will attempt to take another patient from the queue of the node. If a patient is available and passes its rules, he is inserted into the resource by again calling `insert_patient_to_resource_and_heap(patient, resource)`. He is removed from the queue, and his patient record gets updated.
-* 
+
 #### Resource
 
 * A resource is the smallest functioning element inside the simulation. A resource always exists only inside the nodes and represents 1 independent unit which takes simulation objects(patients) for a duration of time. **Let's consider an example: if we have an X-ray Node, with 3 num actors, a resource will be an X-ray machine, and the node has 3 x-ray machines.**
@@ -281,6 +285,26 @@ of time in a chronological fashion.
   * get()
   * remove()
 
+* The Heap class has a few additional attributes:
+```python
+    def __init__(self, priority_type, priority_function, l=[]):
+        # convert input list into heap
+        l = l[:]
+        heapq.heapify(l)
+        # assign q into heap
+        self.q = l
+        # assign priority type
+        self.p_type = priority_type
+        # assign priority function
+        self.p_func = priority_function
+        # if priority is custom then parse the input code
+        if self.p_type == "custom":
+            self._parse_p_func()
+```
+* The heap gets the priority type and function from the frontend. If the type is acuity or arrival time then the min heap uses the respective values whenever a patient is added in to sort it.
+* A patient is added as a tuple into the heap in the following format: (priority value, patient element). Python's heapq library automatically sorts the elements by the first index of a tuple.
+* Users also have the option to define their own function to generate a priority value per patient. So when the type is custom, a priority value is calculated using the input code from the frontend.
+
 #### Events
 
 * Event objects on the heap contain the patient, the time he will finish a resource, and the node id and resource id.
@@ -322,7 +346,28 @@ patient passes all of the rules for it. Used inside a Node to check if a patient
 and to also check if a patient passes all of the rules for a resource.
 * If you want to create a rule, define it in the rules directory in modules, and inside rule_creator_factory.py
 
-
+#### Statistics
+* The Statistic class handles recording information throughout the simulation to generate statistics at the end.
+* Attributes:
+```python
+# Patient stats
+        # structure: {'Patient_1': {'reception': 1 ...} ...}
+        self.p_process_times = {}
+        # structure: {'Patient_1': {'reception': 1 ...} ...}
+        self.p_wait_times = {}
+        # Doctor stats
+        # structure: {'Doctor_1': 1, ...}
+        self.d_seen = {}
+        # structure: {'Doctor_1': {'Patient_1': [1], ...} ...}
+        self.d_length = {}
+        # Hospital stats
+        self.sum_ratio_wait = 0.0
+        self.sum_ratio_journey = 0.0
+        self.start_time = float("INF")
+        self.end_time = float("-INF")
+```
+* Functions add_process_time, add_wait_time, increment_doc_seen, add_doc_patient_time is used to throughout the simulation to record information. The functions are all called at process_heap() in run.py.
+* The function calculate_stats is used to aggregate all the statistics at the end.
 
 # How to’s 
 ### Backend 
@@ -339,21 +384,16 @@ and to also check if a patient passes all of the rules for a resource.
 	* To add a rule type that does not apply to resources or nodes, add another case to the create_queues function in
 	the RuleCreatorFactory class. The canvas JSON structure and create_queues function in run.py will also have to be modified to call create_rules
 	using the new RuleCreator class.
-
 ### Frontend
 * Add a button 
-    * A: In  ```Navbar.js```  define a button using standard convention in the render method, you can create styling for it in ```Navbar.css`` . 
+    * A: In  ```Navbar.js```  define a button using standard convention in the render method, you can create styling for it in ```Navbar.css``` . 
     To update the state of the application you have to create your own action in redux as well a method in ```reducers.js``` to execute your update.
-
 * Change the graph
     * In the folder react-d3-graph you have access to the node structure and change the rendering and layout/styling of nodes.
     * In ```Main.js``` there is a graph config object and also a function to map redux's graph model to react-d3-graph's graph model.
     * For more detailed information on the original package, visit https://goodguydaniel.com/react-d3-graph/docs/index.html 
-
 * Change styling of components 
     * Every react component has its own css file. To change the graph, see the previous subsection.
-
-
 * Change styling for core components (not sure what to call it )
 ### Devops 
 * Change ports
@@ -362,11 +402,8 @@ and to also check if a patient passes all of the rules for a resource.
     * A: Depending on if your using production or develop there are two serpate docker compose files in the root level of the app, which can be edited, further there are individual docker files for the frontend and backend which can be further changed 
 * Add a new requirement in the backed
     * A: Simply add the package you want to the requirements.txt file in the backend folder, and then run either ```./run_dev.sh``` or ```./run_prod.sh``` depending on your preference to rebuild with the new requirement
-* Change hosting 	
-    * A: 
 * Script Usage 
-    A: 
-
+    A: To run in development, run ```./run_dev.sh```. To run in production, run ```./run_prod.sh```. You can add the build command to either script (i.e ```./run_dev.sh build```) to force docker to rebuild the image as caching is an issue sometimes. Both scripts then transfer all variables in .env to the frontend and backend folders. The frontend variables can't be directly copied as React is only able to automatically read environment variables beginning with REACT_APP_. Thus, all variables have REACT_APP_ appended as a prefix. The script then stops existing containers and finally starts new ones (it may rebuild the image if you add the build command).
 ## FAQ
 * Q: When I add an npm package, I get an error saying that it can't be resolved even though I ran ```npm install```
     * A: stop the docker image you currenly have running by pressing command + c in your terminal 
@@ -377,11 +414,10 @@ and to also check if a patient passes all of the rules for a resource.
     * A: Yes.... 
 * Q: Why does take so long to run 
     * A: The docker image is building both the frontend and backend 
-    requirements hence it had to install several packages hence it takes a larger amount of time. If you already built the image ie ran ```./run_dev.sh` build ```then run  ```./run_dev.sh`  ```
-    
+    requirements hence it had to install several packages hence it takes a larger amount of time. If you already built the image ie ran ```./run_dev.sh` build ```then run  ```./run_dev.sh`  ``` 
 * Q: Why must there be at least 1 node at all times?
     * A: This is a limitation of react-d3-graph.
 * Q: Should I use the index or the id to identify a node?
     * A: Use the id, indices are subject to change on deleting/adding nodes.
-    
- 
+* Q: Why can't I access the variable I added to the .env file on the frontend?
+    * A: Make sure you're calling it with REACT_APP_ appended as a prefix. So if you called it ```test_var```, make sure to call ```REACT_APP_test_var```.

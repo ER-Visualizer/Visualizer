@@ -84,8 +84,7 @@
 - Then, start the application by double clicking the docker icon in your Applications folder.
 
 ## Running the Application
-Run ```docker-compose down``` - in case you already have docker and have something running on the same port
-Then run ```./run_dev.sh build``` - to build the image/run the application
+Run ```./run_prod.sh build``` - to build the image/run the application in production.
   - The client and server services will be instantiated with the ports indicated in the .env file.
   - The client can be accessed at http://localhost:5000 by default.
 
