@@ -119,6 +119,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
 
 
 ## CSV
+
 1. Each row represents 1 patient, and each column its attributes
 2. Must have columns with following names(outlined in global_strings.py):
    * time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.
@@ -171,18 +172,49 @@ of time in a chronological fashion.
 5. The class also formats the generated statistics to be in a CSV format to be send to the frontend.
 6. To generate the CSV file, since process names are column headers, it is more readable if the column headers are sorted in order of traversal through the canvas. nodes_in_bfs_order() returns a sorted list of process names.
 
+---------------------------------------------------
+
 ### Models
 
 #### Nodes
 
 * Nodes are the fundamental building blocks of the simultation. They represent a process such as:
 *reception*, *triage*, *doctor's office*, etc. 
-* Nodes have the following attributes:
+* **Attributes**:
   * id's which are used to uniquely identify a node. `Note`: *Id 0 is reserved for Reception*, and *Id -1 is reserved for the patient_loader(see details above in run.py)*
   * Queue_type: There are 3 types of queues: Stacks, Queue, and Priority Heap. The user specifies on the front-end what kind of queue he wants to use. *See Queues* for more details
   * priority_function: priority_function is set only if the user chose a priority queue on the frontend, otherwise it's none.
   * num_actors defines the number of resources/actors inside the resource. A resource will have a minimum of 1 resource, which means there is only 1 employee/doctor/member of staff/etc operating in there. 
-
+  * resource_dict: a dictionary which contains the resources as their values(built based on the number of actors), and the ids of resources as keys.
+  * distribution_name and distribution_params: the parameters of the distribution that will describe how much time a patient spends inside a resource for this particular node.
+  * output_process_ids: the nodes that the patient will go to once he finishes this current node.
+  * static dictionary of nodes `node_dict` which contains all of the nodes with 
+  their ids as values.
+  * node_rules: all of the rules for a specific node.
+* **Important Methods**:
+  * Technically, nodes are the ones that run the simulation. They move the patients from one to another, ass the patients into the right resource, into the right queues.
+  * handle_finished_patient(resource_id)
+    * Called from run.py whenever an event is popped off the heap, which 
+    signifies that it finished. At that point, handle_finished_patient() is called which is responsible for 2 things: insert patients into the next nodes
+    that the patient needs to go to, fill the resource that the patient just finished with an appropriate patient from the queue of the node.
+    * Because the patient is still in some queues, the node attempts to insert him into resources for the nodes where the patient is still queued(patient is still in queue to get a CT-scan so handle_finished_patient() will check to see if any CT scans have been freed), as well as into the outgoing nodes from this current node(i.e this node is triage and has an outgoint edge: Triage->Doctor).
+  * put_patient_in_node(patient):
+    * Called whenever a patient is inserted into a node X.
+    * First check if patient passes all of the rules which make him eligible to be inside of node X(e.g: have acuity > 5, etc).
+    * If passes all rules, then try to insert him into a resource. If that fails,
+    place him inside the queue.
+  * put_inside_queue(patient):
+    * place patient inside of ahe queue, and put that into patient's current record
+  * fill_spot(patient):
+    * Patient is passed and attempts to enter any available resources. If either
+    the patient becomes unavailable, or all resources are busy, fill_spot returns False.
+    * If The patient is available, and a resource is free, and patient passes the test for it, `insert_patient_to_resource_and_heap` gets called.
+  * `insert_patient_to_resource_and_heap(patient, resource)`:
+    * Patient is inserted into the resource,his patient_record gets updated, and he is set as unavailable.
+    * **An event is created and inserted onto the heap with the finish time of when the patient will finish the given resource.** So whenever a patient is inserted inside a resource, the event gets registered on the heap.
+  *  `fill_spot_for_resource`:
+     *  Called when a patient finishes a resource, so the resource becomes available and can take another patient. Resources will attempt to take another patient from the queue of the node. If a patient is available and passes its rules, he is inserted into the resource by again calling `insert_patient_to_resource_and_heap(patient, resource)`. He is removed from the queue, and his patient record gets updated.
+* 
 #### Resource
 
 * A resource is the smallest functioning element inside the simulation. A resource always exists only inside the nodes and represents 1 independent unit which takes simulation objects(patients) for a duration of time. **Let's consider an example: if we have an X-ray Node, with 3 num actors, a resource will be an X-ray machine, and the node has 3 x-ray machines.**
@@ -198,7 +230,7 @@ of time in a chronological fashion.
   * resource_rules: Resources can have rules applied to them. In order for a patient to be inserted to a
   specific X-ray machine, it first needs to pass the rule for the X-ray machine. An example of a rule is:
   you need above a specific acuity to use this X-ray. See **Rules** for more.
-* **Methods**:
+* **Important Methods**:
   * insert_patient(): Inserts a patient into the resource. Sets the attributes(patient, node_id, finish_time, duration). Sets the patient as unavailable.
   * clear_patient(): i.e patient finishes the resource so clear him out of it. Set the patient as available, so he can join other resources, and set curr_patient and finish_time to None.
   
@@ -206,45 +238,91 @@ of time in a chronological fashion.
 
 * A Patient is the simulation object that moves around. Patients are declared in the CSV file, 1 patient per row. They don't have to be patients. You can include any object in the CSV that you want to run the simulation on, and you can include any properties there.
 * Attributes:
-  * properties: This is the dictionary of 
+  * properties: This is the dictionary of all attributes for the patient from the CSV, where the key is the name of the column,
+  and the value is the value in the column.
+  * is_available: False if patient is inside a resource. Patient can only be inside 1 resource at a time, and this is used to make sure this is satisfied.
+  * patient_record: a record for the patient of all the nodes he has visited already, the current node he is in(otherwise None), and all the queues he is in.
+* Important Methods:
+  * set_available(). This is called from inside resource.clear_patient(), so whenever a patient finishes a resource, he's automatically set to available.
+    * sets is_available property
+    * sets curr_node in patient record to None
+    * clears the queues_since_last_finished_process attribute, since that list contains all of the queues the patient has been added to since the last
+    node he has finished, and since a patient is set available when he finished
+    a resource, that means he just finished it, so we need to reset that list
+  * set_unavailable(): This is called from inside resource.insert_patient().
+    * sets the is_available attribute to False
+    * sets the current node inside the patient record
+
+#### ObjectRecord
+
+* An objectRecord is a record for a patient that contains infromation about all the nodes a patient has visited already, the current node he is in(otherwise None), and all the queues he is in.
+* Attributes:
+  * object_id: id of the patient
+  * visited: represents a list of `node_acces_info` objects`, i.e all the nodes the patient has visited, in the corred order with extra information.
+    * Properties of a node_access_info:
+    ```
+    self.process_id = curr_process_id
+    self.resource_id = curr_resource_id
+    self.resource_start_time = start_time
+    self.resource_end_time = end_time
+    ```
+  * curr_node: a `node_access_info` object` for the current_node the patient is in.
+  * Queues:
+    * queues_since_last_finished_process:  list of the queues a patient is added to in a current round, i.e since patient finished his last node.
+    * old_active_queues: queues the patient is still in, that are not part of the current round.
  
-#### Events
-
-* Event objects on the heap contain the patient, the time he will finish a resource, and the node id and resource id.
-
-#### Resources
 
 #### Queues
 
+* 3 types: Stack, Heap, and Queue.
+* All classes have an iterator defined, so that the user can iterate through the objects inside of the queue in the right order.
+* Important Methods:
+  * put()
+  * get()
+  * remove()
+
+#### Events
+
+* Event objects on the heap contain the patient, the time he will finish a resource, and the node id and resource id.
+* Attributes:
+```python
+    self.patient_id = patient_id
+    self.event_time = event_time # when the event finishes
+    self.node_id = node_id
+    self.node_resource_id = node_resource_id
+    self.moved_to = None # where the event moved to
+    self.in_queue = True # which queues it's in
+    self.finished = False
+```
+
+
 #### Rules
+* Rules are restrictions that a patient must adhere to to either be allowed inside a node, or a resource or both. Values for
+them are specified inside the CSV, where each patient can have different values for different rules, i.e: if it's a FrequencyRule[see blow], patient A can visit node 3, 4 times, whilst patient B can only visit 1 time.
 * There are two categories of rules: NodeRules and ResourceRules.
-	* NodeRules apply to a node object, and include FrequencyRules and PredictionRules. 
-		* A node with a FrequencyRule can be visited multiple times by a patient
-		on a case to case basis (i.e. each patient will visit a different number of times). 
-		FrequencyRule objects keep track of which column in the patients csv file 
-		the program has to read from in order to see how many times a patient has to reenter a node.
-		* A node with a PredictionRule has a conditional patient admittance behaviour. For example, a
-		patient can be predicted to require a scan, so they can be preemptively added to the waiting queue
-		before being seen by the doctor. 
+	* NodeRules apply to a node object, and include FrequencyRules and PredictionRules.
+	These are rules that a patient must satisfy in order to be allowed inside a node
+    (where he can occupy a queue or a resource). If patient fails any of the rules
+    then the patient is not admitted into the process.
+      * A node with a FrequencyRule can be visited multiple times by a patient
+      on a case to case basis (i.e. each patient will visit a different number of times). 
+      FrequencyRule objects keep track of which column in the patients csv file 
+      the program has to read from in order to see how many times a patient has to reenter a node.
+      * A node with a PredictionRule has a conditional patient admittance behaviour. For example, a
+      patient can be predicted to require a scan, so they can be preemptively added to the waiting queue
+      before being seen by the doctor.
+    * ResourceRules: A resource may have a rule which will be used to decide whether the patient is allowed in or not, i.e
+    can patient P go to doctor A, can patient P go to X-ray 2? If a node allows him in, but a resource rejects the patient, the patient will instead be inserted in another resource, one for which he passes all of the rules.
+      * FirstComeFirstServeRule: This rule is used in conjuction with a PredictionRule on the Node, for cases when a patient will
+      visit a node N multiple times. When this rule is used, if a patient goes to resource C, any time in the future when he needs to
+      visit the same node N, he is only allowed inside resource C. This is particularly useful for cases like the Most Responsible Doctor, where if patient is first seen by doctor C, he will only go back to doctor C, instead of other doctors, as that doctor is responsible for him. 
+* Rules are created in the rule_creator_factory, that is called in create_queues, located in run.py. 
+* RuleVerifier: has a method `pass_rules` where you pass a patient, and a set of rules, and return True only if the 
+patient passes all of the rules for it. Used inside a Node to check if a patient passes all of the rules for the Node,
+and to also check if a patient passes all of the rules for a resource.
+* If you want to create a rule, define it in the rules directory in modules, and inside rule_creator_factory.py
 
-* Rules are passed They are created when reconstructing the wusing a RuleCreatorFactory class that is called in create_queues, located in run.py. 
 
-* Where they're generated
-* How to extend( how to add more rules, how to add rules just for 1 resource.)
-* Node Rules
-* Resource Rules
-
-
-### Rules
-
-1. Each node has a list of nodeRules. These are rules that a patient must satisfy in order
-to be allowed inside a node (where he can occupy a queue or a resource). If patient fails any
-of the rules then the patient is admitted into the process.
-2. Each node has a list of resourceRules. All resources share this list, i.e in order for a patient
-to be admitted into a specific resource, he must pass all of the rules for it first. ResourceRules 
-also dictate how patients are removed from the queue of the process.
-
-HEre
 
 # How to’s 
 ### Backend 
