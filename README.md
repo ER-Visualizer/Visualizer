@@ -13,11 +13,7 @@ In the waiting room of a hospital, each patient has an arrival time and a specif
 Our application also uses statistical distributions to simulate the random variations in the amount of time a patient requires to receive treatment, as opposed to simpler models which assume patients always take the same time. This allows our model to be more accurate and more effectively represent reality.
 
 ## Key Features
- * Described the key features in the application that the user can access
- * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application
 
- <!-- * Describe the key features in the application that the user can access
- * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application -->
  * Visual Representation of the emergency room: Users can create nodes representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those nodes to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.
  * Data Input: Users input data regarding patients' medical state and required medical operations(e.g. a visit to the x-ray, or a talk with a doctor). Users also input the estimated wait times and number of "actors" (e.g. doctors) at each station, such that patients can queue for stations realistically. The behavior of the given patients, as well as their interactions with the hospital stations will be simulated. Another point of input is the rules by which patients are selected from the queue for a given station, e.g. one station may choose to select patients based on acuity, and another station may choose to select patients based on arrival time.
  * Data Output: Events in the emergency room (e.g. a patient going from the X-ray machine to a doctor), and other statistics (e.g. actual wait times) are all recorded and saved.
