@@ -1,5 +1,5 @@
 import React from 'react'
-import axios, { post } from 'axios';
+import axios from 'axios';
 import "./Navbar.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

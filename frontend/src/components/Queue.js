@@ -1,13 +1,8 @@
 import React from 'react';
 import './Queue.css';
 import PatientBox from './PatientBox';
-import Patient from '../models/Patient';
 import { FixedSizeGrid as Grid } from 'react-window';
 class Queue extends React.Component{
-    constructor(props){
-        super(props)
-
-    }
     shouldComponentUpdate(nextProps, nextState) {
       return JSON.stringify(this.props.patients) !== JSON.stringify(nextProps.patients);
     }
@@ -39,7 +34,7 @@ class Queue extends React.Component{
     return (
         <div className="QueueContainer" style={{height: this.props.height || 150 }}>
             <div className="Queue">
-              <div className="counter">{list_patients.length}</div>
+                <div className="counter">{list_patients.length}</div>
                 <Grid
                 columnCount={5}
                 columnWidth={30}
