@@ -85,8 +85,10 @@ function EDSimulation(state = initialState, action) {
                 nodes: updateNodeProperties(state.nodes, action.newProps)
             })
         case UPDATE_NODE_POSITIONS:
+            const updatedNodes = updateNodePositions(state.nodes, action.updatedNodes)
+            console.log("updated nodes", updatedNodes)
             return Object.assign({}, state, {
-                nodes: updateNodePositions(state.nodes, action.updatedNodes)
+                nodes: updatedNodes
             })
         case DELETE_NODE:
             temp_node_count = state.nodes.length
