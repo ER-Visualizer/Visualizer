@@ -73,9 +73,8 @@ class SimulationWorker(threading.Thread):
 
         for node in canvas:
             app.logger.info(f"cur node {node}")
-            rules = []
+            node_rules = []
             # create all of the rules here
-            # TODO: delete this and create actual rules from JSON once JSON format is created
 
             if "nodeRules" in node:
                 node_rules = rule_creator.create_rules(type="node", node_rules= node["nodeRules"], node_id=node["id"], canvas=canvas)
@@ -83,7 +82,7 @@ class SimulationWorker(threading.Thread):
             # create node
             nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
-                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=rules,
+                                            distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules,
                                             priority_type=node["priorityType"])
             # get list of all resources for the node
             if "resourceRules" in node:
@@ -120,13 +119,10 @@ class SimulationWorker(threading.Thread):
                 all_patients[next_patient.get_id()] = next_patient
 
 
-
-"""
-Sends changes to frontend and repeats at intervals dictated by packet_rate
-"""
-
-
 def send_e():
+    """
+    Sends changes to frontend and repeats at intervals dictated by packet_rate
+    """
     global event_changes
     if len(event_changes) == 0:
         # send nothing if no changes
@@ -247,26 +243,6 @@ def process_heap():
         next_nodes.append(patient_record.get_curr_process_id())
     # if did not go straight to resource without waiting
 
-    # start_process_time = completed_event.get_event_time() - process_duration
-    # leave_queue = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), start_process_time)
-    # leave_queue.set_in_queue(False)
-    # leave_queue.set_moved_to([completed_event.get_node_id()])
-    # event_changes.append(leave_queue)
-    # patient went straight into next resource
-    # enter_into_resource = None
-    # if patient_record.get_curr_resource_id() is not None:
-    #     enter_into_resource = Event(completed_event.get_node_id(), completed_event.get_node_resource_id(), completed_event.get_patient_id(), completed_event.get_event_time())
-    #     enter_into_resource.set_in_queue(False)
-
-    # send patient to next queues/resources
-    # completed_event.set_moved_to(next_nodes)
-    # if patient_record.get_curr_process_id is not None:
-    #     event_changes.append(completed_event)
-    # TODO HANDLE CASE WHERE RESOURCE IS EMPTY AND PICKS SOMEONE FROM QUEUE
-    # if enter_into_resource is not None:
-    #     event_changes.append(enter_into_resource)
-    #     enter_into_resource.set_moved_to([patient_record.get_curr_process_id()])
-
     global counter, all_patients
     if counter < len(all_patients) - 1:
         counter += 1
@@ -308,9 +284,6 @@ def main(args=()):
     global packet_duration, packet_rate
     packet_duration = int(duration) * 60
     packet_rate = int(rate)
-
-    # this will read canvas json
-    # canvas_parser(canvas)
 
     counter = 0
     # this will read patients csv
