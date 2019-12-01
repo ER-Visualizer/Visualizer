@@ -10,14 +10,12 @@ export class NodeSidebarContent extends React.Component {
         super(props)
         this.state = {node:null, numNodes:null}
         this.state.node = this.props.node 
-        // console.log("NODESIDEBAR")
-        // console.log(this.props.node)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
     handleInputChange(event) {
         const name = event.target.name
-        const value = name !== "distributionParameters" ? event.target.value : event.target.value.split(",")
+        const value = name !== "distributionParameters" ? event.target.value : event.target.value.split(",").map(item => item.trim());
         // user enters csvs for distribution parameters box. e.g. 5,3,6
 
         
@@ -31,7 +29,7 @@ export class NodeSidebarContent extends React.Component {
         })
     }
 
-    componentWillReceiveProps({node, numNodes}){  // TODO: not use this function
+    componentWillReceiveProps({node, numNodes}){  
         this.setState({node:node, numNodes: numNodes})
     }
 
@@ -46,10 +44,6 @@ export class NodeSidebarContent extends React.Component {
             for (let i = deleteId; i < numNodes; i++) {
                 continue
             }
-            // console.log("PROPS:")
-            // console.log(this.props)
-            // console.log("\nSTATE:")
-            // console.log(this.state)
 
         }
         else {
@@ -65,7 +59,7 @@ export class NodeSidebarContent extends React.Component {
         return (
             <div className="NodeSidebarContent">                
                 
-                <div className="input-container"> {/* could make this a dropdown. */ }
+                <div className="input-container"> 
                     <label>Station Type</label><br/>
                     <input 
                         type="text"
@@ -195,13 +189,6 @@ export class NodeSidebarContent extends React.Component {
                     <Queue patients={this.state.node.patients} />
                 </div>
 
-                {/* <div className="input-container">
-                    <label>Priority Function</label><br/>
-                    <input 
-                        type="text"
-                        name="priorityFunction"
-                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></input>
-                </div> */}
                 
                 <button className="SaveNodebutton" onClick={()=>{this.props.editNodeProperties(this.state.node)}}> Save </button>
                 <button className="DeleteNodebutton" onClick={()=>{this.handleDelete()}}> Delete </button>

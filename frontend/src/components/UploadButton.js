@@ -1,6 +1,8 @@
 import React from 'react'
 import axios, { post } from 'axios';
 import "./Navbar.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class FileUploadForm extends React.Component {
 
@@ -31,15 +33,19 @@ class FileUploadForm extends React.Component {
             'content-type': 'multipart/form-data'
         }
     }
+    toast("CSV submitted!")
     return axios.post(url, formData,config)
   }
 
   render() {
     return (
-            <form onSubmit={this.onFormSubmit}>
+      <div>
+      <ToastContainer />
+          <form onSubmit={this.onFormSubmit}>
         <input className="FileUploadButton" type="file" onChange={this.onChange} />
         <button className="uploadButton" type="submit">Upload</button>
       </form>
+      </div>
 
    )
   }

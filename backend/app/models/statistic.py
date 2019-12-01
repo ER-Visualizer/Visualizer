@@ -1,10 +1,11 @@
 
 import numpy as np
 
-"""
-Statistics class to store data throughout the simulation
-"""
+
 class Statistic:
+    """
+    Statistics class to store data throughout the simulation
+    """
 
     def __init__(self):
         # Patient stats
@@ -18,62 +19,58 @@ class Statistic:
         self.sum_ratio_journey = 0.0
         self.sum_utilization = 0
 
-    """
-    Return current statistics
-
-    Format:
-
-    hospital: Hospital statistics: Average total journey time, average total wait time, average ratio of wait time to journey
-    patient: process: For each patient, the total time spent at each process
-    patient: wait: For each patient, the total wait time at each process
-    doctor: seen: For each doctor, the total number of patients seen
-    doctor: length: For each doctor, the length of the patient doctor interaction of each patient (is a list since there
-    can be more than one PD interaction
-    """
 
     def calculate_stats(self):
+        """
+        Return current statistics
+
+        Format:
+
+        hospital: Hospital statistics: Average total journey time, average total wait time, average ratio of wait time to journey
+        patient: process: For each patient, the total time spent at each process
+        patient: wait: For each patient, the total wait time at each process
+        doctor: seen: For each doctor, the total number of patients seen
+        doctor: length: For each doctor, the length of the patient doctor interaction of each patient (is a list since there
+        can be more than one PD interaction
+        """
         hospital_stats = self._calculate_hospital_avgs()
         res = {"stats": "true", "hospital": hospital_stats,
                "patients": {"process": self.p_process_times, "wait": self.p_wait_times},
                "doctors": {"seen": self.d_seen, "length": self.d_length}}
         return res
 
-    """
-    Adds the time taken for a single patient in a specific process including wait time.
-    """
-
     def add_process_time(self, p_id, process, time):
+        """
+          Adds the time taken for a single patient in a specific process including wait time.
+        """
         p_id = "Patient_" + str(p_id)
         if p_id not in self.p_process_times:
             self.p_process_times[p_id] = {}
         self.p_process_times[p_id][process] = time
 
-    """
-    Adds the wait time for a patient in a specific process
-    """
-
     def add_wait_time(self, p_id, process, time):
+        """
+        Adds the wait time for a patient in a specific process
+        """
         p_id = "Patient_" + str(p_id)
         if p_id not in self.p_wait_times:
             self.p_wait_times[p_id] = {}
         self.p_wait_times[p_id][process] = time
 
-    """
-    Increments the number of patients seen for a specific doctor
-    """
-
     def increment_doc_seen(self, d_id):
+        """
+        Increments the number of patients seen for a specific doctor
+        """
         d_id = "Doctor_" + str(d_id)
         if d_id not in self.d_seen:
             self.d_seen[d_id] = 0
         self.d_seen[d_id] += 1
 
-    """
-    Adds the patient doctor interaction time for a specific patient and 
-    specific doctor
-    """
-
     def add_doc_patient_time(self, d_id, p_id, time):
+        """
+        Adds the patient doctor interaction time for a specific patient and
+        specific doctor
+        """
         d_id = "Doctor_" + str(d_id)
         p_id = "Patient_" + str(p_id)
         if d_id not in self.d_length:
@@ -82,13 +79,13 @@ class Statistic:
             self.d_length[d_id][p_id] = []
         self.d_length[d_id][p_id].append(time)
 
-    """
-    Private helper to calculate hospital statistics
-
-    Calculates average journey length, wait time, and ratio of wait time to journey length
-    """
 
     def _calculate_hospital_avgs(self):
+        """
+        Private helper to calculate hospital statistics
+
+        Calculates average journey length, wait time, and ratio of wait time to journey length
+        """
         # total journey times
         journey_lengths = []
         # total wait times

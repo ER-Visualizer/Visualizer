@@ -14,6 +14,7 @@
 FROM simran224/vectorinstituteteam:latest
 
 COPY ./app /app
+COPY ./.env /app/.env
 WORKDIR /app
 COPY requirements.txt ./
 RUN pip3 install --upgrade pip

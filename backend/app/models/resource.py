@@ -1,19 +1,16 @@
 class Resource:
 
-    def __init__(self, id, *args, **kwds):
+    def __init__(self, id, resource_rules = []):
         self.id = id
         self.finish_time = None
         self.curr_patient = None
         self.duration = None
+        self.resource_rules = resource_rules
 
-    '''
-    This is a rule that the resource/subproces might have.
-    If no rule(ordinary actor/resource), then just return True.
-    Otherwise subclass it, and set it a rule.
-    '''
-
-    def pass_rule(self, patient):
-        return True
+    def get_resource_rules(self):
+        return self.resource_rules
+    def set_resource_rules(self, resource_rules):
+        self.resource_rules = resource_rules
 
     # TODO Make sure that the actual patient is being changed,
     # and not a copy of it

@@ -8,7 +8,9 @@ import {ReactComponent as JSONIcon} from '../json.svg';
 import {ReactComponent as NodeIcon} from '../nodeicon.svg';
 import FileUploadForm from './UploadButton.js'
 import { CSVLink } from 'react-csv';
-import logo from './logo_green.png';
+import {ReactComponent as Logo} from '../logo_green.svg';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Navbar extends React.Component {
     constructor(props) {
@@ -32,7 +34,7 @@ class Navbar extends React.Component {
     async sendCanvas(e){
         try {
             console.log("send canvas");
-            // console.log(e)
+            toast("Simulation is starting!", {autoClose: 7000});
             await this.props.simulationStarted()
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
@@ -50,13 +52,12 @@ class Navbar extends React.Component {
             console.log({response});
             return response
         } catch (error) {
+            toast.error("An error occured!");
             console.error(error);
         }
     }
 
     async updateRunButton(){
-        // console.log("updateRunButton")
-        // console.log(this.state.runButtonpressed, this.state.button)
         if(this.state.button == null){
             return;
         }
@@ -68,9 +69,7 @@ class Navbar extends React.Component {
         }
         this.setState({runButtonpressed: !this.state.runButtonpressed})
     }
-    // async clickHandler(e){
-
-    // }
+    
     handleLinkDeleteButton(e){
         this.props.deleteLinkModeSwitch()
     }
@@ -79,6 +78,7 @@ class Navbar extends React.Component {
         console.log("download")
         console.log(this.props.stats);
         if (this.props.stats != undefined && this.props.stats != null && this.props.stats){
+            toast("Downloading!");
             console.log("----------------------------");
             const patient_data_to_download = this.props.stats["patients"]
             const hospital_data_to_download = this.props.stats["hospital"]
@@ -93,42 +93,21 @@ class Navbar extends React.Component {
              })
             console.log(this.props.stats);
         }else{
+            toast("No stats available");
             console.log("no stats availble my guy");
             let data_to_download = {}
-            // this.setState({ patientDataToDownload: data_to_download }, () => {
-            //     // click the CSVLink component to trigger the CSV download
-            //     // this.csvLink.link.click()
-            // })
+ 
         }
-        // const currentRecords = this.reactTable.getResolvedState().sortedData;
-        // var data_to_download = []
-        // for (var index = 0; index < currentRecords.length; index++) {
-        //    let record_to_download = {}
-        //    for(var colIndex = 0; colIndex < columns.length ; colIndex ++) {
-        //       record_to_download[columns[colIndex].Header] = currentRecords[index][columns[colIndex].accessor]
-        //    }
-        //    data_to_download.push(record_to_download)
-        // }
-        // this.setState({ patientDataToDownload: data_to_download }, () => {
-        //    // click the CSVLink component to trigger the CSV download
-        //    this.csvLink.link.click()
-        // })
       } 
 
-                // {/* <CSVLink data={JSON.stringify(this.props.stats)}>Download me</CSVLink>; */}
-        //  {/* <CSVLink data={[this.props.stats]} filename={"my-file.csv"}
-        //                 className="btn btn-primary" target="_blank"
-        //                 >Download me</CSVLink>; */}
+
     render() {
-        const csvData = [
-            ["firstname", "lastname", "email"],
-            ["Ahmed", "Tomi", "ah@smthing.co.com"],
-            ["Raed", "Labes", "rl@smthing.co.com"],
-            ["Yezzi", "Min l3b", "ymin@cocococo.com"]
-            ];
+        
         return (
             <div className="Navbar">   
-                <img className="logo" src={logo} />
+             <ToastContainer />
+                {/* <img className="logo" src={logo} /> */}
+                <Logo className="logo"/>
                 
                 <FileUploadForm className="FileUploadButton"> </FileUploadForm>
 
