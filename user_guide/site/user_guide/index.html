@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>User Guide - ER | Visualizer Guide</title>
+        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="..">ER | Visualizer Guide</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="./">User Guide</a>
+                            </li>
+                            <li >
+                                <a href="../dev_guide/">Developer Guide</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="disabled">
+                                <a rel="next" >
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li >
+                                <a rel="prev" href="../dev_guide/">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#user-guide-for-er-visualizer">User Guide for ER | Visualizer</a></li>
+        <li class="main "><a href="#emergency-room-simulation">Emergency Room Simulation</a></li>
+            <li><a href="#description">Description</a></li>
+            <li><a href="#key-features">Key Features</a></li>
+            <li><a href="#system-requirements-for-windows">System Requirements for Windows</a></li>
+            <li><a href="#installing-and-running-docker-desktop-on-windows">Installing and running Docker Desktop on Windows</a></li>
+            <li><a href="#system-requirements-for-mac-os">System Requirements for Mac OS</a></li>
+            <li><a href="#installing-and-running-docker-desktop-on-mac">Installing and running Docker Desktop on Mac</a></li>
+            <li><a href="#application-setup">Application Setup</a></li>
+            <li><a href="#running-the-application">Running the Application</a></li>
+            <li><a href="#using-the-application">Using the Application</a></li>
+            <li><a href="#customizing-ports">Customizing ports</a></li>
+            <li><a href="#usage">Usage</a></li>
+            <li><a href="#csv">CSV</a></li>
+            <li><a href="#faq">FAQ</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="user-guide-for-er-visualizer">User Guide for ER | Visualizer</h1>
+<p><br> </p>
+<h1 id="emergency-room-simulation">Emergency Room Simulation</h1>
+<h2 id="description">Description</h2>
+<ul>
+<li><strong>visualizER</strong> is an Emergency room simulator which provides medical professionals and researchers a way to visualize the impact of workflow changes in the emergency room.</li>
+<li>Can be used by medical professionals to find the bottlenecks in the emergency room where they should allocate more resources.</li>
+<li>Can be used by Researchers to test the efficiency of hypothetical hospital workflows.</li>
+<li>Changes on an actual workflow are not feasible in a real working environment since it would require overwhelming amounts of hospital downtime in order to add and rearrange processes in the hospital.</li>
+</ul>
+<h2 id="key-features">Key Features</h2>
+<ul>
+<li><strong>Visual Representation of the emergency room workflow</strong>: Users can create nodes representing hospital stations(e.g. reception, triage, patient-doctor interaction, x-ray machine) and create paths between those nodes to represent the ability for patients to go between stations. The positions of patients are represented by queues(e.g. lineups) at each station.</li>
+<li><strong>Live Visualization of patient flow through the ER</strong>: users can see how patients move from station to station, and where bottlenecks appear.</li>
+<li><strong>Statistics Report</strong>: All statistics (e.g. actual wait times) on Emergency Room performance, patient wait times are recorded and saved to a CSV.</li>
+</ul>
+<h2 id="system-requirements-for-windows">System Requirements for Windows</h2>
+<ul>
+<li>Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later)</li>
+<li>Hyper-V and Containers Windows features must be enabled</li>
+<li>
+<p>This can be done by running the docker application after installing. The user will be prompted and required to restart the computer in order to finish the required setup.</p>
+</li>
+<li>
+<p>The following hardware prerequisites are required to successfully run Client Hyper-V on Windows 10:</p>
+</li>
+<li>
+<p>64 bit processor with <a href="https://en.wikipedia.org/wiki/Second_Level_Address_Translation">Second Level Address Translation (SLAT)</a></p>
+</li>
+<li>4GB system RAM</li>
+<li>BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).</li>
+</ul>
+<p><img alt="virtualization example" src="../virtualization-enabled.png" /></p>
+<h2 id="installing-and-running-docker-desktop-on-windows">Installing and running Docker Desktop on Windows</h2>
+<ul>
+<li>
+<p>Double-click Docker Desktop Installer.exe to run the installer.</p>
+</li>
+<li>
+<p>If you haven’t already downloaded the installer (Docker Desktop Installer.exe), you can get it from Docker Hub. It typically downloads to your <code>Downloads</code> folder, or you can run it from the recent downloads bar at the bottom of your web browser.</p>
+</li>
+<li>
+<p>Follow the instructions on the installation wizard to accept the license, authorize the installer, and proceed with the install.</p>
+</li>
+<li>
+<p>When prompted, authorize the Docker Desktop Installer with your system password during the install process. Privileged access is needed to install networking components, links to the Docker apps, and manage the Hyper-V VMs.</p>
+</li>
+<li>
+<p>Click Finish on the setup complete dialog and launch the Docker Desktop application.</p>
+</li>
+</ul>
+<h2 id="system-requirements-for-mac-os">System Requirements for Mac OS</h2>
+<ul>
+<li>
+<p>Mac hardware must be a 2010 or newer model, with Intel’s hardware support for memory management unit (MMU) virtualization, including Extended Page Tables (EPT) and Unrestricted Mode. You can check to see if your machine has this support by running the following command in a terminal: sysctl kern.hv_support</p>
+</li>
+<li>
+<p>macOS must be version 10.13 or newer. We recommend upgrading to the latest version of macOS.</p>
+</li>
+<li>
+<p>If you experience any issues after upgrading your macOS to version 10.15, you must install the latest version of Docker Desktop to be compatible with this version of macOS.</p>
+</li>
+</ul>
+<p>Note: Docker supports Docker Desktop on the most recent versions of macOS. That is, the current release of macOS and the previous two releases. As new major versions of macOS are made generally available, Docker will stop supporting the oldest version and support the newest version of macOS (in addition to the previous two releases).</p>
+<ul>
+<li>
+<p>At least 4 GB of RAM.</p>
+</li>
+<li>
+<p>VirtualBox prior to version 4.3.30 must not be installed as it is not compatible with Docker Desktop.</p>
+</li>
+</ul>
+<h2 id="installing-and-running-docker-desktop-on-mac">Installing and running Docker Desktop on Mac</h2>
+<ul>
+<li>
+<p>Double-click Docker.dmg to open the installer, then drag the Docker icon to the Applications folder.</p>
+</li>
+<li>
+<p>Install Docker app</p>
+</li>
+<li>
+<p>Double-click Docker.app in the Applications folder to start Docker. (In the example below, the Applications folder is in “grid” view mode.)</p>
+</li>
+</ul>
+<p>You are prompted to authorize Docker.app with your system password after you launch it. Privileged access is needed to install networking components and links to the Docker apps.</p>
+<p>The Docker menu in the top status bar indicates that Docker Desktop is running, and accessible from a terminal.</p>
+<p>If you just installed the app, you also get a message with suggested next steps and a link to the documentation. Click the Docker menu (whale
+ menu) in the status bar to dismiss this pop-up notification.</p>
+<ul>
+<li>
+<p>Click the Docker menu to see Preferences and other options.</p>
+</li>
+<li>
+<p>Select About Docker to verify that you have the latest version.</p>
+</li>
+</ul>
+<h2 id="application-setup">Application Setup</h2>
+<ul>
+<li>Download the docker installer <a href="https://www.docker.com/products/docker-desktop">here</a> and follow the docker setup instructions above. The website directs you to the correct version base on your OS</li>
+<li>Then, start the application by double clicking the docker icon in your Applications folder.</li>
+</ul>
+<h2 id="running-the-application">Running the Application</h2>
+<p>Run <code>./run_prod.sh build</code> - to build the image/run the application in production.
+  - The client and server services will be instantiated with the ports indicated in the .env file.
+  - The client can be accessed at http://localhost:5000 by default.</p>
+<p>Note: you do not have to worry about any other setup either than ensuring you have docker on your device.</p>
+<p>In the event that you have issues due to conflicting ports, you can change the values of the following port variables in the env file (located at the root of the repository).</p>
+<pre><code>APP_SERVER_PORT = {Backend port number - default 8000}
+REACT_APP_PORT = {Frontend port number - default 5000}
+DEV_ENV = development
+WEB_SOCKET_PORT = {WSS port number - default 8765}
+</code></pre>
+
+<h2 id="using-the-application">Using the Application</h2>
+<ul>
+<li>Once the application begins (your terminal should look the same as the image above), go to http://localhost:5000. 
+    -If you are using another port - based on REACT_APP_PORT that you have in your .env file. Then, a blank canvas will be presented where the hospital workflow can be created using different click operations.<ul>
+<li>Users who have used the application before may choose to upload a saved canvas file to quickly load a previously used workflow.</li>
+</ul>
+</li>
+<li>Hospital processes (e.g. reception, triage, scans) can be made by simply clicking on the add node button. The user can then enter the necessary properties of the process.</li>
+<li>Clicking a process on the screen will allow the user to view and edit its properties.</li>
+<li>To specify the processes to which the patient will travel, click the "add edges" button on the top right. Then, click the outbound process followed by the inbound process.</li>
+<li>Once a user finishes creating the workflow, they can choose to save the layout into a file for future use, before uploading a csv file for the patient information.</li>
+<li>After the patient csv file is loaded, the simulation can start.</li>
+<li>As the simulation runs, the user can click on a process and see the number of patients currently in the queue for that process. The number of patients in each acuity will also be displayed.</li>
+</ul>
+<h2 id="customizing-ports">Customizing ports</h2>
+<p>The defaults for ports are indicated as such:</p>
+<p>The backend APIs are at port 8000 indicated by APP_SERVER_PORT in the .env file.
+The client host port is 5000 indicated by REACT_APP_PORT in the .env file.</p>
+<p>The values of the ports can be customized simply by changing the value in the .env file.</p>
+<p>This can be used to test our simulation's API to view the final statistics without having to run the frontend since our frontend limitation is that you would have to run the entire visualization before getting the resulting statistics.
+This is also customizable in case the port on the user's computer is already in use by a separate application.</p>
+<p>To switch from development to production, </p>
+<p>change</p>
+<pre><code>DEV_ENV=development
+</code></pre>
+
+<p>to </p>
+<pre><code>DEV_ENV=production
+</code></pre>
+
+<p>Development environment has the following features:
+- Backend:
+  - Activates the debugger 
+  - Activates the automatic reloader
+  - Enables the debug mode on the Flask application.
+- Frontend:
+  - Activates hot reloading
+  - Directly serves files</p>
+<h2 id="usage">Usage</h2>
+<h3 id="setup">Setup</h3>
+<h5 id="how-to-create-a-node">How to create a node</h5>
+<ul>
+<li>Click the "Add Node" button in the navigation bar. A node will appear on the 
+screen that you position by can dragging around. The node's properties can be 
+specified by clicking on it and modifying the fields in the sidebar which opens.
+<img alt="Create a node" src="../add_node.png" /></li>
+</ul>
+<h5 id="how-to-delete-a-node">How to delete a node</h5>
+<ul>
+<li>Click on a node. A side panel should appear. Scroll to the bottom
+and click on the "delete" button.
+<img alt="Delete a node" src="../delete_node.png" /></li>
+</ul>
+<h5 id="how-to-create-a-link">How to create a link</h5>
+<ul>
+<li>In the navigation bar, click on the "build links: off" toggle button.
+This should turn the button on to say: "build links: on". 
+Click on the node you want to be the parent.<br />
+Then click on the node you want to be the child.
+This will create a link between the parent and child node.
+When you are finished click on the "build links: on" button
+to turn off link building. This last step is important
+so that when you click on nodes you aren't accidentally building
+links.
+<img alt="Build a link" src="../build_links.png" /></li>
+</ul>
+<h5 id="how-to-delete-a-link">How to delete a link</h5>
+<ul>
+<li>Click on the link you want to delete and, in the sidebar, click "Delete edge".
+<img alt="Delete a link" src="../delete_edge.png" /></li>
+</ul>
+<h5 id="how-to-add-a-predicted-edge">How to add a predicted edge</h5>
+<ul>
+<li>Create a link. Click on the link and, in the sidebar, toggle "Predicted Edge". Predicted edges will appear as dashed lines in the user interface.
+<img alt="Create predicted edge" src="../set_predicted_edge.png" /></li>
+</ul>
+<h5 id="how-to-manually-enter-a-custom-json">How to manually enter a custom JSON</h5>
+<ul>
+<li>Open the JSON entry and clear the entry box. Paste in your custom JSON and press 
+submit.
+<img alt="Custom JSON1" src="../howcustomjson1.png" />
+<img alt="Custom JSON2" src="../howcustomjson2.png" />
+<img alt="Custom JSON3" src="../howcustomjson3.png" /></li>
+</ul>
+<h5 id="how-to-upload-a-csv">How to upload a csv</h5>
+<ul>
+<li>Click on the "choose file" button. Select your csv file. Then
+click on the upload button to use the CSV file. 
+<img alt="Upload CSV" src="../howuploadcsv.png" /></li>
+</ul>
+<h5 id="adding-rules">Adding rules</h5>
+<ul>
+<li>Click on a node that you want to add a rule to. You can add both node rules 
+and resource rules. For each node rule that you add, you have to specify a
+column name, which corresponds to the column name in the CSV file uploaded.
+<img alt="Add Custom Rules" src="../add_rule.png" /></li>
+</ul>
+<h5 id="modifying-the-simulation-speed">Modifying the simulation speed</h5>
+<ul>
+<li>At the bottom right of the canvas, there are two sliders that you can modify.
+Packet rate is used to control how often data is sent from the backend to the
+frontend. Packet duration controls how much time passes in the simulation.
+For example, if packet rate is set to 1 and the packet duration is set to 5, 
+then the frontend will be updated every second with 5 minutes of simulation data.<br />
+<strong>Note</strong>: This has to be set before starting the simulation
+<img alt="Modify Simulation Speed" src="../simulation_speed.png" /></li>
+</ul>
+<h5 id="how-to-run-simulation">How to run simulation</h5>
+<ul>
+<li>Once process nodes have been set up and a patient CSV has been uploaded, 
+press the Run button.
+<img alt="How Run" src="../howrun.png" /></li>
+</ul>
+<h5 id="how-to-get-statistics">How to get statistics</h5>
+<ul>
+<li>After the simulation has completely finished running,
+you can download the statistics for the simulation
+by clicking on the "download" button in the navigation bar.
+<img alt="How Upload CSV" src="../howuploadcsv.png" /></li>
+</ul>
+<h2 id="csv">CSV</h2>
+<ol>
+<li>Each row represents 1 patient, and each column its attributes</li>
+<li><strong>Must have columns</strong> with following names(outlined in global_strings.py):</li>
+<li>time: Indicates the start_time of the patient, i.e when the patient comes into the hospital.<ul>
+<li>All patients <strong>must be sorted by time in chronological order</strong> from patient who arrives at hospital first, to patients who arrive at hospital last.</li>
+</ul>
+</li>
+<li>id: id of the simulation object(patient in this case). <strong>Id must be unique</strong></li>
+<li>acuity: 1-5. </li>
+<li>For predicted columns, values must be: {1 for True, 0 for False}</li>
+<li>For frequency columns, values must be: &gt;= 0</li>
+</ol>
+<h2 id="faq">FAQ</h2>
+<ul>
+<li>Q: Does the json in the custom JSON area update the doc<ul>
+<li>A: Yes, once you click Submit</li>
+</ul>
+</li>
+<li>Q: How can I save the positions of the nodes?<ul>
+<li>A: Copy the custom JSON code for the graph
+by clicking on the "JSON Entry" button. The JSON
+will contain the x, and y coordinates for each
+node, so that when you reinput the json into
+the JSON entry form, the nodes will be placed
+back in the position you set them to. </li>
+</ul>
+</li>
+<li>Q: Do the node id's have to be unique?<ul>
+<li>A: Yes</li>
+</ul>
+</li>
+<li>Q: What do the numbers in the square brackets ([])
+in the logs mean?<ul>
+<li>A: They represent an integer timestamp for each logline.</li>
+</ul>
+</li>
+<li>Q: What do the numbers on the squares represent?<ul>
+<li>A: The id of the patient, the squares are individual patients, and their 
+color represents their acuity where red means actuity level 1 and acuity increases
+as the color gets lights so light red has a higher acuity than dark red.</li>
+</ul>
+</li>
+</ul></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
