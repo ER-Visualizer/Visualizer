@@ -224,16 +224,16 @@ class Node:
         # Insert it into the resource(existing method)
         # Add element on the heap(existing method)
         app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), resource.get_id()))
-        app.logger.debug("queue is {}".format(self.queue))
+        # app.logger.debug("queue is {}".format(self.queue))
         iterator = self.queue
         for patient in iterator:
-            app.logger.debug("filling spot:now trying patient {}".format(patient.get_id()))
+            # app.logger.debug("filling spot:now trying patient {}".format(patient.get_id()))
             if patient.get_available():
-                app.logger.debug("filling spot: patient {} is available".format(patient.get_id()))
+                # app.logger.debug("filling spot: patient {} is available".format(patient.get_id()))
                 if resource.is_available():
-                    app.logger.debug("filling spot: resource {} is available".format(resource.get_id()))
+                    # app.logger.debug("filling spot: resource {} is available".format(resource.get_id()))
                     if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
-                        app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
+                        # app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
                         self.queue.remove(patient)
 
                         # once removed from queue, update patient record
@@ -241,15 +241,9 @@ class Node:
                         patient_record.remove_process_from_queue(self.id)
                         self.insert_patient_to_resource_and_heap(
                             patient, resource)
-                        app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
+                        # app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
                         return True
-                    else:
-                        app.logger.debug("filling spot: patient {} did not pass rules".format(patient.get_id()))
-                else:
-                    app.logger.debug("filling spot: resource {} is not available".format(resource.get_id()))
-            else:
-                app.logger.debug("filling spot: patient {} is not available".format(patient.get_id()))
-        app.logger.debug("filling spot: returning false")
+
         return False
 
     def add_patient_leave_resource_event(self, patient):
