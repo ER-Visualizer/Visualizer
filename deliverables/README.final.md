@@ -18,32 +18,31 @@
   
   ### Snapshot of terminal after running ```./run_prod.sh build``` where the image has finished being built and the application is running:
 
-  ![Snapshot of Terminal after running ./run_prod.sh build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/ServerStarting.png)
+  ![Snapshot of Terminal after running ./run_prod.sh build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/ServerStarting.png)
   ### Home page:
 
-  ![Home Page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/homepage.png)
+  ![Home Page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/homepage.png)
   ### Result of clicking on a workflow activity:
 
-  ![Result of Clicking on a Workflow Activity:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/nodeexpanded.png)
+  ![Result of Clicking on a Workflow Activity:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/nodeexpanded.png)
   ### JSON of hospital layout:
 
-  ![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/jsonentry.png)
+  ![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/jsonentry.png)
   ### Simulation logs after running application:
 
-  ![Simulation logs after running application:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/logsduringexecution.png)
+  ![Simulation logs after running application:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/logsduringexecution.png)
   ### Statistics sent on websockets at end of simulation:
 
-  ![Statistics being sent at the end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/statistics.png)
+  ![Statistics being sent at the end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/statistics.png)
 
   ### Statistics downloaded as a CSV
 
-  ![Statistics downloaded as a CSV](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/csvdata.png)
+  ![Statistics downloaded as a CSV](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/csvdata.png)
 
 
 ## Instructions
  
-
-  First, start Docker by double clicking the docker icon in your Applications folder.
+  1. First, start Docker by double clicking the docker icon in your Applications folder.
 
   ### Running the Application:
   Run ```./run_prod.sh build``` - to build the image/run the application
@@ -125,7 +124,7 @@
   - 4GB system RAM
   - BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).
 
-  ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/virtualization-enabled.png)
+  ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/virtualization-enabled.png)
 
 ### System Requirements for Mac OS
 

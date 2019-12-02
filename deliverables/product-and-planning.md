@@ -8,9 +8,9 @@ Our product is an application that will simulate patient trajectory through an e
 
 The ED simulation will enable researchers to quickly see how changes to the ED (such as the # of doctors, and how patients are moved from doctor to doctor) result in different patient experiences and ultimately allow researchers to develop a better experience for hospital patients. For example, a hospital dealing with long wait times, will use the simulation to develop a new ED patient trajectory to reduce patient wait times. 
 
-![Diagram 1](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/Diagram1.png)
+![Diagram 1](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/Diagram1.png)
 
-![Diagram 2](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/Diagram2.png)
+![Diagram 2](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/Diagram2.png)
 
 The above diagrams showcase an example of what the product might look like, where the first one showcases
 a overall view of the canvas of the simulation (including the different waiting queues which represent 
@@ -325,9 +325,9 @@ develop a shared understanding with Vector on what the requirements are. Additio
 this to start brainstorming on what the backend needs to do, as well as have a base-line for the minimum
 needed for the front-end.
 
-![Diagram 1](Diagram1.png)
+![Diagram 1](images/Diagram1.png)
 
-![Diagram 2](Diagram2.png)
+![Diagram 2](images/Diagram2.png)
 
 
 2. **Comments**: We use comments to document  various design choices, and explain the logic
@@ -371,9 +371,9 @@ sure everyone is kept up to date on the development of the project, even if they
 4. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
 and the base clases that we needed for it.
 
-![CRC Cards](crc_1.png)
+![CRC Cards](images/crc_1.png)
 
-![CRC Cards](crc_2.png)
+![CRC Cards](images/crc_2.png)
 
 
 ----

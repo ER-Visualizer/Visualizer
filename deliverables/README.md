@@ -20,22 +20,22 @@
  
 ### Snapshot of terminal after running ```docker-compose up --build``` where the image has finished being built and the application is running:
 
- ![Snapshot of Terminal after running docker-compose up --build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/ServerStarting.png)
+ ![Snapshot of Terminal after running docker-compose up --build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/ServerStarting.png)
 ### Home page:
 
- ![Home Page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/homepage.png)
+ ![Home Page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/homepage.png)
 ### Result of clicking on a workflow activity:
 
- ![Result of Clicking on a Workflow Activity:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/nodeexpanded.png)
+ ![Result of Clicking on a Workflow Activity:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/nodeexpanded.png)
 ### JSON of hospital layout:
 
-![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/jsonentry.png)
+![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/jsonentry.png)
 ### Simulation logs after running application:
 
- ![Simulation logs after running application:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/logsduringexecution.png)
+ ![Simulation logs after running application:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/logsduringexecution.png)
 ### Statistics sent on websockets at end of simulation:
 
-![Statistics being sent at the end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/statistics.png)
+![Statistics being sent at the end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/statistics.png)
 
 ## System Requirements for Windows
 
@@ -49,7 +49,7 @@
   - 4GB system RAM
   - BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).
 
-   ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/virtualization-enabled.png)
+   ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/virtualization-enabled.png)
 
 ## Installing and running Docker Desktop on Windows
 
@@ -98,10 +98,7 @@
 - Select About Docker to verify that you have the latest version.
 
 ## Instructions 
- <!-- * Clear instructions for how to use the application from the end-user's perspective
- * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
- * Provide clear steps for using each feature described above
- * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way. -->
+ 
 ### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
 Then, start the application by double clicking the docker icon in your Applications folder.
 
