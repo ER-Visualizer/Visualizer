@@ -33,8 +33,8 @@ class Queue extends React.Component{
     let row_count = Math.ceil(list_patients.length/6)
     return (
         <div className="QueueContainer" style={{height: this.props.height || 150 }}>
+            <div className="counter">{list_patients.length}</div>
             <div className="Queue">
-                <div className="counter">{list_patients.length}</div>
                 <Grid
                 columnCount={5}
                 columnWidth={30}
