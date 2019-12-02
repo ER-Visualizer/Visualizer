@@ -21,7 +21,7 @@ class PatientBox extends React.Component {
         let patient = this.props.patient
         console.log("patient", patient)
         return <div 
-            style={{background: parseInt(patient.id) !== 5 ? getBackgroundColor(patient.accuity) : "green"}} 
+            style={{background: getBackgroundColor(patient.accuity)}} 
             className="Patient">
                 {patient.id}
         </div>
