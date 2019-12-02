@@ -134,7 +134,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
 ### run.py
 
 1. The entry point starts at the main() function which is called from the REST API /start. The main function then initializes all the required global variables. Then loads the input canvas initializes a thread to start the simulation (SimulationWorker class) and another to start the websocket (by initializing WebsocketServer from connect.py).
-2. The SimulationWorker iterates through the input canvas to instantiate all the nodes on the canvas with their paramaters and stores all nodes in a dictionary for future use.
+2. The SimulationWorker iterates through the input canvas to instantiate all the nodes on the canvas with their parameters and stores all nodes in a dictionary for future use.
 3. A node may contain node or resource rules which are also initialized at this point.
 4. Once the canvas is loaded, the simulation reads the input csv file and adds patients into a preemptive node (patient loader), which only serves the purpose of adding patients into the starting point of the workflow (the reception queue
 at the right time (as dictated in the csv input).
