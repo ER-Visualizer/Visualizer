@@ -1,5 +1,6 @@
 # visualizER
 - [Description](#description)
+- [Key Features](#key-features)
 - [Instructions](#instructions)
 - [Development requirements](#development-requirements)
 - [Licenses](#licenses)
