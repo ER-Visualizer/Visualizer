@@ -346,12 +346,12 @@ export class NodeSidebarContent extends React.Component {
                 </div>
                 
                 <div className="input-container">
-                    <label> Being proccessed by actor(s)</label><br/>
-                    <ResourceQueue patients={this.state.node.processing} />
-                </div>
-                <div className="input-container">
                     <label>Waiting Queue</label><br/>
                     <Queue patients={this.state.node.patients} />
+                </div>
+                <div className="input-container">
+                    <label> Being proccessed by actor(s)</label><br/>
+                    <ResourceQueue patients={this.state.node.processing} />
                 </div>
                 <div className="JSONWarningContainer">
                     <label className="WarningText">{this.state.valid ? false : this.state.invalidNodeParamError}</label> 
