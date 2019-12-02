@@ -99,7 +99,9 @@ export class JSONEntrySidebarContent extends Component {
         this.setState({ layoutJSON: "", valid: true })
     }
 
-    handleDownload(filename, text) {
+    handleDownload(filename, nodes) {
+        let copy = this.cloneNodes(nodes)
+        let text = JSON.stringify(copy, null, 1)
         var element = document.createElement('a');
         element.setAttribute('href', 'data:json/plain;charset=utf-8,' + encodeURIComponent(text));
         element.setAttribute('download', filename);
@@ -122,7 +124,7 @@ export class JSONEntrySidebarContent extends Component {
                 <button className="SubmitJSONButton" onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 <button className="ResetJSONButton" onClick={this.handleReset}>Reset</button>
                 <button className="ClearJSONButton" onClick={this.handleClear}>Clear</button>
-                <button className="DownloadJSONButton" onClick={()=>this.handleDownload("nodes.json", JSON.stringify(this.props.nodes, null, 1))}>Download</button> 
+                <button className="DownloadJSONButton" onClick={()=>this.handleDownload("nodes.json", this.props.nodes)}>Download</button> 
                 <div className="JSONWarningContainer">
                     <label className="JSONWarningText">{this.state.valid ? "" : this.state.invalidJSONError}</label> 
                 </div>
