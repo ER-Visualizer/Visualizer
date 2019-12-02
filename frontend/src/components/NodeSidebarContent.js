@@ -149,11 +149,11 @@ export class NodeSidebarContent extends React.Component {
     handleSave(){
         if (!this.isNumber(this.state.node.numberOfActors) && !this.isValidDistributionParams(this.state.node.distributionParameters)){
             this.setState({
-                        valid: false, invalidNodeParamError: "Invald Distribution Parameter(s) and Number of Actor(s) Paramaters"
+                        valid: false, invalidNodeParamError: "Invald Distribution Parameter(s) and Number of Actor(s) Parameters"
                     })
         } else if (!this.isNumber(this.state.node.numberOfActors)){
             this.setState({
-                valid: false, invalidNodeParamError: "Invald Number of Actor(s) Paramater"
+                valid: false, invalidNodeParamError: "Invald Number of Actor(s) Parameter"
             })
             
         } else if (!this.isValidDistributionParams(this.state.node.distributionParameters)){
