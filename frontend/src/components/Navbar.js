@@ -35,7 +35,7 @@ class Navbar extends React.Component {
     async sendCanvas(e){
         try {
             console.log("send canvas");
-            toast("Simulation is starting!", {autoClose: 7000});
+            toast("Simulation is starting!", {autoClose: 7000, pauseOnHover: false});
             await this.props.simulationStarted()
             await this.setState({button: e.target}, this.updateRunButton)
             this.props.runHandler()
@@ -79,7 +79,7 @@ class Navbar extends React.Component {
         console.log("download")
         console.log(this.props.stats);
         if (this.props.stats != undefined && this.props.stats != null && this.props.stats){
-            toast("Downloading!");
+            toast("Downloading!", {pauseOnHover: false});
             console.log("----------------------------");
             const patient_data_to_download = this.props.stats["patients"]
             const hospital_data_to_download = this.props.stats["hospital"]

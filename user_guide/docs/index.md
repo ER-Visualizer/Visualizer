@@ -195,15 +195,18 @@ click on the upload button to use the CSV file.
 
 ##### Adding rules
 * Click on a node that you want to add a rule to. You can add both node rules 
-and resource rules.
+and resource rules. For each node rule that you add, you have to specify a
+column name, which corresponds to the column name in the CSV file uploaded.
+![Add Custom Rules](add_rule.png)
 
 ##### Modifying the simulation speed
 * At the bottom right of the canvas, there are two sliders that you can modify.
 Packet rate is used to control how often data is sent from the backend to the
 frontend. Packet duration controls how much time passes in the simulation.
 For example, if packet rate is set to 1 and the packet duration is set to 5, 
-then the frontend will be updated every second with 5 minutes of simulation 
-data.
+then the frontend will be updated every second with 5 minutes of simulation data.  
+**Note**: This has to be set before starting the simulation
+![Modify Simulation Speed](simulation_speed.png)
 
 ##### How to run simulation 
 * Once process nodes have been set up and a patient CSV has been uploaded, 
@@ -228,10 +231,8 @@ by clicking on the "download" button in the navigation bar.
 4. For frequency columns, values must be: >= 0
 
 ## FAQ 
-Everyone list out two  questions they remember Daniela had or would be commonly asked and add answers.
-
 * Q: Does the json in the custom JSON area update the doc
-    * A: Yes, once you click Save
+    * A: Yes, once you click Submit
 * Q: How can I save the positions of the nodes?
     * A: Copy the custom JSON code for the graph
     by clicking on the "JSON Entry" button. The JSON

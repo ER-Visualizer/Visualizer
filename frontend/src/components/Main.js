@@ -46,13 +46,13 @@ class Main extends React.Component {
     }
 
     parseEventData(eventData) {
-        if(eventData.inQueue == true){
+        if(eventData.inQueue === true){
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             }
         }
-        else if(eventData.nextNodeId == "end"){
+        else if(eventData.nextNodeId === "end"){
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
@@ -101,7 +101,7 @@ class Main extends React.Component {
                     let prev = null
                     for(let i = 0; i < events.length; i++){
                         let event = events[i]
-                        if(prev == null || ( prev != null && JSON.stringify(event) != JSON.stringify(prev))){
+                        if(prev === null || ( prev != null && JSON.stringify(event) != JSON.stringify(prev))){
                             new_events = new_events.concat(this.parseEventData(event))
                             updated_events.push(event)
 
@@ -115,7 +115,7 @@ class Main extends React.Component {
                     // console.log(events, updated_events)
                     this.updateNodePatients(updated_events)
                 }
-                else if(eventData["stats"] == "true"){
+                else if(eventData["stats"] === "true"){
                     delete eventData['stats']
                     // console.log("recieved stats")
                     // console.log(eventData)
@@ -162,7 +162,7 @@ class Main extends React.Component {
      */
     check = () => {
         const { ws, run } = this.state;
-        if (run && (!ws || ws.readyState == WebSocket.CLOSED)) this.connect(); //check if websocket instance is closed, if so call `connect` function.
+        if (run && (!ws || ws.readyState === WebSocket.CLOSED)) this.connect(); //check if websocket instance is closed, if so call `connect` function.
     };
     componentDidMount() {
      
@@ -198,6 +198,11 @@ class Main extends React.Component {
             this.sidebarLastContent = <LinkSidebarContent 
                     parent={this.state.selectedLink.parentId}
                     child={this.state.selectedLink.childId} />
+        } else {
+            // return no content to be displayed on the sidebar
+            // this is needed otherwise the Sidebar component will
+            // log an error saying that no content was given to the sidebar
+            return <div></div>
         }
 
         // we return the last content so that the sidebar content
@@ -238,7 +243,7 @@ class Main extends React.Component {
         } 
         else { // dont toggle sidebars when build link mode on
 
-            const shouldHide = (nodeId == this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
+            const shouldHide = (nodeId === this.state.selectedNode) && this.props.showNodeSidebar // if node is clicked twice, hide it
             let timeout = 0;
 
             this.setState({
@@ -259,7 +264,7 @@ class Main extends React.Component {
             
             this.props.deleteLink(parseInt(source), parseInt(target)) // react-d3-graph gives strings for these...            
         } else {
-            const shouldHide = this.state.selectedLink?.parentId?.toString() == source && this.state.selectedLink?.childId?.toString() == target
+            const shouldHide = this.state.selectedLink?.parentId?.toString() === source && this.state.selectedLink?.childId?.toString() === target
             
             if (shouldHide) {
                 this.setState({

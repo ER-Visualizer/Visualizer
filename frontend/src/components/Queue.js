@@ -1,13 +1,8 @@
 import React from 'react';
 import './Queue.css';
 import PatientBox from './PatientBox';
-import Patient from '../models/Patient';
 import { FixedSizeGrid as Grid } from 'react-window';
 class Queue extends React.Component{
-    constructor(props){
-        super(props)
-
-    }
     shouldComponentUpdate(nextProps, nextState) {
       return JSON.stringify(this.props.patients) !== JSON.stringify(nextProps.patients);
     }
@@ -17,7 +12,6 @@ class Queue extends React.Component{
     let patient_keys = (Object.keys(patients))
     if (patient_keys.length > 1){
         list_patients = []
-        console.log("IN QUEUE", patient_keys.length)
         for(let i = 0; i < (patient_keys).length; i++){
             if(patients[(patient_keys)[i]] != null){
                 list_patients.push(patients[(patient_keys[i])])
@@ -35,12 +29,12 @@ class Queue extends React.Component{
         }
       </div>
     );
-  
+
     let row_count = Math.ceil(list_patients.length/6)
     return (
-        <div className="QueueContainer">
-        <label>{list_patients.length}</label>
+        <div className="QueueContainer" style={{height: this.props.height || 150 }}>
             <div className="Queue">
+                <div className="counter">{list_patients.length}</div>
                 <Grid
                 columnCount={5}
                 columnWidth={30}

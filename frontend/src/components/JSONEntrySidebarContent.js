@@ -2,6 +2,27 @@ import React, { Component } from 'react'
 import './JSONEntrySidebarContent.css'
 import { connect } from 'react-redux';
 import { replaceNodeList } from '../redux/actions'
+const Validator = require('jsonschema').Validator;
+const v = new Validator();
+const nodeScheme = {
+    "type": "object",
+    "properties": {
+        "id": { "type": "integer"},
+        "elementType": { "type": "string"},
+        "distribution": {"type": "string"},
+        "distributionParameters": {"type": "array", "items": {"type": "integer"}},
+        "numberOfActors": { "type": "integer"},
+        "queueType": { "type": "string"},
+        "priorityFunction": { "type": "string"},
+        "children": {"type": "array", "items": {"type": "integer"}},
+        "priorityType": { "type": "string"},
+        "predictedChildren": {"type": "array", "items": {"type": "integer"}},
+        "nodeRules": {"type": "array"},
+        "resourceRules": {"type": "array"},
+        "x": { "type": "integer"},
+        "y":{ "type": "integer"}
+    }
+   };
 
 export class JSONEntrySidebarContent extends Component {
     constructor(props) {
@@ -11,7 +32,11 @@ export class JSONEntrySidebarContent extends Component {
         this.handleClear = this.handleClear.bind(this)
         this.handleDownload = this.handleDownload.bind(this)
         this.cloneNodes = this.cloneNodes.bind(this)
+
     }
+
+    
+
 
     componentDidMount() {
 
@@ -88,6 +113,30 @@ export class JSONEntrySidebarContent extends Component {
                 this.setState({ valid: false, invalidJSONError: "Node(s) missing a required property" })
                 return
             }
+        }
+        let errors = ""
+        for (let i = 0; i < validatedJSON.length; i++) {
+            let node = validatedJSON[i]
+            let valid = v.validate(node, nodeScheme);
+            console.log(valid.errors);
+            
+            if (valid.errors.length === 0) {
+                console.log('User data is valid');
+            } else {
+                console.log('User data is INVALID!');
+                console.log(valid.errors);
+                
+                for (let j = 0; j < valid.errors.length; j++) {
+                    errors += valid.errors[j]
+                    errors += "\n       "
+                }
+                // `${valid.errors}`
+            }
+        }        
+        if (errors !== ""){
+            this.setState({ valid: false, 
+                invalidJSONError: errors})
+            return
         }
 
         if (this.state.valid) {

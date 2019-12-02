@@ -364,10 +364,37 @@ and to also check if a patient passes all of the rules for a resource.
         self.sum_ratio_wait = 0.0
         self.sum_ratio_journey = 0.0
         self.start_time = float("INF")
-        self.end_time = float("-INF")
+        self.end_time = float("-INF"`)
 ```
 * Functions add_process_time, add_wait_time, increment_doc_seen, add_doc_patient_time is used to throughout the simulation to record information. The functions are all called at process_heap() in run.py.
 * The function calculate_stats is used to aggregate all the statistics at the end.
+
+#### Rules
+
+
+#### Frontend code flow
+* Graph rendering
+    * The global redux store contains a property in its' state called `nodes`. Before the nodes
+    are sent as props to `Graph.jsx` to be rendered, the `update_graph()` method in `Main.js` transforms
+    them into two objects that `Graph.jsx` requires to render a graph: a node object with the data for each node and a links object with the data
+    for links between nodes. 
+    * Once the nodes and links are given as props to`Graph.jsx` in `Main.js`. `Graph.jsx` will take in the node props and link props
+    and give them to `renderGraph()` in `graph.renderer.js`. The `renderGraph()` method then 
+    further makes sub calls to `_renderNodes()` and `_renderLinks()` in `graph.renderer.js`. 
+        * `_renderNodes()` takes in the nodes passed in as props to `Graph.jsx` and creates an array
+        of `Node.jsx` objects each with their own position, and information to be displayed on the canvas.
+        * `_renderLinks` takes in the links passed in as props to `Graph.jsx` and creates an array
+        of `Links.jsx` objects each witht their own start, end positions and styles that are displayed on the 
+        canvas.
+    * `renderGraph()` takes the list of `Node.jsx` objects and `Links.jsx` objects and returns them 
+    to be rendered by react.
+    * If you want to change the style of a node, or what is displayed, go to `Node.jsx`. The information
+    for a node that was in the `nodes` array in the global redux state can be accessed through `this.props` in
+    `Node.jsx`. 
+    * If you want to change the style of a link, go to `Link.jsx`.
+    * If you want to change the start and end positions for a link, go to: `buildLinkPathDefinition()` in
+    `link.helper.js`. 
+
 
 # How to’s 
 ### Backend 

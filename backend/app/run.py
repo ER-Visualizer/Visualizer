@@ -270,7 +270,7 @@ def main(args=()):
     app.logger.info(f"canvas {canvas}, duration: {duration}, rate: {rate}")
     global packet_duration, packet_rate
     packet_duration = int(duration) * 60
-    packet_rate = int(rate)
+    packet_rate = float(rate)
 
     counter = 0
     # this will read patients csv
