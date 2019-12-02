@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { replaceNodeList } from '../redux/actions'
 const Validator = require('jsonschema').Validator;
 const v = new Validator();
-const nodeScheme = {
+const nodeSchema = {
     "type": "object",
     "properties": {
         "id": { "type": "integer"},
@@ -117,7 +117,7 @@ export class JSONEntrySidebarContent extends Component {
         let errors = ""
         for (let i = 0; i < validatedJSON.length; i++) {
             let node = validatedJSON[i]
-            let valid = v.validate(node, nodeScheme);
+            let valid = v.validate(node, nodeSchema);
             console.log(valid.errors);
             
             if (valid.errors.length === 0) {
