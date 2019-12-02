@@ -17,7 +17,15 @@ const nodeSchema = {
         "children": {"type": "array", "items": {"type": "integer"}},
         "priorityType": { "type": "string"},
         "predictedChildren": {"type": "array", "items": {"type": "integer"}},
-        "nodeRules": {"type": "array"},
+        "nodeRules": {"type": "array", "items": {"type": "object", "properties": {
+                "ruleType": {"type": "string"},
+                "columnName": {"type": "string"}
+            }
+        }},
+        "resourceRules": {"type": "array", "items": {"type": "object", "properties": {
+                "ruleType": {"type": "string"}
+            }
+        }},
         "resourceRules": {"type": "array"},
         "x": { "type": "integer"},
         "y":{ "type": "integer"}
@@ -34,9 +42,6 @@ export class JSONEntrySidebarContent extends Component {
         this.cloneNodes = this.cloneNodes.bind(this)
 
     }
-
-    
-
 
     componentDidMount() {
 
