@@ -281,11 +281,8 @@ class Node:
         if old_id is None:
             return
         join_queue = Event(old_id, 'N/A', patient.get_id(), GlobalTime.time)
-        patient_record = patient.patient_record
         join_queue.set_moved_to([self.get_id()])
-
-        if patient_record.get_curr_process_id is not None:
-            GlobalEvents.event_changes.append(join_queue)
+        GlobalEvents.event_changes.append(join_queue)
     
     def simulate_concur_env(self, res_to_shuffle, environment):
         '''
