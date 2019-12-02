@@ -82,9 +82,14 @@
     font-weight: 700;
     font-size: 16px;
     float: right;
-
+    transition: 0.4s;
     outline: 0;
 }
+
+.Navbar .RunButton:hover {
+    background: rgb(73, 165, 72);
+}
+
 .Navbar .RunButton svg{
     height: 16px;
     width: 16px;
@@ -143,6 +148,10 @@
 
     transition-duration: 0.4s;
     outline: 0;
+}
+
+.Navbar .AddNodebutton:hover{
+    background-color: rgb(184, 184, 184);
 }
 
 
@@ -227,5 +236,5 @@
 .Navbar .JSONEntryButton:hover, .Navbar .ShowLogsButton:hover, .uploadButton:hover, .FileUploadButton:hover
 .Navbar .AddNodebutton:hover, .Navbar .ToggleLinkDeletebutton:hover,
 .Navbar .ToggleBuildLinksbutton:hover {
-    background-color: rgb(184, 184, 184)
+    background-color: rgb(184, 184, 184);
 }
