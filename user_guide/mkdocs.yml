@@ -1,4 +1,4 @@
-site_name: ER | Visualizer Guide
+site_name: ER | Visualizer
 nav:
 - User Guide: 'user_guide.md'
 - Developer Guide: 'dev_guide.md'
