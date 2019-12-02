@@ -38,7 +38,7 @@ class Queue extends React.Component{
                 <Grid
                 columnCount={5}
                 columnWidth={30}
-                height={145}
+                height={this.props.height - 23 || 127}
                 rowCount={row_count}
                 rowHeight={30}
                 width={200}
