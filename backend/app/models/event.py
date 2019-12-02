@@ -18,6 +18,7 @@ class Event():
 
     def __init__(self, node_id, node_resource_id,  patient_id, event_time):
         self.patient_id = patient_id
+        # when the event finishes
         self.event_time = event_time
         self.node_id = node_id
         self.node_resource_id = node_resource_id
