@@ -105,8 +105,6 @@ class Node:
         return list(self.resource_dict.values())
 
     def _set_queue(self):
-        # TODO Deal with Priority Queues
-        # Note. All of these are not thread-safe, so can't use threads on them
         if self.queue_type == STACK:
             return Stack()
         elif self.queue_type == QUEUE:
@@ -126,11 +124,11 @@ class Node:
         return finish_time, duration
 
     '''
-    This is the dict of all the subprocesses/resource a
+    This is the dict of all the resource a
     node has, with key as unique id.
-    If a node has 3 actors, will have 3 resources/subprocesses.
+    If a node has 3 actors, will have 3 resources.
     If a node only has 1 actor or one resources, then
-    only create 1 resource/subprocess
+    only create 1 resource
     '''
 
     def _create_resource_dict(self):
@@ -150,7 +148,7 @@ class Node:
 
     def handle_finished_patient(self, resource_id):
         resource = self.resource_dict[resource_id]
-        # get the patient out of the subprocess. this
+        # get the patient out of the resource. this
         # automatically sets him to available
         old_id = ((resource.get_curr_patient()).get_patient_record()).get_curr_process_id()
         patient = resource.clear_patient()
@@ -182,7 +180,7 @@ class Node:
             elif(marker == 1):
                 Node.node_dict[process_id].put_patient_in_node(patient, old_id)
       
-        # call fill_spot on this subprocess because now we have an empty spot
+        # call fill_spot on this resource because now we have an empty spot
         # there and want to fill it with another patient
         self.fill_spot_for_resource(resource)
     '''
@@ -206,8 +204,6 @@ class Node:
         # only add if patient is not already in the queue
         if self.id not in patient.get_patient_record().get_all_queues():
             self.queue.put(patient)
-            # TODO Consider whether it's good to move it inside the queue
-            # put queue in patient record
             patient_record = patient.get_patient_record()
             patient_record.put_process_in_queue(self.id)
             self.add_patient_join_queue_event(patient, prev_node_id)
@@ -216,27 +212,27 @@ class Node:
             app.logger.info("Attempted to Insert patient in same queue twice at time {}".format(GlobalTime.time))
 
 
-    # when called from a subprocess, this means that the subprocess justs
+    # when called from a resource, this means that the resrouce justs
     # handled a patient, and needs a new one
     # so fill his spot, and return true if you can
-    def fill_spot_for_resource(self, subprocess):
+    def fill_spot_for_resource(self, resource):
 
         # iterate through the queue in the RIGHT ORDER.
         # 1. Check if patient is available
         # 2. If yes, check if patient passes rule
         # If yes, extract it from the queue
-        # Insert it into the resource/subprocess(existing method)
+        # Insert it into the resource(existing method)
         # Add element on the heap(existing method)
-        app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), subprocess.get_id()))
+        app.logger.info("filling spot for {}, for resource {}".format(self.get_process_name(), resource.get_id()))
         app.logger.debug("queue is {}".format(self.queue))
         iterator = self.queue
         for patient in iterator:
             app.logger.debug("filling spot:now trying patient {}".format(patient.get_id()))
             if patient.get_available():
                 app.logger.debug("filling spot: patient {} is available".format(patient.get_id()))
-                if subprocess.is_available():
-                    app.logger.debug("filling spot: resource {} is available".format(subprocess.get_id()))
-                    if RuleVerifier.pass_rules(patient,subprocess.get_resource_rules()):
+                if resource.is_available():
+                    app.logger.debug("filling spot: resource {} is available".format(resource.get_id()))
+                    if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
                         app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
                         self.queue.remove(patient)
 
@@ -244,13 +240,13 @@ class Node:
                         patient_record = patient.get_patient_record()
                         patient_record.remove_process_from_queue(self.id)
                         self.insert_patient_to_resource_and_heap(
-                            patient, subprocess)
+                            patient, resource)
                         app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
                         return True
                     else:
                         app.logger.debug("filling spot: patient {} did not pass rules".format(patient.get_id()))
                 else:
-                    app.logger.debug("filling spot: resource {} is not available".format(subprocess.get_id()))
+                    app.logger.debug("filling spot: resource {} is not available".format(resource.get_id()))
             else:
                 app.logger.debug("filling spot: patient {} is not available".format(patient.get_id()))
         app.logger.debug("filling spot: returning false")
