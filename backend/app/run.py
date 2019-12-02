@@ -53,15 +53,13 @@ all_patients = {}
 counter = 0
 
 
-class SimulationWorker(threading.Thread):
+class SimulationWorker():
     """
     Worker that starts the simulation on a thread
 
     Needed so that simulation can run in parallel to websocket thread for
     sending events to the frontend
     """
-    def __init__(self):
-        threading.Thread.__init__(self)
 
     def run(self) -> None:
         """
@@ -275,7 +273,7 @@ def main(args=()):
     counter = 0
     # this will read patients csv
     worker = SimulationWorker()
-    worker.start()
+    worker.run()
     # setup websocket server
 
     server = WebsocketServer("localhost", os.environ.get("WEB_SOCKET_PORT"), send_e, process_heap, report_statistics, packet_rate, canvas)

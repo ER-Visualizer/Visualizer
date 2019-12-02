@@ -18,7 +18,7 @@ Here is one of our meeting notes: https://docs.google.com/document/d/1DekoRbvQqS
 
 3. We used a feature in GitHub for organizing our tasks and backlog called GitHub Cards. This is a very convenient way to get a holistic picture of the current progress of our project. Because of the way we structured it, it allows us to see who is doing what tasks, their current status, what tasks are unassigned and left to be done, as well as ask for help if one of us is stuck.
 
-Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](GitHub-Cards.png)
+Here is a screenshot of the current state of our GitHub Cards: ![GitHub Cards](images/GitHub-Cards.png)
 
 4. Before doing any coding, we wrote a document brainstorming possible options that we could use for implementing some of the main parts of our system. One such example is whether to use multithreading or not and what are the alternatives. We also summarized the workflow of the whole application to give ourselves a clear idea of the order in which things would happen in the simulation. By creating this document, it gave each of us a clear direction on how to proceed forward, and therefore, it allowed us to work more productively, saving us potential time that we might have used otherwise.
 

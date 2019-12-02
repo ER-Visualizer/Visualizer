@@ -206,7 +206,9 @@ class Graph extends React.Component {
         !this.state.config.staticGraph &&
             this.state.config.automaticRearrangeAfterDropNode &&
             this.state.simulation.alphaTarget(this.state.config.d3.alphaTarget).restart();
-    
+        
+        console.log("node position changed", this.state.draggedNode);
+        this.setState({dragging: false})
         this.props.updateNodePositions(this.state.nodes);
     };
 
@@ -220,6 +222,7 @@ class Graph extends React.Component {
      * @returns {undefined}
      */
     _onDragMove = (ev, index, nodeList) => {
+        this.setState({dragging: true})
         const id = nodeList[index].id;
 
         if (!this.state.config.staticGraph) {
@@ -601,8 +604,15 @@ class Graph extends React.Component {
         // when the simulation receives new node props that
         // may have updated positions, we want to update the
         // position of the nodes in the graph
-    
+        
+        // don't update the node position while the person is dragging
+        // so that the node actually moves as it is dragging
+        if(this.state.dragging) {
+            return
+        }
+
         const nodes = nextProps.data.nodes;
+        
         if(this.state.nodes && nodes) {
             for(let index in this.state.nodes) {
                 let node = this.state.nodes[index]

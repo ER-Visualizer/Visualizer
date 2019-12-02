@@ -2,16 +2,15 @@ import React from 'react';
 import './PatientBox.css';
 
 const getBackgroundColor = accuity => {
-    const baseRed = {r: 200, g: 44, b: 5};
-    const tintFactor = 1 - (2 / accuity);
+    const shadesOfRed = [
+        "#781A03",
+        "#A02304",
+        "#C82C05",
+        "#D35637",
+        "#DE8069",
+    ]
 
-    const newRed = {
-        r: baseRed.r + (255 - baseRed.r) * tintFactor,
-        g: baseRed.g + (255 - baseRed.g) * tintFactor,
-        b: baseRed.b + (255 - baseRed.b) * tintFactor
-    }
-
-    return `rgba(${newRed.r}, ${newRed.g}, ${newRed.b})`;
+    return shadesOfRed[accuity-1]
 };
 
 class PatientBox extends React.Component {
@@ -20,15 +19,11 @@ class PatientBox extends React.Component {
     }
     render(){
         let patient = this.props.patient
-        return <React.Fragment>
-            <div 
-                data-tip={`Id: ${patient.id} <br> Accuity: ${patient.accuity}`}
-                style={{background: getBackgroundColor(patient.accuity)}} 
-                className="Patient">
-                    {patient.id}
-            </div>
-
-        </React.Fragment>
+        return <div 
+            style={{background: getBackgroundColor(patient.accuity)}} 
+            className="Patient">
+                {patient.id}
+        </div>
     };
 }
 

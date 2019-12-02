@@ -195,7 +195,7 @@ Doctor and patient stats
 
 #### Deployment and Github Workflow
 
-![Github Cards](GitHub-Cards.png)
+![Github Cards](images/GitHub-Cards.png)
 
 * Our workflow is on **Github Cards**, where we use the following sections:
     * To do
@@ -281,9 +281,9 @@ develop a shared understanding with Vector on what the requirements are. Additio
 this to start brainstorming on what the backend needs to do, as well as have a base-line for the minimum
 needed for the front-end.
 
-![Diagram 1](Diagram1.png)
+![Diagram 1](images/Diagram1.png)
 
-![Diagram 2](Diagram2.png)
+![Diagram 2](images/Diagram2.png)
 
 
 2. **Comments**: We use comments to document  various design choices, and explain the logic
@@ -327,9 +327,9 @@ sure everyone is kept up to date on the development of the project, even if they
 4. **CRC Cards**: We used CRC cards in order to brainstorm the design of the simulation
 and the base clases that we needed for it.
 
-![CRC Cards](crc_1.png)
+![CRC Cards](images/crc_1.png)
 
-![CRC Cards](crc_2.png)
+![CRC Cards](images/crc_2.png)
 
 ### Highlights
 * We initially thought about using electron for developing the product since we can create a desktop app. In the end, we chose to use python for the backend and react for the front end becuase researchers are more comfortable using python. Our partner pointed out that they would prefer a product that can be modifed and passed on to other developers in the future, and python ended up being the better option. 
