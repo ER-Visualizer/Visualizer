@@ -44,3 +44,17 @@
     bottom: 0;
     right: 0;
 }
+
+.HelpButton{
+    border-radius: 50%;
+    border: 1px solid #DCE4E9;
+    float: right;
+    width: 32px;
+    height: 32px;
+    font-size:19px;
+    transition-duration: 0.4s;
+}
+
+.HelpButton:hover {
+    background-color: rgb(114, 114, 114);
+}
