@@ -98,8 +98,6 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
         tests/
             models/
             unit_tests/
-    Developer Guide/
-        docs/
     frontend/
         node_modules/
         public/
@@ -110,7 +108,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
                 ...
             redux/
                 ...
-    User Guide/
+    user_guide/
         docs/
 
 * Frontend 
