@@ -28,5 +28,5 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        pytest --cov=./backend/app ./backend/tests/unit_tests/* -v
+        pytest --cov=./backend/app ./backend/tests/integration_tests/* -v
 
