@@ -7,6 +7,7 @@ import ResourceRule from './ResourceRule';
 import {ReactComponent as AddIcon} from '../add.svg';
 import Queue from './Queue';
 import ResourceQueue from './ResourceQueue';
+import AcuityColors from './AcuityColors';
 
 const stationTypes = ["reception", "triage", "doctor", "x-ray"];
 

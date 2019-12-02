@@ -1,7 +1,7 @@
 class Patient {
-    constructor(id, accuity) {
+    constructor(id, acuity) {
       this.id = id;
-      this.accuity = accuity;
+      this.acuity = acuity;
     }
   }
 

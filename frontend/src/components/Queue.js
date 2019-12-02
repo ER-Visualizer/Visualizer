@@ -19,7 +19,7 @@ class Queue extends React.Component{
             }
         }
         list_patients.sort((patient1, patient2) =>
-        patient1.accuity - patient2.accuity);
+        patient1.acuity - patient2.acuity);
     }
 
      const Cell = ({ columnIndex, rowIndex, style }) => (
