@@ -41,8 +41,6 @@ class Queue():
     def remove(self, val):
         return self.q.remove(val)
 
-    # TODO test them out, by creating a Queue, see if you can iterate thru
-    # all of it
     def __iter__(self):
         self.iter = iter(self.q)
         return self.iter
@@ -172,20 +170,6 @@ class Heap:
         return
 
 
-def test_remove_from_heap():
-    el = Heap()
-    el.put(3)
-    el.put(4)
-    el.put(5)
-    el.put(6)
-    el.put(120)
-    el.put(1)
-
-    app.logger.info(el.q)
-    app.logger.info(el.remove(120))
-    app.logger.info(el.q)
-    app.logger.info(el.remove_by_index(2))
-    app.logger.info(el.q)
 
 
 if __name__ == "__main__":
@@ -193,4 +177,3 @@ if __name__ == "__main__":
     app.logger.info(isinstance(q, Heap))
     app.logger.info(isinstance(q, Stack))
     app.logger.info(isinstance(q, Queue))
-    test_remove_from_heap()
