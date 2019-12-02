@@ -4,6 +4,20 @@
 
 ## Setup
 
+## System Requirements for Windows
+
+- Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later)
+- Hyper-V and Containers Windows features must be enabled
+  - This can be done by running the docker application after installing. The user will be prompted and required to restart the computer in order to finish the required setup.
+
+- The following hardware prerequisites are required to successfully run Client Hyper-V on Windows 10:
+
+  - 64 bit processor with [Second Level Address Translation (SLAT)](https://en.wikipedia.org/wiki/Second_Level_Address_Translation)
+  - 4GB system RAM
+  - BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).
+
+   ![virtualization example](virtualization-enabled.png)
+
 ### Installing and running Docker Desktop on Windows
 
 - Double-click Docker Desktop Installer.exe to run the installer.
@@ -52,7 +66,7 @@
 
 ### Instructions 
  
-### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
+Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
 Then, start the application by double clicking the docker icon in your Applications folder.
 
 ### Running the Application:
@@ -396,7 +410,7 @@ and to also check if a patient passes all of the rules for a resource.
     `link.helper.js`. 
 
 
-# How to’s 
+## How to’s 
 ### Backend 
 * Add a new field to csv and have it used by priority queue
     * A: The code has been made easily extensible and hence when a field is added to the patient it is parsed by our code and added to the patient object's dictionary.
