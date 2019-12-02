@@ -241,6 +241,12 @@ function updateNodePositions(nodes, updatedNodes) {
 }
 
 function updateNodeProperties(nodes, newProps){
+    
+    // Convert certain strings to numeric types
+    newProps.numberOfActors = parseInt(newProps.numberOfActors);
+    newProps.distributionParameters = newProps.distributionParameters.map(param => parseFloat(param));
+
+    console.log('newprops', newProps);
     let clonedNodes = JSON.parse(JSON.stringify(nodes))
     clonedNodes = clonedNodes.filter((node) => node.id !== newProps.id) // remove the node
     clonedNodes.splice(newProps.id, 0, newProps) // insert updated one at the same location
