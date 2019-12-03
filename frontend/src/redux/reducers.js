@@ -26,8 +26,14 @@ const initialState = {
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
             "priority queue", "", [], [], "acuity", [], [])
     ],
-    acuityColors: []
-
+    // Intial state of the acuity colors
+    acuityColors: [
+        "#781A03",
+        "#A02304",
+        "#C82C05",
+        "#D35637",
+        "#DE8069",
+    ]
 }
 
 function EDSimulation(state = initialState, action) {
@@ -146,13 +152,13 @@ function EDSimulation(state = initialState, action) {
                 nodes: removePredictedChildFromParent(state.nodes, action.parent, action.child)
             })
         case SIMULATION_STARTED:
-                return Object.assign({}, state, {
-                    simulationStarted: true,
-                    idToIndex: createNodeMap(state.nodes)
+            return Object.assign({}, state, {
+                simulationStarted: true,
+                idToIndex: createNodeMap(state.nodes)
 
-                })
+            })
         case UPDATE_ACUITY_COLORS:
-            return Object.assign({} state, {
+            return Object.assign({}, state, {
                 acuityColors: action.newAcuityColors
             })
         default:

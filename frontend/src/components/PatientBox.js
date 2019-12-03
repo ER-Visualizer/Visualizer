@@ -1,34 +1,33 @@
 import React from 'react';
 import './PatientBox.css';
-
-const getBackgroundColor = acuity => {
-    // The colors for the different acuities, starting from acuity 1
-    const shadesOfRed = [
-        "#781A03",
-        "#A02304",
-        "#C82C05",
-        "#D35637",
-        "#DE8069",
-    ]
-
-    return shadesOfRed[acuity-1]
-};
+import { connect } from 'react-redux';
 
 class PatientBox extends React.Component {
     // Only rerender component if the patient's id or acuity changes
     shouldComponentUpdate(nextProps, nextState) {
       return this.props.patient.id !== nextProps.patient.id && this.props.patient.acuity !== nextProps.patient.acuity
     }
+
+    getBackgroundColor = acuity =>
+        this.props.acuityColors[acuity-1]
+    
     render(){
-        let patient = this.props.patient
+        let patient = this.props.patient;
 
         return <div 
-            style={{background: getBackgroundColor(patient.acuity)}} 
+            style={{background: this.getBackgroundColor(patient.acuity)}} 
             className="Patient">
                 {patient.id}
         </div>
     };
 }
 
+const mapStateToProps = state => {
+    return {
+        acuityColors: state.acuityColors
+    }
+}
 
-export default PatientBox;
+export default connect(
+    mapStateToProps
+)(PatientBox);

@@ -1,7 +1,7 @@
 import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
-import { editNodeProperties, deleteNode } from '../redux/actions'
+import { editNodeProperties, deleteNode } from '../redux/actions';
 import NodeRule from './NodeRule';
 import ResourceRule from './ResourceRule';
 import {ReactComponent as AddIcon} from '../add.svg';

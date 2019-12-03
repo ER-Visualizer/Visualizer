@@ -14,7 +14,11 @@ class ColorPicker extends React.Component{
         </div>
         {this.props.displayColorPicker ? <div className="Popover">
           <div className="Cover" onClick={this.props.onCloseColorPicker}/>
-          <ChromePicker color={this.props.color} onChangeComplete={this.props.onColorPickerChange} />
+          <ChromePicker
+            disableAlpha
+            color={this.props.color}
+            onChangeComplete={this.props.onColorPickerChange}
+          />
         </div> : null}
       </div>
     )
