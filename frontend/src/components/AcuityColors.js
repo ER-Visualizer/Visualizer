@@ -3,8 +3,8 @@ import './AcuityColors.css';
 import ColorPicker from './ColorPicker';
 
 class AcuityColors extends React.Component{
-  createFalseArray() {
-    const arr = new Array(this.props.numAcuities);
+  createFalseArray(length) {
+    const arr = new Array(length);
     for (let i = 0; i < arr.length; i++) {
       arr[i] = false;
     }
@@ -13,7 +13,7 @@ class AcuityColors extends React.Component{
   }
 
   state = {
-    colorPickers: [false, false, false, false, false],
+    colorPickers: this.createFalseArray(this.props.numAcuities),
     colors: [
       "#781A03",
       "#A02304",
