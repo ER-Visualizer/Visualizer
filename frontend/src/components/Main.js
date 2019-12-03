@@ -25,7 +25,8 @@ class Main extends React.Component {
             run: false,
             rate: 1,
             duration: 5,
-            stats: []
+            stats: [],
+            colorPickersShowing: true,
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -324,8 +325,19 @@ class Main extends React.Component {
                 onClickLink={this.linkClick.bind(this)}
                 />
                 </Sidebar>
-                <div className="AcuityColorsBox">
+                <div
+                    className="AcuityColorsBox"
+                    style={{ left: this.state.colorPickersShowing ? 0 : -170 }}
+                >
                     <AcuityColors numAcuities={5} />
+                    <div
+                        className="CollapseArrow"
+                        onClick={() => this.setState(
+                            { colorPickersShowing: !this.state.colorPickersShowing }
+                        )}
+                    >
+                        {this.state.colorPickersShowing ? '<' : '>'}
+                    </div>
                 </div>
                 <div className="slider">
                     <Slider initNum={this.state.rate} max={10} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>

@@ -14,7 +14,7 @@ class PatientBox extends React.Component {
     render(){
         let patient = this.props.patient;
 
-        return <div 
+        return <div
             style={{background: this.getBackgroundColor(patient.acuity)}} 
             className="Patient">
                 {patient.id}
