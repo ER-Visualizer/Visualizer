@@ -67,3 +67,20 @@ class AcuityColors extends React.Component{
 }
 
 export default AcuityColors;
+
+
+}
+
+const mapStateToProps = state => {
+  return {
+      acuityColors: state.acuityColors
+    }
+}
+
+const const mapDispatchToProps = dispatch => {
+  return {
+    updateAcuityColors: (newAcuityColors) => {
+      dispatch(updateAcuityColors(newAcuityColors))
+    }
+  }
+

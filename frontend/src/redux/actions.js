@@ -24,6 +24,8 @@ export const REMOVE_PREDICTED_CHILD = 'REMOVE_PREDICTED_CHILD'
 
 export const SIMULATION_STARTED = 'SIMULATION_STARTED'
 
+export const UPDATE_ACUITY_COLORS = 'UPDATE_ACUITY_COLORS' 
+
 
 /*
 * Action Creators
@@ -107,4 +109,8 @@ export function removePredictedChild(parent, child) {
 
 export function simulationStarted() {
     return {type: SIMULATION_STARTED}
+}
+
+export function updateAcuityColors(newAcuityColors){
+    return {type: UPDATE_ACUITY_COLORS, newAcuityColors: newAcuityColors}
 }

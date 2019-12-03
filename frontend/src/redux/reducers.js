@@ -1,4 +1,4 @@
-import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED, UPDATE_NODE_POSITIONS} from './actions';
+import { SHOW_LOGS_SIDEBAR, SHOW_NODE_SIDEBAR, UPDATE_PATIENT_LOCATION, SHOW_JSON_ENTRY_SIDEBAR, HIDE_SIDEBAR, EDIT_NODE_PROPERTIES, ADD_NODE, DELETE_NODE, CONNECT_NODE, DELETE_LINK, DELETE_LINK_MODE, BUILD_LINK_MODE, REPLACE_NODE_LIST, SHOW_LINK_SIDEBAR, ADD_PREDICTED_CHILD, REMOVE_PREDICTED_CHILD, SIMULATION_STARTED, UPDATE_NODE_POSITIONS, UPDATE_ACUITY_COLORS} from './actions';
 import ProcessNode from '../models/ProcessNode';
 import Patient from '../models/Patient';
 import { object } from 'prop-types';
@@ -25,7 +25,9 @@ const initialState = {
             "priority queue", "", [3], [], "acuity", [], []),
         new ProcessNode(3, "x-ray", "binomial", [1, 1], 2,
             "priority queue", "", [], [], "acuity", [], [])
-    ]
+    ],
+    acuityColors: []
+
 }
 
 function EDSimulation(state = initialState, action) {
@@ -149,6 +151,10 @@ function EDSimulation(state = initialState, action) {
                     idToIndex: createNodeMap(state.nodes)
 
                 })
+        case UPDATE_ACUITY_COLORS:
+            return Object.assign({} state, {
+                acuityColors: action.newAcuityColors
+            })
         default:
             return state
     }
