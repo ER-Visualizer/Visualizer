@@ -37,7 +37,7 @@ class AcuityColors extends React.Component{
     this.updateActiveColorPicker(picker, false);
   };
 
-  handleChange = (picker, color) => {
+  handleColorChange = (picker, color) => {
     const colors = [...this.state.colors];
     colors[picker] = color.hex;
     this.setState({ colors });
@@ -53,7 +53,7 @@ class AcuityColors extends React.Component{
           onThumbnailClick={() => this.handleClick(picker)}
           displayColorPicker={this.state.colorPickers[picker]}
           onColorPickerChange={(newColor) => 
-            this.handleChange(picker, newColor)}
+            this.handleColorChange(picker, newColor)}
           onCloseColorPicker={() => this.handleClose(picker)}
         />
       </div>;
