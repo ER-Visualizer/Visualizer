@@ -460,3 +460,7 @@ and to also check if a patient passes all of the rules for a resource.
     * A: Use the id, indices are subject to change on deleting/adding nodes.
 * Q: Why can't I access the variable I added to the .env file on the frontend?
     * A: Make sure you're calling it with REACT_APP_ appended as a prefix. So if you called it ```test_var```, make sure to call ```REACT_APP_test_var```.
+
+## Known Issues
+
+1. Scalability issues: After maybe 10k patients, a "RuntimeError: deque mutated during iteration" Error might occur. Sometimes just refreshing the simulation will work.
