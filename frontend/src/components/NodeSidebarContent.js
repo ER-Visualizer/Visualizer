@@ -1,7 +1,7 @@
 import React from 'react';
 import './NodeSidebarContent.css';
 import { connect } from 'react-redux';
-import { editNodeProperties, deleteNode } from '../redux/actions'
+import { editNodeProperties, deleteNode } from '../redux/actions';
 import NodeRule from './NodeRule';
 import ResourceRule from './ResourceRule';
 import {ReactComponent as AddIcon} from '../add.svg';
@@ -53,6 +53,7 @@ export class NodeSidebarContent extends React.Component {
         })
     }
 
+    // Current text written in the "other" field in Station Type
     handleTextInputChange(event) {
         this.setState({ tempText: event.target.value });
     }
@@ -75,6 +76,7 @@ export class NodeSidebarContent extends React.Component {
         });
     }
 
+    // Event handler for the dropdown for all Rules
     handleRuleTypeChange(event, i) {
         const name = event.target.name;
         const value = event.target.value;
@@ -88,6 +90,7 @@ export class NodeSidebarContent extends React.Component {
         });
     }
 
+    // Event handler for column name field for Node Rules
     handleColumnNameChange(event, i) {
         const value = event.target.value;
 
@@ -149,11 +152,11 @@ export class NodeSidebarContent extends React.Component {
     handleSave(){
         if (!this.isNumber(this.state.node.numberOfActors) && !this.isValidDistributionParams(this.state.node.distributionParameters)){
             this.setState({
-                        valid: false, invalidNodeParamError: "Invald Distribution Parameter(s) and Number of Actor(s) Paramaters"
+                        valid: false, invalidNodeParamError: "Invald Distribution Parameter(s) and Number of Actor(s) Parameters"
                     })
         } else if (!this.isNumber(this.state.node.numberOfActors)){
             this.setState({
-                valid: false, invalidNodeParamError: "Invald Number of Actor(s) Paramater"
+                valid: false, invalidNodeParamError: "Invald Number of Actor(s) Parameter"
             })
             
         } else if (!this.isValidDistributionParams(this.state.node.distributionParameters)){

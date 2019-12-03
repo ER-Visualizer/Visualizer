@@ -4,6 +4,20 @@
 
 ## Setup
 
+## System Requirements for Windows
+
+- Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later)
+- Hyper-V and Containers Windows features must be enabled
+  - This can be done by running the docker application after installing. The user will be prompted and required to restart the computer in order to finish the required setup.
+
+- The following hardware prerequisites are required to successfully run Client Hyper-V on Windows 10:
+
+  - 64 bit processor with [Second Level Address Translation (SLAT)](https://en.wikipedia.org/wiki/Second_Level_Address_Translation)
+  - 4GB system RAM
+  - BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).
+
+   ![virtualization example](virtualization-enabled.png)
+
 ### Installing and running Docker Desktop on Windows
 
 - Double-click Docker Desktop Installer.exe to run the installer.
@@ -52,7 +66,7 @@
 
 ### Instructions 
  
-### Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
+Setup: Download the docker installer [here](https://www.docker.com/products/docker-desktop) and follow the docker setup instructions above. The website directs you to the correct version base on your OS
 Then, start the application by double clicking the docker icon in your Applications folder.
 
 ### Running the Application:
@@ -84,8 +98,6 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
         tests/
             models/
             unit_tests/
-    Developer Guide/
-        docs/
     frontend/
         node_modules/
         public/
@@ -96,7 +108,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
                 ...
             redux/
                 ...
-    User Guide/
+    user_guide/
         docs/
 
 * Frontend 
@@ -134,7 +146,7 @@ WEB_SOCKET_PORT = {WSS port number - default 8765}
 ### run.py
 
 1. The entry point starts at the main() function which is called from the REST API /start. The main function then initializes all the required global variables. Then loads the input canvas initializes a thread to start the simulation (SimulationWorker class) and another to start the websocket (by initializing WebsocketServer from connect.py).
-2. The SimulationWorker iterates through the input canvas to instantiate all the nodes on the canvas with their paramaters and stores all nodes in a dictionary for future use.
+2. The SimulationWorker iterates through the input canvas to instantiate all the nodes on the canvas with their parameters and stores all nodes in a dictionary for future use.
 3. A node may contain node or resource rules which are also initialized at this point.
 4. Once the canvas is loaded, the simulation reads the input csv file and adds patients into a preemptive node (patient loader), which only serves the purpose of adding patients into the starting point of the workflow (the reception queue
 at the right time (as dictated in the csv input).
@@ -396,7 +408,7 @@ and to also check if a patient passes all of the rules for a resource.
     `link.helper.js`. 
 
 
-# How to’s 
+## How to’s 
 ### Backend 
 * Add a new field to csv and have it used by priority queue
     * A: The code has been made easily extensible and hence when a field is added to the patient it is parsed by our code and added to the patient object's dictionary.
@@ -448,3 +460,7 @@ and to also check if a patient passes all of the rules for a resource.
     * A: Use the id, indices are subject to change on deleting/adding nodes.
 * Q: Why can't I access the variable I added to the .env file on the frontend?
     * A: Make sure you're calling it with REACT_APP_ appended as a prefix. So if you called it ```test_var```, make sure to call ```REACT_APP_test_var```.
+
+## Known Issues
+
+1. Scalability issues: After maybe 10k patients, a "RuntimeError: deque mutated during iteration" Error might occur. Sometimes just refreshing the simulation will work.

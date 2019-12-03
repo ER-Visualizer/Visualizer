@@ -10,7 +10,9 @@ import './Main.css';
 import JSONEntrySidebarContent from './JSONEntrySidebarContent';
 
 import { showNodeConfig, hideSidebar, updatePatientLocation, deleteLink, connectNode, showLinkSidebar} from '../redux/actions';
-import Slider from './Slider.js'
+import Slider from './Slider.js';
+import AcuityColors from './AcuityColors';
+
 
 class Main extends React.Component {
     constructor(props) {
@@ -23,7 +25,8 @@ class Main extends React.Component {
             run: false,
             rate: 1,
             duration: 5,
-            stats: []
+            stats: [],
+            colorPickersShowing: true,
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -322,9 +325,24 @@ class Main extends React.Component {
                 onClickLink={this.linkClick.bind(this)}
                 />
                 </Sidebar>
+                <div
+                    className="AcuityColorsBox"
+                    style={{ left: this.state.colorPickersShowing ? 0 : -170 }}
+                >
+                    <AcuityColors numAcuities={5} />
+                    <div
+                        className="CollapseArrow"
+                        onClick={() => this.setState(
+                            { colorPickersShowing: !this.state.colorPickersShowing }
+                        )}
+                    >
+                        {this.state.colorPickersShowing ? '<' : '>'}
+                    </div>
+                </div>
                 <div className="slider">
-                <Slider initNum={this.state.rate} max={10} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
-                <Slider initNum={this.state.duration} max={100} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
+                    <Slider initNum={this.state.rate} max={10} handleClick={this.handleSliderRate.bind(this)} text="Packet Rate (seconds)" > </Slider>
+                    <Slider initNum={this.state.duration} max={100} handleClick={this.handleSliderDuration.bind(this)} text="Packet Duration (mins)"> </Slider>
+                    <button className="HelpButton" onClick={()=>window.open("https://csc301-fall-2019.github.io/team-project-ml-simulation-vector-institute/user_guide", "_blank")}>?</button>
                 </div>
             </div>
         )
