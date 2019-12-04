@@ -1,3 +1,4 @@
+Hosted URL: https://csc301-fall-2019.github.io/team-project-ml-simulation-vector-institute/
 # How to use 
   1. Make sure mkdocs is installed. Run ```pip3 install mkdocs``` if it isn't.
   2. Write markdown in User Guide/docs/index.md
