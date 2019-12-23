@@ -27,8 +27,8 @@ const nodeSchema = {
             }
         }},
         "resourceRules": {"type": "array"},
-        "x": { "type": "integer"},
-        "y":{ "type": "integer"}
+        "x": { "type": "float"},
+        "y":{ "type": "float"}
     }
    };
 
