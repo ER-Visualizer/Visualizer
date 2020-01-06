@@ -163,6 +163,10 @@ export class NodeSidebarContent extends React.Component {
             this.setState({
                 valid: false, invalidNodeParamError: "Invald Distribution Parameter(s)"
             })
+        } else if (this.state.node.queueType == "...") {
+            this.setState({
+                        valid: false, invalidNodeParamError: "Must Select a Queue Type"
+                    })
         }
         else {
             this.setState({valid: true})
@@ -285,6 +289,7 @@ export class NodeSidebarContent extends React.Component {
                     <select name="queueType"
                             value={`${this.state.node.queueType}`}
                             onChange={this.handleInputChange}>
+                        <option value="...">...</option>
                         <option value="priority queue">Priority Queue</option>
                         <option value="queue">Queue</option>
                         <option value="stack">Stack</option>
