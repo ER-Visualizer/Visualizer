@@ -5,3 +5,4 @@
 /backend/csv/*
 /backend/canvas/*
 backend/debug.log
+.DS_Store
