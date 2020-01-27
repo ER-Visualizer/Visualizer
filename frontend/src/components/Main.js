@@ -27,7 +27,10 @@ class Main extends React.Component {
             duration: 5,
             stats: [],
             colorPickersShowing: true,
-            logLines: "",
+            logLines: {
+                value: "",
+                writable: true
+            },
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -38,6 +41,7 @@ class Main extends React.Component {
     }
 
     runHandler = async () =>{
+        this.state.logLines = "";
         for(let i = 0; i < this.props.nodes.length; i++){
             this.props.nodes[i].patients = []
             this.props.nodes[i].processing = []
