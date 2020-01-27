@@ -27,6 +27,7 @@ class Main extends React.Component {
             duration: 5,
             stats: [],
             colorPickersShowing: true,
+            logLines: "",
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -50,17 +51,20 @@ class Main extends React.Component {
 
     parseEventData(eventData) {
         if(eventData.inQueue === true){
+            this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             }
         }
         else if(eventData.nextNodeId === "end"){
+            this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             }
         }
+        this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
         return {
             eventData: eventData,
             message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
