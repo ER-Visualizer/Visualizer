@@ -319,6 +319,7 @@ class Main extends React.Component {
                         runHandler={this.runHandler} 
                         onRef={ref => (this.child = ref)} 
                         rate={this.state.rate} 
+                        logLines={this.state.logLines}
                         duration={this.state.duration}/>
                 <Graph
                 directed={true}
