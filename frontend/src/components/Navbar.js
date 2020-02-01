@@ -75,7 +75,21 @@ class Navbar extends React.Component {
         this.props.deleteLinkModeSwitch()
     }
 
+    downloadTxt(filename, text) {
+              var element = document.createElement('a');
+              element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+              element.setAttribute('download', filename);
+
+              element.style.display = 'none';
+              document.body.appendChild(element);
+
+              element.click();
+
+              document.body.removeChild(element);
+    }
+
     download = (event) => {
+        this.downloadTxt("log.txt", this.props.logLines)
         console.log("download")
         console.log(this.props.stats);
         if (this.props.stats != undefined && this.props.stats != null && this.props.stats){
@@ -101,7 +115,7 @@ class Navbar extends React.Component {
             let data_to_download = {}
  
         }
-      } 
+    } 
 
 
     render() {

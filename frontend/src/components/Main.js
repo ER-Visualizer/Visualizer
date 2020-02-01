@@ -27,6 +27,10 @@ class Main extends React.Component {
             duration: 5,
             stats: [],
             colorPickersShowing: true,
+            logLines: {
+                value: "",
+                writable: true
+            },
         }
         this.renderSidebarContent = this.renderSidebarContent.bind(this)
         this.sidebarLastContent = null;
@@ -37,6 +41,7 @@ class Main extends React.Component {
     }
 
     runHandler = async () =>{
+        this.state.logLines = "";
         for(let i = 0; i < this.props.nodes.length; i++){
             this.props.nodes[i].patients = []
             this.props.nodes[i].processing = []
@@ -50,17 +55,20 @@ class Main extends React.Component {
 
     parseEventData(eventData) {
         if(eventData.inQueue === true){
+            this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} joined ${eventData['movedTo']}'s queue from ${eventData['startedAt']}`
             }
         }
         else if(eventData.nextNodeId === "end"){
+            this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             return {
                 eventData: eventData,
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             }
         }
+        this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
         return {
             eventData: eventData,
             message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
@@ -315,6 +323,7 @@ class Main extends React.Component {
                         runHandler={this.runHandler} 
                         onRef={ref => (this.child = ref)} 
                         rate={this.state.rate} 
+                        logLines={this.state.logLines}
                         duration={this.state.duration}/>
                 <Graph
                 directed={true}
