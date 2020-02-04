@@ -1,5 +1,6 @@
 from .frequency_rule import FrequencyRule
 from .prediction_rule import PredictionRule
+from .frequencyafternode_rule import FrequencyafternodeRule
 from .first_come_first_serve_rule import FirstComeFirstServeRule
 
 """
@@ -24,9 +25,20 @@ class NodeRuleCreator(RuleCreatorFactory):
         created_rules = []
 
         for node_rule in node_rules:
-            
+
+            if node_rule["ruleType"] == "frequencyAfterNode":
+                prediction_parent_ids = []
+
+                # look for all nodes which have this node as a predicted child
+                for other_node in canvas:
+                    if "predictedChildren" in other_node and node_id in other_node["predictedChildren"]:
+                        prediction_parent_ids.append(other_node["id"])
+
+                frequencyafternode = FrequencyafternodeRule(node_rule["columnName"], node_rule["nodeId"], node_id, prediction_parent_ids)
+                created_rules.append(frequencyafternode)
+
             # can add more rule options for node behaviour here
-            if node_rule["ruleType"] == "frequency":
+            elif node_rule["ruleType"] == "frequency":
                 frequency = FrequencyRule(node_rule["columnName"], node_id)
                 created_rules.append(frequency)
 
