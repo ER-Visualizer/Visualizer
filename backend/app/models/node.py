@@ -233,16 +233,17 @@ class Node:
                 if resource.is_available():
                     # app.logger.debug("filling spot: resource {} is available".format(resource.get_id()))
                     if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
-                        # app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
-                        self.queue.remove(patient)
+                        if RuleVerifier.pass_rules(patient, self.get_node_rules()):
+                            # app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
+                            self.queue.remove(patient)
 
-                        # once removed from queue, update patient record
-                        patient_record = patient.get_patient_record()
-                        patient_record.remove_process_from_queue(self.id)
-                        self.insert_patient_to_resource_and_heap(
-                            patient, resource)
-                        # app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
-                        return True
+                            # once removed from queue, update patient record
+                            patient_record = patient.get_patient_record()
+                            patient_record.remove_process_from_queue(self.id)
+                            self.insert_patient_to_resource_and_heap(
+                                patient, resource)
+                            # app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
+                            return True
 
         return False
 
@@ -320,19 +321,20 @@ class Node:
             for resource in resource_list:
                 if resource.is_available():
                     if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
-                        # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
-                        # as you're visiting now. This makes sense because if he's inserted in the resource, you can
-                        # consider that as him finishing the queue.
-                        if patient in self.queue:
-                            self.queue.remove(patient)
+                        if RuleVerifier.pass_rules(patient, self.get_node_rules()):
+                            # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
+                            # as you're visiting now. This makes sense because if he's inserted in the resource, you can
+                            # consider that as him finishing the queue.
+                            if patient in self.queue:
+                                self.queue.remove(patient)
 
-                            # once removed from queue, update patient record
-                            patient_record = patient.get_patient_record()
-                            patient_record.remove_process_from_queue(self.id)
-                        # record event of patient joining resource
-                        self.insert_patient_to_resource_and_heap(
-                            patient, resource)
-                        return True
+                                # once removed from queue, update patient record
+                                patient_record = patient.get_patient_record()
+                                patient_record.remove_process_from_queue(self.id)
+                            # record event of patient joining resource
+                            self.insert_patient_to_resource_and_heap(
+                                patient, resource)
+                            return True
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
