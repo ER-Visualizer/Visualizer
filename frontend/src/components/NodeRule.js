@@ -14,6 +14,7 @@ const NodeRule = ({ ruleType, columnName, nodeId, onDropdownChange,
         <option value="prediction">Prediction</option>
         <option value="frequency">Frequency</option>
         <option value="frequencyAfterNode">Frequency After Node</option>
+        <option value="requiresNode">Requires Node</option>
 
     </Rule>;
 

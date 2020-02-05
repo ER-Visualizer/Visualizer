@@ -2,6 +2,7 @@ from .frequency_rule import FrequencyRule
 from .prediction_rule import PredictionRule
 from .frequencyafternode_rule import FrequencyafternodeRule
 from .first_come_first_serve_rule import FirstComeFirstServeRule
+from .requiresnode_rule import RequiresNodeRule
 
 """
 Factory class for creating rule object lists when parsing the canvas JSON.
@@ -37,6 +38,9 @@ class NodeRuleCreator(RuleCreatorFactory):
                 frequencyafternode = FrequencyafternodeRule(node_rule["columnName"], node_rule["nodeId"], node_id, prediction_parent_ids)
                 created_rules.append(frequencyafternode)
 
+            elif node_rule["ruleType"] == "requiresNode":
+                requiresNode = RequiresNodeRule("", node_rule["nodeId"], node_id)
+                created_rules.append((requiresNode))
             # can add more rule options for node behaviour here
             elif node_rule["ruleType"] == "frequency":
                 frequency = FrequencyRule(node_rule["columnName"], node_id)
