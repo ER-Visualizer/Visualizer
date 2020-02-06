@@ -69,7 +69,7 @@ export class NodeSidebarContent extends React.Component {
 
     addNewResourceRule() {
         const rules = [...this.state.node.resourceRules];
-        rules.push({ "ruleType": "" });
+        rules.push({ "ruleType": "", "nodeId": "" });
         let new_node = Object.assign({}, this.state.node, {resourceRules: rules});
         this.setState({
             node: new_node
@@ -97,6 +97,18 @@ export class NodeSidebarContent extends React.Component {
         const rules = [...this.state.node.nodeRules];
         rules[i] = {...rules[i], [event.target.name]: value};
         let new_node = {...this.state.node, nodeRules: rules};
+
+        this.setState({
+            node: new_node
+        });
+    }
+
+     handleResourceRuleNodeIdChange(event, i) {
+        const value = event.target.value;
+
+        const rules = [...this.state.node.resourceRules];
+        rules[i] = {...rules[i], [event.target.name]: value};
+        let new_node = {...this.state.node, resourceRules: rules};
 
         this.setState({
             node: new_node
@@ -191,7 +203,9 @@ export class NodeSidebarContent extends React.Component {
             <ResourceRule
                 key={i}
                 ruleType={rule.ruleType}
+                nodeId={rule.nodeId}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
+                onInputChange={(e) => this.handleResourceRuleNodeIdChange(e, i)}
                 removeRule={() => this.removeRule("resourceRules", i)}
             />
         );

@@ -10,7 +10,7 @@ const Rule = ({ children, name, ruleType, columnName, nodeId, onDropdownChange,
             <option value="type" disabled>Rule Type</option>
             {children}
         </select>
-        {name !== "resourceRules" && ruleType !== "frequencyAfterNode" && ruleType !== "requiresNode" &&
+        {name !== "resourceRules" && ruleType !== "frequencyAfterNode" &&
             <input
                 type="text"
                 name="columnName"

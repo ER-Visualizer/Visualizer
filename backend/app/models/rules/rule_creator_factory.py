@@ -1,3 +1,7 @@
+from flask import Flask
+
+app = Flask(__name__)
+
 from .frequency_rule import FrequencyRule
 from .prediction_rule import PredictionRule
 from .frequencyafternode_rule import FrequencyafternodeRule
@@ -37,10 +41,6 @@ class NodeRuleCreator(RuleCreatorFactory):
 
                 frequencyafternode = FrequencyafternodeRule(node_rule["columnName"], node_rule["nodeId"], node_id, prediction_parent_ids)
                 created_rules.append(frequencyafternode)
-
-            elif node_rule["ruleType"] == "requiresNode":
-                requiresNode = RequiresNodeRule("", node_rule["nodeId"], node_id)
-                created_rules.append((requiresNode))
             # can add more rule options for node behaviour here
             elif node_rule["ruleType"] == "frequency":
                 frequency = FrequencyRule(node_rule["columnName"], node_id)
@@ -71,5 +71,9 @@ class ResourceRuleCreator(RuleCreatorFactory):
             if resource_rule["ruleType"] == "firstComeFirstServe":
                 created_rules.append(
                     FirstComeFirstServeRule(node_id, resource.get_id()))
+            elif resource_rule["ruleType"] == "requiresNode":
+                app.logger.info("NODEID for resource rule is: {}".format(resource_rule["nodeId"]))
+                requiresNode = RequiresNodeRule("", resource_rule["nodeId"], node_id)
+                created_rules.append((requiresNode))
 
         return created_rules
