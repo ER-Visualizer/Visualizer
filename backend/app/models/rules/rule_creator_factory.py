@@ -1,6 +1,12 @@
+from flask import Flask
+
+app = Flask(__name__)
+
 from .frequency_rule import FrequencyRule
 from .prediction_rule import PredictionRule
+from .frequencyafternode_rule import FrequencyafternodeRule
 from .first_come_first_serve_rule import FirstComeFirstServeRule
+from .requiresnode_rule import RequiresNodeRule
 
 """
 Factory class for creating rule object lists when parsing the canvas JSON.
@@ -24,9 +30,19 @@ class NodeRuleCreator(RuleCreatorFactory):
         created_rules = []
 
         for node_rule in node_rules:
-            
+
+            if node_rule["ruleType"] == "frequencyAfterNode":
+                prediction_parent_ids = []
+
+                # look for all nodes which have this node as a predicted child
+                for other_node in canvas:
+                    if "predictedChildren" in other_node and node_id in other_node["predictedChildren"]:
+                        prediction_parent_ids.append(other_node["id"])
+
+                frequencyafternode = FrequencyafternodeRule(node_rule["columnName"], node_rule["nodeId"], node_id, prediction_parent_ids)
+                created_rules.append(frequencyafternode)
             # can add more rule options for node behaviour here
-            if node_rule["ruleType"] == "frequency":
+            elif node_rule["ruleType"] == "frequency":
                 frequency = FrequencyRule(node_rule["columnName"], node_id)
                 created_rules.append(frequency)
 
@@ -55,5 +71,9 @@ class ResourceRuleCreator(RuleCreatorFactory):
             if resource_rule["ruleType"] == "firstComeFirstServe":
                 created_rules.append(
                     FirstComeFirstServeRule(node_id, resource.get_id()))
+            elif resource_rule["ruleType"] == "requiresNode":
+                app.logger.info("NODEID for resource rule is: {}".format(resource_rule["nodeId"]))
+                requiresNode = RequiresNodeRule("", resource_rule["nodeId"], node_id)
+                created_rules.append((requiresNode))
 
         return created_rules

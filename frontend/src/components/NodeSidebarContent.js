@@ -69,7 +69,7 @@ export class NodeSidebarContent extends React.Component {
 
     addNewResourceRule() {
         const rules = [...this.state.node.resourceRules];
-        rules.push({ "ruleType": "" });
+        rules.push({ "ruleType": "", "nodeId": "" });
         let new_node = Object.assign({}, this.state.node, {resourceRules: rules});
         this.setState({
             node: new_node
@@ -95,8 +95,20 @@ export class NodeSidebarContent extends React.Component {
         const value = event.target.value;
 
         const rules = [...this.state.node.nodeRules];
-        rules[i] = {...rules[i], columnName: value};
+        rules[i] = {...rules[i], [event.target.name]: value};
         let new_node = {...this.state.node, nodeRules: rules};
+
+        this.setState({
+            node: new_node
+        });
+    }
+
+     handleResourceRuleNodeIdChange(event, i) {
+        const value = event.target.value;
+
+        const rules = [...this.state.node.resourceRules];
+        rules[i] = {...rules[i], [event.target.name]: value};
+        let new_node = {...this.state.node, resourceRules: rules};
 
         this.setState({
             node: new_node
@@ -180,6 +192,7 @@ export class NodeSidebarContent extends React.Component {
                 key={i}
                 ruleType={rule.ruleType}
                 columnName={rule.columnName}
+                nodeId={rule.nodeId}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
                 onInputChange={(e) => this.handleColumnNameChange(e, i)}
                 removeRule={() => this.removeRule("nodeRules", i)}
@@ -190,7 +203,9 @@ export class NodeSidebarContent extends React.Component {
             <ResourceRule
                 key={i}
                 ruleType={rule.ruleType}
+                nodeId={rule.nodeId}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
+                onInputChange={(e) => this.handleResourceRuleNodeIdChange(e, i)}
                 removeRule={() => this.removeRule("resourceRules", i)}
             />
         );
@@ -307,8 +322,8 @@ export class NodeSidebarContent extends React.Component {
                         <option value="custom">Define Your Own</option>
                     </select>
                     {this.state.node.priorityType === 'custom' &&
-	                    <div>
-	                    <label>Priority Function</label><br/><br/>
+                        <div>
+                        <label>Priority Function</label><br/><br/>
                         <div style={{display: "inline-block"}}>def <div style={{color: '#F2870C', display: "inline-block"}}> _calculate_priority_value(patient):</div><br/></div>
                         <div style={{color: 'green', marginLeft: '20px'}}>
                         """<br/>
@@ -328,15 +343,15 @@ export class NodeSidebarContent extends React.Component {
                         <div style={{color: 'grey'}}> # Set _p_value to the priority you want to return <br/>
                         # DO NOT RETURN ANYTHING IN THE CODE <br/></div>
                         </div>
-	                    <textarea 
-	                        type="text"
-	                        name="priorityFunction"
+                        <textarea 
+                            type="text"
+                            name="priorityFunction"
                             style={{marginLeft: '20px', width: '80%', fontSize: '15px'}}
-	                        value={this.state.node.priorityFunction} onChange={this.handleInputChange}></textarea>
-	                     </div>
+                            value={this.state.node.priorityFunction} onChange={this.handleInputChange}></textarea>
+                         </div>
                  }
                 </div>
-            	}
+                }
                 <div className="input-container">
                     <div className="add-remove-container">
                         <label>Node Rules</label><br/>

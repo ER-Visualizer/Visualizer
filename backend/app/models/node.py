@@ -195,6 +195,7 @@ class Node:
         # first check if it passes all of the rules for the patient
         # if it does, check if you can directly insert him into a resource
         # if you can't, insert him into a queue
+        # if RuleVerifier.pass_rules(patient, resource.get_resource_rules()):
         if RuleVerifier.pass_rules(patient, self.get_node_rules()):
             if not self.fill_spot(patient):
                 self.put_inside_queue(patient, prev_node_id)
@@ -203,11 +204,12 @@ class Node:
         # Push Patient inside queue
         # only add if patient is not already in the queue
         if self.id not in patient.get_patient_record().get_all_queues():
-            self.queue.put(patient)
-            patient_record = patient.get_patient_record()
-            patient_record.put_process_in_queue(self.id)
-            self.add_patient_join_queue_event(patient, prev_node_id)
-            app.logger.info("patient {} is added to queue of {}(id:{}) at time {}".format(patient.get_id(), self.get_process_name(), self.id,GlobalTime.time))
+            if self.get_id() != patient.get_patient_record().get_curr_process_id():
+                self.queue.put(patient)
+                patient_record = patient.get_patient_record()
+                patient_record.put_process_in_queue(self.id)
+                self.add_patient_join_queue_event(patient, prev_node_id)
+                app.logger.info("patient {} is added to queue of {}(id:{}) at time {}".format(patient.get_id(), self.get_process_name(), self.id,GlobalTime.time))
         else:
             app.logger.info("Attempted to Insert patient in same queue twice at time {}".format(GlobalTime.time))
 
@@ -233,16 +235,17 @@ class Node:
                 if resource.is_available():
                     # app.logger.debug("filling spot: resource {} is available".format(resource.get_id()))
                     if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
-                        # app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
-                        self.queue.remove(patient)
+                        if RuleVerifier.pass_rules(patient, self.get_node_rules()):
+                            # app.logger.debug("filling spot: patient {} passed rules".format(patient.get_id()))
+                            self.queue.remove(patient)
 
-                        # once removed from queue, update patient record
-                        patient_record = patient.get_patient_record()
-                        patient_record.remove_process_from_queue(self.id)
-                        self.insert_patient_to_resource_and_heap(
-                            patient, resource)
-                        # app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
-                        return True
+                            # once removed from queue, update patient record
+                            patient_record = patient.get_patient_record()
+                            patient_record.remove_process_from_queue(self.id)
+                            self.insert_patient_to_resource_and_heap(
+                                patient, resource)
+                            # app.logger.debug("filling spot: just inserted patient {} and removed from queue".format(patient.get_id()))
+                            return True
 
         return False
 
@@ -316,23 +319,24 @@ class Node:
             # 3. If yes, insert the patient into
             # the specific resource(existing method
             # 4. Add the element on the heap
-            resource_list = self.simulate_concur_env(self.resource_dict.values(), Node.environment)
-            for resource in resource_list:
-                if resource.is_available():
-                    if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
-                        # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
-                        # as you're visiting now. This makes sense because if he's inserted in the resource, you can
-                        # consider that as him finishing the queue.
-                        if patient in self.queue:
-                            self.queue.remove(patient)
+            if RuleVerifier.pass_rules(patient, self.get_node_rules()):
+                resource_list = self.simulate_concur_env(self.resource_dict.values(), Node.environment)
+                for resource in resource_list:
+                    if resource.is_available():
+                        if RuleVerifier.pass_rules(patient,resource.get_resource_rules()):
+                                # if the patient is in the queue where you're trying to fill a spot, then remove him from the queue
+                                # as you're visiting now. This makes sense because if he's inserted in the resource, you can
+                                # consider that as him finishing the queue.
+                                if patient in self.queue:
+                                    self.queue.remove(patient)
 
-                            # once removed from queue, update patient record
-                            patient_record = patient.get_patient_record()
-                            patient_record.remove_process_from_queue(self.id)
-                        # record event of patient joining resource
-                        self.insert_patient_to_resource_and_heap(
-                            patient, resource)
-                        return True
+                                    # once removed from queue, update patient record
+                                    patient_record = patient.get_patient_record()
+                                    patient_record.remove_process_from_queue(self.id)
+                                # record event of patient joining resource
+                                self.insert_patient_to_resource_and_heap(
+                                    patient, resource)
+                                return True
         return False
 
     def insert_patient_to_resource_and_heap(self, patient, resource):
