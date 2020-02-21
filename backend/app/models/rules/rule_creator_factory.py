@@ -7,6 +7,7 @@ from .prediction_rule import PredictionRule
 from .frequencyafternode_rule import FrequencyafternodeRule
 from .first_come_first_serve_rule import FirstComeFirstServeRule
 from .requiresnode_rule import RequiresNodeRule
+from .limit_acuity_rule import limitAcuityRule
 
 """
 Factory class for creating rule object lists when parsing the canvas JSON.
@@ -75,5 +76,8 @@ class ResourceRuleCreator(RuleCreatorFactory):
                 app.logger.info("NODEID for resource rule is: {}".format(resource_rule["nodeId"]))
                 requiresNode = RequiresNodeRule("", resource_rule["nodeId"], node_id)
                 created_rules.append((requiresNode))
+            elif resource_rule["ruleType"] == "limitAcuity":
+                validAcuity = limitAcuityRule(resource_rule["columnName"], resource_rule["allowedAcuity"], node_id)
+                created_rules.append((validAcuity))
 
         return created_rules
