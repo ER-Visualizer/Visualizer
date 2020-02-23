@@ -2,7 +2,7 @@ import React from 'react';
 import './Rule.css';
 import {ReactComponent as RemoveIcon} from '../remove.svg';
 
-const Rule = ({ children, name, ruleType, columnName, nodeId, onDropdownChange,
+const Rule = ({ children, name, ruleType, columnName, nodeId, allowedAcuity, onDropdownChange,
     onInputChange, removeRule }) => <div className="Rule">
         <select name={name}
                 value={ruleType || "type"}
@@ -27,6 +27,24 @@ const Rule = ({ children, name, ruleType, columnName, nodeId, onDropdownChange,
                 value={nodeId}
                 onChange={onInputChange}
             ></input>
+        }
+        {ruleType == "limitAcuity" &&
+         <div id="parent">
+            <input
+                type="text"
+                name="columnName"
+                placeholder="Column Name"
+                value={columnName}
+                onChange={onInputChange}
+            ></input>
+            <input
+                type="text"
+                name="allowedAcuity"
+                placeholder="Allowed Acuity"
+                value={allowedAcuity}
+                onChange={onInputChange}
+            ></input>
+         </div>
         }
         {ruleType === "frequencyAfterNode" &&
          <div id="parent">
