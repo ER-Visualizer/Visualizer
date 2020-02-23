@@ -68,10 +68,10 @@ class Main extends React.Component {
                 message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} has left ${eventData['startedAt']}`
             }
         }
-        this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
+        this.state.logLines = this.state.logLines + "\n" + `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource (${eventData['resourceId']})`
         return {
             eventData: eventData,
-            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource`
+            message: `[${eventData.timeStamp}] Patient ${eventData['patientId']} is being processed by ${eventData['movedTo']} resource (${eventData['resourceId']})`
         }
     }
     timeout = 250; // Initial timeout duration as a class variable

@@ -153,6 +153,7 @@ def send_e():
                 "curNodeId": event_changes[0].get_node_id(),
                 "nextNodeId": "end",
                 "movedTo": "None",
+                "resourceId": "None",
                 "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name(),
                 "timeStamp": event_changes[0].get_event_time(),
                 "inQueue": False
@@ -167,6 +168,7 @@ def send_e():
                     "curNodeId": event_changes[0].get_node_id(),
                     "nextNodeId": nodes_list[next_q].get_id(),
                     "movedTo": nodes_list[next_q].get_process_name(),
+                    "resourceId": event_changes[0].get_node_resource_id(),
                     "startedAt": nodes_list[event_changes[0].get_node_id()].get_process_name(),
                     "timeStamp": event_changes[0].get_event_time(),
                     "inQueue": event_changes[0].get_in_queue()
