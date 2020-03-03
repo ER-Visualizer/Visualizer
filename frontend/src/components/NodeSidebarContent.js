@@ -60,7 +60,7 @@ export class NodeSidebarContent extends React.Component {
 
     addNewNodeRule() {
         const rules = [...this.state.node.nodeRules];
-        rules.push({ "ruleType": "", "columnName": "" });
+        rules.push({ "ruleType": "", "columnName": "", "nodeId": "" });
         let new_node = Object.assign({}, this.state.node, {nodeRules: rules});
         this.setState({
             node: new_node
@@ -69,7 +69,7 @@ export class NodeSidebarContent extends React.Component {
 
     addNewResourceRule() {
         const rules = [...this.state.node.resourceRules];
-        rules.push({ "ruleType": "", "columnName": "", "allowedAcuity": "", "nodeId": "" });
+        rules.push({ "ruleType": "", "nodeId": "" });
         let new_node = Object.assign({}, this.state.node, {resourceRules: rules});
         this.setState({
             node: new_node
@@ -193,6 +193,7 @@ export class NodeSidebarContent extends React.Component {
                 ruleType={rule.ruleType}
                 columnName={rule.columnName}
                 nodeId={rule.nodeId}
+                allowedAcuity={rule.allowedAcuity}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
                 onInputChange={(e) => this.handleColumnNameChange(e, i)}
                 removeRule={() => this.removeRule("nodeRules", i)}
@@ -203,9 +204,7 @@ export class NodeSidebarContent extends React.Component {
             <ResourceRule
                 key={i}
                 ruleType={rule.ruleType}
-                columnName={rule.columnName}
                 nodeId={rule.nodeId}
-                allowedAcuity={rule.allowedAcuity}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
                 onInputChange={(e) => this.handleResourceRuleNodeIdChange(e, i)}
                 removeRule={() => this.removeRule("resourceRules", i)}
