@@ -17,8 +17,8 @@ class limitAcuityRule(CSVRule):
         patient_acuity = int(patient.get_attribute(self.get_name_in_csv()))
         app.logger.info("patient {} acuity is {}".format(patient.get_id(), patient_acuity))
         allowed_acuity = [int(x) for x in self.allowed_acuity.split(',') if x.strip().isdigit()]
-        # for x in allowed_acuity:
-        #     app.logger.info("Allowed acuity is {}".format(x))
+        for x in allowed_acuity:
+            app.logger.info("Allowed acuity is {}".format(x))
         if patient_acuity in allowed_acuity:
             return True
         return False

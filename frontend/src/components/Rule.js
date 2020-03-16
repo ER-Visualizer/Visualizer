@@ -10,7 +10,7 @@ const Rule = ({ children, name, ruleType, columnName, nodeId, allowedAcuity, onD
             <option value="type" disabled>Rule Type</option>
             {children}
         </select>
-        {name !== "resourceRules" && ruleType !== "frequencyAfterNode" &&
+        {name !== "resourceRules" && ruleType !== "frequencyAfterNode" && ruleType !== "limitAcuity" &&
             <input
                 type="text"
                 name="columnName"

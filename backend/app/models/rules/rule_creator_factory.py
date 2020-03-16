@@ -46,10 +46,8 @@ class NodeRuleCreator(RuleCreatorFactory):
             elif node_rule["ruleType"] == "frequency":
                 frequency = FrequencyRule(node_rule["columnName"], node_id)
                 created_rules.append(frequency)
-
             elif node_rule["ruleType"] == "prediction":
                 parent_ids = []
-
                 # look for all nodes which have this node as a predicted child
                 for other_node in canvas:
                     if "predictedChildren" in other_node and node_id in other_node["predictedChildren"]:
@@ -57,6 +55,9 @@ class NodeRuleCreator(RuleCreatorFactory):
 
                 prediction = PredictionRule(node_rule["columnName"], node_id, parent_ids)
                 created_rules.append(prediction)
+            elif node_rule["ruleType"] == "limitAcuity":
+                validAcuity = limitAcuityRule(node_rule["columnName"], node_rule["allowedAcuity"], node_id)
+                created_rules.append((validAcuity))
 
         return created_rules
 
@@ -76,8 +77,5 @@ class ResourceRuleCreator(RuleCreatorFactory):
                 app.logger.info("NODEID for resource rule is: {}".format(resource_rule["nodeId"]))
                 requiresNode = RequiresNodeRule("", resource_rule["nodeId"], node_id)
                 created_rules.append((requiresNode))
-            elif resource_rule["ruleType"] == "limitAcuity":
-                validAcuity = limitAcuityRule(resource_rule["columnName"], resource_rule["allowedAcuity"], node_id)
-                created_rules.append((validAcuity))
 
         return created_rules
