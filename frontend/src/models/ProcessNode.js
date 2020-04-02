@@ -1,5 +1,5 @@
 class ProcessNode {
-    constructor(id, elementType, distribution, distributionParameters,
+    constructor(id, elementType, distribution, distributionParameters, distributionFunction,
         numberOfActors, queueType, priorityFunction, children = [],
         patients = {}, priorityType, processing = {}, predictedChildren = [],
         nodeRules = [], resourceRules = []) {
@@ -8,6 +8,7 @@ class ProcessNode {
       this.elementType = elementType;
       this.distribution = distribution;
       this.distributionParameters = distributionParameters;
+      this.distributionFunction = distributionFunction;
       this.numberOfActors = numberOfActors;
       this.queueType = queueType;
       this.priorityFunction = priorityFunction;

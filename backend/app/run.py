@@ -78,7 +78,7 @@ class SimulationWorker():
                 node_rules = rule_creator.create_rules(type="node", node_rules= node["nodeRules"], node_id=node["id"], canvas=canvas)
 
             # create node
-            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"], node["distributionFunction"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
                                             distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=node_rules,
                                             priority_type=node["priorityType"])
@@ -93,7 +93,7 @@ class SimulationWorker():
 
             # create patient_loader node when reception is found
             if node["elementType"] == "reception":
-                nodes_list[-1] = Node(-1, "queue",  None, 1, process_name="patient_loader",
+                nodes_list[-1] = Node(-1, "queue",  None, 1, None, process_name="patient_loader",
                                               distribution_name="fixed", distribution_parameters=[0],
                                               output_process_ids=[node["id"]], priority_type="")
 
