@@ -5,3 +5,4 @@ requests==2.20.0
 websockets
 flask_cors
 python-dotenv
+pandas

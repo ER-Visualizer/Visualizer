@@ -11,6 +11,7 @@ const nodeSchema = {
         "elementType": { "type": "string"},
         "distribution": {"type": "string"},
         "distributionParameters": {"type": "array", "items": {"type": "integer"}},
+        "distributionFunction": { "type": "string"},
         "numberOfActors": { "type": "integer"},
         "queueType": { "type": "string"},
         "priorityFunction": { "type": "string"},

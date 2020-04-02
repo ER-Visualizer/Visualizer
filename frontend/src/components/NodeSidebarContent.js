@@ -43,6 +43,10 @@ export class NodeSidebarContent extends React.Component {
             new_node.priorityType = ""
         }
 
+        if(new_node.distribution !== "define_your_own"){
+            new_node.distributionFunction = ""
+        }
+
         // Empty the text inside the "other" field
         if (name === "elementType" && value === "other") {
             this.setState({ tempText: "" });
@@ -244,6 +248,7 @@ export class NodeSidebarContent extends React.Component {
                     <select name="distribution"
                             value={`${this.state.node.distribution}`}
                             onChange={this.handleInputChange}>
+                        <option value="define_your_own">Define Your Own</option>
                         <option value="normal">Normal/Gaussian</option>
                         <option value="beta">Beta</option>
                         <option value="binomial">Binomial</option>
@@ -281,6 +286,35 @@ export class NodeSidebarContent extends React.Component {
                         <option value="weibull">Weibull</option>
                         <option value="zipf">Zipf</option>
                     </select>
+                    {this.state.node.distribution === 'define_your_own' &&
+                        <div>
+                        <label>Priority Function</label><br/><br/>
+                        <div style={{display: "inline-block"}}>def <div style={{color: '#F2870C', display: "inline-block"}}> _calculate_priority_value(patient):</div><br/></div>
+                        <div style={{color: 'green', marginLeft: '20px'}}>
+                        """<br/>
+                        Calculate a priority value representing a patient's priority within the priority queue<br/><br/>
+
+                        Attributes available:<br/>
+                        patient.get_acuity() <br/> Returns a integer value of the patient's acuity<br/><br/>
+                        patient.get_start_time() <br/> Returns the number of minutes it took for patient to enter the simulation
+                        after the simulation started.<br/><br/>
+                        patient.get_attribute(attribute) <br/> Returns the value of the attribute for the patient as indicated by the uploaded CSV
+                        <br/><br/>
+                        """
+                        </div>
+                        <br/>
+                        <div style={{marginLeft: '20px'}}>
+                        _p_value = 0<br/>
+                        <div style={{color: 'grey'}}> # Set _p_value to the priority you want to return <br/>
+                        # DO NOT RETURN ANYTHING IN THE CODE <br/></div>
+                        </div>
+                        <textarea
+                            type="text"
+                            name="distributionFunction"
+                            style={{marginLeft: '20px', width: '80%', fontSize: '15px'}}
+                            value={this.state.node.distributionFunction} onChange={this.handleInputChange}></textarea>
+                         </div>
+                 }
                 </div>
 
                 <div className="input-container"> {/* could indicate what parameters required */}
