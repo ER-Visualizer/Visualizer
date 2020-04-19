@@ -1,0 +1,4 @@
+patient_id,time,patient_acuity,patient_admitted,xray,pxray
+1,2019-01-01 00:00:00.958845,1,TRUE,1,0
+2,2019-01-01 00:00:00.958845,1,TRUE,1,0
+3,2019-01-01 00:00:00.958845,1,TRUE,1,1
