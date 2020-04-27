@@ -213,6 +213,7 @@ export class NodeSidebarContent extends React.Component {
                 key={i}
                 ruleType={rule.ruleType}
                 nodeId={rule.nodeId}
+                definedFunction={rule.definedFunction}
                 onDropdownChange={(e) => this.handleRuleTypeChange(e, i)}
                 onInputChange={(e) => this.handleResourceRuleNodeIdChange(e, i)}
                 removeRule={() => this.removeRule("resourceRules", i)}
