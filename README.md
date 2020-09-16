@@ -23,26 +23,26 @@
     
     ### Snapshot of terminal after running ```./run_prod.sh build``` where the image has finished being built and the application is running:
 
-    ![Snapshot of Terminal after running ./run_prod.sh build](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/ServerStarting.png)
+    ![Snapshot of Terminal after running ./run_prod.sh build](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/ServerStarting.png)
     ### Home page:
 
-    ![Home Page](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/homepage.png)
+    ![Home Page](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/homepage.png)
     ### Result of clicking on a workflow activity:
 
-    ![Result of Clicking on a Workflow Activity:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/nodeexpanded.png)
+    ![Result of Clicking on a Workflow Activity:](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/nodeexpanded.png)
     ### JSON of hospital layout:
 
-    ![JSON entry field](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/jsonentry.png)
+    ![JSON entry field](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/jsonentry.png)
     ### Simulation logs after running application:
 
-    ![Simulation logs after running application:](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/logsduringexecution.png)
+    ![Simulation logs after running application:](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/logsduringexecution.png)
     ### Statistics sent on websockets at end of simulation:
 
-    ![Statistics being sent at the end of simulation](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/statistics.png)
+    ![Statistics being sent at the end of simulation](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/statistics.png)
 
     ### Statistics downloaded as a CSV
 
-    ![Statistics downloaded as a CSV](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/csvdata.png)
+    ![Statistics downloaded as a CSV](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/csvdata.png)
 
 ## Instructions
  
@@ -127,7 +127,7 @@
       - 4GB system RAM
       - BIOS-level hardware virtualization support must be enabled in the BIOS settings (see image).
 
-      ![virtualization example](https://github.com/csc301-fall-2019/team-project-ml-simulation-vector-institute/blob/master/deliverables/images/virtualization-enabled.png)
+      ![virtualization example](https://raw.githubusercontent.com/ER-Visualizer/Visualizer/master/deliverables/images/virtualization-enabled.png)
 
   * #### System Requirements for Mac OS
 
