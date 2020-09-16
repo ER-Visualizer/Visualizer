@@ -175,7 +175,7 @@ class WebsocketServer:
         # create the dictionary
         for node in self.canvas:
             # create node
-            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"],
+            nodes_list[node["id"]] = Node(node["id"], node["queueType"], node["priorityFunction"], node["numberOfActors"], node["distributionFunction"],
                                             process_name=node["elementType"], distribution_name=node["distribution"],
                                             distribution_parameters=node["distributionParameters"], output_process_ids=node["children"], rules=[],
                                             priority_type=node["priorityType"])

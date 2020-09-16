@@ -11,6 +11,7 @@ const nodeSchema = {
         "elementType": { "type": "string"},
         "distribution": {"type": "string"},
         "distributionParameters": {"type": "array", "items": {"type": "integer"}},
+        "distributionFunction": { "type": "string"},
         "numberOfActors": { "type": "integer"},
         "queueType": { "type": "string"},
         "priorityFunction": { "type": "string"},
@@ -104,7 +105,7 @@ export class JSONEntrySidebarContent extends Component {
             validatedJSON[i].patients = []
             validatedJSON[i].processing = []
         }
-        const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "numberOfActors", "queueType", "priorityFunction", "children", "priorityType"];
+        const requiredKeys = ["id", "elementType", "distribution", "distributionParameters", "distributionFunction", "numberOfActors", "queueType", "priorityFunction", "children", "priorityType"];
         // console.log(this.state.valid);
        
         for (let i = 0; i < validatedJSON.length; i++) {

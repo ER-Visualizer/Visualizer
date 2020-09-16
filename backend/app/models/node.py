@@ -11,6 +11,8 @@ import heapq
 from flask import Flask
 import os
 import random
+import numpy as np
+
 
 app = Flask(__name__)
 
@@ -20,7 +22,7 @@ class Node:
     node_dict = {}
     environment = os.environ.get("DEV_ENV")
     '''rules is a list of Rule Objects'''
-    def __init__(self, id, queue_type, priority_function, num_actors,
+    def __init__(self, id, queue_type, priority_function, num_actors, distribution_function,
                  process_name=None, distribution_name=None,
                  distribution_parameters=None, output_process_ids=None, rules=[], priority_type=""):
 
@@ -36,6 +38,12 @@ class Node:
             self.priority_type = None
         else:
             self.priority_type = priority_type
+
+        if distribution_function == "":
+            self.distribution_function = None
+        else:
+            self.distribution_function = distribution_function
+
         self.queue = self._set_queue()
 
         # create num actors and resource dict based on num actors
@@ -49,6 +57,24 @@ class Node:
 
         Node.node_dict[self.id] = self
         self.node_rules = rules[:]
+
+        if self.distribution_name == "define_your_own":
+            self._parse_d_func()
+
+    def _parse_d_func(self):
+        """
+        Helper function to help fix spacing and remove empty lines
+        Assign self.d_func to be the parse string
+        """
+        split = self.distribution_function.split("\n")
+        new_split = []
+        for line in split:
+            line = line.strip()
+            if line:
+                new_split.append(line + "\n")
+        self.distribution_function = "".join(new_split)
+        app.logger.info("parsed distribution_function func")
+        app.logger.info(self.distribution_function)
 
     def set_id(self, id):
         self.id = id
@@ -114,9 +140,19 @@ class Node:
         else:
             raise Exception("This type of queue is not implemented yet")
 
-    def generate_finish_time(self):
+    def generate_finish_time(self, patient):
         if self.get_distribution_name() is None: 
             duration = 0
+        elif self.distribution_name == "define_your_own":
+            app.logger.info("d_type define your own")
+            app.logger.info(self.distribution_function)
+            duration = 0
+            l = locals()
+            # executes input code string
+            # need to pass in locals and globals to mutate _p_value
+            exec(self.distribution_function, globals(), l)
+            app.logger.info(l['duration'])
+            duration = l['duration']
         else:
             duration = Distributions.class_distributions[self.get_distribution_name()](
                 *self.get_distribution_parameters())
@@ -349,7 +385,7 @@ class Node:
             finish_time = patient.get_start_time()
             duration = finish_time - GlobalTime.time
         else:
-            finish_time, duration = self.generate_finish_time()
+            finish_time, duration = self.generate_finish_time(patient)
         resource.insert_patient(patient, self.id, finish_time, duration)
         # record event of patient joining resource
         self.add_patient_join_resource_event(patient, resource)
